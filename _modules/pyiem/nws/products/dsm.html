@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.26.0.post28+g7f5c4e0af</title>
+    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.26.0.post32+geb92ca1b8</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=12dfc436"></script>
+    <script src="../../../../_static/documentation_options.js?v=a0ec8828"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/dsm';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post28+g7f5c4e0af" />
-    <meta name="docbuild:last-update" content="Jan 30, 2026"/>
+  <meta name="docsearch:version" content="1.26.0.post32+geb92ca1b8" />
+    <meta name="docbuild:last-update" content="Feb 08, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post28+g7f5c4e0af</p>
+    <p class="title logo__title">pyIEM 1.26.0.post32+geb92ca1b8</p>
   
 </a></div>
     
@@ -511,6 +511,21 @@
 
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_pformat</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a precipitation value.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;M&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;T&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;0.00&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fval</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;M&quot;</span>
+
+
 <div class="viewcode-block" id="DSMProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DSMProduct</span><span class="p">:</span>
@@ -683,6 +698,44 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;station </span><span class="si">{</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> has no tzinfo&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">dsm</span><span class="o">.</span><span class="n">tzlocalize</span><span class="p">(</span><span class="n">tzinfo</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DSMCollective.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMCollective.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the jabber message(s) for this product.&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">product_id_base</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;High: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Low: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Precip: </span><span class="si">{</span><span class="n">_pformat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pday&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">afos</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DSM</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product_id_base</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">afos</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">mess</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Daily Summary Message: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">htmlmess</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s1"> &lt;a href=&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> Daily Summary Message&lt;/a&gt;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="n">afos</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">mess</span><span class="p">,</span>
+                    <span class="n">htmlmess</span><span class="p">,</span>
+                    <span class="n">xtra</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
 
 <div class="viewcode-block" id="DSMCollective.sql">
