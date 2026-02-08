@@ -22,6 +22,24 @@ def create_entries(cursor):
     )
 
 
+def test_get_jabbers():
+    """Test the jabber message generation."""
+    prod = parser(get_test_file("DSM/DSM.txt"), utc(2015, 11, 26))
+    # Goose values to complete coverage on _pformat
+    prod.data[3].groupdict["pday"] = "-"
+    prod.data[4].groupdict["pday"] = None
+    prod.data[5].groupdict["pday"] = "T"
+    prod.data[6].groupdict["pday"] = "P6"
+    jmsgs = prod.get_jabbers("https://iem.local")
+    assert len(jmsgs) == 23
+    assert jmsgs[21][2]["channels"] == "DSMDCU"
+    ans = (
+        "KPBF Nov 26 Daily Summary Message: High: 63 Low: 45 Precip: 0.01 "
+        "https://iem.local?pid=201511270616-KZME-CDUS27-DSMPBF"
+    )
+    assert jmsgs[12][0] == ans
+
+
 def test_231005_kjef():
     """Test something found in the wild."""
     text = (

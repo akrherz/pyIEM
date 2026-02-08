@@ -15,6 +15,7 @@ All notable changes to this library are documented in this file.
 - Add `pyiem.reference.StationAttributes.HAS_PHOUR` constant.
 - Added crude bounds checking within `pyiem.observation` to prevent out of
   reasonable bounds data from going to the database.
+- Generate Jabber messages for Daily Summary Messages.
 - Increased LSR jabber message generation limit to 20 (#1154).
 - Support Storm Prediction Center updated `CIG[1-3]` thresholds (#1156).
 - Update CI testing to include python=3.14

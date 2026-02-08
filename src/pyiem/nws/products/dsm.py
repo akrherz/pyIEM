@@ -66,6 +66,21 @@ def compute_time(date, timestamp):
     )
 
 
+def _pformat(val: str | None) -> str:
+    """Format a precipitation value."""
+    if val is None:
+        return "M"
+    if val == "T":
+        return "T"
+    if val == "-":
+        return "0.00"
+    try:
+        fval = float(val) / 100.0
+        return f"{fval:.2f}"
+    except ValueError:
+        return "M"
+
+
 class DSMProduct:
     """Represents a single DSM."""
 
@@ -222,6 +237,41 @@ class DSMCollective(WMOProduct):
                 self.warnings.append(f"station {dsm.station} has no tzinfo")
                 continue
             dsm.tzlocalize(tzinfo)
+
+    def get_jabbers(self, uri, _=None):
+        """Generate the jabber message(s) for this product."""
+        res = []
+        product_id_base = (
+            f"{uri}?pid={self.get_product_id().rsplit('-', 1)[0]}"
+        )
+        for data in self.data:
+            msg = (
+                f"High: {data.groupdict.get('high', 'M')} "
+                f"Low: {data.groupdict.get('low', 'M')} "
+                f"Precip: {_pformat(data.groupdict.get('pday'))}"
+            )
+            afos = f"DSM{data.station[1:]}"
+            uri = f"{product_id_base}-{afos}"
+            mess = (
+                f"{data.station} {data.date:%b %-d} "
+                f"Daily Summary Message: {msg} {uri}"
+            )
+            htmlmess = (
+                f'{data.station} <a href="{uri}">'
+                f"{data.date:%b %-d} Daily Summary Message</a>: {msg}"
+            )
+            xtra = {
+                "twitter": msg,
+                "channels": afos,
+            }
+            res.append(
+                [
+                    mess,
+                    htmlmess,
+                    xtra,
+                ]
+            )
+        return res
 
     def sql(self, txn) -> list[bool]:
         """Do databasing."""
