@@ -32,7 +32,7 @@ def test_get_jabbers():
     prod.data[6].groupdict["pday"] = "P6"
     jmsgs = prod.get_jabbers("https://iem.local")
     assert len(jmsgs) == 23
-    assert jmsgs[21][2]["channels"] == "DSMDCU"
+    assert jmsgs[21][2]["channels"] == "DSMDCU,DSM..."
     ans = (
         "KPBF Nov 26 Daily Summary Message: High: 63 Low: 45 Precip: 0.01 "
         "https://iem.local?pid=201511270616-KZME-CDUS27-DSMPBF"

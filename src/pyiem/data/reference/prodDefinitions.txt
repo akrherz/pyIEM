@@ -53,7 +53,7 @@ DDO DDO
 DGT Drought Information
 DMO DMO
 DSA Tropical Disturbance Statement
-DSM DSM
+DSM Daily Summary Message
 DSW Dust Storm Warning
 ECD ECD
 EFP EFP
