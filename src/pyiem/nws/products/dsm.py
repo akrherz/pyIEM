@@ -262,7 +262,7 @@ class DSMCollective(WMOProduct):
             )
             xtra = {
                 "twitter": msg,
-                "channels": afos,
+                "channels": f"{afos},DSM...",
             }
             res.append(
                 [
