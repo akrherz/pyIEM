@@ -95,6 +95,7 @@ def test_tafpam():
     utcnow = utc(2025, 8, 7, 0)
     prod = real_tafparser(get_test_file("TAF/TAFPAM.txt"), utcnow=utcnow)
     taf = prod.data[0]
+    assert not taf.is_amendment
     assert taf.observation.ftype == 0
     assert taf.forecasts[0].ftype == 2
     assert taf.forecasts[1].ftype == 5
@@ -105,6 +106,7 @@ def test_gh1104_tafhky():
     utcnow = utc(2025, 8, 15, 0)
     prod = real_tafparser(get_test_file("TAF/TAFHKY.txt"), utcnow=utcnow)
     assert prod.data[0].observation.ftype == 0
+    assert prod.data[0].is_amendment
     answers = [2, 1, 1, 3, 1]
     for idx in range(5):
         assert prod.data[0].forecasts[idx].ftype == answers[idx]
