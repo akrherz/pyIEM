@@ -1,13 +1,10 @@
 """TAF Parsing"""
 
-# stdlib
 import re
 from datetime import datetime, timedelta
 
 from pyiem import reference
 from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
-
-# local
 from pyiem.nws.product import TextProduct
 
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
@@ -35,7 +32,7 @@ FTYPE = {
 }
 
 
-def add_forecast_info(fx, text):
+def add_forecast_info(fx: TAFForecast, text: str):
     """Common things."""
     m = WIND_RE.search(text)
     if m:
@@ -175,6 +172,7 @@ def parse_prod(prod: TextProduct, segtext: str) -> TAFReport:
         station=d["station"] if len(d["station"]) == 4 else f"K{d['station']}",
         valid=valid,
         product_id=prod.get_product_id(),
+        is_amendment="TAF AMD" in prod.unixtext,  # Believe OK for collectives
         observation=TAFForecast(
             valid=valid,
             raw=" ".join(lines[0].split()).strip(),
@@ -248,9 +246,14 @@ class TAFProduct(TextProduct):
 
             # Create an entry
             txn.execute(
-                "INSERT into taf(station, valid, product_id) "
-                "VALUES (%s, %s, %s) RETURNING id",
-                (taf.station, taf.valid, self.get_product_id()),
+                "INSERT into taf(station, valid, product_id, is_amendment) "
+                "VALUES (%s, %s, %s, %s) RETURNING id",
+                (
+                    taf.station,
+                    taf.valid,
+                    self.get_product_id(),
+                    taf.is_amendment,
+                ),
             )
             taf_id = txn.fetchone()["id"]
             # Insert obs / forecast
