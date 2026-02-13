@@ -18,6 +18,9 @@ All notable changes to this library are documented in this file.
 - Generate Jabber messages for Daily Summary Messages.
 - Increased LSR jabber message generation limit to 20 (#1154).
 - Support Storm Prediction Center updated `CIG[1-3]` thresholds (#1156).
+- Support Terminal Aerodome Forecast (TAF) designation of amendments with
+  addition to TAFReport data model and persistence to database
+  (akrherz/iem#1514).
 - Update CI testing to include python=3.14
 
 ### Bug Fixes
