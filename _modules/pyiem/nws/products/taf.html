@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.taf &#8212; pyIEM 1.26.0.post34+g87c49e238</title>
+    <title>pyiem.nws.products.taf &#8212; pyIEM 1.26.0.post38+g2714734f3</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=cc815ffd"></script>
+    <script src="../../../../_static/documentation_options.js?v=45328c9e"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/taf';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post34+g87c49e238" />
-    <meta name="docbuild:last-update" content="Feb 11, 2026"/>
+  <meta name="docsearch:version" content="1.26.0.post38+g2714734f3" />
+    <meta name="docbuild:last-update" content="Feb 13, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post34+g87c49e238</p>
+    <p class="title logo__title">pyIEM 1.26.0.post38+g2714734f3</p>
   
 </a></div>
     
@@ -439,14 +439,11 @@
   <h1>Source code for pyiem.nws.products.taf</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;TAF Parsing&quot;&quot;&quot;</span>
 
-<span class="c1"># stdlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">reference</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.taf</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCondition</span><span class="p">,</span> <span class="n">TAFForecast</span><span class="p">,</span> <span class="n">TAFReport</span><span class="p">,</span> <span class="n">WindShear</span>
-
-<span class="c1"># local</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 
 <span class="n">TEMPO_TIME</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;ddhh1&gt;\d</span><span class="si">{4}</span><span class="s2">)/(?P&lt;ddhh2&gt;\d</span><span class="si">{4}</span><span class="s2">) &quot;</span><span class="p">)</span>
@@ -476,7 +473,7 @@
 
 <div class="viewcode-block" id="add_forecast_info">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.add_forecast_info">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">add_forecast_info</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_forecast_info</span><span class="p">(</span><span class="n">fx</span><span class="p">:</span> <span class="n">TAFForecast</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Common things.&quot;&quot;&quot;</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">WIND_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
@@ -631,6 +628,7 @@
         <span class="n">station</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">4</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
         <span class="n">product_id</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+        <span class="n">is_amendment</span><span class="o">=</span><span class="s2">&quot;TAF AMD&quot;</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">,</span>  <span class="c1"># Believe OK for collectives</span>
         <span class="n">observation</span><span class="o">=</span><span class="n">TAFForecast</span><span class="p">(</span>
             <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
             <span class="n">raw</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
@@ -712,9 +710,14 @@
 
             <span class="c1"># Create an entry</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;INSERT into taf(station, valid, product_id) &quot;</span>
-                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
-                <span class="p">(</span><span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">taf</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()),</span>
+                <span class="s2">&quot;INSERT into taf(station, valid, product_id, is_amendment) &quot;</span>
+                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
+                    <span class="n">taf</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                    <span class="n">taf</span><span class="o">.</span><span class="n">is_amendment</span><span class="p">,</span>
+                <span class="p">),</span>
             <span class="p">)</span>
             <span class="n">taf_id</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
             <span class="c1"># Insert obs / forecast</span>
