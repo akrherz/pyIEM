@@ -14,6 +14,17 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_260217_d48_wrong_date():
+    """Test product that thought to have wrong date, but was OK."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSD48_day6.txt"),
+        utcnow=utc(2008, 3, 29, 9, 4),
+    )
+    collect = prod.get_outlookcollection(6)
+    assert collect.issue == utc(2008, 4, 3, 12)
+    assert collect.expire == utc(2008, 4, 4, 12)
+
+
 def test_gh1156_cig():
     """Test the newly minted CIG thresholds."""
     prod = parser(
