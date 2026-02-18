@@ -26,6 +26,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Address Pandas 4 deprecation with `copy` parameter in `astype`.
+- Fully delete previous `spc_outlook` entries in case of duplicate issuace.
 - Increase whitespace forgiveness of DSM parser.
 
 ## **1.26.0** (9 Dec 2025)

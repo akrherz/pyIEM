@@ -260,27 +260,27 @@ def sql_day_collect(prod, txn, day, collect):
         LOG.warning(
             "Removed %s rows from spc_outlook_geometries", txn.rowcount
         )
-        # Update the updated column
+        # Delete the old entry here as well
         txn.execute(
-            "UPDATE spc_outlook SET updated = now() WHERE id = %s",
+            "DELETE from spc_outlook WHERE id = %s",
             (outlook_id,),
         )
-    else:
-        txn.execute(
-            "INSERT into spc_outlook(issue, product_issue, expire, product_id,"
-            "outlook_type, day, cycle) VALUES (%s, %s, %s, %s, %s, %s, %s) "
-            "RETURNING id",
-            (
-                collect.issue,
-                prod.valid,
-                collect.expire,
-                prod.get_product_id(),
-                prod.outlook_type,
-                day,
-                -1 if prod.cycle < 0 else -2,  # Placeholder, if necessary
-            ),
-        )
-        outlook_id = txn.fetchone()["id"]
+        LOG.warning("Removed %s rows from spc_outlook", txn.rowcount)
+    txn.execute(
+        "INSERT into spc_outlook(issue, product_issue, expire, product_id,"
+        "outlook_type, day, cycle) VALUES (%s, %s, %s, %s, %s, %s, %s) "
+        "RETURNING id",
+        (
+            collect.issue,
+            prod.valid,
+            collect.expire,
+            prod.get_product_id(),
+            prod.outlook_type,
+            day,
+            -1 if prod.cycle < 0 else -2,  # Placeholder, if necessary
+        ),
+    )
+    outlook_id = txn.fetchone()["id"]
     # Now, are we the canonical outlook for this cycle?
     if prod.cycle > -1:
         _sql_cycle_canonical(prod, txn, day, collect, outlook_id)
