@@ -37,6 +37,15 @@ def prod():
     return res
 
 
+def test_gh1163_shef_var_wrong():
+    """Test that we can create SHEF variables correctly."""
+    utcnow = utc(2026, 2, 22, 18, 5)
+    prod = parser(get_test_file("SHEF/RR2LOT.txt"), utcnow=utcnow)
+    assert not prod.warnings
+    assert len(prod.data) == 8
+    assert prod.data[3].varname() == "SFQRZZZ"
+
+
 def test_251110_rr1lch_no_station():
     """Test how some GIGO is handled."""
     utcnow = utc(2025, 11, 10, 18)
