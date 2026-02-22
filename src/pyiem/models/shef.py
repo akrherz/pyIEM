@@ -97,6 +97,12 @@ class SHEFElement(BaseModel):
         if len(text) < 2:
             # Invalid, but after 9 months, I gave up, just consume it.
             text = f"{text}_"
+        # Reset the rest of codes to defaults in case new code is shorter
+        self.duration = None
+        self.type = "R"
+        self.source = "Z"
+        self.extremum = "Z"
+        self.probability = "Z"
         # Table 2: Override for some special codes
         text = shef_send_codes.get(text, text)
         length = len(text)
