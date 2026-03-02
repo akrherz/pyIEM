@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 from pyiem.nws.nwsli import NWSLI
-from pyiem.nws.products.vtec import check_dup_ps
+from pyiem.nws.products.vtec import _check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
 from pyiem.nws.products.wwp import parser as wwp_parser
 from pyiem.nws.ugc import UGC, UGCParseException, UGCProvider
@@ -41,6 +41,15 @@ def filter_warnings(ar, startswith="get_gid"):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
+
+
+def test_gh1167_ambiguous_warning():
+    """Test a refactoring that prevents this from being a false positive."""
+    prod = _vtecparser(
+        get_test_file("MWWAJK.txt"),
+        ugc_provider={},
+    )
+    assert not _check_dup_ps(prod)
 
 
 def test_gh1119_upgrade_wordsmithing():
@@ -556,13 +565,10 @@ def test_201120_missing_ugc(dbcursor):
     assert ans in prod.warnings
 
 
-@pytest.mark.parametrize("database", ["postgis"])
-def test_201120_dup(dbcursor):
-    """Test that a warning for duplicated VTEC is emitted."""
+def test_201120_dup():
+    """Updated test as this is a false positive now."""
     prod = vtecparser(get_test_file("CFW/CFWSJU.txt"))
-    prod.sql(dbcursor)
-    ans = "Segment has duplicated VTEC"
-    assert any(x.startswith(ans) for x in prod.warnings)
+    assert not prod.warnings
 
 
 def test_201116_1970vtec():
@@ -614,8 +620,6 @@ def test_old_windhail_tag():
 def test_dups():
     """We had a false positive :("""
     segment = FakeObject()
-    segment.tp = FakeObject()
-    segment.tp.valid = datetime.datetime(2017, 5, 24, 12, 0)
     segment.vtec = parse(
         (
             "/O.UPG.KTWC.FW.A.0008.170525T1800Z-170526T0300Z/\n"
@@ -624,8 +628,26 @@ def test_dups():
             "/O.NEW.KTWC.FW.W.0014.170526T1700Z-170527T0300Z/\n"
         )
     )
-    res = check_dup_ps(segment)
-    assert not res
+    prod = FakeObject()
+    prod.valid = utc(2017, 5, 24, 12)
+    prod.segments = [segment]
+    assert not _check_dup_ps(prod)
+
+
+def test_is_dup():
+    """Test that this triggers dups..."""
+    segment = FakeObject()
+    segment.vtec = parse(
+        (
+            "/O.NEW.KTWC.FW.W.0013.170525T1800Z-170526T0300Z/\n"
+            "/O.CON.KTWC.FW.W.0012.170525T1800Z-170526T0300Z/\n"
+        )
+    )
+    prod = FakeObject()
+    prod.warnings = []
+    prod.valid = utc(2017, 5, 24, 12)
+    prod.segments = [segment]
+    assert _check_dup_ps(prod)
 
 
 def test_200719_nomnd():

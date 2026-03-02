@@ -10,6 +10,7 @@ from pyiem.nws.products._vtec_util import (
     DEFAULT_EXPIRE_DELTA,
     _associate_vtec_year,
     _check_dueling_tropics,
+    _check_dup_ps,
     _check_unique_ugc,
     _check_vtec_polygon,
     _do_sql_vtec_can,
@@ -18,7 +19,6 @@ from pyiem.nws.products._vtec_util import (
     _do_sql_vtec_new,
     _load_database_status,
     _resent_match,
-    check_dup_ps,
     do_sql_hvtec,
 )
 
@@ -58,6 +58,7 @@ class VTECProduct(TextProduct):
         _check_unique_ugc(self)
         _check_vtec_polygon(self)
         _check_dueling_tropics(self)
+        _check_dup_ps(self)
 
     def sql(self, txn):
         """Persist to the database
@@ -75,11 +76,6 @@ class VTECProduct(TextProduct):
         dbdf["missed"] = True
 
         for segment in self.segments:
-            if len(segment.vtec) > 1 and check_dup_ps(segment):
-                self.warnings.append(
-                    "Segment has duplicated VTEC for a "
-                    "single phenomena / significance"
-                )
             if segment.giswkt and not segment.vtec:
                 if self.afos is not None and self.afos[:3] not in ["MWS"]:
                     self.warnings.append(
