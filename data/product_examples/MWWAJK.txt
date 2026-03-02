@@ -1,0 +1,442 @@
+071
+WHAK77 PAJK 021205
+MWWAJK
+
+URGENT - MARINE WEATHER MESSAGE
+National Weather Service Juneau AK
+305 AM AKST Mon Mar 2 2026
+
+PKZ032-022015-
+/O.EXT.PAJK.SC.Y.0081.260302T1500Z-260303T1500Z/
+/O.CAN.PAJK.SC.Y.0080.260303T0300Z-260303T1500Z/
+Northern Chatham Strait-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY NOW IN EFFECT UNTIL 6 AM AKST TUESDAY...
+
+* WHAT...North winds 10 to 25 kt with gusts up to 35 kt and seas
+  6 to 9 ft expected.
+
+* WHERE...Northern Chatham Strait.
+
+* WHEN...Until 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ011-021315-
+/O.CAN.PAJK.SC.Y.0080.000000T0000Z-260302T1500Z/
+Glacier Bay-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY IS CANCELLED...
+
+winds have diminished.
+
+$$
+
+PKZ012-022015-
+/O.CON.PAJK.GL.W.0050.000000T0000Z-260303T1500Z/
+/O.CON.PAJK.UP.W.0006.000000T0000Z-260302T2100Z/
+/O.CON.PAJK.UP.W.0007.260303T0600Z-260303T1500Z/
+Northern Lynn Canal-
+305 AM AKST Mon Mar 2 2026
+
+...GALE WARNING REMAINS IN EFFECT UNTIL 6 AM AKST TUESDAY...
+...HEAVY FREEZING SPRAY WARNING REMAINS IN EFFECT UNTIL NOON AKST
+TODAY...
+...HEAVY FREEZING SPRAY WARNING REMAINS IN EFFECT FROM 9 PM THIS
+EVENING TO 6 AM AKST TUESDAY...
+
+* WHAT...For the Gale Warning, northwest winds 30 to 40 kt with
+  gusts up to 55 kt and seas 7 to 10 ft. For the first Heavy
+  Freezing Spray Warning, heavy freezing spray at a rate of 2 cm
+  per hour or greater may rapidly accumulate on vessels. For the
+  second Heavy Freezing Spray Warning, heavy freezing spray at a
+  rate of 2 cm per hour or greater expected, and may rapidly
+  accumulate on vessels.
+
+* WHERE...Northern Lynn Canal.
+
+* WHEN...For the Gale Warning, until 6 AM AKST Tuesday. For the
+  first Heavy Freezing Spray Warning, until noon AKST today. For
+  the second Heavy Freezing Spray Warning, from 9 PM this
+  evening to 6 AM AKST Tuesday.
+
+* IMPACTS...Operating a vessel in heavy freezing spray is
+  hazardous. Freezing spray may render mechanical and electronic
+  components inoperative. Rapid ice accretion on decks and
+  superstructures may result in a catastrophic loss of
+  stability. Strong winds will cause hazardous seas which could
+  capsize or damage vessels and reduce visibility.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Mariners should prepare for dangerous accumulation of ice on
+their vessel. If possible, remain in port, avoid the warning area
+or conduct mitigation.
+
+Mariners should alter plans to avoid these hazardous conditions.
+Remain in port, seek safe harbor, alter course, and/or secure the
+vessel for hazardous conditions.
+
+&&
+
+$$
+
+PKZ022-644-663-022015-
+/O.CON.PAJK.SC.Y.0080.000000T0000Z-260303T0900Z/
+/O.CON.PAJK.GL.W.0051.260303T0900Z-260303T1500Z/
+Cross Sound-Cape Spencer to Cape Fairweather out to 15 NM-
+Cape Edgecumbe to Cape Spencer from 15 to 80 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL MIDNIGHT AKST
+TONIGHT...
+...GALE WARNING REMAINS IN EFFECT FROM MIDNIGHT TONIGHT TO 6 AM
+AKST TUESDAY...
+
+* WHAT...For the Small Craft Advisory, east winds 15 to 25 kt
+  with gusts up to 35 kt and seas 7 to 10 ft. For the Gale
+  Warning, east winds 25 to 35 kt with gusts up to 45 kt and
+  seas 6 to 11 ft expected.
+
+* WHERE...Cross Sound, Cape Spencer to Cape Fairweather out to
+  15 NM and Cape Edgecumbe to Cape Spencer from 15 to 80 NM.
+
+* WHEN...For the Small Craft Advisory, until midnight AKST
+  tonight. For the Gale Warning, from midnight tonight to 6 AM
+  AKST Tuesday.
+
+* IMPACTS...Strong winds will cause hazardous seas which could
+  capsize or damage vessels and reduce visibility.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Mariners should alter plans to avoid these hazardous conditions.
+Remain in port, seek safe harbor, alter course, and/or secure the
+vessel for hazardous conditions.
+
+&&
+
+$$
+
+PKZ643-664-022015-
+/O.CON.PAJK.SC.Y.0080.000000T0000Z-260303T0600Z/
+/O.CON.PAJK.GL.W.0051.260303T0600Z-260303T1500Z/
+Cape Edgecumbe to Cape Spencer out to 15 NM-
+Cape Spencer to Cape Fairweather from 15 to 85 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 9 PM AKST THIS
+EVENING...
+...GALE WARNING REMAINS IN EFFECT FROM 9 PM THIS EVENING TO 6 AM
+AKST TUESDAY...
+
+* WHAT...For the Small Craft Advisory, east winds 20 to 30 kt
+  with gusts up to 35 kt and seas 6 to 11 ft. For the Gale
+  Warning, east winds 25 to 35 kt with gusts up to 45 kt and
+  seas 8 to 13 ft expected.
+
+* WHERE...Cape Edgecumbe to Cape Spencer out to 15 NM and Cape
+  Spencer to Cape Fairweather from 15 to 85 NM.
+
+* WHEN...For the Small Craft Advisory, until 9 PM AKST this
+  evening. For the Gale Warning, from 9 PM this evening to 6 AM
+  AKST Tuesday.
+
+* IMPACTS...Strong winds will cause hazardous seas which could
+  capsize or damage vessels and reduce visibility.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Mariners should alter plans to avoid these hazardous conditions.
+Remain in port, seek safe harbor, alter course, and/or secure the
+vessel for hazardous conditions.
+
+&&
+
+$$
+
+PKZ013-022015-
+/O.CON.PAJK.GL.W.0050.000000T0000Z-260303T1500Z/
+Southern Lynn Canal-
+305 AM AKST Mon Mar 2 2026
+
+...GALE WARNING REMAINS IN EFFECT UNTIL 6 AM AKST TUESDAY...
+
+* WHAT...North winds 30 to 40 kt with gusts up to 55 kt and seas
+  6 to 11 ft.
+
+* WHERE...Southern Lynn Canal.
+
+* WHEN...Until 6 AM AKST Tuesday.
+
+* IMPACTS...Strong winds will cause hazardous seas which could
+  capsize or damage vessels and reduce visibility.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Mariners should alter plans to avoid these hazardous conditions.
+Remain in port, seek safe harbor, alter course, and/or secure the
+vessel for hazardous conditions.
+
+&&
+
+$$
+
+PKZ662-022015-
+/O.CON.PAJK.SC.Y.0080.000000T0000Z-260302T1500Z/
+/O.CON.PAJK.SC.Y.0082.260303T0600Z-260303T1500Z/
+Cape Decision to Cape Edgecumbe from 15 to 80 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST EARLY
+THIS MORNING...
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT FROM 9 PM THIS EVENING
+TO 6 AM AKST TUESDAY...
+
+* WHAT...For the first Small Craft Advisory, seas 6 to 8 ft. For
+  the second Small Craft Advisory, southeast winds 15 to 25 kt
+  with gusts up to 30 kt and seas 6 to 9 ft expected.
+
+* WHERE...Cape Decision to Cape Edgecumbe from 15 to 80 NM.
+
+* WHEN...For the first Small Craft Advisory, until 6 AM AKST
+  early this morning. For the second Small Craft Advisory, from
+  9 PM this evening to 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ661-022015-
+/O.CON.PAJK.SC.Y.0081.000000T0000Z-260302T1500Z/
+/O.CON.PAJK.SC.Y.0082.260303T0900Z-260303T1500Z/
+Dixon Entrance to Cape Decision from 15 to 90 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST EARLY
+THIS MORNING...
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT FROM MIDNIGHT TONIGHT
+TO 6 AM AKST TUESDAY...
+
+* WHAT...For the first Small Craft Advisory, southwest winds 15
+  to 25 kt with gusts up to 25 kt and seas 7 to 9 ft. For the
+  second Small Craft Advisory, southeast winds 20 to 25 kt with
+  gusts up to 30 kt and seas 6 to 9 ft expected.
+
+* WHERE...Dixon Entrance to Cape Decision from 15 to 90 NM.
+
+* WHEN...For the first Small Craft Advisory, until 6 AM AKST
+  early this morning. For the second Small Craft Advisory, from
+  midnight tonight to 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ641-022015-
+/O.CON.PAJK.SC.Y.0081.000000T0000Z-260302T1500Z/
+/O.CON.PAJK.SC.Y.0082.260303T1200Z-260303T1500Z/
+Dixon Entrance to Cape Decision out to 15 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST EARLY
+THIS MORNING...
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT FROM 3 AM TO 6 AM AKST
+TUESDAY...
+
+* WHAT...For the first Small Craft Advisory, seas 6 to 8 ft. For
+  the second Small Craft Advisory, southeast winds 15 to 25 kt
+  with gusts up to 30 kt expected.
+
+* WHERE...Dixon Entrance to Cape Decision out to 15 NM.
+
+* WHEN...For the first Small Craft Advisory, until 6 AM AKST
+  early this morning. For the second Small Craft Advisory, from
+  3 AM to 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ031-671-022015-
+/O.CON.PAJK.SC.Y.0080.000000T0000Z-260303T1500Z/
+Stephens Passage-Cape Fairweather to Icy Cape from 15 to 80 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST
+TUESDAY...
+
+* WHAT...Northeast winds 15 to 25 kt with gusts up to 30 kt and
+  seas 6 to 9 ft.
+
+* WHERE...Stephens Passage and Cape Fairweather to Icy Cape from
+  15 to 80 NM.
+
+* WHEN...Until 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ651-022015-
+/O.CON.PAJK.SC.Y.0079.000000T0000Z-260303T1500Z/
+Cape Fairweather to Icy Cape out to 15 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST
+TUESDAY...
+
+* WHAT...Northeast winds 15 to 25 kt with gusts up to 35 kt.
+
+* WHERE...Cape Fairweather to Icy Cape out to 15 NM.
+
+* WHEN...Until 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ021-053-022015-
+/O.CON.PAJK.SC.Y.0081.260302T1500Z-260303T1500Z/
+Icy Strait-Yakutat Bay-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 AM AKST
+TUESDAY...
+
+* WHAT...Northeast winds 15 to 25 kt with gusts up to 40 kt
+  expected.
+
+* WHERE...Icy Strait and Yakutat Bay.
+
+* WHEN...Until 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ642-022015-
+/O.CON.PAJK.SC.Y.0082.260303T0600Z-260303T1500Z/
+Cape Decision to Cape Edgecumbe out to 15 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT FROM 9 PM THIS EVENING
+TO 6 AM AKST TUESDAY...
+
+* WHAT...East winds 15 to 25 kt with gusts up to 30 kt expected.
+
+* WHERE...Cape Decision to Cape Edgecumbe out to 15 NM.
+
+* WHEN...From 9 PM this evening to 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PKZ033-034-036-672-022015-
+/O.CON.PAJK.SC.Y.0082.260303T0900Z-260303T1500Z/
+Southern Chatham Strait-Frederick Sound-Clarence Strait-
+Icy Cape to Cape Suckling from 15 to 80 NM-
+305 AM AKST Mon Mar 2 2026
+
+...SMALL CRAFT ADVISORY REMAINS IN EFFECT FROM MIDNIGHT TONIGHT
+TO 6 AM AKST TUESDAY...
+
+* WHAT...East winds 15 to 25 kt with gusts up to 30 kt expected.
+
+* WHERE...Southern Chatham Strait, Frederick Sound, Clarence
+  Strait and Icy Cape to Cape Suckling from 15 to 80 NM.
+
+* WHEN...From midnight tonight to 6 AM AKST Tuesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+* ADDITIONAL DETAILS...
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+

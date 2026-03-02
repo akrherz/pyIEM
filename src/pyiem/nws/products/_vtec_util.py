@@ -248,8 +248,8 @@ def _load_database_status(txn, prod):
     return pd.DataFrame(rows)
 
 
-def check_dup_ps(segment):
-    """Does this TextProductSegment have duplicated VTEC
+def _check_dup_ps(prod: TextProduct) -> bool:
+    """Evaluate product for duplicated VTEC.
 
     NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
     phenomena and significance that are reused. In practice, this error is
@@ -258,31 +258,37 @@ def check_dup_ps(segment):
     future is OK and common
 
     Returns:
-      bool
+      bool if any duplicates were found.
     """
-    combos = {}
-    for thisvtec in segment.vtec:
-        if thisvtec.begints is None or thisvtec.endts is None:
-            # The logic here is too difficult for now, so we ignore
-            continue
-        key = thisvtec.s2()
-        val = combos.setdefault(key, [])
-        # we can't use vtec.endts in this situation
-        endts = (
-            segment.tp.valid
-            if thisvtec.status in ["UPG", "CAN"]
-            else thisvtec.endts
-        )
-        val.append([thisvtec.begints, endts])
+    found_a_duplicate = False
+    for i, segment in enumerate(prod.segments):
+        combos = {}
+        for thisvtec in segment.vtec:
+            if (
+                thisvtec.begints is None
+                or thisvtec.endts is None
+                or thisvtec.action == "CAN"
+            ):
+                # The logic here is too difficult for now, so we ignore
+                continue
+            key = thisvtec.s2()
+            val = combos.setdefault(key, [])
+            # we can't use vtec.endts in this situation
+            endts = prod.valid if thisvtec.action == "UPG" else thisvtec.endts
+            val.append([thisvtec.begints, endts])
 
-    for combo in combos.values():
-        if len(combo) == 1:
-            continue
-        for one, two in itertools.permutations(combo, 2):
-            # We check for overlap
-            if one[0] >= two[0] and one[0] < two[1]:
-                return True
-    return False
+        for key, combo in combos.items():
+            if len(combo) == 1:
+                continue
+            for one, two in itertools.permutations(combo, 2):
+                # We check for overlap
+                if one[0] >= two[0] and one[0] < two[1]:
+                    prod.warnings.append(
+                        f"Segment {i + 1} {key} has overlapping VTEC for "
+                        f"{one[0]} and {two[0]} to {two[1]}"
+                    )
+                    found_a_duplicate = True
+    return found_a_duplicate
 
 
 def do_sql_hvtec(txn, segment):
