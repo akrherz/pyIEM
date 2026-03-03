@@ -14,6 +14,16 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_260303_bad_linestring():
+    """Test a false positive."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSDY3_CIG1.txt"),
+        utcnow=utc(2026, 3, 3, 20),
+    )
+    outlook = prod.get_outlook("ANY SEVERE", "CIG1", 3)
+    assert abs(outlook.geometry.area - 32.9173) < 0.01
+
+
 def test_260217_d48_wrong_date():
     """Test product that thought to have wrong date, but was OK."""
     prod = parser(
