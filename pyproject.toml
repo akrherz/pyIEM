@@ -1,79 +1,96 @@
 [build-system]
-requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
+requires = [ "setuptools>=64", "setuptools-scm>=8" ]
 
 [project]
-dependencies = [
-    "affine",
-    "defusedxml",
-    "docutils",
-    "geopandas",
-    "httpx",
-    "jinja2",
-    "matplotlib>=3.5.0",
-    "metar",
-    "metpy",
-    "netCDF4",
-    "numpy",
-    "pandas",
-    "paste",
-    "pillow",
-    "pyarrow",
-    "pydantic",
-    "pygrib",
-    "pymemcache",
-    "pyogrio",
-    "pyproj",
-    "psycopg",
-    "rasterio",
-    "rasterstats",
-    "scipy",
-    "shapely",
-    # since psycopg 3 support requires it
-    "sqlalchemy>=2",
-    "xarray",
-]
-description = "Collection of things that may help with processing weather data."
-dynamic = ["version"]
-keywords = ["meteorology"]
-license = "MIT"
 name = "pyiem"
+description = "Collection of things that may help with processing weather data."
 readme = "README.md"
-
-[project.urls]
-"homepage" = "https://github.com/akrherz/pyIEM"
-
-[tool.pytest.ini_options]
-filterwarnings = [
-    "error::pandas.errors.Pandas4Warning",
-    "ignore:numpy.ndarray size changed:RuntimeWarning",
-    "ignore:'cgi' is deprecated and slated for removal:DeprecationWarning",
+keywords = [ "meteorology" ]
+license = "MIT"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
-
-[tool.ruff]
-line-length = 79
-target-version = "py311"
-
-[tool.ruff.lint]
-preview = true
-select = [
-    "B",  # bugbear
-    #  "D",  # pydocstyle
-    "E",  # errors
-    "ERA",  # commented out code
-    "F",  # format
-    "I",  # imports
-    "PERF",  # performance
-    "PLR0203",  # staticmethod
-    "RET",  # return
-    "T",  # types
+dynamic = [ "version" ]
+dependencies = [
+  "affine",
+  "defusedxml",
+  "docutils",
+  "geopandas",
+  "httpx",
+  "jinja2",
+  "matplotlib>=3.5",
+  "metar",
+  "metpy",
+  "netcdf4",
+  "numpy",
+  "pandas",
+  "paste",
+  "pillow",
+  "psycopg",
+  "pyarrow",
+  "pydantic",
+  "pygrib",
+  "pymemcache",
+  "pyogrio",
+  "pyproj",
+  "rasterio",
+  "rasterstats",
+  "scipy",
+  "shapely",
+  # since psycopg 3 support requires it
+  "sqlalchemy>=2",
+  "xarray",
 ]
-ignore = [
-    "PERF203",  # try,catch in loop
-]
+urls."homepage" = "https://github.com/akrherz/pyIEM"
 
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
+[tool.setuptools]
+include-package-data = true
+package-dir."" = "src"
+packages.find.where = [ "src" ]
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 79
+lint.select = [
+  "B",       # bugbear
+  # "D",  # pydocstyle
+  "E",       # errors
+  "ERA",     # commented out code
+  "F",       # format
+  "I",       # imports
+  "PERF",    # performance
+  "PLR0203", # staticmethod
+  "RET",     # return
+  "T",       # types
+]
+lint.ignore = [
+  "PERF203", # try,catch in loop
+]
+lint.pydocstyle.convention = "numpy"
+lint.preview = true
+
+[tool.flake8]
+ignore = [ "W503", "E203" ]
+
+[tool.pytest]
+ini_options.log_level = "INFO"
+ini_options.markers = [
+  "mpl_image_compare",
+]
+ini_options.filterwarnings = [
+  "error::pandas.errors.Pandas4Warning",
+  "ignore:numpy.ndarray size changed:RuntimeWarning",
+  "ignore:'cgi' is deprecated and slated for removal:DeprecationWarning",
+]
+
+[tool.pycodestyle]
+ignore = [ "W503", "E203" ]
