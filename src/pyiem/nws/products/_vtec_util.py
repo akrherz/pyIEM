@@ -314,8 +314,14 @@ def do_sql_hvtec(txn, segment):
         if bsu.startswith("IMPACT") and bsu.find("...") > -1:
             impact_text = bullet.split("...", 1)[1].strip()
     txn.execute(
-        "INSERT into riverpro(nwsli, stage_text, flood_text, forecast_text, "
-        "impact_text, severity) VALUES (%s,%s,%s,%s,%s,%s)",
+        """
+    INSERT into riverpro(nwsli, stage_text, flood_text, forecast_text,
+    impact_text, severity) VALUES (%s,%s,%s,%s,%s,%s)
+    ON CONFLICT (nwsli) DO UPDATE SET stage_text = EXCLUDED.stage_text,
+    flood_text = EXCLUDED.flood_text, forecast_text = EXCLUDED.forecast_text,
+    impact_text = EXCLUDED.impact_text, severity = EXCLUDED.severity
+    WHERE riverpro.nwsli = EXCLUDED.nwsli
+    """,
         (
             nwsli,
             stage_text,
