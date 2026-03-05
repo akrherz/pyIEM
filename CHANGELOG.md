@@ -11,6 +11,9 @@ All notable changes to this library are documented in this file.
 - Refactor duplicated VTEC check, denote `_check_dup_ps` is internal API, and
   fix a false positive and fix a bug. No data quality impacts (#1167).
 - Require python 3.11+
+- Update TAF storage to include an `issue` and `expire` timestamp, which
+  explicitly stores the time domain.  This change modified the storage of
+  the observation to not include these timestamp values.
 
 ### New Features
 

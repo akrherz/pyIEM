@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Annotated, List, Optional
 
 # third party
-from pydantic import BaseModel, Field
+from pydantic import AwareDatetime, BaseModel, Field
 
 
 class WindShear(BaseModel):
@@ -43,6 +43,8 @@ class TAFReport(BaseModel):
 
     station: Annotated[str, Field(min_length=4, max_length=4)]
     valid: datetime
+    issue: Annotated[AwareDatetime | None, Field(description="Start")] = None
+    expire: Annotated[AwareDatetime | None, Field(description="End")] = None
     product_id: Annotated[str, Field(min_length=28, max_length=35)]
     observation: TAFForecast
     is_amendment: Annotated[bool, Field(description="Is this amended?")]
