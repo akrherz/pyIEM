@@ -1000,6 +1000,8 @@ def test_170403_mixedlatlon(dbcursor):
     """Check our parsing of mixed case Lat...Lon"""
     prod = vtecparser(get_test_file("mIxEd_CaSe/FLWLCH.txt"))
     prod.sql(dbcursor)
+    # Run it twice, to double check the riverpro on conflict
+    prod.sql(dbcursor)
     ans = (
         "SRID=4326;MULTIPOLYGON (((-93.29 30.30, -93.14 30.38, "
         "-93.03 30.31, -93.08 30.25, -93.21 30.19, -93.29 30.30)))"
