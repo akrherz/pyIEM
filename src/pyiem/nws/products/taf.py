@@ -10,7 +10,8 @@ from pyiem.nws.product import TextProduct
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
 TEMPO_TIME_LEGACY = re.compile(r"^(?P<hrhr2>\d{4}) ")
 STID_VALID = re.compile(
-    r"^(?P<station>[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P<ddhhmi>\d{6})Z? ",
+    r"^(?P<station>[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P<ddhhmi>\d{6})Z?\s+"
+    r"((?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}))?",
     re.MULTILINE,
 )
 WIND_RE = re.compile(r"(?P<dir>\d{3})(?P<sknt>\d{2,3})G?(?P<gust>\d{2,3})?KT")
@@ -168,9 +169,17 @@ def parse_prod(prod: TextProduct, segtext: str) -> TAFReport:
         lines.append(accum)
     # Deal with the observation
     valid = ddhhmi2valid(prod, d["ddhhmi"], prod.valid)
+    issue = None
+    expire = None
+    if d["ddhh1"] is not None:
+        issue = ddhhmi2valid(prod, f"{d['ddhh1']}00", prod.valid)
+    if d["ddhh2"] is not None:
+        expire = ddhhmi2valid(prod, f"{d['ddhh2']}00", prod.valid)
     data = TAFReport(
         station=d["station"] if len(d["station"]) == 4 else f"K{d['station']}",
         valid=valid,
+        issue=issue,
+        expire=expire,
         product_id=prod.get_product_id(),
         is_amendment="TAF AMD" in prod.unixtext,  # Believe OK for collectives
         observation=TAFForecast(
@@ -246,11 +255,14 @@ class TAFProduct(TextProduct):
 
             # Create an entry
             txn.execute(
-                "INSERT into taf(station, valid, product_id, is_amendment) "
-                "VALUES (%s, %s, %s, %s) RETURNING id",
+                "INSERT into taf(station, valid, issue, expire, "
+                "product_id, is_amendment) "
+                "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
                 (
                     taf.station,
                     taf.valid,
+                    taf.issue,
+                    taf.expire,
                     self.get_product_id(),
                     taf.is_amendment,
                 ),

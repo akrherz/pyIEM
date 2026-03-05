@@ -72,7 +72,7 @@ def test_250812_tafgrr():
     """Test that the PROB gets properly parsed here."""
     utcnow = utc(2025, 8, 12, 18)
     prod = real_tafparser(get_test_file("TAF/TAFGRR.txt"), utcnow=utcnow)
-    ans = "1219/1318 23009KT P6SM VCTS SCT040CB"
+    ans = "23009KT P6SM VCTS SCT040CB"
     taf = prod.data[0]
     assert taf.observation.raw == ans
     assert taf.forecasts[0].visibility == 2
@@ -86,7 +86,7 @@ def test_tafjxn():
     utcnow = utc(2025, 8, 4, 0)
     prod = real_tafparser(get_test_file("TAF/TAFJXN.txt"), utcnow=utcnow)
     assert prod.data[0].forecasts
-    ans = "0318/0418 29013G21KT P6SM BKN025"
+    ans = "29013G21KT P6SM BKN025"
     assert prod.data[0].observation.raw == ans
 
 
@@ -166,6 +166,8 @@ def test_jan1():
     """Test when TAF crosses 1 Jan."""
     utcnow = utc(2020, 12, 31, 17, 21)
     prod = tafparser(get_test_file("TAF/TAFDSM.txt"), utcnow=utcnow)
+    assert prod.data[0].issue == utc(2020, 12, 31, 18)
+    assert prod.data[0].expire == utc(2021, 1, 1, 18)
     assert prod.data[0].forecasts[2].valid == utc(2021, 1, 1, 9)
 
 
