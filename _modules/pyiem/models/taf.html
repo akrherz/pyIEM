@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.models.taf &#8212; pyIEM 1.26.0.post55+g6572ec781</title>
+    <title>pyiem.models.taf &#8212; pyIEM 1.26.0.post58+g90676dd88</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=dec97c2c"></script>
+    <script src="../../../_static/documentation_options.js?v=b88df117"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/models/taf';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post55+g6572ec781" />
+  <meta name="docsearch:version" content="1.26.0.post58+g90676dd88" />
     <meta name="docbuild:last-update" content="Mar 05, 2026"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post55+g6572ec781</p>
+    <p class="title logo__title">pyIEM 1.26.0.post58+g90676dd88</p>
   
 </a></div>
     
@@ -440,7 +440,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="c1"># third party</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AwareDatetime</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 
 
 <div class="viewcode-block" id="WindShear">
@@ -490,6 +490,8 @@
 
     <span class="n">station</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">)]</span>
     <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">issue</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AwareDatetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">expire</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AwareDatetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;End&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">product_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">35</span><span class="p">)]</span>
     <span class="n">observation</span><span class="p">:</span> <span class="n">TAFForecast</span>
     <span class="n">is_amendment</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Is this amended?&quot;</span><span class="p">)]</span>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.models.taf module &#8212; pyIEM 1.26.0.post55+g6572ec781</title>
+    <title>pyiem.models.taf module &#8212; pyIEM 1.26.0.post58+g90676dd88</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=dec97c2c"></script>
+    <script src="../_static/documentation_options.js?v=b88df117"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.models.taf';</script>
@@ -49,7 +49,7 @@
     <link rel="prev" title="pyiem.models.shef module" href="pyiem.models.shef.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post55+g6572ec781" />
+  <meta name="docsearch:version" content="1.26.0.post58+g90676dd88" />
     <meta name="docbuild:last-update" content="Mar 05, 2026"/>
   </head>
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post55+g6572ec781</p>
+    <p class="title logo__title">pyIEM 1.26.0.post58+g90676dd88</p>
   
 </a></div>
     
@@ -620,7 +620,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.models.taf.TAFReport">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">TAFReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_amendment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forecasts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/models/taf.html#TAFReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.taf.TAFReport" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">TAFReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_amendment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forecasts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/models/taf.html#TAFReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.taf.TAFReport" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>A TAF Report consisting of forecasts.</p>
 <dl class="field-list simple">
@@ -628,6 +628,8 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>station</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.14)"><em>Annotated</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>MinLen</em><em>(</em><em>min_length=4</em><em>)</em><em>, </em><em>MaxLen</em><em>(</em><em>max_length=4</em><em>)</em><em>]</em>)</p></li>
 <li><p><strong>valid</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>issue</strong> (<em>AwareDatetime</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>expire</strong> (<em>AwareDatetime</em><em> | </em><em>None</em>)</p></li>
 <li><p><strong>product_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.14)"><em>Annotated</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>MinLen</em><em>(</em><em>min_length=28</em><em>)</em><em>, </em><em>MaxLen</em><em>(</em><em>max_length=35</em><em>)</em><em>]</em>)</p></li>
 <li><p><strong>observation</strong> (<a class="reference internal" href="#pyiem.models.taf.TAFForecast" title="pyiem.models.taf.TAFForecast"><em>TAFForecast</em></a>)</p></li>
 <li><p><strong>is_amendment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p></li>
@@ -643,6 +645,16 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.valid">
 <span class="sig-name descname"><span class="pre">valid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.taf.TAFReport.valid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.issue">
+<span class="sig-name descname"><span class="pre">issue</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.14)"><span class="pre">Annotated</span></a><span class="p"><span class="pre">[</span></span><span class="pre">AwareDatetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">annotation</span></span><span class="o"><span class="pre">=</span></span><span class="pre">NoneType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="s"><span class="pre">'Start'</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#pyiem.models.taf.TAFReport.issue" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.expire">
+<span class="sig-name descname"><span class="pre">expire</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.14)"><span class="pre">Annotated</span></a><span class="p"><span class="pre">[</span></span><span class="pre">AwareDatetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">annotation</span></span><span class="o"><span class="pre">=</span></span><span class="pre">NoneType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="s"><span class="pre">'End'</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#pyiem.models.taf.TAFReport.expire" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -753,6 +765,8 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport"><code class="docutils literal notranslate"><span class="pre">TAFReport</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.station"><code class="docutils literal notranslate"><span class="pre">TAFReport.station</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.valid"><code class="docutils literal notranslate"><span class="pre">TAFReport.valid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.issue"><code class="docutils literal notranslate"><span class="pre">TAFReport.issue</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.expire"><code class="docutils literal notranslate"><span class="pre">TAFReport.expire</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.product_id"><code class="docutils literal notranslate"><span class="pre">TAFReport.product_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.observation"><code class="docutils literal notranslate"><span class="pre">TAFReport.observation</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.taf.TAFReport.is_amendment"><code class="docutils literal notranslate"><span class="pre">TAFReport.is_amendment</span></code></a></li>

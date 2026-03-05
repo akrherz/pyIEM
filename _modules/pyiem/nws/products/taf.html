@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.taf &#8212; pyIEM 1.26.0.post55+g6572ec781</title>
+    <title>pyiem.nws.products.taf &#8212; pyIEM 1.26.0.post58+g90676dd88</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=dec97c2c"></script>
+    <script src="../../../../_static/documentation_options.js?v=b88df117"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/taf';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post55+g6572ec781" />
+  <meta name="docsearch:version" content="1.26.0.post58+g90676dd88" />
     <meta name="docbuild:last-update" content="Mar 05, 2026"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post55+g6572ec781</p>
+    <p class="title logo__title">pyIEM 1.26.0.post58+g90676dd88</p>
   
 </a></div>
     
@@ -449,7 +449,8 @@
 <span class="n">TEMPO_TIME</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;ddhh1&gt;\d</span><span class="si">{4}</span><span class="s2">)/(?P&lt;ddhh2&gt;\d</span><span class="si">{4}</span><span class="s2">) &quot;</span><span class="p">)</span>
 <span class="n">TEMPO_TIME_LEGACY</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;hrhr2&gt;\d</span><span class="si">{4}</span><span class="s2">) &quot;</span><span class="p">)</span>
 <span class="n">STID_VALID</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;station&gt;[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P&lt;ddhhmi&gt;\d</span><span class="si">{6}</span><span class="s2">)Z? &quot;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;station&gt;[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P&lt;ddhhmi&gt;\d</span><span class="si">{6}</span><span class="s2">)Z?\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;((?P&lt;ddhh1&gt;\d</span><span class="si">{4}</span><span class="s2">)/(?P&lt;ddhh2&gt;\d</span><span class="si">{4}</span><span class="s2">))?&quot;</span><span class="p">,</span>
     <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">WIND_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;dir&gt;\d</span><span class="si">{3}</span><span class="s2">)(?P&lt;sknt&gt;\d{2,3})G?(?P&lt;gust&gt;\d{2,3})?KT&quot;</span><span class="p">)</span>
@@ -624,9 +625,17 @@
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accum</span><span class="p">)</span>
     <span class="c1"># Deal with the observation</span>
     <span class="n">valid</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhhmi&quot;</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="n">issue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">expire</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhh1&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">issue</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ddhh1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhh2&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">expire</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ddhh2&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">TAFReport</span><span class="p">(</span>
         <span class="n">station</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">4</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
+        <span class="n">issue</span><span class="o">=</span><span class="n">issue</span><span class="p">,</span>
+        <span class="n">expire</span><span class="o">=</span><span class="n">expire</span><span class="p">,</span>
         <span class="n">product_id</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
         <span class="n">is_amendment</span><span class="o">=</span><span class="s2">&quot;TAF AMD&quot;</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">,</span>  <span class="c1"># Believe OK for collectives</span>
         <span class="n">observation</span><span class="o">=</span><span class="n">TAFForecast</span><span class="p">(</span>
@@ -710,11 +719,14 @@
 
             <span class="c1"># Create an entry</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;INSERT into taf(station, valid, product_id, is_amendment) &quot;</span>
-                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;INSERT into taf(station, valid, issue, expire, &quot;</span>
+                <span class="s2">&quot;product_id, is_amendment) &quot;</span>
+                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
                     <span class="n">taf</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+                    <span class="n">taf</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span>
+                    <span class="n">taf</span><span class="o">.</span><span class="n">expire</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
                     <span class="n">taf</span><span class="o">.</span><span class="n">is_amendment</span><span class="p">,</span>
                 <span class="p">),</span>
