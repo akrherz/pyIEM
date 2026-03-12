@@ -47,7 +47,7 @@ dependencies = [
   "sqlalchemy>=2",
   "xarray",
 ]
-urls."homepage" = "https://github.com/akrherz/pyIEM"
+urls.homepage = "https://github.com/akrherz/pyIEM"
 
 [tool.setuptools]
 include-package-data = true
