@@ -36,6 +36,8 @@ All notable changes to this library are documented in this file.
 - Fix SHEF ingest variables when length variable decreases (#1163).
 - Fully delete previous `spc_outlook` entries in case of duplicate issuace.
 - Increase whitespace forgiveness of DSM parser.
+- Validate inbound CGI parameters more rigorously for `iemapp()` when a
+  schema is provided (#1174).
 
 ## **1.26.0** (9 Dec 2025)
 

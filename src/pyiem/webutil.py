@@ -512,11 +512,16 @@ def iemapp(**kwargs):
                     yield _handle_help(start_response, **kwargs)
                     return
                 if "schema" in kwargs:
+                    # Remove any form keys that are not contained in the
+                    # schema, but first we debracket keys with []
+                    form = {
+                        k: v
+                        for k, v in _debracket(form).items()
+                        if k in kwargs["schema"].model_fields
+                    }
                     # Retain a reference to the Schema instance as it may have
                     # private / computed attributes that are needed
-                    environ["_cgimodel_schema"] = kwargs["schema"](
-                        **_debracket(form)
-                    )
+                    environ["_cgimodel_schema"] = kwargs["schema"](**form)
                     form = environ["_cgimodel_schema"].model_dump()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")

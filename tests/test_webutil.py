@@ -2,7 +2,7 @@
 
 import random
 from datetime import datetime
-from typing import Optional, Union
+from typing import Annotated, Optional, Union
 from zoneinfo import ZoneInfo
 
 import mock
@@ -65,6 +65,24 @@ def test_allowed_as_list():
     assert resp.status_code == 200
     resp = c.get("/?q=1&f=2&f=1")
     assert resp.status_code == 422
+
+
+def test_gh1174_self():
+    """Test what happens with CGI self= is processed."""
+
+    class MyModel(CGIModel):
+        bogus: Annotated[str, Field(description="bah")] = "bah"
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ.get("unused", "OK")
+
+    c = Client(application)
+    resp = c.get("/?self=1&unused=1")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
 
 
 def test_iemweb_datetime_type():
