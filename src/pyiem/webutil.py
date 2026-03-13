@@ -548,7 +548,7 @@ def iemapp(**kwargs):
                 res = _handle_exp(str(exp), routine=True, code=status_code)
             except BadWebRequest as exp:
                 status_code = 422
-                log_request(environ, multiplier=10)
+                log_request(environ, multiplier=2)
                 res = _handle_exp(str(exp), code=status_code)
             except NewDatabaseConnectionFailure as exp:
                 status_code = 503
