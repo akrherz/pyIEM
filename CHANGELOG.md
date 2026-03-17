@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Add opinionated `rw` parameter to `pyiem.database` to allow for more
+  control over when a `read-write` connection is truly required see (#1178).
 - Clarify in CI environment that ``fiona`` is not an actual dependency.
 - Refactor duplicated VTEC check, denote `_check_dup_ps` is internal API, and
   fix a false positive and fix a bug. No data quality impacts (#1167).

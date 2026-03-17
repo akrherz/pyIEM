@@ -55,12 +55,24 @@ def get_dbconnstr(name, **kwargs) -> str:
         host (str): the database host to connect to
         port (int): the database port to connect to
         connect_timeout (int): Connection timeout in seconds, default 30.
+        rw (bool | None): Require that the connected cluster can accept
+          write requests.  The default is `None`, which some opinionated
+          logic happens.  If `nobody` is computed, then read-only is assumed.
     Returns:
       str
     """
     user = kwargs.get("user")
+    # RW1. Default to requiring a read-write connection
+    # RW4. Covers the case of rw=True
+    target_session_attrs = "read-write"
     if user is None:
         user = USERNAME_MAPPER.get(getpass.getuser(), getpass.getuser())
+        # RW2. If we compute nobody and no rw specified, any will work
+        if user == "nobody" and kwargs.get("rw") is None:
+            target_session_attrs = "any"
+    # RW3. If rw is explicitly False, then any will work
+    if kwargs.get("rw") is False:
+        target_session_attrs = "any"
     host = kwargs.get("host")
     if host is None:
         host = f"iemdb-{name}.local"
@@ -73,6 +85,7 @@ def get_dbconnstr(name, **kwargs) -> str:
         f"postgresql://{user}@{host}:{port}/{name}?"
         f"connect_timeout={kwargs.get('connect_timeout', 30)}&"
         f"gssencmode={kwargs.get('gssencmode', 'disable')}&"
+        f"target_session_attrs={target_session_attrs}"
     )
 
 
@@ -91,6 +104,9 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
+      rw (bool | None): Require that the connected cluster can accept
+        write requests.  The default is `None`, which some opinionated
+        logic happens.  If `nobody` is computed, then read-only is assumed.
 
     Returns:
       psycopg database connection
@@ -132,6 +148,10 @@ def get_dbconnc(
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
+      rw (bool | None): Require that the connected cluster can accept
+        write requests.  The default is `None`, which some opinionated
+        logic happens.  If `nobody` is computed, then read-only is assumed.
+
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
     conn.row_factory = dict_row
@@ -149,6 +169,10 @@ def get_sqlalchemy_conn(
 
     Args:
         name (str): the database to connect to, passed to get_dbconnstr
+        rw (bool | None): Require that the connected cluster can accept
+          write requests.  The default is `None`, which some opinionated
+          logic happens.  If `nobody` is computed, then read-only is assumed.
+
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
     # Le Sigh
@@ -181,6 +205,10 @@ def with_sqlalchemy_conn(name: str, **kwargs):
 
     Args:
         name (str): the database to connect to, passed to get_dbconnstr
+        rw (bool | None): Require that the connected cluster can accept
+          write requests.  The default is `None`, which some opinionated
+          logic happens.  If `nobody` is computed, then read-only is assumed.
+
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
 
