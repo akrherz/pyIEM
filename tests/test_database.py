@@ -15,6 +15,22 @@ from pyiem.database import (
 from pyiem.exceptions import NewDatabaseConnectionFailure
 
 
+def test_gh1178_rw_computation(monkeypatch):
+    """Test various permutations computing the rw parameter."""
+    # User mesonet is computed in this instance, so read-write is expected
+    dsn = get_dbconnstr("mesosite")
+    assert "target_session_attrs=read-write" in dsn
+
+    # If we compute nobody, and no rw specified, any is expected
+    monkeypatch.setattr("getpass.getuser", lambda: "nobody")
+    dsn = get_dbconnstr("mesosite")
+    assert "target_session_attrs=any" in dsn
+
+    # If rw is explicitly False, then any will work
+    dsn = get_dbconnstr("mesosite", rw=False)
+    assert "target_session_attrs=any" in dsn
+
+
 def test_with_sqlalchemy_conn():
     """Test that we can do a contextmanager with this API."""
 
