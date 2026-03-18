@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 - Clarify in CI environment that ``fiona`` is not an actual dependency.
 - Refactor duplicated VTEC check, denote `_check_dup_ps` is internal API, and
   fix a false positive and fix a bug. No data quality impacts (#1167).
+- Refactor `util.get_autoplot_context` into `autoplot.get_autoplot_context`.
 - Require python 3.11+
 - Update TAF storage to include an `issue` and `expire` timestamp, which
   explicitly stores the time domain.  This change modified the storage of
@@ -20,6 +21,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add `pyiem.reference.StationAttributes.HAS_PHOUR` constant.
+- Add `filtervar` autoplot context type (#1180).
 - Added crude bounds checking within `pyiem.observation` to prevent out of
   reasonable bounds data from going to the database.
 - Finish migration of setup.cfg content into pyproject.toml.
