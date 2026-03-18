@@ -49,11 +49,9 @@ class CustomFormatter(logging.Formatter):
 
 def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
     """Consider migrating to ``pyiem.autoplot.get_autoplot_context``."""
-    from .autoplot import get_autoplot_context
+    from .autoplot import get_autoplot_context as real_func
 
-    return get_autoplot_context(
-        fdict, cfg, enforce_optional=enforce_optional, **kwargs
-    )
+    return real_func(fdict, cfg, enforce_optional=enforce_optional, **kwargs)
 
 
 def ddhhmm2datetime(ddhhmm: str, utcnow: datetime) -> datetime:

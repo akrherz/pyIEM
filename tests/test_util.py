@@ -19,6 +19,11 @@ from pyiem import util
 from pyiem.reference import ISO8601
 
 
+def test_autoplot_exists():
+    """exercise API."""
+    util.get_autoplot_context({}, {})
+
+
 def test_deprecated_database():
     """Test that we get a DeprecationWarning"""
     with pytest.warns(DeprecationWarning):

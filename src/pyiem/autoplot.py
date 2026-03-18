@@ -60,7 +60,7 @@ def _text_handler(value: str, pattern: str, default: str) -> str:
 
 
 def _station_handler(
-    value: str, opt: dict, name: str, fdict: dict, ctx: dict, default: str
+    value: str, opt: dict, name: str, fdict: dict, ctx: dict
 ) -> str:
     """Handle station."""
     # A bit of hackery here if we have a name ending in a number
@@ -270,9 +270,7 @@ def _process_option(
     if typ == "text":
         value = _text_handler(value or "", opt.get("pattern", ".*"), default)
     elif typ in ["station", "zstation", "sid", "networkselect"]:
-        value = _station_handler(
-            value or default, opt, name, fdict, ctx, default
-        )
+        value = _station_handler(value or default, opt, name, fdict, ctx)
     elif typ == "cmap":
         value = _cmap_handler(value or "", default)
     elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
