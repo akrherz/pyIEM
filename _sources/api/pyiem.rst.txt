@@ -20,6 +20,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   pyiem.autoplot
    pyiem.database
    pyiem.datatypes
    pyiem.dep

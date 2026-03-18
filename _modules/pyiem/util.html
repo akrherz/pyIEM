@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.util &#8212; pyIEM 1.26.0.post67+g67281a3a5</title>
+    <title>pyiem.util &#8212; pyIEM 1.26.0.post72+g3ca273c63</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=dd61599e"></script>
+    <script src="../../_static/documentation_options.js?v=1954e92f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/util';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post67+g67281a3a5" />
-    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
+  <meta name="docsearch:version" content="1.26.0.post72+g3ca273c63" />
+    <meta name="docbuild:last-update" content="Mar 18, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post67+g67281a3a5</p>
+    <p class="title logo__title">pyIEM 1.26.0.post72+g3ca273c63</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">html</span><span class="w"> </span><span class="kn">import</span> <span class="n">escape</span>
 
 <span class="c1"># !important</span>
@@ -462,8 +462,6 @@
 
 <span class="c1"># NB: careful with circular imports!</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">database</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IncompleteWebRequest</span><span class="p">,</span> <span class="n">UnknownStationException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">NetworkTable</span>
 
 <span class="n">SEQNUM</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9]</span><span class="si">{3}</span><span class="s2">\s?$&quot;</span><span class="p">)</span>
 <span class="c1"># Setup a default logging instance for this module</span>
@@ -491,18 +489,14 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_strptime</span><span class="p">(</span><span class="n">ins</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rectify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper around strptime.&quot;&quot;&quot;</span>
-    <span class="c1"># Forgive an encoded space</span>
-    <span class="n">ins</span> <span class="o">=</span> <span class="n">ins</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">rectify</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">handle_date_err</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">ins</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;String provided: `</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s2">` does not match format: `</span><span class="si">{</span><span class="n">fmt</span><span class="si">}</span><span class="s2">`&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
+<div class="viewcode-block" id="get_autoplot_context">
+<a class="viewcode-back" href="../../api/pyiem.util.html#pyiem.util.get_autoplot_context">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_autoplot_context</span><span class="p">(</span><span class="n">fdict</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Consider migrating to ``pyiem.autoplot.get_autoplot_context``.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.autoplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_autoplot_context</span> <span class="k">as</span> <span class="n">real_func</span>
+
+    <span class="k">return</span> <span class="n">real_func</span><span class="p">(</span><span class="n">fdict</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="o">=</span><span class="n">enforce_optional</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="ddhhmm2datetime">
@@ -819,247 +813,6 @@
     <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\003</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\r\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="handle_date_err">
-<a class="viewcode-back" href="../../api/pyiem.util.html#pyiem.util.handle_date_err">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">handle_date_err</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to fix up a date string, when possible.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s2">&quot;day&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;range&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">exp</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-    <span class="n">datepart</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="p">(</span><span class="n">yyyy</span><span class="p">,</span> <span class="n">mm</span><span class="p">,</span> <span class="n">_dd</span><span class="p">)</span> <span class="o">=</span> <span class="n">datepart</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-    <span class="c1"># construct a new month date and then substract one day</span>
-    <span class="n">lastday</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">yyyy</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">mm</span><span class="p">),</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-        <span class="n">day</span><span class="o">=</span><span class="mi">1</span>
-    <span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1"># Reconstruct the date string</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">lastday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="c1"># Careful here, we don&#39;t want a recursive loop</span>
-    <span class="k">return</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">rectify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="get_autoplot_context">
-<a class="viewcode-back" href="../../api/pyiem.util.html#pyiem.util.get_autoplot_context">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_autoplot_context</span><span class="p">(</span><span class="n">fdict</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the variables out of a dict of strings</span>
-
-<span class="sd">    This helper for IEM autoplot gets values out of a dictionary of strings,</span>
-<span class="sd">    as provided by CGI.  It does some magic to get types right, defaults right</span>
-<span class="sd">    and so on.  The typical way this is called</span>
-
-<span class="sd">        ctx = iemutils.get_context(fdict, get_description())</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">      fdict (dictionary): what was likely provided by `cgi.FieldStorage()`</span>
-<span class="sd">      cfg (dictionary): autoplot value of get_description</span>
-<span class="sd">      enforce_optional (bool,optional): Should the `optional` flag be enforced</span>
-<span class="sd">      rectify_dates (bool,optional): Attempt to fix common date errors like</span>
-<span class="sd">        June 31.  Default `false`.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">      dictionary of variable names and values, with proper types!</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">state_names</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_float</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert string to float, if possible.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid float value: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
-
-    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1"># Check for DPI setting</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dpi&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-    <span class="c1"># Check for internal params</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="n">fdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">html_escape</span><span class="p">(</span><span class="n">fdict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-    <span class="c1"># Check over autoplot provided arguments</span>
-    <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
-        <span class="n">default</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
-        <span class="n">typ</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-        <span class="n">minval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
-        <span class="n">maxval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
-        <span class="n">optional</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optional&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># vtec_ps is special since we have special logic to get its value</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">optional</span>
-            <span class="ow">and</span> <span class="n">typ</span> <span class="o">!=</span> <span class="s2">&quot;vtec_ps&quot;</span>
-            <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span>
-                <span class="ow">or</span> <span class="p">(</span><span class="n">enforce_optional</span> <span class="ow">and</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_opt_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;on&quot;</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">):</span>
-            <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span>
-            <span class="n">pattern</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pattern&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;zstation&quot;</span><span class="p">,</span> <span class="s2">&quot;sid&quot;</span><span class="p">,</span> <span class="s2">&quot;networkselect&quot;</span><span class="p">]:</span>
-            <span class="c1"># A bit of hackery here if we have a name ending in a number</span>
-            <span class="n">_n</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-            <span class="n">netname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;network</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="c1"># The network variable tags along and within a non-PHP context,</span>
-            <span class="c1"># this variable is unset, so we do some more hackery here</span>
-            <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">netname</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;network&quot;</span><span class="p">))</span>
-            <span class="c1"># Convience we load up the network metadata</span>
-            <span class="n">ntname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_nt</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span>
-
-            <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span> <span class="o">=</span> <span class="n">NetworkTable</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">],</span> <span class="n">only_online</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="c1"># stations starting with _ are virtual and should not error</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="p">:</span>
-                <span class="c1"># HACK for three/four char ugliness</span>
-                <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WFO&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">WFO_FOURCHAR</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;P</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="k">elif</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WFO&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;JSJ&quot;</span><span class="p">,</span> <span class="s2">&quot;SJU&quot;</span><span class="p">]:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;TJSJ&quot;</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">UnknownStationException</span><span class="p">(</span><span class="s2">&quot;Unknown station provided.&quot;</span><span class="p">)</span>
-            <span class="c1"># A helper to remove downstream boilerplate</span>
-            <span class="n">sname</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">))&quot;</span><span class="p">})[</span>
-                <span class="s2">&quot;name&quot;</span>
-            <span class="p">]</span>
-            <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;_sname</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span>
-            <span class="c1"># Ensure that our value is a valid colormap known to matplotlib</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colormaps</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;zhour&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_float</span><span class="p">(</span><span class="n">default</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">_float</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;state&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">state_names</span> <span class="ow">and</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;select&quot;</span><span class="p">:</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="c1"># Allow for legacy variable aliases</span>
-            <span class="n">alias</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alias&quot;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="c1"># in case of multi, value could be a list</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">alias</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-                <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multiple&quot;</span><span class="p">):</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">newvalue</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">for</span> <span class="n">subval</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">subval</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">:</span>
-                        <span class="n">subval</span> <span class="o">=</span> <span class="n">alias</span><span class="p">[</span><span class="n">subval</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">subval</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-                        <span class="n">newvalue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subval</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">newvalue</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;datetime&quot;</span><span class="p">:</span>
-            <span class="c1"># tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># A common problem is for the space to be missing</span>
-                <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
-                        <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">value</span> <span class="o">+=</span> <span class="s2">&quot; 0000&quot;</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span>
-                    <span class="n">value</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
-                    <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">,</span>
-                    <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rectify_dates&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-                <span class="p">)</span>
-
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;sday&quot;</span><span class="p">:</span>
-            <span class="c1"># supports legacy uris with yyyy-mm-dd, before migration to sday</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">minval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">maxval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span>
-            <span class="c1"># tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span>
-                    <span class="n">value</span><span class="p">,</span>
-                    <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rectify_dates&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;vtec_ps&quot;</span><span class="p">:</span>
-            <span class="c1"># VTEC phenomena and significance</span>
-            <span class="n">defaults</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="c1"># Only set a default value when the field is not optional</span>
-            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-                <span class="n">tokens</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-                    <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span>
-                    <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
-                <span class="p">):</span>
-                    <span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;phenomena&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;significance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;phenomena&quot;</span><span class="p">,</span> <span class="s2">&quot;significance&quot;</span><span class="p">]:</span>
-                <span class="n">label2</span> <span class="o">=</span> <span class="n">label</span> <span class="o">+</span> <span class="n">name</span>
-                <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label2</span><span class="p">,</span> <span class="n">defaults</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
-                <span class="c1"># Prevent empty strings from being set</span>
-                <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                    <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-            <span class="k">continue</span>
-        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;dat&quot;</span><span class="p">:</span>
-            <span class="c1"># Damage Assessment Toolkit</span>
-            <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;datglobalid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;datglobalid&quot;</span><span class="p">)</span>
-        <span class="c1"># validation</span>
-        <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">minval</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">maxval</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="n">ctx</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">default</span>
-    <span class="c1"># Ensure defaults are set, if they exist</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;defaults&quot;</span><span class="p">,</span> <span class="p">{}):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">:</span>
-            <span class="n">ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;defaults&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">ctx</span></div>
 
 
 
