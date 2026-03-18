@@ -73,9 +73,6 @@ def _station_handler(
     ntname = f"_nt{_n}"
 
     ctx[ntname] = NetworkTable(ctx[netname], only_online=False)
-    # stations starting with _ are virtual and should not error
-    if value is None:
-        value = default
     if not value.startswith("_") and value not in ctx[ntname].sts:
         # HACK for three/four char ugliness
         if ctx[netname] == "WFO" and value in WFO_FOURCHAR:
@@ -100,7 +97,7 @@ def _cmap_handler(value: str, default: str) -> str:
     return value
 
 
-def _select_handler(value: str, opt: dict, default: str) -> str:
+def _select_handler(value: str | None, opt: dict, default: str) -> str:
     """Handle select type options."""
     options = opt.get("options", {})
     # Allow for legacy variable aliases
@@ -273,7 +270,9 @@ def _process_option(
     if typ == "text":
         value = _text_handler(value or "", opt.get("pattern", ".*"), default)
     elif typ in ["station", "zstation", "sid", "networkselect"]:
-        value = _station_handler(value or "", opt, name, fdict, ctx, default)
+        value = _station_handler(
+            value or default, opt, name, fdict, ctx, default
+        )
     elif typ == "cmap":
         value = _cmap_handler(value or "", default)
     elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
@@ -292,7 +291,7 @@ def _process_option(
         if value not in state_names and default is not None:
             value = default
     elif typ == "select":
-        value = _select_handler(value or "", opt, default)
+        value = _select_handler(value, opt, default)
     elif typ == "datetime":
         value, minval, maxval, default = _datetime_handler(
             value, default, minval, maxval, **kwargs

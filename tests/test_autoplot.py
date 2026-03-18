@@ -66,6 +66,26 @@ def test_gh1180_filtervar_fallbacks():
     assert ctx["var_t"] == 1.0
 
 
+def test_get_autoplot_select_with_none_provided():
+    """test what happens when nothing is provided."""
+    form = {}
+    cfg = {
+        "arguments": [
+            {
+                "type": "select",
+                "name": "blah",
+                "default": "sa",
+                "options": {
+                    "conus": "hi",
+                    "sa": "bye",
+                },
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["blah"] == "sa"
+
+
 def test_get_autoplot_context_alias():
     """Test that an alias can be used."""
     form = {"blah": ""}
@@ -87,6 +107,31 @@ def test_get_autoplot_context_alias():
     }
     ctx = get_autoplot_context(form, cfg)
     assert ctx["blah"] == "conus"
+
+
+def test_get_autoplot_multiple_one_provided():
+    """Test that providing one yields a list."""
+    form = {"blah": "two"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "select",
+                "name": "blah",
+                "default": "sa",
+                "multiple": True,
+                "options": {
+                    "conus": "hi",
+                    "sa": "bye",
+                    "two": "two",
+                },
+                "alias": {
+                    "": "conus",
+                },
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["blah"] == ["two"]
 
 
 def test_get_autoplot_context_alias_list():
@@ -116,7 +161,7 @@ def test_get_autoplot_context_alias_list():
 
 def test_get_autoplot_context_text_pattern():
     """Test the pattern validation."""
-    form = {"rng": "1960"}
+    form = {"rng": "1960", "ok": "KDMX"}
     cfg = {
         "arguments": [
             {
@@ -124,11 +169,18 @@ def test_get_autoplot_context_text_pattern():
                 "name": "rng",
                 "default": "1960-2020",
                 "pattern": r"^\d{4}\s*-\s*\d{4}$",
-            }
+            },
+            {
+                "type": "text",
+                "name": "ok",
+                "default": "KDVN",
+                "pattern": r"^[A-Z]{4}$",
+            },
         ]
     }
     ctx = get_autoplot_context(form, cfg)
     assert ctx["rng"] == cfg["arguments"][0]["default"]
+    assert ctx["ok"] == "KDMX"
 
 
 def test_get_autoplot_context_bad_float():
@@ -222,6 +274,23 @@ def test_get_autoplot_wfo():
     form = dict(cwa="XXX", network="WFO")
     with pytest.raises(UnknownStationException):
         get_autoplot_context(form, cfg)
+
+
+def test_get_autoplot_value_less_than_minval():
+    """Test that minval works."""
+    form = {"foo": "-1"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "float",
+                "min": 0,
+                "name": "foo",
+                "default": 1.0,
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["foo"] == 1.0
 
 
 def test_get_autoplot_context_name():
