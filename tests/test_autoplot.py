@@ -8,6 +8,22 @@ from pyiem.autoplot import get_autoplot_context
 from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 
 
+def test_260318_text_default():
+    """Test that we get the default in this case."""
+    form = {}
+    cfg = {
+        "arguments": [
+            {
+                "type": "text",
+                "name": "var",
+                "default": "25-28",
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["var"] == "25-28"
+
+
 def test_gh1180_filtervar():
     """Test the handling of a filtervar option."""
     form = {"var": "foo", "var_comp": "ne", "var_t": "42.6"}
