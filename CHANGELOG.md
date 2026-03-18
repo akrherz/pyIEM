@@ -21,6 +21,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add `pyiem.reference.StationAttributes.HAS_PHOUR` constant.
+- Add `filtervar` autoplot context type (#1180).
 - Added crude bounds checking within `pyiem.observation` to prevent out of
   reasonable bounds data from going to the database.
 - Finish migration of setup.cfg content into pyproject.toml.

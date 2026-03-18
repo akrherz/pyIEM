@@ -8,6 +8,64 @@ from pyiem.autoplot import get_autoplot_context
 from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 
 
+def test_gh1180_filtervar():
+    """Test the handling of a filtervar option."""
+    form = {"var": "foo", "var_comp": "ne", "var_t": "42.6"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "filtervar",
+                "name": "var",
+                "default": "bar",
+                "options": {"foo": "Foo", "bar": "Bar"},
+                "comp_default": "lt",
+                "t_default": 20.26,
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["var"] == "foo"
+    assert ctx["var_comp"] == "ne"
+    assert abs(ctx["var_t"] - 42.6) < 1e-6
+
+
+def test_gh1180_filtervar_bad_threshold():
+    """Bad numeric threshold should raise a request parsing exception."""
+    form = {"var": "foo", "var_t": "abc"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "filtervar",
+                "name": "var",
+                "default": "bar",
+                "options": {"foo": "Foo", "bar": "Bar"},
+            }
+        ]
+    }
+    with pytest.raises(IncompleteWebRequest):
+        get_autoplot_context(form, cfg)
+
+
+def test_gh1180_filtervar_fallbacks():
+    """Invalid values should fall back to configured defaults."""
+    form = {"var": "bad", "var_comp": "bogus"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "filtervar",
+                "name": "var",
+                "default": "bar",
+                "options": {"foo": "Foo", "bar": "Bar"},
+                "comp_default": "also_bad",
+            }
+        ]
+    }
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["var"] == "bar"
+    assert ctx["var_comp"] == "ge"
+    assert ctx["var_t"] == 1.0
+
+
 def test_get_autoplot_context_alias():
     """Test that an alias can be used."""
     form = {"blah": ""}

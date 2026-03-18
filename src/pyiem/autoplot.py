@@ -219,6 +219,29 @@ def _vtec_ps_handler(
             ctx[label2] = defaults.get(label)
 
 
+def _filtervar_handler(ctx: dict, fdict: dict, opt: dict):
+    """Handle autoplot filtervar type."""
+    valid_comparators = {"ge", "gt", "le", "lt", "eq", "ne"}
+    param_name = opt.get("name")
+    cgi_value = fdict.get(param_name)
+    default_value = opt.get("default")
+    if cgi_value not in opt.get("options", {}):
+        cgi_value = default_value
+    default_comp = opt.get("comp_default", "ge")
+    if default_comp not in valid_comparators:
+        default_comp = "ge"
+    comp_value = fdict.get(f"{param_name}_comp", default_comp)
+    if comp_value not in valid_comparators:
+        comp_value = default_comp
+    thres_value = _float(
+        fdict.get(f"{param_name}_t", opt.get("t_default", 1.0))
+    )
+    # We should be ready now to write these into the context
+    ctx[param_name] = cgi_value
+    ctx[f"{param_name}_comp"] = comp_value
+    ctx[f"{param_name}_t"] = thres_value
+
+
 def _process_option(
     opt: dict, fdict: dict, ctx: dict, enforce_optional: bool, **kwargs
 ):
@@ -242,6 +265,9 @@ def _process_option(
         return
     if typ == "vtec_ps":
         _vtec_ps_handler(name, default, optional, fdict, ctx)
+        return
+    if typ == "filtervar":
+        _filtervar_handler(ctx, fdict, opt)
         return
 
     if typ == "text":
