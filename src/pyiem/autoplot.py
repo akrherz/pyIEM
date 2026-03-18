@@ -52,9 +52,15 @@ def _float(val):
         raise IncompleteWebRequest(f"Invalid float value: {val}") from exp
 
 
-def _text_handler(value: str, pattern: str, default: str) -> str:
+def _text_handler(value: str | None, pattern: str | None, default: str) -> str:
     """Handle text type with pattern."""
-    if not re.match(pattern, value):
+    if (
+        value is not None
+        and pattern is not None
+        and not re.match(pattern, value)
+    ):
+        return default
+    if value is None or value == "":
         return default
     return value
 
@@ -268,7 +274,7 @@ def _process_option(
         return
 
     if typ == "text":
-        value = _text_handler(value or "", opt.get("pattern", ".*"), default)
+        value = _text_handler(value, opt.get("pattern"), default)
     elif typ in ["station", "zstation", "sid", "networkselect"]:
         value = _station_handler(value or default, opt, name, fdict, ctx)
     elif typ == "cmap":
