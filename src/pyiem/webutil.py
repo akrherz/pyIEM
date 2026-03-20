@@ -517,7 +517,7 @@ def iemapp(**kwargs):
                     form = {
                         k: v
                         for k, v in _debracket(form).items()
-                        if k in kwargs["schema"].model_fields
+                        if k in kwargs["schema"].model_fields and v != ""
                     }
                     # Retain a reference to the Schema instance as it may have
                     # private / computed attributes that are needed

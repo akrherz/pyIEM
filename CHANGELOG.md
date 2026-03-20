@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
   fix a false positive and fix a bug. No data quality impacts (#1167).
 - Refactor `util.get_autoplot_context` into `autoplot.get_autoplot_context`.
 - Require python 3.11+
+- Treat inbound empty CGI parameters as effective `None`.
 - Update TAF storage to include an `issue` and `expire` timestamp, which
   explicitly stores the time domain.  This change modified the storage of
   the observation to not include these timestamp values.
