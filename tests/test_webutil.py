@@ -67,6 +67,25 @@ def test_allowed_as_list():
     assert resp.status_code == 422
 
 
+def test_empty_string():
+    """Test that emptry strings are not passed through..."""
+
+    class MyModel(CGIModel):
+        bogus: Annotated[float | None, Field("Float")] = None
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        assert environ["bogus"] is None
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ.get("unused", "OK")
+
+    c = Client(application)
+    resp = c.get("/?bogus=")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
 def test_gh1174_self():
     """Test what happens with CGI self= is processed."""
 
