@@ -191,7 +191,7 @@ def write_telemetry(data: TELEMETRY) -> bool:
     """Write telemetry to the database."""
     # Yes, this blocks, but if this database is not working, we are in trouble
     try:
-        with get_sqlalchemy_conn("mesosite") as conn:
+        with get_sqlalchemy_conn("mesosite", rw=True) as conn:
             conn.execute(
                 sql_helper(
                     """
@@ -205,6 +205,9 @@ def write_telemetry(data: TELEMETRY) -> bool:
             )
             conn.commit()
         return True
+    except NewDatabaseConnectionFailure:
+        # swallow this
+        return False
     except Exception as exp:
         LOG.exception(exp)
     return False
