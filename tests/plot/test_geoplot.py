@@ -49,12 +49,9 @@ def test_overlay_nexrad_failure():
 def test_exercise_usdm():
     """Test the various checks in the usdm method."""
     mp = MapPlot()
-    with pytest.warns(UserWarning) as _:
-        mp.draw_usdm()
     mp.draw_usdm(utc())
     with pytest.warns(UserWarning) as _:
-        assert mp.draw_usdm("qqq") is None
-    assert mp.draw_usdm(utc(1980, 1, 1)) is None
+        assert mp.draw_usdm(utc(1980, 1, 1)) is None
 
 
 def test_close():

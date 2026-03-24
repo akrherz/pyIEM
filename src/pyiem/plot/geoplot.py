@@ -289,13 +289,13 @@ class MapPlot:
         """
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
         hatches = ["+", "/", "\\", "-", "x"]
-        if valid is None:
-            valid = ""
-        elif isinstance(valid, (datetime.date, datetime.datetime)):
+        params = {}
+        if isinstance(valid, (datetime.date, datetime.datetime)):
             valid = valid.strftime("%Y-%m-%d")
-        url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
+            params["date"] = valid
+        url = "http://mesonet.agron.iastate.edu/geojson/usdm.py"
         try:
-            resp = httpx.get(url, timeout=30)
+            resp = httpx.get(url, params=params, timeout=30)
             resp.raise_for_status()
             df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
