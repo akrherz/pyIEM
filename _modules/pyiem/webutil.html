@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.26.0.post76+ga660f66d6</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.26.0.post83+g754f7da13</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=9f1be2d9"></script>
+    <script src="../../_static/documentation_options.js?v=3c84b9c7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post76+ga660f66d6" />
-    <meta name="docbuild:last-update" content="Mar 20, 2026"/>
+  <meta name="docsearch:version" content="1.26.0.post83+g754f7da13" />
+    <meta name="docbuild:last-update" content="Mar 29, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post76+ga660f66d6</p>
+    <p class="title logo__title">pyIEM 1.26.0.post83+g754f7da13</p>
   
 </a></div>
     
@@ -638,7 +638,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write telemetry to the database.&quot;&quot;&quot;</span>
     <span class="c1"># Yes, this blocks, but if this database is not working, we are in trouble</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
                 <span class="n">sql_helper</span><span class="p">(</span>
 <span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -652,6 +652,9 @@
             <span class="p">)</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="n">NewDatabaseConnectionFailure</span><span class="p">:</span>
+        <span class="c1"># swallow this</span>
+        <span class="k">return</span> <span class="kc">False</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span></div>
@@ -775,8 +778,35 @@
 
 <div class="viewcode-block" id="add_to_environ">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.add_to_environ">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build out some things auto-parsed from the request.&quot;&quot;&quot;</span>
+    <span class="c1"># Typically apps without schema definition, so this removes some</span>
+    <span class="c1"># downstream boilerplate to prevent unwanted lists</span>
+    <span class="n">allowed</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowed_as_list&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">allowed</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is a list, but not allowed&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;schema&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="c1"># Remove any form keys that are not contained in the</span>
+        <span class="c1"># schema, but first we debracket keys with []</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_debracket</span><span class="p">(</span><span class="n">form</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">}</span>
+        <span class="c1"># Retain a reference to the Schema instance as it may have</span>
+        <span class="c1"># private / computed attributes that are needed</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">](</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;tz&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+        <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default_tz&quot;</span><span class="p">,</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">)</span>
+    <span class="c1"># Important this is set before calling add_to_environ</span>
+    <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TZ_TYPOS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">],</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">])</span>
+
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">:</span>
             <span class="c1"># check for XSS and other naughty things</span>
@@ -797,18 +827,34 @@
             <span class="p">)</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parse_times&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="n">sts</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">ets</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="c1"># Le Sigh, darly used sts for stations in the past, so ensure</span>
             <span class="c1"># that sts starts with something that looks like a year</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sts&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">YEAR_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]):</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;sts&quot;</span><span class="p">)</span>
+                <span class="n">sts</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;sts&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ets&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">YEAR_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]):</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;ets&quot;</span><span class="p">)</span>
+                <span class="n">ets</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;ets&quot;</span><span class="p">)</span>
             <span class="c1"># NB: The usage of a schema may have already parsed a sts or ets,</span>
             <span class="c1"># but it will be None if it was not provided</span>
             <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day1&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sts&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+                <span class="n">sts</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day2&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ets&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+                <span class="n">ets</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sts</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;_cgimodel_schema&quot;</span> <span class="ow">in</span> <span class="n">environ</span>
+                    <span class="ow">and</span> <span class="s2">&quot;sts&quot;</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span>
+                <span class="p">):</span>
+                    <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span> <span class="o">=</span> <span class="n">sts</span>
+            <span class="k">if</span> <span class="n">ets</span><span class="p">:</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ets</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;_cgimodel_schema&quot;</span> <span class="ow">in</span> <span class="n">environ</span>
+                    <span class="ow">and</span> <span class="s2">&quot;ets&quot;</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span>
+                <span class="p">):</span>
+                    <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ets</span> <span class="o">=</span> <span class="n">ets</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">&quot;Invalid timestamp specified&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
@@ -966,35 +1012,10 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># mixed convers this to a regular dict</span>
                 <span class="n">form</span> <span class="o">=</span> <span class="n">parse_formvars</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span><span class="o">.</span><span class="n">mixed</span><span class="p">()</span>
-                <span class="n">allowed</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowed_as_list&quot;</span><span class="p">,</span> <span class="p">[])</span>
-                <span class="k">if</span> <span class="n">allowed</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
-                            <span class="k">continue</span>
-                        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is a list, but not allowed&quot;</span>
-                            <span class="p">)</span>
                 <span class="n">form</span> <span class="o">=</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s2">&quot;help&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">_handle_help</span><span class="p">(</span><span class="n">start_response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                     <span class="k">return</span>
-                <span class="k">if</span> <span class="s2">&quot;schema&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                    <span class="c1"># Remove any form keys that are not contained in the</span>
-                    <span class="c1"># schema, but first we debracket keys with []</span>
-                    <span class="n">form</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_debracket</span><span class="p">(</span><span class="n">form</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
-                    <span class="p">}</span>
-                    <span class="c1"># Retain a reference to the Schema instance as it may have</span>
-                    <span class="c1"># private / computed attributes that are needed</span>
-                    <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">](</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
-                    <span class="n">form</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-                <span class="k">if</span> <span class="s2">&quot;tz&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
-                    <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default_tz&quot;</span><span class="p">,</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">)</span>
-                <span class="c1"># Important this is set before calling add_to_environ</span>
-                <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TZ_TYPOS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">],</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">])</span>
                 <span class="n">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">_mcall</span><span class="p">(</span>
                     <span class="n">func</span><span class="p">,</span>
