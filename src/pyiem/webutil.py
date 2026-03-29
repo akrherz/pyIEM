@@ -313,8 +313,35 @@ def compute_ts(form, suffix):
     )
 
 
-def add_to_environ(environ, form, **kwargs):
+def add_to_environ(environ: dict, form: dict, **kwargs):
     """Build out some things auto-parsed from the request."""
+    # Typically apps without schema definition, so this removes some
+    # downstream boilerplate to prevent unwanted lists
+    allowed = kwargs.get("allowed_as_list", [])
+    if allowed:
+        for key in form:
+            if not isinstance(form[key], list):
+                continue
+            if key not in allowed:
+                raise BadWebRequest(f"Key {key} is a list, but not allowed")
+
+    if "schema" in kwargs:
+        # Remove any form keys that are not contained in the
+        # schema, but first we debracket keys with []
+        form = {
+            k: v
+            for k, v in _debracket(form).items()
+            if k in kwargs["schema"].model_fields and v != ""
+        }
+        # Retain a reference to the Schema instance as it may have
+        # private / computed attributes that are needed
+        environ["_cgimodel_schema"] = kwargs["schema"](**form)
+        form = environ["_cgimodel_schema"].model_dump()
+    if "tz" not in form:
+        form["tz"] = kwargs.get("default_tz", "America/Chicago")
+    # Important this is set before calling add_to_environ
+    form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
+
     for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
@@ -335,18 +362,34 @@ def add_to_environ(environ, form, **kwargs):
             )
     if kwargs.get("parse_times", True):
         try:
+            sts = None
+            ets = None
             # Le Sigh, darly used sts for stations in the past, so ensure
             # that sts starts with something that looks like a year
             if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
-                environ["sts"] = compute_ts_from_string(form, "sts")
+                sts = compute_ts_from_string(form, "sts")
             if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
-                environ["ets"] = compute_ts_from_string(form, "ets")
+                ets = compute_ts_from_string(form, "ets")
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
             if form.get("day1") is not None and form.get("sts") is None:
-                environ["sts"] = compute_ts(form, "1")
+                sts = compute_ts(form, "1")
             if form.get("day2") is not None and form.get("ets") is None:
-                environ["ets"] = compute_ts(form, "2")
+                ets = compute_ts(form, "2")
+            if sts:
+                environ["sts"] = sts
+                if (
+                    "_cgimodel_schema" in environ
+                    and "sts" in environ["_cgimodel_schema"].model_fields
+                ):
+                    environ["_cgimodel_schema"].sts = sts
+            if ets:
+                environ["ets"] = ets
+                if (
+                    "_cgimodel_schema" in environ
+                    and "ets" in environ["_cgimodel_schema"].model_fields
+                ):
+                    environ["_cgimodel_schema"].ets = ets
         except (TypeError, ValueError) as exp:
             raise IncompleteWebRequest("Invalid timestamp specified") from exp
         except (IsADirectoryError, ZoneInfoNotFoundError) as exp:
@@ -501,35 +544,10 @@ def iemapp(**kwargs):
             try:
                 # mixed convers this to a regular dict
                 form = parse_formvars(environ).mixed()
-                allowed = kwargs.get("allowed_as_list", [])
-                if allowed:
-                    for key in form:
-                        if not isinstance(form[key], list):
-                            continue
-                        if key not in allowed:
-                            raise BadWebRequest(
-                                f"Key {key} is a list, but not allowed"
-                            )
                 form = clean_form(form)
                 if "help" in form:
                     yield _handle_help(start_response, **kwargs)
                     return
-                if "schema" in kwargs:
-                    # Remove any form keys that are not contained in the
-                    # schema, but first we debracket keys with []
-                    form = {
-                        k: v
-                        for k, v in _debracket(form).items()
-                        if k in kwargs["schema"].model_fields and v != ""
-                    }
-                    # Retain a reference to the Schema instance as it may have
-                    # private / computed attributes that are needed
-                    environ["_cgimodel_schema"] = kwargs["schema"](**form)
-                    form = environ["_cgimodel_schema"].model_dump()
-                if "tz" not in form:
-                    form["tz"] = kwargs.get("default_tz", "America/Chicago")
-                # Important this is set before calling add_to_environ
-                form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form, **kwargs)
                 res = _mcall(
                     func,

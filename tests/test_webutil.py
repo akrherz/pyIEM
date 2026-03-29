@@ -222,6 +222,37 @@ def test_iemapp_memcache():
     assert res1 == res2
 
 
+def test_sts_ets_are_set():
+    """Test that we cross set things properly."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        sts: datetime = Field(None)
+        ets: datetime = Field(None)
+        year1: int = Field(None)
+        month1: int = Field(None)
+        day1: int = Field(None)
+        year2: int = Field(None)
+        month2: int = Field(None)
+        day2: int = Field(None)
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        assert environ["sts"] == environ["_cgimodel_schema"].sts
+        assert environ["ets"] == environ["_cgimodel_schema"].ets
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    client = Client(application)
+    resp = client.get(
+        "/?year1=2022&month1=2&day1=3&year2=2023&month2=1&day2=1"
+    )
+    assert resp.status_code == 200
+    assert resp.text.find("Hello") > -1
+
+
 def test_iemapp_year_year1():
     """Test that we can handle a legacy situation with DCP app."""
 
@@ -234,17 +265,15 @@ def test_iemapp_year_year1():
         day1: int = Field(None)
 
     @iemapp(schema=MyModel)
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Content-type: text/plain\n\nHello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year=2022&month1=2&day1=3",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
-    assert "_cgimodel_schema" in env
+    client = Client(application)
+    resp = client.get("/?year=2022&month1=2&day1=3")
+    assert resp.status_code == 200
+    assert resp.text.find("Hello") > -1
 
 
 def test_iemapp_times_notime():
