@@ -327,7 +327,7 @@ def sector_setter(mp, axbounds, **kwargs):
         )
         mp.panels.append(gp)
     elif mp.sector == "state":
-        mp.state = kwargs.get("state", "IA")
+        mp.state = kwargs.get("state", "IA").upper()
         gp = make_panel(
             axbounds,
             mp.fig,
