@@ -2,6 +2,7 @@
 
 import html
 import inspect
+import io
 import os
 import random
 import re
@@ -179,11 +180,12 @@ equivalent to ``?foo=1,2``.
             typetext = prop["type"]
             if typetext == "array":
                 typetext = "Multi-Params or CSV value"
-        rst.append(
-            f"   * - {key}\n"
-            f"     - {typetext}{required}\n"
-            f"     - {prop.get('description', '')}"
-        )
+        desc = str(prop.get("description", "")).strip()
+        if desc:
+            desc = "\n       ".join(
+                [line.strip() for line in desc.splitlines() if line.strip()]
+            )
+        rst.append(f"   * - {key}\n     - {typetext}{required}\n     - {desc}")
     return "\n".join(rst)
 
 
@@ -408,10 +410,24 @@ def _handle_help(start_response, **kwargs):
     start_response("200 OK", [("Content-type", "text/html")])
     # return the module docstring for the func
 
-    sdoc = kwargs.get("help", "Help not available") + (
-        "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
-    )
-    rendered = publish_string(source=sdoc, writer_name="html").decode("utf-8")
+    sdoc = kwargs.get("help", "Help not available")
+    if "schema" in kwargs:
+        sdoc = f"{sdoc}\n\n{model_to_rst(kwargs['schema'])}"
+    warning_stream = io.StringIO()
+    rendered = publish_string(
+        source=sdoc,
+        writer_name="html",
+        settings_overrides={
+            # Keep docutils CSS external so we can style ourselves.
+            "embed_stylesheet": False,
+            # Never raise, but capture/report warnings for visibility.
+            "warning_stream": warning_stream,
+        },
+    ).decode("utf-8")
+
+    warning_text = warning_stream.getvalue().strip()
+    if warning_text:
+        LOG.warning("Docutils warnings while rendering help: %s", warning_text)
 
     # Load external CSS file for styling docutils-generated content
     css_path = os.path.join(
@@ -420,7 +436,7 @@ def _handle_help(start_response, **kwargs):
     with open(css_path, "r", encoding="utf-8") as fh:
         css_content = fh.read()
 
-    # Get the content between the body tags and wrap with responsive container
+    # Get just the rendered HTML body and wrap with responsive container.
     body_content = rendered.split("<body>")[1].split("</body>")[0]
     styled_content = (
         f"<style>\n{css_content}\n</style>"
