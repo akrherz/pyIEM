@@ -445,6 +445,34 @@ def test_ensure_list():
     assert ensure_list({"a": ["c", "b,a"]}, "a") == ["c", "b", "a"]
 
 
+def test_iemapp_help_with_linereturns():
+    """Test that we properly convert descriptions with newlines."""
+
+    class Schema(CGIModel):
+        bah: Annotated[
+            str,
+            Field(
+                description="""
+    For near realtime requests, the number of seconds to go back in
+    time.  The timestamp query is the time of the LSR report, not
+    the time it was disseminated by the NWS. Must be less than
+    1,000,000 seconds."""
+            ),
+        ]
+        foo: Annotated[str, Field(description="Uninteresting")]
+
+    @iemapp(help="FINDME", schema=Schema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = Client(application)
+    resp = c.get("/?help")
+    assert resp.status_code == 200
+    assert "list-table::" not in resp.text
+
+
 def test_iemapp_help():
     """Test that help works."""
 
@@ -458,6 +486,22 @@ def test_iemapp_help():
     resp = c.get("/?help")
     assert resp.status_code == 200
     assert "FINDME" in resp.text
+
+
+def test_iemapp_help_logs_docutils_warning():
+    """Test that malformed RST help text triggers warning logging."""
+
+    @iemapp(help="Heading\n----")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = Client(application)
+    with mock.patch("pyiem.webutil.LOG.warning") as mock_warning:
+        resp = c.get("/?help")
+    assert resp.status_code == 200
+    assert mock_warning.called
 
 
 def test_duplicated_year_in_form():
