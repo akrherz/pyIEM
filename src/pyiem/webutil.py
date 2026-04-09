@@ -11,6 +11,7 @@ import sys
 import traceback
 import warnings
 from collections import namedtuple
+from collections.abc import Callable
 from datetime import datetime, timezone
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -459,12 +460,12 @@ def _debracket(form):
 
 
 def _mcall(
-    func: callable,
+    func: Callable,
     environ: dict,
-    start_response: callable,
-    memcachekey: str | callable | None,
-    expire: int | callable,
-    content_type: str | callable,
+    start_response: Callable,
+    memcachekey: str | Callable | None,
+    expire: int | Callable,
+    content_type: str | Callable,
 ):
     """Call the function with memcachekey handling."""
     if memcachekey is None:
