@@ -11,6 +11,7 @@ import sys
 import traceback
 import warnings
 from collections import namedtuple
+from collections.abc import Callable
 from datetime import datetime, timezone
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -458,7 +459,14 @@ def _debracket(form):
     return res
 
 
-def _mcall(func, environ, start_response, memcachekey, expire, content_type):
+def _mcall(
+    func: Callable,
+    environ: dict,
+    start_response: Callable,
+    memcachekey: str | Callable | None,
+    expire: int | Callable,
+    content_type: str | Callable,
+):
     """Call the function with memcachekey handling."""
     if memcachekey is None:
         return func(environ, start_response)
@@ -471,9 +479,13 @@ def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     res = mc.get(key)
     if not res:
         res = func(environ, start_response)
-        mc.set(
-            key, res, expire if isinstance(expire, int) else expire(environ)
-        )
+        # IEM memcache instances run with a 10MB limit `-I 10m`, so check first
+        if len(res) < 10e6:
+            mc.set(
+                key,
+                res,
+                expire if isinstance(expire, int) else expire(environ),
+            )
     else:
         # since our function never got called, we need to start_response
         ct = (

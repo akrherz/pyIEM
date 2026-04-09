@@ -42,6 +42,7 @@ All notable changes to this library are documented in this file.
 - Fully delete previous `spc_outlook` entries in case of duplicate issuace.
 - Improve robustness and logging of IEM `webapp` auto-generated docs.
 - Increase whitespace forgiveness of DSM parser.
+- Prevent `iemapp` memcache write larger than 10MB.
 - Validate inbound CGI parameters more rigorously for `iemapp()` when a
   schema is provided (#1174).
 
