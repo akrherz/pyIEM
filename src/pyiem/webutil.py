@@ -458,7 +458,14 @@ def _debracket(form):
     return res
 
 
-def _mcall(func, environ, start_response, memcachekey, expire, content_type):
+def _mcall(
+    func: callable,
+    environ: dict,
+    start_response: callable,
+    memcachekey: str | callable | None,
+    expire: int | callable,
+    content_type: str | callable,
+):
     """Call the function with memcachekey handling."""
     if memcachekey is None:
         return func(environ, start_response)
@@ -471,9 +478,13 @@ def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     res = mc.get(key)
     if not res:
         res = func(environ, start_response)
-        mc.set(
-            key, res, expire if isinstance(expire, int) else expire(environ)
-        )
+        # IEM memcache instances run with a 10MB limit `-I 10m`, so check first
+        if len(res) < 10e6:
+            mc.set(
+                key,
+                res,
+                expire if isinstance(expire, int) else expire(environ),
+            )
     else:
         # since our function never got called, we need to start_response
         ct = (
