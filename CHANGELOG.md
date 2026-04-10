@@ -43,6 +43,7 @@ All notable changes to this library are documented in this file.
 - Improve robustness and logging of IEM `webapp` auto-generated docs.
 - Increase whitespace forgiveness of DSM parser.
 - Prevent `iemapp` memcache write larger than 10MB.
+- Prevent `iemapp` memcache keys longer than 250 chars.
 - Validate inbound CGI parameters more rigorously for `iemapp()` when a
   schema is provided (#1174).
 

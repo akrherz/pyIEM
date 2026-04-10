@@ -471,7 +471,8 @@ def _mcall(
     if memcachekey is None:
         return func(environ, start_response)
     key = memcachekey if isinstance(memcachekey, str) else memcachekey(environ)
-    if key is None or inspect.isgeneratorfunction(func):
+    # Ensure that the key is not too long for memcache
+    if key is None or len(key) > 249 or inspect.isgeneratorfunction(func):
         # An appside short circuit when we programatically do not want cache
         # or we are dealing with a generator
         return func(environ, start_response)
