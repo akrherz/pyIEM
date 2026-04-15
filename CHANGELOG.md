@@ -32,6 +32,7 @@ All notable changes to this library are documented in this file.
 - Support Terminal Aerodome Forecast (TAF) designation of amendments with
   addition to TAFReport data model and persistence to database
   (akrherz/iem#1514).
+- Update bundled NWS Counties/Zones to 16 Apr 2026 (#1144).
 - Update CI testing to include python=3.14
 - Update `riverpro` SQL to use on conflict upsert.
 
