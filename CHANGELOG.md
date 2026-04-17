@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+- [SHEF] Tweak narrative storage to re-include the `:` delimiter.
+
+### New Features
+
+### Bug Fixes
+
 ## **1.27.0** (14 Apr 2026)
 
 ### API Changes
