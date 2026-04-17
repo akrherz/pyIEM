@@ -710,7 +710,8 @@ def parse_A(prod) -> int:
     res = process_messages(process_message_a, prod, messages)
     if len(messages) == 1 and narrative.strip() not in ["", "END OF REPORT"]:
         for data in prod.data:
-            data.narrative = f"{messages[0]}\n{narrative.strip()}"
+            # Inject the : back in to make it look like the orig SHEF message
+            data.narrative = f"{messages[0]}\n: {narrative.strip()}"
     return res
 
 
