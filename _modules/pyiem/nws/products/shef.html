@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.shef &#8212; pyIEM 1.26.0.post100+g9f862dc0e</title>
+    <title>pyiem.nws.products.shef &#8212; pyIEM 1.27.0.post3+gb2c2c4ba2</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=967ef2ef"></script>
+    <script src="../../../../_static/documentation_options.js?v=fa0cd8ea"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/shef';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post100+g9f862dc0e" />
-    <meta name="docbuild:last-update" content="Apr 15, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post3+gb2c2c4ba2" />
+    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post100+g9f862dc0e</p>
+    <p class="title logo__title">pyIEM 1.27.0.post3+gb2c2c4ba2</p>
   
 </a></div>
     
@@ -1208,7 +1208,8 @@
     <span class="n">res</span> <span class="o">=</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">process_message_a</span><span class="p">,</span> <span class="n">prod</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;END OF REPORT&quot;</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">narrative</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Inject the : back in to make it look like the orig SHEF message</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">narrative</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">: </span><span class="si">{</span><span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
 
