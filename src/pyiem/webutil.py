@@ -65,6 +65,7 @@ TELEMETRY = namedtuple(
     ["timing", "status_code", "client_addr", "app", "request_uri", "vhost"],
 )
 XSS_SENTINEL = "XSS"
+MEMCACHED_HIT = "_mhit"
 
 
 def _conv2list(mixed) -> list:
@@ -495,6 +496,7 @@ def _mcall(
             else content_type(environ)
         )
         start_response("200 OK", [("Content-type", ct)])
+        environ[MEMCACHED_HIT] = True
     cb = environ.get("callback")
     if cb is not None:
         if isinstance(res, str):
@@ -609,7 +611,9 @@ def iemapp(**kwargs):
             except Exception:
                 res = _handle_exp(traceback.format_exc())
             end_time = datetime.now(timezone.utc)
-            if kwargs.get("enable_telemetry", True):
+            if kwargs.get("enable_telemetry", True) and not environ.get(
+                MEMCACHED_HIT, False
+            ):
                 write_telemetry(
                     TELEMETRY(
                         (end_time - start_time).total_seconds(),
