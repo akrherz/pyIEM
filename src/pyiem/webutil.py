@@ -595,7 +595,7 @@ def iemapp(**kwargs):
                         "429 Too Many Requests",
                         [("Content-type", "text/plain")],
                     )
-                    yield "Too many requests from your IP address, slow down."
+                    yield b"Too many requests from your IP address, slow down."
                     return
 
             start_time = datetime.now(timezone.utc)
