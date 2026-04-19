@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `ip_throttle_secs` to `webutil.iemapp` to deal with IEM pain.
+
 ### Bug Fixes
 
 ## **1.27.0** (14 Apr 2026)
