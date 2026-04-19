@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post5+g7a771c222</title>
+    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post7+ga376d8f4d</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=597137f0"></script>
+    <script src="../_static/documentation_options.js?v=3f237d9f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.webutil';</script>
@@ -49,7 +49,7 @@
     <link rel="prev" title="pyiem.util module" href="pyiem.util.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post5+g7a771c222" />
+  <meta name="docsearch:version" content="1.27.0.post7+ga376d8f4d" />
     <meta name="docbuild:last-update" content="Apr 19, 2026"/>
   </head>
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post5+g7a771c222</p>
+    <p class="title logo__title">pyIEM 1.27.0.post7+ga376d8f4d</p>
   
 </a></div>
     
@@ -715,6 +715,23 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.webutil.ip_is_throttled">
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">ip_is_throttled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throttle_secs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#ip_is_throttled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.ip_is_throttled" title="Link to this definition">#</a></dt>
+<dd><p>Return True if the REMOTE_ADDR is throttled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>)</p></li>
+<li><p><strong>throttle_secs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.webutil.iemapp">
 <span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">iemapp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#iemapp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.iemapp" title="Link to this definition">#</a></dt>
 <dd><p>Attempt to do all kinds of nice things for the user and the developer.</p>
@@ -734,6 +751,8 @@ the response, defaults to 3600.</p></li>
 response.</p></li>
 <li><p>allowed_as_list (list): CGI parameters that are permitted to be
 lists.</p></li>
+<li><p>ip_throttle_secs (float): Number of seconds between requests from
+the same REMOTE_ADDR, 0 to disable, which is the default.</p></li>
 </ul>
 </dd>
 <dt>What all this does:</dt><dd><ol class="arabic simple">
@@ -821,6 +840,7 @@ and made into a list for the WSGI response.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.compute_ts_from_string"><code class="docutils literal notranslate"><span class="pre">compute_ts_from_string()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.compute_ts"><code class="docutils literal notranslate"><span class="pre">compute_ts()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.add_to_environ"><code class="docutils literal notranslate"><span class="pre">add_to_environ()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.ip_is_throttled"><code class="docutils literal notranslate"><span class="pre">ip_is_throttled()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.iemapp"><code class="docutils literal notranslate"><span class="pre">iemapp()</span></code></a></li>
 </ul>
   </nav></div>
