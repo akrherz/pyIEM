@@ -1,17 +1,14 @@
 """Shared code between SPC PTS and WPC ERO parsers."""
 
-# stdlib
 import os
 import tempfile
 
-# Third Party
 import numpy as np
 import pandas as pd
 from shapely.affinity import translate
 from shapely.geometry import LineString, MultiPolygon, Point, Polygon
 from shapely.geometry.polygon import LinearRing
 
-# local
 from pyiem.geom_util import rhs_split
 from pyiem.util import LOG, utc
 
