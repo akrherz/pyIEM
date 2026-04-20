@@ -8,9 +8,11 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - [SHEF] Tweak narrative storage to re-include the `:` delimiter.
+- Return signature of `str2multipolygon` changed to include a list of errors.
 
 ### New Features
 
+- Account for SPC PTS one-off with reversed and closed polygon.
 - Add `ip_throttle_secs` to `webutil.iemapp` to deal with IEM pain.
 
 ### Bug Fixes

@@ -14,6 +14,17 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_260420_reversed_hail_polygon():
+    """Test for error message with a single closed and reversed geometry."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSDY1_reversed.txt"),
+        utcnow=utc(2026, 4, 17, 17),
+    )
+    assert prod.warnings
+    outlook = prod.get_outlook("HAIL", "0.45", 1)
+    assert abs(outlook.geometry.area - 3.0772) < 0.01
+
+
 def test_260303_bad_linestring():
     """Test a false positive."""
     prod = parser(
@@ -333,7 +344,7 @@ def test_issue295_geometryfail():
         "47608787 47258575"
     )
     load_conus_data(utc(2020, 9, 26))
-    res = str2multipolygon(s)
+    res, _errors = str2multipolygon(s)
     assert abs(res.geoms[0].area - 21.0814) < 0.001
 
 
@@ -656,7 +667,7 @@ def test_23jul_failure():
     # need to load data for this to work as a one
     load_conus_data(utc(2017, 7, 23))
     data = """40067377 40567433 41317429 42097381 42357259 42566991"""
-    res = str2multipolygon(data)
+    res, _errors = str2multipolygon(data)
     assert abs(res.geoms[0].area - 7.96724) < 0.0001
 
 

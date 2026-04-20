@@ -9,15 +9,13 @@ from datetime import timedelta
 from typing import Optional
 
 from shapely.geometry import (
+    LinearRing,
     MultiPolygon,
     Polygon,
 )
 
-# Local
 from pyiem.nws.product import TextProduct
-from pyiem.util import LOG, load_geodf, utc
-
-from ._outlook_util import (
+from pyiem.nws.products._outlook_util import (
     CONUS,
     THRESHOLD2TEXT,
     compute_layers,
@@ -28,6 +26,7 @@ from ._outlook_util import (
     sql_day_collect,
     winding_logic,
 )
+from pyiem.util import LOG, load_geodf, utc
 
 DAYRE = re.compile(
     r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])", re.IGNORECASE
@@ -124,12 +123,17 @@ def get_segments_from_text(text):
     return segments
 
 
-def str2multipolygon(s):
+def str2multipolygon(s) -> tuple[MultiPolygon, list[str]]:
     """Convert string PTS data into a polygon.
 
     Args:
       s (str): the cryptic string that we attempt to make valid polygons from
+
+    Returns:
+        MultiPolygon: the geometry of this outlook
+        list[str]: any error messages encountered during processing
     """
+    errors = []
     # 1. Generate list of line segments, no conditioning is done.
     segments_raw = get_segments_from_text(s)
     # 2. Quality Control the segments, splitting naughty ones that cross twice
@@ -140,8 +144,18 @@ def str2multipolygon(s):
             segments.extend(res)
     # 3. Convert segments into what they are
     polygons, interiors, linestrings = convert_segments(segments)
+    # Account for situation of an interior without a polygon (likely reversed)
+    if not polygons and not linestrings and len(interiors) == 1:
+        errmsg = "Found one interior poly without enclosing poly, reversing..."
+        LOG.warning(errmsg)
+        errors.append(errmsg)
+        lr: LinearRing = interiors[0]
+        polygons.append(Polygon(lr.coords[::-1]))
+        interiors = []
+
     # we do our winding logic now
-    polygons.extend(winding_logic(linestrings))
+    if linestrings:
+        polygons.extend(winding_logic(linestrings))
     # Assign our interiors
     for interior in interiors:
         for i, polygon in enumerate(polygons):
@@ -155,7 +169,7 @@ def str2multipolygon(s):
             continue
         LOG.warning("     polygon %s is invalid, buffer(0)", i)
         polygons[i] = polygon.buffer(0)
-    return MultiPolygon(polygons)
+    return MultiPolygon(polygons), errors
 
 
 def init_days(prod) -> dict[int, "SPCOutlookCollection"]:
@@ -480,7 +494,9 @@ class SPCPTS(TextProduct):
                     category,
                     threshold,
                 )
-                mp = str2multipolygon(text)
+                mp, errors = str2multipolygon(text)
+                if errors:
+                    self.warnings.extend(errors)
                 if DMATCH.match(threshold):
                     threshold = "0.15"
                 LOG.warning("----> End threshold is: %s", threshold)
