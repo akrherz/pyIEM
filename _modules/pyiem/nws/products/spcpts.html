@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post8+gc10badc46</title>
+    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post11+g930a5b168</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=9767427f"></script>
+    <script src="../../../../_static/documentation_options.js?v=6b3fab5d"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/spcpts';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post8+gc10badc46" />
-    <meta name="docbuild:last-update" content="Apr 19, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post11+g930a5b168" />
+    <meta name="docbuild:last-update" content="Apr 20, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post8+gc10badc46</p>
+    <p class="title logo__title">pyIEM 1.27.0.post11+g930a5b168</p>
   
 </a></div>
     
@@ -448,15 +448,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LinearRing</span><span class="p">,</span>
     <span class="n">MultiPolygon</span><span class="p">,</span>
     <span class="n">Polygon</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Local</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">load_geodf</span><span class="p">,</span> <span class="n">utc</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">._outlook_util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.products._outlook_util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CONUS</span><span class="p">,</span>
     <span class="n">THRESHOLD2TEXT</span><span class="p">,</span>
     <span class="n">compute_layers</span><span class="p">,</span>
@@ -467,6 +465,7 @@
     <span class="n">sql_day_collect</span><span class="p">,</span>
     <span class="n">winding_logic</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">load_geodf</span><span class="p">,</span> <span class="n">utc</span>
 
 <span class="n">DAYRE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="sa">r</span><span class="s2">&quot;SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P&lt;day&gt;[0-9])&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
@@ -577,12 +576,17 @@
 
 <div class="viewcode-block" id="str2multipolygon">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.str2multipolygon">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">str2multipolygon</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">str2multipolygon</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MultiPolygon</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert string PTS data into a polygon.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      s (str): the cryptic string that we attempt to make valid polygons from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        MultiPolygon: the geometry of this outlook</span>
+<span class="sd">        list[str]: any error messages encountered during processing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># 1. Generate list of line segments, no conditioning is done.</span>
     <span class="n">segments_raw</span> <span class="o">=</span> <span class="n">get_segments_from_text</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="c1"># 2. Quality Control the segments, splitting naughty ones that cross twice</span>
@@ -593,8 +597,18 @@
             <span class="n">segments</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
     <span class="c1"># 3. Convert segments into what they are</span>
     <span class="n">polygons</span><span class="p">,</span> <span class="n">interiors</span><span class="p">,</span> <span class="n">linestrings</span> <span class="o">=</span> <span class="n">convert_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+    <span class="c1"># Account for situation of an interior without a polygon (likely reversed)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">polygons</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">linestrings</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">interiors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Found one interior poly without enclosing poly, reversing...&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+        <span class="n">lr</span><span class="p">:</span> <span class="n">LinearRing</span> <span class="o">=</span> <span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">polygons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">interiors</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="c1"># we do our winding logic now</span>
-    <span class="n">polygons</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">winding_logic</span><span class="p">(</span><span class="n">linestrings</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">linestrings</span><span class="p">:</span>
+        <span class="n">polygons</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">winding_logic</span><span class="p">(</span><span class="n">linestrings</span><span class="p">))</span>
     <span class="c1"># Assign our interiors</span>
     <span class="k">for</span> <span class="n">interior</span> <span class="ow">in</span> <span class="n">interiors</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">polygons</span><span class="p">):</span>
@@ -608,7 +622,7 @@
             <span class="k">continue</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;     polygon </span><span class="si">%s</span><span class="s2"> is invalid, buffer(0)&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
         <span class="n">polygons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">polygons</span><span class="p">),</span> <span class="n">errors</span></div>
 
 
 
@@ -971,7 +985,9 @@
                     <span class="n">category</span><span class="p">,</span>
                     <span class="n">threshold</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">mp</span> <span class="o">=</span> <span class="n">str2multipolygon</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">mp</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">str2multipolygon</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">DMATCH</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">threshold</span><span class="p">):</span>
                     <span class="n">threshold</span> <span class="o">=</span> <span class="s2">&quot;0.15&quot;</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;----&gt; End threshold is: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
