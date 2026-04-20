@@ -154,7 +154,8 @@ def str2multipolygon(s) -> tuple[MultiPolygon, list[str]]:
         interiors = []
 
     # we do our winding logic now
-    polygons.extend(winding_logic(linestrings))
+    if linestrings:
+        polygons.extend(winding_logic(linestrings))
     # Assign our interiors
     for interior in interiors:
         for i, polygon in enumerate(polygons):
