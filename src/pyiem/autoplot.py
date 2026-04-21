@@ -9,6 +9,8 @@ from pyiem.network import Table as NetworkTable
 from pyiem.reference import state_names
 
 WFO_FOURCHAR = ["AFG", "GUM", "AFG", "HFO", "AFC", "AJK"]
+DEFAULT_MINVAL = {"month": 1, "zhour": 0, "hour": 0, "day": 1}
+DEFAULT_MAXVAL = {"month": 12, "zhour": 23, "hour": 23, "day": 31}
 
 
 def _handle_date_err(exp, value, fmt):
@@ -252,8 +254,8 @@ def _process_option(
     name = opt.get("name")
     default = opt.get("default")
     typ: str = opt.get("type")
-    minval = opt.get("min")
-    maxval = opt.get("max")
+    minval = opt.get("min", DEFAULT_MINVAL.get(typ))
+    maxval = opt.get("max", DEFAULT_MAXVAL.get(typ))
     optional: bool = opt.get("optional", False)
     value: str | None = fdict.get(name)
     # vtec_ps is special since we have special logic to get its value
