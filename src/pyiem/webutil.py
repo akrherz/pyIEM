@@ -14,6 +14,7 @@ from collections import namedtuple
 from collections.abc import Callable
 from datetime import datetime, timezone
 from http import HTTPStatus
+from typing import Any, Iterator
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from docutils.core import publish_string
@@ -527,6 +528,135 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
     return False
 
 
+def _iemapp_error_response(
+    environ: dict,
+    start_response: Callable,
+    errormsg: str,
+    routine: bool = False,
+    code: int = 500,
+) -> bytes:
+    """Build an iemapp text/plain error response payload."""
+    # generate a random string so we can track this request
+    uid = "".join(
+        random.choice(string.ascii_uppercase + string.digits)
+        for _ in range(12)
+    )
+    msg = (
+        "Oopsy, something failed on our end, but fear not.\n"
+        "Please contact akrherz@iastate.edu and reference "
+        f"this unique identifier: {uid}\n"
+        "Or wait a day for daryl to review the web logs and fix "
+        "the bugs he wrote.  What a life."
+    )
+    if not routine:
+        # Nicely log things about this actual request
+        sys.stderr.write(f"={uid} URL: {environ.get('REQUEST_URI')}\n")
+        sys.stderr.write(errormsg)
+    else:
+        msg = errormsg
+    start_response(
+        f"{code} {HTTPStatus(code).phrase}",
+        [("Content-type", "text/plain")],
+    )
+    return msg.encode("ascii", errors="replace")
+
+
+def _iemapp_preflight(
+    environ: dict,
+    start_response: Callable,
+    kwargs: dict[str, Any],
+    ip_throttle_secs: float | Callable,
+) -> tuple[bool, bytes | None]:
+    """Run request preflight checks and return early payload when needed."""
+    # mixed converts this to a regular dict
+    form = parse_formvars(environ).mixed()
+    form = clean_form(form)
+    if "help" in form:
+        return True, _handle_help(start_response, **kwargs)
+    add_to_environ(environ, form, **kwargs)
+    if ip_is_throttled(environ, ip_throttle_secs):
+        start_response(
+            "429 Too Many Requests",
+            [("Content-type", "text/plain")],
+        )
+        return True, b"Too many requests from your IP address, slow down."
+    return False, None
+
+
+def _normalize_iemapp_response(res: Any) -> Iterator[bytes]:
+    """Yield response chunks in a uniform iterable form."""
+    # Need to be careful here and ensure we are returning a list of bytes.
+    if isinstance(res, str):
+        yield res.encode("utf-8")
+        return
+    if isinstance(res, bytes):
+        yield res
+        return
+    if isinstance(res, (tuple, list)):
+        for chunk in res:
+            yield chunk
+        return
+    yield from res
+
+
+def _iemapp_emit_telemetry(
+    environ: dict,
+    start_time: datetime,
+    status_code: int,
+) -> None:
+    """Emit telemetry for an iemapp request."""
+    end_time = datetime.now(timezone.utc)
+    write_telemetry(
+        TELEMETRY(
+            (end_time - start_time).total_seconds(),
+            status_code,
+            environ.get("REMOTE_ADDR"),
+            environ.get("SCRIPT_NAME"),
+            environ.get("REQUEST_URI"),
+            environ.get("HTTP_HOST"),
+        )
+    )
+
+
+def _iemapp_handle_exception(
+    environ: dict,
+    start_response: Callable,
+    exp: Exception,
+) -> tuple[int, bytes]:
+    """Map exceptions to status code and user-facing payload."""
+    if isinstance(exp, (IncompleteWebRequest, NoDataFound)):
+        status_code = 422
+        return status_code, _iemapp_error_response(
+            environ,
+            start_response,
+            str(exp),
+            routine=True,
+            code=status_code,
+        )
+    if isinstance(exp, BadWebRequest):
+        status_code = 422
+        log_request(environ, multiplier=2)
+        return status_code, _iemapp_error_response(
+            environ,
+            start_response,
+            str(exp),
+            code=status_code,
+        )
+    if isinstance(exp, NewDatabaseConnectionFailure):
+        status_code = 503
+        return status_code, _iemapp_error_response(
+            environ,
+            start_response,
+            f"get_dbconn() failed with `{exp}`",
+            code=status_code,
+        )
+    return 500, _iemapp_error_response(
+        environ,
+        start_response,
+        traceback.format_exc(),
+    )
+
+
 def iemapp(**kwargs):
     """Attempt to do all kinds of nice things for the user and the developer.
 
@@ -555,10 +685,22 @@ def iemapp(**kwargs):
         3) If the wrapped function returns a str or bytes, it will be encoded
            and made into a list for the WSGI response.
 
-    Notes
-    -----
-        - raise `NoDataFound` to have a nice error message generated
+    Exception Raising
+    -----------------
+
+    The following Exception types raised within the mod_wsgi wrapped code will
+    trigger the following HTTP status codes sent to the client.
+
+        - `NoDataFound` or `IncompleteWebRequest` -> 422 Unprocessable Entity
+        - `BadWebRequest` -> 422 Unprocessable Entity (also db logged...)
+        - `NewDatabaseConnectionFailure` -> 503 Service Unavailable
+        - Any other Exception -> 500 Internal Server Error
     """
+    enable_telemetry = kwargs.get("enable_telemetry", True)
+    ip_throttle_secs = kwargs.get("ip_throttle_secs", 0)
+    memcachekey = kwargs.get("memcachekey")
+    memcacheexpire = kwargs.get("memcacheexpire", 3600)
+    content_type = kwargs.get("content_type", "application/json")
 
     def _decorator(func):
         """Decorate a function to catch exceptions and do nice things."""
@@ -566,107 +708,40 @@ def iemapp(**kwargs):
         def _wrapped(environ, start_response):
             """Decorate function."""
 
-            def _handle_exp(errormsg, routine=False, code=500):
-                # generate a random string so we can track this request
-                uid = "".join(
-                    random.choice(string.ascii_uppercase + string.digits)
-                    for _ in range(12)
-                )
-                msg = (
-                    "Oopsy, something failed on our end, but fear not.\n"
-                    "Please contact akrherz@iastate.edu and reference "
-                    f"this unique identifier: {uid}\n"
-                    "Or wait a day for daryl to review the web logs and fix "
-                    "the bugs he wrote.  What a life."
-                )
-                if not routine:
-                    # Nicely log things about this actual request
-                    sys.stderr.write(
-                        f"={uid} URL: {environ.get('REQUEST_URI')}\n"
-                    )
-                    sys.stderr.write(errormsg)
-                else:
-                    msg = errormsg
-                start_response(
-                    f"{code} {HTTPStatus(code).phrase}",
-                    [("Content-type", "text/plain")],
-                )
-                return msg.encode("ascii", errors="replace")
-
             start_time = datetime.now(timezone.utc)
             status_code = 500
             try:
-                # mixed convers this to a regular dict
-                form = parse_formvars(environ).mixed()
-                form = clean_form(form)
-                if "help" in form:
-                    yield _handle_help(start_response, **kwargs)
-                    return
-                add_to_environ(environ, form, **kwargs)
-                if ip_is_throttled(environ, kwargs.get("ip_throttle_secs", 0)):
-                    start_response(
-                        "429 Too Many Requests",
-                        [("Content-type", "text/plain")],
-                    )
-                    yield b"Too many requests from your IP address, slow down."
+                short_circuit, payload = _iemapp_preflight(
+                    environ,
+                    start_response,
+                    kwargs,
+                    ip_throttle_secs,
+                )
+                if short_circuit:
+                    yield payload
                     return
                 res = _mcall(
                     func,
                     environ,
                     start_response,
-                    kwargs.get("memcachekey"),
-                    kwargs.get("memcacheexpire", 3600),
-                    kwargs.get("content_type", "application/json"),
+                    memcachekey,
+                    memcacheexpire,
+                    content_type,
                 )
                 # If res is a generator, we should yield from it here
                 if inspect.isgenerator(res):
                     yield from res
                 # you know what assumptions do
                 status_code = 200
-            except (IncompleteWebRequest, NoDataFound) as exp:
-                # Intention is to tell the client that the server understood
-                # the request, but something is missing
-                status_code = 422
-                res = _handle_exp(str(exp), routine=True, code=status_code)
-            except BadWebRequest as exp:
-                status_code = 422
-                log_request(environ, multiplier=2)
-                res = _handle_exp(str(exp), code=status_code)
-            except NewDatabaseConnectionFailure as exp:
-                status_code = 503
-                res = _handle_exp(
-                    f"get_dbconn() failed with `{exp}`",
-                    code=status_code,
+            except Exception as exp:
+                status_code, res = _iemapp_handle_exception(
+                    environ,
+                    start_response,
+                    exp,
                 )
-            except Exception:
-                res = _handle_exp(traceback.format_exc())
-            end_time = datetime.now(timezone.utc)
-            if kwargs.get("enable_telemetry", True) and not environ.get(
-                MEMCACHED_HIT, False
-            ):
-                write_telemetry(
-                    TELEMETRY(
-                        (end_time - start_time).total_seconds(),
-                        status_code,
-                        environ.get("REMOTE_ADDR"),
-                        environ.get("SCRIPT_NAME"),
-                        environ.get("REQUEST_URI"),
-                        environ.get("HTTP_HOST"),
-                    )
-                )
-            # Need to be careful here and ensure we are returning a list
-            # of bytes
-            if isinstance(res, str):
-                yield res.encode("utf-8")
-                return
-            if isinstance(res, bytes):
-                yield res
-                return
-            if isinstance(res, (tuple, list)):
-                for r in res:
-                    yield r
-                return
-            yield from res
+            if enable_telemetry and not environ.get(MEMCACHED_HIT, False):
+                _iemapp_emit_telemetry(environ, start_time, status_code)
+            yield from _normalize_iemapp_response(res)
 
         return _wrapped
 
