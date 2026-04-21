@@ -507,20 +507,23 @@ def _mcall(
     return res
 
 
-def ip_is_throttled(environ: dict, throttle_secs: float) -> bool:
+def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
     """Return True if the REMOTE_ADDR is throttled."""
     client_ip = environ.get("REMOTE_ADDR")
     if not client_ip or client_ip.startswith(("127.", "129.186.", "10.")):
         return False
-    try:
-        mc = Client("iem-memcached:11211")
-        key = f"throttle:{client_ip}"
-        res = mc.get(key)
-        if res:
-            return True
-        mc.set(key, "1", expire=int(throttle_secs) + 1)
-    except Exception:
-        pass
+    if isinstance(throttle_secs, Callable):
+        throttle_secs = throttle_secs(environ)
+    if throttle_secs > 0:
+        try:
+            mc = Client("iem-memcached:11211")
+            key = f"throttle:{client_ip}"
+            res = mc.get(key)
+            if res:
+                return True
+            mc.set(key, "1", expire=int(throttle_secs) + 1)
+        except Exception:
+            pass
     return False
 
 
@@ -542,8 +545,9 @@ def iemapp(**kwargs):
           response.
         - allowed_as_list (list): CGI parameters that are permitted to be
           lists.
-        - ip_throttle_secs (float): Number of seconds between requests from
-          the same REMOTE_ADDR, 0 to disable, which is the default.
+        - ip_throttle_secs (float or callable): Number of seconds between
+          requests from the same REMOTE_ADDR, 0 to disable,
+          which is the default.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -589,14 +593,13 @@ def iemapp(**kwargs):
                 )
                 return msg.encode("ascii", errors="replace")
 
-            if kwargs.get("ip_throttle_secs", 0) > 0:
-                if ip_is_throttled(environ, kwargs["ip_throttle_secs"]):
-                    start_response(
-                        "429 Too Many Requests",
-                        [("Content-type", "text/plain")],
-                    )
-                    yield b"Too many requests from your IP address, slow down."
-                    return
+            if ip_is_throttled(environ, kwargs.get("ip_throttle_secs", 0)):
+                start_response(
+                    "429 Too Many Requests",
+                    [("Content-type", "text/plain")],
+                )
+                yield b"Too many requests from your IP address, slow down."
+                return
 
             start_time = datetime.now(timezone.utc)
             status_code = 500

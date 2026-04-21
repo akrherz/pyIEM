@@ -51,6 +51,23 @@ def test_xss_false_positive_ampersand():
     assert not _is_xss_payload("Bread &amp; Butter")
 
 
+def test_ip_throttled_callable():
+    """Test that the ip throttle is callable."""
+
+    @iemapp(allowed_as_list=["q"], ip_throttle_secs=lambda _x: 0)
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return f"{random.random()}"
+
+    eo = {"REMOTE_ADDR": "7.7.7.7"}
+    c = Client(application)
+    resp = c.get("/?q=1", environ_overrides=eo)
+    assert resp.status_code == 200
+    resp = c.get("/?q=1", environ_overrides=eo)
+    assert resp.status_code == 200
+
+
 def test_ip_throttled():
     """Test how our throttle behaves."""
 
