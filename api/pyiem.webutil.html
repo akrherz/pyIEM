@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post13+gd3e46973f</title>
+    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post15+g0e347b887</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=6d6239a6"></script>
+    <script src="../_static/documentation_options.js?v=473336bd"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.webutil';</script>
@@ -49,7 +49,7 @@
     <link rel="prev" title="pyiem.util module" href="pyiem.util.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post13+gd3e46973f" />
+  <meta name="docsearch:version" content="1.27.0.post15+g0e347b887" />
     <meta name="docbuild:last-update" content="Apr 21, 2026"/>
   </head>
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post13+gd3e46973f</p>
+    <p class="title logo__title">pyIEM 1.27.0.post15+g0e347b887</p>
   
 </a></div>
     
@@ -722,7 +722,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>)</p></li>
-<li><p><strong>throttle_secs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>)</p></li>
+<li><p><strong>throttle_secs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><em>Callable</em></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -751,8 +751,9 @@ the response, defaults to 3600.</p></li>
 response.</p></li>
 <li><p>allowed_as_list (list): CGI parameters that are permitted to be
 lists.</p></li>
-<li><p>ip_throttle_secs (float): Number of seconds between requests from
-the same REMOTE_ADDR, 0 to disable, which is the default.</p></li>
+<li><p>ip_throttle_secs (float or callable): Number of seconds between
+requests from the same REMOTE_ADDR, 0 to disable,
+which is the default.</p></li>
 </ul>
 </dd>
 <dt>What all this does:</dt><dd><ol class="arabic simple">

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post13+gd3e46973f</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post15+g0e347b887</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=6d6239a6"></script>
+    <script src="../../_static/documentation_options.js?v=473336bd"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post13+gd3e46973f" />
+  <meta name="docsearch:version" content="1.27.0.post15+g0e347b887" />
     <meta name="docbuild:last-update" content="Apr 21, 2026"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post13+gd3e46973f</p>
+    <p class="title logo__title">pyIEM 1.27.0.post15+g0e347b887</p>
   
 </a></div>
     
@@ -975,20 +975,23 @@
 
 <div class="viewcode-block" id="ip_is_throttled">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.ip_is_throttled">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">throttle_secs</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">throttle_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the REMOTE_ADDR is throttled.&quot;&quot;&quot;</span>
     <span class="n">client_ip</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">client_ip</span> <span class="ow">or</span> <span class="n">client_ip</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;127.&quot;</span><span class="p">,</span> <span class="s2">&quot;129.186.&quot;</span><span class="p">,</span> <span class="s2">&quot;10.&quot;</span><span class="p">)):</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">mc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;iem-memcached:11211&quot;</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;throttle:</span><span class="si">{</span><span class="n">client_ip</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">throttle_secs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="k">pass</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">throttle_secs</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="n">throttle_secs</span> <span class="o">=</span> <span class="n">throttle_secs</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">throttle_secs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;iem-memcached:11211&quot;</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;throttle:</span><span class="si">{</span><span class="n">client_ip</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">throttle_secs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
@@ -1013,8 +1016,9 @@
 <span class="sd">          response.</span>
 <span class="sd">        - allowed_as_list (list): CGI parameters that are permitted to be</span>
 <span class="sd">          lists.</span>
-<span class="sd">        - ip_throttle_secs (float): Number of seconds between requests from</span>
-<span class="sd">          the same REMOTE_ADDR, 0 to disable, which is the default.</span>
+<span class="sd">        - ip_throttle_secs (float or callable): Number of seconds between</span>
+<span class="sd">          requests from the same REMOTE_ADDR, 0 to disable,</span>
+<span class="sd">          which is the default.</span>
 
 <span class="sd">    What all this does:</span>
 <span class="sd">        1) Attempts to catch database connection errors and handle nicely</span>
@@ -1060,14 +1064,13 @@
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">]):</span>
-                    <span class="n">start_response</span><span class="p">(</span>
-                        <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
-                        <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
-                    <span class="p">)</span>
-                    <span class="k">yield</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
-                    <span class="k">return</span>
+            <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+                <span class="n">start_response</span><span class="p">(</span>
+                    <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
+                    <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+                <span class="p">)</span>
+                <span class="k">yield</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
+                <span class="k">return</span>
 
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
             <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span>
