@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post15+g0e347b887</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post17+g6acdc6e71</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=473336bd"></script>
+    <script src="../../_static/documentation_options.js?v=32e2b5d9"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post15+g0e347b887" />
+  <meta name="docsearch:version" content="1.27.0.post17+g6acdc6e71" />
     <meta name="docbuild:last-update" content="Apr 21, 2026"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post15+g0e347b887</p>
+    <p class="title logo__title">pyIEM 1.27.0.post17+g6acdc6e71</p>
   
 </a></div>
     
@@ -930,11 +930,18 @@
     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">ip_throttle_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">memcachekey</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">expire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Call the function with memcachekey handling.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">ip_throttle_secs</span><span class="p">):</span>
+        <span class="n">start_response</span><span class="p">(</span>
+            <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
     <span class="k">if</span> <span class="n">memcachekey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">memcachekey</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memcachekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">memcachekey</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
@@ -1064,14 +1071,6 @@
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
-                <span class="n">start_response</span><span class="p">(</span>
-                    <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
-                    <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
-                <span class="p">)</span>
-                <span class="k">yield</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
-                <span class="k">return</span>
-
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
             <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span>
             <span class="k">try</span><span class="p">:</span>
@@ -1086,6 +1085,7 @@
                     <span class="n">func</span><span class="p">,</span>
                     <span class="n">environ</span><span class="p">,</span>
                     <span class="n">start_response</span><span class="p">,</span>
+                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                     <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcachekey&quot;</span><span class="p">),</span>
                     <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcacheexpire&quot;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">),</span>
                     <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content_type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">),</span>
