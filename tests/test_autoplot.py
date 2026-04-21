@@ -8,6 +8,14 @@ from pyiem.autoplot import get_autoplot_context
 from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 
 
+def test_invalid_month():
+    """Test that we don't allow GIGO of a bad month."""
+    form = {"month": "13"}
+    cfg = {"arguments": [{"type": "month", "name": "month", "default": 1}]}
+    ctx = get_autoplot_context(form, cfg)
+    assert ctx["month"] == 1
+
+
 def test_260318_text_default():
     """Test that we get the default in this case."""
     form = {}
