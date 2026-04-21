@@ -464,11 +464,18 @@ def _mcall(
     func: Callable,
     environ: dict,
     start_response: Callable,
+    ip_throttle_secs: float | Callable,
     memcachekey: str | Callable | None,
     expire: int | Callable,
     content_type: str | Callable,
 ):
     """Call the function with memcachekey handling."""
+    if ip_is_throttled(environ, ip_throttle_secs):
+        start_response(
+            "429 Too Many Requests",
+            [("Content-type", "text/plain")],
+        )
+        return b"Too many requests from your IP address, slow down."
     if memcachekey is None:
         return func(environ, start_response)
     key = memcachekey if isinstance(memcachekey, str) else memcachekey(environ)
@@ -593,14 +600,6 @@ def iemapp(**kwargs):
                 )
                 return msg.encode("ascii", errors="replace")
 
-            if ip_is_throttled(environ, kwargs.get("ip_throttle_secs", 0)):
-                start_response(
-                    "429 Too Many Requests",
-                    [("Content-type", "text/plain")],
-                )
-                yield b"Too many requests from your IP address, slow down."
-                return
-
             start_time = datetime.now(timezone.utc)
             status_code = 500
             try:
@@ -615,6 +614,7 @@ def iemapp(**kwargs):
                     func,
                     environ,
                     start_response,
+                    kwargs.get("ip_throttle_secs", 0),
                     kwargs.get("memcachekey"),
                     kwargs.get("memcacheexpire", 3600),
                     kwargs.get("content_type", "application/json"),

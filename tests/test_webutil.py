@@ -54,7 +54,15 @@ def test_xss_false_positive_ampersand():
 def test_ip_throttled_callable():
     """Test that the ip throttle is callable."""
 
-    @iemapp(allowed_as_list=["q"], ip_throttle_secs=lambda _x: 0)
+    class Schema(CGIModel):
+        """Test."""
+
+        q: Annotated[int, Field(description="A")] = 0
+
+    @iemapp(
+        schema=Schema,
+        ip_throttle_secs=lambda x: 0 if x["q"] < 0 else 10,
+    )
     def application(_environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
@@ -62,9 +70,9 @@ def test_ip_throttled_callable():
 
     eo = {"REMOTE_ADDR": "7.7.7.7"}
     c = Client(application)
-    resp = c.get("/?q=1", environ_overrides=eo)
+    resp = c.get("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 200
-    resp = c.get("/?q=1", environ_overrides=eo)
+    resp = c.get("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 200
 
 
