@@ -618,6 +618,29 @@ def _iemapp_emit_telemetry(
     )
 
 
+def _parse_status_code(status: str) -> int | None:
+    """Parse integer HTTP status code from a WSGI status line."""
+    # This could raise, but this should not be accounted for.
+    return int(status.split()[0])
+
+
+def _capture_start_response(start_response: Callable) -> tuple[Callable, dict]:
+    """Wrap start_response and capture if it was called and status code."""
+    state = {
+        "started": False,
+        "status_code": None,
+    }
+
+    def _wrapped_start_response(status, headers, exc_info=None):
+        state["started"] = True
+        state["status_code"] = _parse_status_code(status)
+        if exc_info is None:
+            return start_response(status, headers)
+        return start_response(status, headers, exc_info)
+
+    return _wrapped_start_response, state
+
+
 def _iemapp_handle_exception(
     environ: dict,
     start_response: Callable,
@@ -710,10 +733,13 @@ def iemapp(**kwargs):
 
             start_time = datetime.now(timezone.utc)
             status_code = 500
+            wrapped_start_response, response_state = _capture_start_response(
+                start_response
+            )
             try:
                 short_circuit, payload = _iemapp_preflight(
                     environ,
-                    start_response,
+                    wrapped_start_response,
                     kwargs,
                     ip_throttle_secs,
                 )
@@ -723,24 +749,45 @@ def iemapp(**kwargs):
                 res = _mcall(
                     func,
                     environ,
-                    start_response,
+                    wrapped_start_response,
                     memcachekey,
                     memcacheexpire,
                     content_type,
                 )
-                # If res is a generator, we should yield from it here
-                if inspect.isgenerator(res):
-                    yield from res
                 # you know what assumptions do
                 status_code = 200
+                # Keep generator iteration in the try block so downstream
+                # iteration exceptions are mapped by our exception handler.
+                if inspect.isgenerator(res):
+                    yield from _normalize_iemapp_response(res)
+                    if enable_telemetry and not environ.get(
+                        MEMCACHED_HIT, False
+                    ):
+                        _iemapp_emit_telemetry(
+                            environ, start_time, status_code
+                        )
+                    return
             except Exception as exp:
-                status_code, res = _iemapp_handle_exception(
-                    environ,
-                    start_response,
-                    exp,
-                )
+                if response_state["started"]:
+                    # Once streaming has started, we cannot safely restart
+                    # the response with a new status/body.
+                    LOG.exception(
+                        "iemapp: exception raised after start_response."
+                    )
+                    res = []
+                    status_code = response_state["status_code"] or status_code
+                else:
+                    status_code, res = _iemapp_handle_exception(
+                        environ,
+                        wrapped_start_response,
+                        exp,
+                    )
             if enable_telemetry and not environ.get(MEMCACHED_HIT, False):
-                _iemapp_emit_telemetry(environ, start_time, status_code)
+                _iemapp_emit_telemetry(
+                    environ,
+                    start_time,
+                    response_state["status_code"] or status_code,
+                )
             yield from _normalize_iemapp_response(res)
 
         return _wrapped

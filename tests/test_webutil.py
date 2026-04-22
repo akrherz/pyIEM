@@ -298,6 +298,53 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
     assert write_mock.call_count == 1
 
 
+def test_iemapp_telemetry_uses_captured_start_response_status():
+    """Test telemetry logs status emitted by downstream start_response."""
+
+    @iemapp()
+    def application(_environ, start_response):
+        """Test."""
+        start_response("404 Not Found", [("Content-type", "text/plain")])
+        return b"missing"
+
+    with mock.patch("pyiem.webutil.write_telemetry") as write_mock:
+        c = Client(application)
+        resp = c.get("/")
+    assert resp.status_code == 404
+    assert write_mock.call_count == 1
+    assert write_mock.call_args[0][0].status_code == 404
+
+
+def test_iemapp_generator_exception_after_start_response():
+    """Test post-start generator exceptions are logged without restart."""
+
+    start_response_calls = []
+
+    @iemapp()
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        yield b"first"
+        raise RuntimeError("boom")
+
+    environ = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "",
+        "REQUEST_URI": "/",
+        "REMOTE_ADDR": "127.0.0.1",
+    }
+
+    def sr(status, headers):
+        start_response_calls.append((status, headers))
+
+    with mock.patch("pyiem.webutil.LOG.exception") as mock_exception:
+        res = list(application(environ, sr))
+    assert res == [b"first"]
+    assert len(start_response_calls) == 1
+    assert start_response_calls[0][0] == "200 OK"
+    assert mock_exception.call_count == 1
+
+
 def test_sts_ets_are_set():
     """Test that we cross set things properly."""
 
