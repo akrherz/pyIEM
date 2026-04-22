@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post17+g6acdc6e71</title>
+    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post21+g58da628eb</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=32e2b5d9"></script>
+    <script src="../_static/documentation_options.js?v=b5c99873"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.webutil';</script>
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.util module" href="pyiem.util.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post17+g6acdc6e71" />
-    <meta name="docbuild:last-update" content="Apr 21, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post21+g58da628eb" />
+    <meta name="docbuild:last-update" content="Apr 22, 2026"/>
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post17+g6acdc6e71</p>
+    <p class="title logo__title">pyIEM 1.27.0.post21+g58da628eb</p>
   
 </a></div>
     
@@ -764,10 +764,19 @@ and made into a list for the WSGI response.</p></li>
 </ol>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>raise <cite>NoDataFound</cite> to have a nice error message generated</p></li>
+<section id="exception-raising">
+<h2>Exception Raising<a class="headerlink" href="#exception-raising" title="Link to this heading">#</a></h2>
+<p>The following Exception types raised within the mod_wsgi wrapped code will
+trigger the following HTTP status codes sent to the client.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>NoDataFound</cite> or <cite>IncompleteWebRequest</cite> -&gt; 422 Unprocessable Entity</p></li>
+<li><p><cite>BadWebRequest</cite> -&gt; 422 Unprocessable Entity (also db logged…)</p></li>
+<li><p><cite>NewDatabaseConnectionFailure</cite> -&gt; 503 Service Unavailable</p></li>
+<li><p>Any other Exception -&gt; 500 Internal Server Error</p></li>
 </ul>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>

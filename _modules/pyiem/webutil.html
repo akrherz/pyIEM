@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post17+g6acdc6e71</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post21+g58da628eb</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=32e2b5d9"></script>
+    <script src="../../_static/documentation_options.js?v=b5c99873"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post17+g6acdc6e71" />
-    <meta name="docbuild:last-update" content="Apr 21, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post21+g58da628eb" />
+    <meta name="docbuild:last-update" content="Apr 22, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post17+g6acdc6e71</p>
+    <p class="title logo__title">pyIEM 1.27.0.post21+g58da628eb</p>
   
 </a></div>
     
@@ -450,6 +450,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPStatus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">docutils.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">publish_string</span>
@@ -930,18 +931,11 @@
     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">ip_throttle_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">memcachekey</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">expire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Call the function with memcachekey handling.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">ip_throttle_secs</span><span class="p">):</span>
-        <span class="n">start_response</span><span class="p">(</span>
-            <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
-            <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
     <span class="k">if</span> <span class="n">memcachekey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">memcachekey</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memcachekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">memcachekey</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
@@ -1003,6 +997,158 @@
 
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_iemapp_error_response</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">errormsg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">routine</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build an iemapp text/plain error response payload.&quot;&quot;&quot;</span>
+    <span class="c1"># generate a random string so we can track this request</span>
+    <span class="n">uid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Oopsy, something failed on our end, but fear not.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Please contact akrherz@iastate.edu and reference &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;this unique identifier: </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Or wait a day for daryl to review the web logs and fix &quot;</span>
+        <span class="s2">&quot;the bugs he wrote.  What a life.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">routine</span><span class="p">:</span>
+        <span class="c1"># Nicely log things about this actual request</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> URL: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">errormsg</span>
+    <span class="n">start_response</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">HTTPStatus</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">phrase</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iemapp_preflight</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">ip_throttle_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run request preflight checks and return early payload when needed.&quot;&quot;&quot;</span>
+    <span class="c1"># mixed converts this to a regular dict</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">parse_formvars</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span><span class="o">.</span><span class="n">mixed</span><span class="p">()</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;help&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">_handle_help</span><span class="p">(</span><span class="n">start_response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ip_is_throttled</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">ip_throttle_secs</span><span class="p">):</span>
+        <span class="n">start_response</span><span class="p">(</span>
+            <span class="s2">&quot;429 Too Many Requests&quot;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Too many requests from your IP address, slow down.&quot;</span>
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_iemapp_response</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield response chunks in a uniform iterable form.&quot;&quot;&quot;</span>
+    <span class="c1"># Need to be careful here and ensure we are returning a list of bytes.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">res</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">res</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">chunk</span>
+        <span class="k">return</span>
+    <span class="k">yield from</span> <span class="n">res</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iemapp_emit_telemetry</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span>
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit telemetry for an iemapp request.&quot;&quot;&quot;</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">write_telemetry</span><span class="p">(</span>
+        <span class="n">TELEMETRY</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+            <span class="n">status_code</span><span class="p">,</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_status_code</span><span class="p">(</span><span class="n">status</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse integer HTTP status code from a WSGI status line.&quot;&quot;&quot;</span>
+    <span class="c1"># This could raise, but this should not be accounted for.</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_capture_start_response</span><span class="p">(</span><span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap start_response and capture if it was called and status code.&quot;&quot;&quot;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;started&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;status_code&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_wrapped_start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;started&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;status_code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parse_status_code</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exc_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_wrapped_start_response</span><span class="p">,</span> <span class="n">state</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iemapp_handle_exception</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">exp</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map exceptions to status code and user-facing payload.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="p">(</span><span class="n">IncompleteWebRequest</span><span class="p">,</span> <span class="n">NoDataFound</span><span class="p">)):</span>
+        <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
+        <span class="k">return</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">_iemapp_error_response</span><span class="p">(</span>
+            <span class="n">environ</span><span class="p">,</span>
+            <span class="n">start_response</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span>
+            <span class="n">routine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">BadWebRequest</span><span class="p">):</span>
+        <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
+        <span class="n">log_request</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">_iemapp_error_response</span><span class="p">(</span>
+            <span class="n">environ</span><span class="p">,</span>
+            <span class="n">start_response</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">NewDatabaseConnectionFailure</span><span class="p">):</span>
+        <span class="n">status_code</span> <span class="o">=</span> <span class="mi">503</span>
+        <span class="k">return</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">_iemapp_error_response</span><span class="p">(</span>
+            <span class="n">environ</span><span class="p">,</span>
+            <span class="n">start_response</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;get_dbconn() failed with `</span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">,</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="mi">500</span><span class="p">,</span> <span class="n">_iemapp_error_response</span><span class="p">(</span>
+        <span class="n">environ</span><span class="p">,</span>
+        <span class="n">start_response</span><span class="p">,</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span>
+    <span class="p">)</span>
+
+
 <div class="viewcode-block" id="iemapp">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.iemapp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">iemapp</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1033,10 +1179,22 @@
 <span class="sd">        3) If the wrapped function returns a str or bytes, it will be encoded</span>
 <span class="sd">           and made into a list for the WSGI response.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">        - raise `NoDataFound` to have a nice error message generated</span>
+<span class="sd">    Exception Raising</span>
+<span class="sd">    -----------------</span>
+
+<span class="sd">    The following Exception types raised within the mod_wsgi wrapped code will</span>
+<span class="sd">    trigger the following HTTP status codes sent to the client.</span>
+
+<span class="sd">        - `NoDataFound` or `IncompleteWebRequest` -&gt; 422 Unprocessable Entity</span>
+<span class="sd">        - `BadWebRequest` -&gt; 422 Unprocessable Entity (also db logged...)</span>
+<span class="sd">        - `NewDatabaseConnectionFailure` -&gt; 503 Service Unavailable</span>
+<span class="sd">        - Any other Exception -&gt; 500 Internal Server Error</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enable_telemetry</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_telemetry&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">ip_throttle_secs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">memcachekey</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcachekey&quot;</span><span class="p">)</span>
+    <span class="n">memcacheexpire</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcacheexpire&quot;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+    <span class="n">content_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content_type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorate a function to catch exceptions and do nice things.&quot;&quot;&quot;</span>
@@ -1044,101 +1202,64 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">_wrapped</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Decorate function.&quot;&quot;&quot;</span>
 
-            <span class="k">def</span><span class="w"> </span><span class="nf">_handle_exp</span><span class="p">(</span><span class="n">errormsg</span><span class="p">,</span> <span class="n">routine</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-                <span class="c1"># generate a random string so we can track this request</span>
-                <span class="n">uid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
-                <span class="p">)</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s2">&quot;Oopsy, something failed on our end, but fear not.</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="s2">&quot;Please contact akrherz@iastate.edu and reference &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;this unique identifier: </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="s2">&quot;Or wait a day for daryl to review the web logs and fix &quot;</span>
-                    <span class="s2">&quot;the bugs he wrote.  What a life.&quot;</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">routine</span><span class="p">:</span>
-                    <span class="c1"># Nicely log things about this actual request</span>
-                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;=</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> URL: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="n">errormsg</span>
-                <span class="n">start_response</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">HTTPStatus</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">phrase</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
-                <span class="p">)</span>
-                <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
-
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
             <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span>
+            <span class="n">wrapped_start_response</span><span class="p">,</span> <span class="n">response_state</span> <span class="o">=</span> <span class="n">_capture_start_response</span><span class="p">(</span>
+                <span class="n">start_response</span>
+            <span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># mixed convers this to a regular dict</span>
-                <span class="n">form</span> <span class="o">=</span> <span class="n">parse_formvars</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span><span class="o">.</span><span class="n">mixed</span><span class="p">()</span>
-                <span class="n">form</span> <span class="o">=</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;help&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">_handle_help</span><span class="p">(</span><span class="n">start_response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">short_circuit</span><span class="p">,</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">_iemapp_preflight</span><span class="p">(</span>
+                    <span class="n">environ</span><span class="p">,</span>
+                    <span class="n">wrapped_start_response</span><span class="p">,</span>
+                    <span class="n">kwargs</span><span class="p">,</span>
+                    <span class="n">ip_throttle_secs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">short_circuit</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">payload</span>
                     <span class="k">return</span>
-                <span class="n">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">_mcall</span><span class="p">(</span>
                     <span class="n">func</span><span class="p">,</span>
                     <span class="n">environ</span><span class="p">,</span>
-                    <span class="n">start_response</span><span class="p">,</span>
-                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ip_throttle_secs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcachekey&quot;</span><span class="p">),</span>
-                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcacheexpire&quot;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">),</span>
-                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content_type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">),</span>
+                    <span class="n">wrapped_start_response</span><span class="p">,</span>
+                    <span class="n">memcachekey</span><span class="p">,</span>
+                    <span class="n">memcacheexpire</span><span class="p">,</span>
+                    <span class="n">content_type</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="c1"># If res is a generator, we should yield from it here</span>
-                <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
-                    <span class="k">yield from</span> <span class="n">res</span>
                 <span class="c1"># you know what assumptions do</span>
                 <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span>
-            <span class="k">except</span> <span class="p">(</span><span class="n">IncompleteWebRequest</span><span class="p">,</span> <span class="n">NoDataFound</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-                <span class="c1"># Intention is to tell the client that the server understood</span>
-                <span class="c1"># the request, but something is missing</span>
-                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span> <span class="n">routine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">BadWebRequest</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
-                <span class="n">log_request</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">NewDatabaseConnectionFailure</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">503</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;get_dbconn() failed with `</span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">,</span>
-                    <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_telemetry&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">MEMCACHED_HIT</span><span class="p">,</span> <span class="kc">False</span>
-            <span class="p">):</span>
-                <span class="n">write_telemetry</span><span class="p">(</span>
-                    <span class="n">TELEMETRY</span><span class="p">(</span>
-                        <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
-                        <span class="n">status_code</span><span class="p">,</span>
-                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
-                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
-                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
-                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+                <span class="c1"># Keep generator iteration in the try block so downstream</span>
+                <span class="c1"># iteration exceptions are mapped by our exception handler.</span>
+                <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+                    <span class="k">yield from</span> <span class="n">_normalize_iemapp_response</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">enable_telemetry</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                        <span class="n">MEMCACHED_HIT</span><span class="p">,</span> <span class="kc">False</span>
+                    <span class="p">):</span>
+                        <span class="n">_iemapp_emit_telemetry</span><span class="p">(</span>
+                            <span class="n">environ</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">status_code</span>
+                        <span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">response_state</span><span class="p">[</span><span class="s2">&quot;started&quot;</span><span class="p">]:</span>
+                    <span class="c1"># Once streaming has started, we cannot safely restart</span>
+                    <span class="c1"># the response with a new status/body.</span>
+                    <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+                        <span class="s2">&quot;iemapp: exception raised after start_response.&quot;</span>
                     <span class="p">)</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">status_code</span> <span class="o">=</span> <span class="n">response_state</span><span class="p">[</span><span class="s2">&quot;status_code&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">status_code</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">status_code</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">_iemapp_handle_exception</span><span class="p">(</span>
+                        <span class="n">environ</span><span class="p">,</span>
+                        <span class="n">wrapped_start_response</span><span class="p">,</span>
+                        <span class="n">exp</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">if</span> <span class="n">enable_telemetry</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">MEMCACHED_HIT</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">_iemapp_emit_telemetry</span><span class="p">(</span>
+                    <span class="n">environ</span><span class="p">,</span>
+                    <span class="n">start_time</span><span class="p">,</span>
+                    <span class="n">response_state</span><span class="p">[</span><span class="s2">&quot;status_code&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">status_code</span><span class="p">,</span>
                 <span class="p">)</span>
-            <span class="c1"># Need to be careful here and ensure we are returning a list</span>
-            <span class="c1"># of bytes</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">res</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-                <span class="k">return</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">res</span>
-                <span class="k">return</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">r</span>
-                <span class="k">return</span>
-            <span class="k">yield from</span> <span class="n">res</span>
+            <span class="k">yield from</span> <span class="n">_normalize_iemapp_response</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">_wrapped</span>
 
