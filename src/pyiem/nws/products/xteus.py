@@ -50,10 +50,16 @@ def _parse_xml(textprod: TextProduct) -> pd.DataFrame:
     suffix = "-"
     for param in root.findall("data/parameters"):
         for child in param:
+            value_text = child.find("value").text
+            if value_text is None:
+                textprod.warnings.append(
+                    "Found a value with no text, skipping."
+                )
+                continue
             key = param.attrib["applicable-location"]
             if key in used:
                 textprod.warnings.append(
-                    "Found uplicated applicable-location, working around."
+                    "Found duplicated applicable-location, working around."
                 )
                 key = f"{key}{suffix}"
                 suffix += "-"
@@ -66,7 +72,7 @@ def _parse_xml(textprod: TextProduct) -> pd.DataFrame:
                     "sts": timelayout[tkey]["sts"],
                     "ets": timelayout[tkey]["ets"],
                     "type": child.attrib["type"],
-                    "value": float(child.find("value").text),
+                    "value": float(value_text),
                     "state": xref[key]["state"],
                     "name": xref[key]["name"],
                 }
