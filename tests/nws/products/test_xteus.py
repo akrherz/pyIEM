@@ -7,6 +7,14 @@ from pyiem.nws.products.xteus import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_260424_no_value():
+    """Test for a warning emitted for when there is no value."""
+    data = get_test_file("XTEUS/XTEUS_novalue.txt")
+    utcnow = utc(2026, 4, 22, 0, 50)
+    prod = parser(data, utcnow=utcnow)
+    assert prod.warnings
+
+
 def test_221228_duplicated_location():
     """Test that we can make assumptions about this duplicated location."""
     data = get_test_file("XTEUS/XTEUS_double.txt")

@@ -1,0 +1,96 @@
+424 
+RXUS30 KWNH 220045
+XTEUS 
+<?xml version="1.0"?>
+<dwml xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:noNamespaceSchemaLocation="http://www.nws.noaa.gov/forecasts/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="tabular-digital" operational-mode="operational">
+      <title>US High/Low Temperature Extremes</title>
+      <field>meteorological</field>
+      <category>observations</category>
+      <creation-date refresh-frequency="PT6H">2026-04-22T00:44:34Z</creation-date>
+    </product>
+    <source>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+      <production-center>National Centers For Environmental Prediction
+        <sub-center>Hydrometeorological Prediction Center</sub-center>
+      </production-center>
+      <disclaimer>http://www.nws.noaa.gov/disclaimer.html</disclaimer>
+      <credit>http://www.weather.gov/</credit>
+      <credit-logo>http://www.weather.gov/images/xml_logo.gif</credit-logo>
+      <feedback>http://www.weather.gov/survey/nws-survey.php?code=tpex</feedback>
+    </source>
+  </head>
+<data>
+  <location>
+    <location-key>~KPHX</location-key>
+    <city state="AZ" summarization="conus"/>
+  </location>
+  <location>
+    <location-key>~CASA3</location-key>
+    <city state="AZ" summarization="conus">3 miles east southeast of Casa Grande</city>
+  </location>
+  <location>
+    <location-key>~TT482</location-key>
+    <city state="AZ" summarization="conus">7 miles east southeast of Fountain Hills</city>
+  </location>
+  <location>
+    <location-key>~</location-key>
+    <city state="~" summarization="conus"/>
+  </location>
+  <location>
+    <location-key>~ESCM1</location-key>
+    <city state="ME" summarization="conus">4 miles east-southeast of Estcourt Station</city>
+  </location>
+  <location>
+    <location-key>~KMWN</location-key>
+    <city state="NH" summarization="conus">Mount Washington</city>
+  </location>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p10h-n1-1</layout-key>
+    <start-valid-time>2026-04-21T14:00:00</start-valid-time>
+    <end-valid-time>2026-04-22T00:00:00</end-valid-time>
+  </time-layout>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p13h-n1-1</layout-key>
+    <start-valid-time>2026-04-21T00:00:00</start-valid-time>
+    <end-valid-time>2026-04-21T13:00:00</end-valid-time>
+  </time-layout>
+  <parameters applicable-location="~KPHX">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p10h-n1-1">
+      <name>National High Temperature</name>
+      <value>96</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~CASA3">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p10h-n1-1">
+      <name>National High Temperature</name>
+      <value>96</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~TT482">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p10h-n1-1">
+      <name>National High Temperature</name>
+      <value>96</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p10h-n1-1">
+      <name>National High Temperature</name>
+      <value></value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~ESCM1">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>3</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~KMWN">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>3</value>
+    </temperature>
+  </parameters>
+</data>
+</dwml>
