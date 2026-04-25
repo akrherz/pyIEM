@@ -1,6 +1,8 @@
 """Testing of pyiem.database"""
 
 # third party
+from contextlib import contextmanager
+
 import numpy as np
 import pytest
 
@@ -41,6 +43,38 @@ def test_with_sqlalchemy_conn():
         assert conn is not None
 
     foo(1, kwarg1=2)
+
+
+def test_with_sqlalchemy_conn_generator(monkeypatch):
+    """Test decorator keeps connection open while generator is consumed."""
+    state = {"entered": 0, "exited": 0}
+
+    @contextmanager
+    def fake_get_sqlalchemy_conn(_name, **_kwargs):
+        state["entered"] += 1
+        try:
+            yield object()
+        finally:
+            state["exited"] += 1
+
+    monkeypatch.setattr(
+        "pyiem.database.get_sqlalchemy_conn", fake_get_sqlalchemy_conn
+    )
+
+    @with_sqlalchemy_conn("coop")
+    def foo(conn=None):
+        assert conn is not None
+        yield 1
+        assert state["exited"] == 0
+        yield 2
+
+    gen = foo()
+    assert state["entered"] == 0
+    assert next(gen) == 1
+    assert state["entered"] == 1
+    assert state["exited"] == 0
+    assert list(gen) == [2]
+    assert state["exited"] == 1
 
 
 def test_sql_helper():

@@ -1,11 +1,11 @@
 """Database helpers."""
 
-# stdlib
 import getpass
+import inspect
 from contextlib import contextmanager
+from functools import wraps
 from typing import Generator
 
-# third party
 import numpy as np
 import psycopg
 from psycopg.adapt import Dumper
@@ -213,6 +213,16 @@ def with_sqlalchemy_conn(name: str, **kwargs):
     """
 
     def decorator(func):
+        if inspect.isgeneratorfunction(func):
+
+            @wraps(func)
+            def generator_wrapper(*args, **kwds):
+                with get_sqlalchemy_conn(name, **kwargs) as conn:
+                    yield from func(*args, **kwds, conn=conn)
+
+            return generator_wrapper
+
+        @wraps(func)
         def wrapper(*args, **kwds):
             with get_sqlalchemy_conn(name, **kwargs) as conn:
                 return func(*args, **kwds, conn=conn)

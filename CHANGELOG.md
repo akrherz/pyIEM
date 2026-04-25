@@ -21,6 +21,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Support `with_sqlalchemy_conn` to decorate a generator.
+
 ## **1.27.0** (14 Apr 2026)
 
 ### API Changes
