@@ -8,6 +8,8 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - [SHEF] Tweak narrative storage to re-include the `:` delimiter.
+- Disable IEMAccess write of wind information from the DSM due to inprecision
+  of reported units in MPH.
 - Return signature of `str2multipolygon` changed to include a list of errors.
 
 ### New Features
