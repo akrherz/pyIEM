@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.27.0.post25+g25a0baf19</title>
+    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.27.0.post27+g4e583589b</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=12cc7585"></script>
+    <script src="../../../../_static/documentation_options.js?v=247211c2"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/dsm';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post25+g25a0baf19" />
-    <meta name="docbuild:last-update" content="Apr 25, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post27+g4e583589b" />
+    <meta name="docbuild:last-update" content="Apr 27, 2026"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post25+g25a0baf19</p>
+    <p class="title logo__title">pyIEM 1.27.0.post27+g4e583589b</p>
   
 </a></div>
     
@@ -442,8 +442,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRACE_VALUE</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">utc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.wmo</span><span class="w"> </span><span class="kn">import</span> <span class="n">WMOProduct</span>
@@ -592,7 +590,11 @@
 <div class="viewcode-block" id="DSMProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">product_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist to database given the transaction object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist to database given the transaction object.</span>
+
+<span class="sd">        NOTE: The wind information is not persisted as the units of integer</span>
+<span class="sd">        MPH do not play well with the METAR KT source.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -610,30 +612,6 @@
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
             <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;pday&quot;</span><span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TRACE_VALUE</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
-
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sped_max&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;max_sknt&quot;</span><span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;miles / hour&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;knots&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
-            <span class="p">)</span>
-
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_max</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;max_sknt_ts&quot;</span><span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sped_gust_max&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;max_gust&quot;</span><span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;miles / hour&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;knots&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
-            <span class="p">)</span>
-
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_gust_max</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;max_gust_ts&quot;</span><span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cols</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
