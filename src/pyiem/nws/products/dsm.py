@@ -3,8 +3,6 @@
 import re
 from datetime import datetime, timedelta
 
-from metpy.units import units
-
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc
 from pyiem.wmo import WMOProduct
@@ -137,7 +135,11 @@ class DSMProduct:
         )
 
     def sql(self, txn, product_id: str = None):
-        """Persist to database given the transaction object."""
+        """Persist to database given the transaction object.
+
+        NOTE: The wind information is not persisted as the units of integer
+        MPH do not play well with the METAR KT source.
+        """
         cols = []
         args = []
 
@@ -155,30 +157,6 @@ class DSMProduct:
         if val is not None and val != "M":
             cols.append("pday")
             args.append(TRACE_VALUE if val == "T" else float(val) / 100.0)
-
-        val = self.groupdict.get("sped_max")
-        if val is not None:
-            cols.append("max_sknt")
-            args.append(
-                (int(val) * units("miles / hour")).to(units("knots")).m
-            )
-
-        val = self.time_sped_max
-        if val is not None:
-            cols.append("max_sknt_ts")
-            args.append(val)
-
-        val = self.groupdict.get("sped_gust_max")
-        if val is not None:
-            cols.append("max_gust")
-            args.append(
-                (int(val) * units("miles / hour")).to(units("knots")).m
-            )
-
-        val = self.time_sped_gust_max
-        if val is not None:
-            cols.append("max_gust_ts")
-            args.append(val)
 
         if not cols:
             return False
