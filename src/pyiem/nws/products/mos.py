@@ -3,12 +3,31 @@ Supports parsing of Textual Model Output Statistics files
 """
 
 import re
+import warnings
 from datetime import timedelta
 
-from pyiem.util import utc
+from sqlalchemy.engine import Connection
+
+from pyiem.database import get_sqlalchemy_conn, sql_helper
+from pyiem.util import LOG, utc
 from pyiem.wmo import WMOProduct
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
+DATABASE_COLS = {}
+
+
+def populate_database_cols(conn: Connection):
+    """Query the database to see which variables we can store."""
+    # query the alldata table for its columns
+    res = conn.execute(
+        sql_helper("""
+            SELECT column_name from information_schema.columns
+            WHERE table_name = 'alldata'
+                   """)
+    )
+    for row in res.mappings():
+        DATABASE_COLS[row["column_name"].upper()] = True
+    LOG.info("Loaded %s columns from MOS alldata", len(DATABASE_COLS))
 
 
 def section_parser(sect):
@@ -147,8 +166,15 @@ class MOSProduct(WMOProduct):
                     # variables we don't wish to database
                     if vname in ["FHR", "HR", "UTC"]:
                         continue
-                    # save some database space :/
-                    fst += f" {REMAP_VARS.get(vname, vname)},"
+                    colname = REMAP_VARS.get(vname, vname)
+                    if colname.upper() not in DATABASE_COLS:
+                        warnings.warn(
+                            f"No database storage for column: {colname}, "
+                            "ignoring.",
+                            stacklevel=1,
+                        )
+                        continue
+                    fst += f" {colname},"
                     sst += "%s,"
                     args.append(make_null(sect["data"][ts][vname]))
                 if len(args) == 4:
@@ -177,4 +203,9 @@ class MOSProduct(WMOProduct):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Helper function"""
+    # Initial bootstrap
+    if not DATABASE_COLS:
+        with get_sqlalchemy_conn("mos") as conn:
+            populate_database_cols(conn)
+
     return MOSProduct(text, utcnow, ugc_provider, nwsli_provider)
