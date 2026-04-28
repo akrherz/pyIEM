@@ -6,9 +6,6 @@ import re
 import warnings
 from datetime import timedelta
 
-from sqlalchemy.engine import Connection
-
-from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.util import LOG, utc
 from pyiem.wmo import WMOProduct
 
@@ -16,16 +13,14 @@ REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
 DATABASE_COLS = set()
 
 
-def populate_database_cols(conn: Connection):
+def populate_database_cols(txn):
     """Query the database to see which variables we can store."""
     # query the alldata table for its columns
-    res = conn.execute(
-        sql_helper("""
-            SELECT column_name from information_schema.columns
-            WHERE table_name = 'alldata'
-                   """)
-    )
-    for row in res.mappings():
+    res = txn.execute("""
+        SELECT column_name from information_schema.columns
+        WHERE table_name = 'alldata'
+    """)
+    for row in res:
         DATABASE_COLS.add(row["column_name"].upper())
     LOG.info("Loaded %s columns from MOS alldata", len(DATABASE_COLS))
 
@@ -150,6 +145,10 @@ class MOSProduct(WMOProduct):
         Returns:
           int number of inserts made to the database
         """
+        # Initial bootstrap
+        if not DATABASE_COLS:
+            populate_database_cols(txn)
+
         inserts = 0
         for sect in self.data:
             for ts in sect["data"]:
@@ -203,9 +202,4 @@ class MOSProduct(WMOProduct):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Helper function"""
-    # Initial bootstrap
-    if not DATABASE_COLS:
-        with get_sqlalchemy_conn("mos") as conn:
-            populate_database_cols(conn)
-
     return MOSProduct(text, utcnow, ugc_provider, nwsli_provider)
