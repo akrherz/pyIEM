@@ -523,8 +523,8 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
             if res:
                 return True
             mc.set(key, "1", expire=int(throttle_secs) + 1)
-        except Exception:
-            pass
+        except Exception as exp:
+            LOG.info(exp, exc_info=True)
     return False
 
 

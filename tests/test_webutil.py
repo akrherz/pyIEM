@@ -25,6 +25,7 @@ from pyiem.webutil import (
     add_to_environ,
     ensure_list,
     iemapp,
+    ip_is_throttled,
     write_telemetry,
 )
 
@@ -49,6 +50,22 @@ def test_xss_false_positive_simple_text():
 def test_xss_false_positive_ampersand():
     # Strings with entities but benign content should not trigger
     assert not _is_xss_payload("Bread &amp; Butter")
+
+
+def test_ip_is_throttled_with_memcache_exception():
+    """Test that a memcache exception is properly handled."""
+
+    class DummyMemcacheClient:
+        """Simple in-memory memcache stand-in for deterministic testing."""
+
+        def __init__(self, _server):
+            pass
+
+        def get(self, _key):
+            raise Exception("Memcache get failed")
+
+    with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
+        assert not ip_is_throttled({"REMOTE_ADDR": "1.1.1.1"}, 1)
 
 
 def test_ip_throttled_callable():
