@@ -1,9 +1,56 @@
 """Test MOS Parsing."""
 
+import warnings
+
 import pytest
 
 from pyiem.nws.products.mos import parser as mosparser
 from pyiem.util import get_test_file, utc
+
+
+def test_bad_header():
+    """Test that ValueError is raised for an invalid product header."""
+    utcnow = utc(2026, 4, 10, 12)
+    with pytest.raises(ValueError, match="Failed to split"):
+        mosparser(get_test_file("MOS/NBS_badheader.txt"), utcnow=utcnow)
+
+
+def test_short_line():
+    """Test an ignore for a short data line."""
+    utcnow = utc(2026, 4, 10, 12)
+    prod = mosparser(get_test_file("MOS/NBS_shortline.txt"), utcnow=utcnow)
+    assert len(prod.data) == 1
+
+
+def test_bad_timestamp():
+    """Test that we get an error with a bad timestamp calculation."""
+    utcnow = utc(2026, 4, 10, 12)
+    with pytest.raises(AssertionError):
+        # Very theoretical...
+        mosparser(get_test_file("MOS/NBS_badtime.txt"), utcnow=utcnow)
+
+
+@pytest.mark.parametrize("database", ["mos"])
+def test_gh1177_nbm5(dbcursor):
+    """Test that a NBM v5 can be parsed."""
+    utcnow = utc(2026, 4, 10, 12)
+    prod = mosparser(get_test_file("MOS/NBS_v5.txt"), utcnow=utcnow)
+    assert len(prod.data) == 1
+    # Ensure no warnings are emitted
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        inserts = prod.sql(dbcursor)
+    assert inserts == 23
+
+
+@pytest.mark.parametrize("database", ["mos"])
+def test_warning_from_unknown_var(dbcursor):
+    """Test that a warning is emitted when a unaccounted for var is seen."""
+    utcnow = utc(2026, 4, 10, 12)
+    prod = mosparser(get_test_file("MOS/NBS_unknown_var.txt"), utcnow=utcnow)
+    with pytest.warns(UserWarning, match="column: XXX"):
+        inserts = prod.sql(dbcursor)
+    assert inserts == 23
 
 
 @pytest.mark.parametrize("z", ["12", "15", "21"])

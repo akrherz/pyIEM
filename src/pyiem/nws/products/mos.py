@@ -3,12 +3,26 @@ Supports parsing of Textual Model Output Statistics files
 """
 
 import re
+import warnings
 from datetime import timedelta
 
-from pyiem.util import utc
+from pyiem.util import LOG, utc
 from pyiem.wmo import WMOProduct
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
+DATABASE_COLS = set()
+
+
+def populate_database_cols(txn):
+    """Query the database to see which variables we can store."""
+    # query the alldata table for its columns
+    res = txn.execute("""
+        SELECT column_name from information_schema.columns
+        WHERE table_name = 'alldata'
+    """)
+    for row in res:
+        DATABASE_COLS.add(row["column_name"].upper())
+    LOG.info("Loaded %s columns from MOS alldata", len(DATABASE_COLS))
 
 
 def section_parser(sect):
@@ -60,9 +74,9 @@ def section_parser(sect):
         times.append(ts)
         data[ts] = {}
     # Double check
-    for ts in data:
-        if ts < initts:
-            raise AssertionError(f"Computed ts of {ts} < initts {initts}")
+    bad_ts = [ts for ts in times if ts < initts]
+    if bad_ts:
+        raise AssertionError(f"Computed ts of {bad_ts[0]} < initts {initts}")
 
     chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
@@ -131,6 +145,10 @@ class MOSProduct(WMOProduct):
         Returns:
           int number of inserts made to the database
         """
+        # Initial bootstrap
+        if not DATABASE_COLS:
+            populate_database_cols(txn)
+
         inserts = 0
         for sect in self.data:
             for ts in sect["data"]:
@@ -147,8 +165,15 @@ class MOSProduct(WMOProduct):
                     # variables we don't wish to database
                     if vname in ["FHR", "HR", "UTC"]:
                         continue
-                    # save some database space :/
-                    fst += f" {REMAP_VARS.get(vname, vname)},"
+                    colname = REMAP_VARS.get(vname, vname)
+                    if colname.upper() not in DATABASE_COLS:
+                        warnings.warn(
+                            f"No database storage for column: {colname}, "
+                            "ignoring.",
+                            stacklevel=2,
+                        )
+                        continue
+                    fst += f" {colname},"
                     sst += "%s,"
                     args.append(make_null(sect["data"][ts][vname]))
                 if len(args) == 4:
@@ -172,7 +197,7 @@ class MOSProduct(WMOProduct):
         )
         self.data = list(map(section_parser, sections))
         if not sections:
-            raise Exception("Failed to split MOS Product")
+            raise ValueError("Failed to split MOS Product")
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
