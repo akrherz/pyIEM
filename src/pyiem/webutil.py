@@ -516,15 +516,18 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
     if isinstance(throttle_secs, Callable):
         throttle_secs = throttle_secs(environ)
     if throttle_secs > 0:
+        # No connection happens until it is used, so this should not fail
+        mc = Client("iem-memcached:11211")
+        key = f"throttle:{client_ip}"
         try:
-            mc = Client("iem-memcached:11211")
-            key = f"throttle:{client_ip}"
             res = mc.get(key)
             if res:
                 return True
             mc.set(key, "1", expire=int(throttle_secs) + 1)
         except Exception as exp:
             LOG.info(exp, exc_info=True)
+        finally:
+            mc.close()
     return False
 
 

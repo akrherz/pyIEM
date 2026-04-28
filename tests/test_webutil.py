@@ -59,10 +59,13 @@ def test_ip_is_throttled_with_memcache_exception():
         """Simple in-memory memcache stand-in for deterministic testing."""
 
         def __init__(self, _server):
-            pass
+            """."""
 
         def get(self, _key):
             raise Exception("Memcache get failed")
+
+        def close(self):
+            """."""
 
     with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
         assert not ip_is_throttled({"REMOTE_ADDR": "1.1.1.1"}, 1)
