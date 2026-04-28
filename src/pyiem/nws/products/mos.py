@@ -79,9 +79,8 @@ def section_parser(sect):
         times.append(ts)
         data[ts] = {}
     # Double check
-    for ts in data:
-        if ts < initts:
-            raise AssertionError(f"Computed ts of {ts} < initts {initts}")
+    if any(ts < initts for ts in data):
+        raise AssertionError(f"Computed ts of {ts} < initts {initts}")
 
     chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
@@ -198,7 +197,7 @@ class MOSProduct(WMOProduct):
         )
         self.data = list(map(section_parser, sections))
         if not sections:
-            raise Exception("Failed to split MOS Product")
+            raise ValueError("Failed to split MOS Product")
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
