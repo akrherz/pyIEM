@@ -13,7 +13,7 @@ from pyiem.util import LOG, utc
 from pyiem.wmo import WMOProduct
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
-DATABASE_COLS = {}
+DATABASE_COLS = set()
 
 
 def populate_database_cols(conn: Connection):
@@ -26,7 +26,7 @@ def populate_database_cols(conn: Connection):
                    """)
     )
     for row in res.mappings():
-        DATABASE_COLS[row["column_name"].upper()] = True
+        DATABASE_COLS.add(row["column_name"].upper())
     LOG.info("Loaded %s columns from MOS alldata", len(DATABASE_COLS))
 
 
@@ -79,8 +79,9 @@ def section_parser(sect):
         times.append(ts)
         data[ts] = {}
     # Double check
-    if any(ts < initts for ts in data):
-        raise AssertionError(f"Computed ts of {ts} < initts {initts}")
+    bad_ts = [ts for ts in times if ts < initts]
+    if bad_ts:
+        raise AssertionError(f"Computed ts of {bad_ts[0]} < initts {initts}")
 
     chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
@@ -170,7 +171,7 @@ class MOSProduct(WMOProduct):
                         warnings.warn(
                             f"No database storage for column: {colname}, "
                             "ignoring.",
-                            stacklevel=1,
+                            stacklevel=2,
                         )
                         continue
                     fst += f" {colname},"

@@ -9,7 +9,7 @@ from pyiem.util import get_test_file, utc
 
 
 def test_bad_header():
-    """Test an ignore for a short data line."""
+    """Test that ValueError is raised for an invalid product header."""
     utcnow = utc(2026, 4, 10, 12)
     with pytest.raises(ValueError, match="Failed to split"):
         mosparser(get_test_file("MOS/NBS_badheader.txt"), utcnow=utcnow)
