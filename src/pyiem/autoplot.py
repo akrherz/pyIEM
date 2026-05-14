@@ -261,7 +261,7 @@ def _process_option(
     minval = opt.get("min", DEFAULT_MINVAL.get(typ))
     maxval = opt.get("max", DEFAULT_MAXVAL.get(typ))
     optional: bool = opt.get("optional", False)
-    value: str | None = fdict.get(name)
+    value: str | list[str] | None = fdict.get(name)
     # value needs to be either None or `str` type, anything else is a problem
     if (
         not opt.get("multiple", False)
