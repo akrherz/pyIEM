@@ -4,7 +4,11 @@ import re
 from datetime import date, datetime, timedelta
 from html import escape
 
-from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
+from pyiem.exceptions import (
+    BadWebRequest,
+    IncompleteWebRequest,
+    UnknownStationException,
+)
 from pyiem.network import Table as NetworkTable
 from pyiem.reference import state_names
 
@@ -258,6 +262,16 @@ def _process_option(
     maxval = opt.get("max", DEFAULT_MAXVAL.get(typ))
     optional: bool = opt.get("optional", False)
     value: str | None = fdict.get(name)
+    # value needs to be either None or `str` type, anything else is a problem
+    if (
+        not opt.get("multiple", False)
+        and value is not None
+        and not isinstance(value, str)
+    ):
+        raise BadWebRequest(
+            f"Invalid value for parameter: {name} of type: {type(value)}, "
+            "expected a string."
+        )
     # vtec_ps is special since we have special logic to get its value
     if (
         optional

@@ -5,7 +5,19 @@ from datetime import date, datetime
 import pytest
 
 from pyiem.autoplot import get_autoplot_context
-from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
+from pyiem.exceptions import (
+    BadWebRequest,
+    IncompleteWebRequest,
+    UnknownStationException,
+)
+
+
+def test_value_provided_is_a_list():
+    """Test that we don't allow this GIGO to have downstream bugs."""
+    form = {"month": ["1", "2"]}
+    cfg = {"arguments": [{"type": "month", "name": "month", "default": 1}]}
+    with pytest.raises(BadWebRequest):
+        get_autoplot_context(form, cfg)
 
 
 def test_invalid_month():
@@ -412,7 +424,7 @@ def test_get_autoplot_context_dates():
 
 def test_get_autoplot_context_optional():
     """Test that we require the optional flag nomenclature."""
-    form = dict(year=2011)
+    form = {"year": "2011"}
     opts = dict(
         arguments=[
             dict(type="year", name="year", optional=True, default=2012),
