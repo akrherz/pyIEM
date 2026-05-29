@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.cwa &#8212; pyIEM 1.27.0.post44+g5b5f8a25f</title>
+    <title>pyiem.nws.products.cwa &#8212; pyIEM 1.27.0.post47+g4edbb7a26</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../../_static/documentation_options.js?v=049efde2"></script>
+    <script src="../../../../_static/documentation_options.js?v=e17b3407"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/cwa';</script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post44+g5b5f8a25f" />
+  <meta name="docsearch:version" content="1.27.0.post47+g4edbb7a26" />
     <meta name="docbuild:last-update" content="May 29, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post44+g5b5f8a25f</p>
+    <p class="title logo__title">pyIEM 1.27.0.post47+g4edbb7a26</p>
   
 </a></div>
     
@@ -456,15 +456,12 @@
   <h1>Source code for pyiem.nws.products.cwa</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Center Weather Advisories (CWA)&quot;&quot;&quot;</span>
 
-<span class="c1"># Stdlib imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="c1"># Third Party</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span>
 
-<span class="c1"># Local stuff</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.cwa</span><span class="w"> </span><span class="kn">import</span> <span class="n">CWAModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.ugc</span><span class="w"> </span><span class="kn">import</span> <span class="n">str2time</span>
@@ -491,7 +488,7 @@
 <span class="p">)</span>
 <span class="n">NM_WIDE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\s|\.)(?P&lt;width&gt;\d+)\s?NM WIDE&quot;</span><span class="p">)</span>
 <span class="n">DIAMETER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;DIAM (?P&lt;diameter&gt;\d+)\s?NM&quot;</span><span class="p">)</span>
-<span class="n">CANCEL_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(CANCEL|ERROR)&quot;</span><span class="p">)</span>
+<span class="n">CANCEL_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(CANCEL|ERROR|CNCL)&quot;</span><span class="p">)</span>
 
 
 <span class="n">dirs</span> <span class="o">=</span> <span class="p">{</span>
@@ -619,6 +616,7 @@
     <span class="n">m</span> <span class="o">=</span> <span class="n">NM_WIDE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pts</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">narrative</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
         <span class="c1"># approx</span>
@@ -631,13 +629,14 @@
 
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1"># We have a point</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">DIAMETER</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-        <span class="c1"># approx</span>
-        <span class="n">diameter_deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;diameter&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">KM_NM</span> <span class="o">/</span> <span class="mf">111.0</span>
-        <span class="n">poly</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">diameter_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o">:=</span> <span class="n">DIAMETER</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="c1"># approx</span>
+            <span class="n">diameter_deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;diameter&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">KM_NM</span> <span class="o">/</span> <span class="mf">111.0</span>
+            <span class="n">poly</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">diameter_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">poly</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
         <span class="n">poly</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workdone</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
