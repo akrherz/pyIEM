@@ -168,8 +168,8 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
 
     elif len(pts) == 1:
         # We have a point
-        res = DIAMETER.search(prod.unixtext).groupdict()
-        if res:
+        if m := DIAMETER.search(prod.unixtext):
+            res = m.groupdict()
             # approx
             diameter_deg = float(res["diameter"]) * KM_NM / 111.0
             poly = Point(*pts[0]).buffer(diameter_deg / 2)

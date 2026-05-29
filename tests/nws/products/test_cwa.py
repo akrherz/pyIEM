@@ -40,6 +40,7 @@ def test_260529_handle_groupdict():
         utcnow=utcnow,
         nwsli_provider=LOCS,
     )
+    assert prod.data is None
     assert not prod.warnings
 
 
