@@ -5,6 +5,7 @@ import logging
 import os
 import random
 import string
+import sys
 import tempfile
 from datetime import datetime, timezone
 from io import BytesIO
@@ -231,6 +232,53 @@ def test_backoff():
 
     res = util.exponential_backoff(bad, _ebfactor=0)
     assert res is None
+
+
+def test_backoff_logs_caller_and_dedupes(caplog):
+    """Ensure exponential_backoff logs caller location and unique failures."""
+
+    def bad():
+        raise ValueError("Always Raises :)")
+
+    def callsite():
+        lineno = sys._getframe().f_lineno + 1
+        res = util.exponential_backoff(bad, _ebfactor=0)
+        return lineno, res
+
+    with caplog.at_level(logging.ERROR, logger="pyiem"):
+        lineno, res = callsite()
+
+    assert res is None
+    error_records = [r for r in caplog.records if r.levelno == logging.ERROR]
+    assert len(error_records) == 2
+    assert error_records[0].message == (
+        f"test_backoff_logs_caller_and_dedupes.<locals>.bad "
+        f"failure after 5 attempts from test_util.py:{lineno}"
+    )
+    assert error_records[1].message == (
+        "ValueError: Always Raises :) [repeated 5 times]"
+    )
+
+
+def test_backoff_logs_unique_messages(caplog):
+    """Ensure exponential_backoff only logs unique failure messages once."""
+    attempts = iter(["one", "one", "two", "two", "three"])
+
+    def bad():
+        raise ValueError(next(attempts))
+
+    with caplog.at_level(logging.ERROR, logger="pyiem"):
+        res = util.exponential_backoff(bad, _ebfactor=0)
+
+    assert res is None
+    messages = [
+        r.message for r in caplog.records if r.levelno == logging.ERROR
+    ]
+    assert messages[1:] == [
+        "ValueError: one [repeated 2 times]",
+        "ValueError: two [repeated 2 times]",
+        "ValueError: three",
+    ]
 
 
 def test_grid_bounds():
