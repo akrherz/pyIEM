@@ -333,15 +333,27 @@ def exponential_backoff(func, *args, **kwargs):
       _ebfactor (int,optional): Optional scale factor, allowing for faster test
     """
     ebfactor = float(kwargs.pop("_ebfactor", 5))
-    msgs = []
-    for i in range(5):
+    caller = sys._getframe(1)
+    caller_ref = (
+        f"{os.path.basename(caller.f_code.co_filename)}:{caller.f_lineno}"
+    )
+    failure_counts = {}
+    func_name = getattr(
+        func, "__qualname__", getattr(func, "__name__", str(func))
+    )
+    for _i in range(5):
         try:
             return func(*args, **kwargs)
         except Exception as exp:
-            msgs.append(f"{i + 1}/5 {func.__name__} traceback: {exp}")
+            msg = f"{type(exp).__name__}: {exp}"
+            failure_counts[msg] = failure_counts.get(msg, 0) + 1
             time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
-    logging.error("%s failure", func.__name__)
-    logging.error("\n".join(msgs))
+    LOG.error("%s failure after 5 attempts from %s", func_name, caller_ref)
+    for msg, count in failure_counts.items():
+        if count == 1:
+            LOG.error("%s", msg)
+        else:
+            LOG.error("%s [repeated %s times]", msg, count)
     return None
 
 
