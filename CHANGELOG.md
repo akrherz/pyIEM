@@ -24,6 +24,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Account for `CNCL` as a cancellation string in `CWA` products.
 - Add preflight check of MOS database write for known column storage.
 - Improve enforcement of str types into autoplot context parsing.
 - Support `with_sqlalchemy_conn` to decorate a generator.

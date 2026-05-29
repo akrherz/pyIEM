@@ -1,14 +1,11 @@
 """Center Weather Advisories (CWA)"""
 
-# Stdlib imports
 import math
 import re
 from typing import Tuple
 
-# Third Party
 from shapely.geometry import LineString, Point, Polygon
 
-# Local stuff
 from pyiem.models.cwa import CWAModel
 from pyiem.nws.product import TextProduct
 from pyiem.nws.ugc import str2time
@@ -35,7 +32,7 @@ FROM_RE = re.compile(
 )
 NM_WIDE = re.compile(r"(\s|\.)(?P<width>\d+)\s?NM WIDE")
 DIAMETER = re.compile(r"DIAM (?P<diameter>\d+)\s?NM")
-CANCEL_LINE = re.compile("(CANCEL|ERROR)")
+CANCEL_LINE = re.compile("(CANCEL|ERROR|CNCL)")
 
 
 dirs = {
@@ -158,6 +155,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     m = NM_WIDE.search(prod.unixtext)
     if not pts:
         return None, narrative
+    poly = None
     if len(pts) >= 2 and m is not None:
         res = m.groupdict()
         # approx
@@ -170,13 +168,14 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
 
     elif len(pts) == 1:
         # We have a point
-        res = DIAMETER.search(prod.unixtext).groupdict()
-        # approx
-        diameter_deg = float(res["diameter"]) * KM_NM / 111.0
-        poly = Point(*pts[0]).buffer(diameter_deg / 2)
+        if m := DIAMETER.search(prod.unixtext):
+            res = m.groupdict()
+            # approx
+            diameter_deg = float(res["diameter"]) * KM_NM / 111.0
+            poly = Point(*pts[0]).buffer(diameter_deg / 2)
     else:
         poly = Polygon(pts)
-    if not poly.is_valid:
+    if poly and not poly.is_valid:
         poly = poly.buffer(0)
         msg = "\n".join(workdone)
         if any(

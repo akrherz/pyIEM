@@ -1,10 +1,8 @@
 """CWA"""
 
-# third party
 import pytest
 from shapely.geometry import Polygon
 
-# this
 from pyiem.nws.products.cwa import parser
 from pyiem.util import get_test_file, utc
 
@@ -32,6 +30,18 @@ LOCS = {
     "YAK": {"lon": -139.67, "lat": 59.50},
     "YSC": {"lon": -71.68, "lat": 45.43},
 }
+
+
+def test_260529_handle_groupdict():
+    """Test that we don't get any warnings for this and it is handled."""
+    utcnow = utc(2026, 5, 29, 0)
+    prod = parser(
+        get_test_file("CWA/CWAZSE_groupdict.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert prod.data is None
+    assert not prod.warnings
 
 
 def test_250417_none_groupdict():
