@@ -17,6 +17,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.reference import ISO8601
 from pyiem.webutil import (
     TELEMETRY,
     CGIModel,
@@ -550,20 +551,6 @@ def test_disable_parse_times():
     assert environ["sts"] == form["sts"]
 
 
-def test_add_telemetry_bad():
-    """Test that an exception is caught."""
-    assert not write_telemetry(
-        TELEMETRY(
-            timing=1,
-            status_code=200,
-            client_addr="",
-            app="test",
-            request_uri="",
-            vhost="",
-        ),
-    )
-
-
 def test_add_telemetry():
     """Test adding something to the queue."""
     assert write_telemetry(
@@ -574,8 +561,25 @@ def test_add_telemetry():
             app="test",
             request_uri="",
             vhost="",
+            valid=datetime.now().strftime(ISO8601),
         ),
     )
+
+
+def test_add_telemetry_failure_is_swallowed():
+    """Test telemetry failures stay contained inside write_telemetry."""
+    with mock.patch("pyiem.webutil.syslog.syslog", side_effect=RuntimeError()):
+        assert not write_telemetry(
+            TELEMETRY(
+                timing=1,
+                status_code=200,
+                client_addr=None,
+                app="test",
+                request_uri="",
+                vhost="",
+                valid=datetime.now().strftime(ISO8601),
+            ),
+        )
 
 
 def test_ensure_list():

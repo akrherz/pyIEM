@@ -3,11 +3,13 @@
 import html
 import inspect
 import io
+import json
 import os
 import random
 import re
 import string
 import sys
+import syslog
 import traceback
 import warnings
 from collections import namedtuple
@@ -38,6 +40,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.reference import ISO8601
 from pyiem.templates.iem import TEMPLATE
 from pyiem.util import LOG
 
@@ -63,8 +66,17 @@ TZ_TYPOS = {
 YEAR_RE = re.compile(r"^\d{4}")
 TELEMETRY = namedtuple(
     "TELEMETRY",
-    ["timing", "status_code", "client_addr", "app", "request_uri", "vhost"],
+    [
+        "timing",
+        "status_code",
+        "client_addr",
+        "app",
+        "request_uri",
+        "vhost",
+        "valid",
+    ],
 )
+TELEMETRY_PREFIX = "Telemetry "
 XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
 
@@ -193,29 +205,21 @@ equivalent to ``?foo=1,2``.
 
 
 def write_telemetry(data: TELEMETRY) -> bool:
-    """Write telemetry to the database."""
-    # Yes, this blocks, but if this database is not working, we are in trouble
+    """Write telemetry to syslog."""
     try:
-        with get_sqlalchemy_conn("mesosite", rw=True) as conn:
-            conn.execute(
-                sql_helper(
-                    """
-                insert into website_telemetry(timing, status_code,
-                client_addr, app, request_uri, vhost)
-                values (:timing, :status_code, :client_addr,
-                :app, :request_uri, :vhost)
-                """
-                ),
+        syslog.syslog(
+            syslog.LOG_LOCAL1 | syslog.LOG_INFO,
+            TELEMETRY_PREFIX
+            + json.dumps(
                 data._asdict(),
-            )
-            conn.commit()
-        return True
-    except NewDatabaseConnectionFailure:
-        # swallow this
-        return False
+                separators=(",", ":"),
+                sort_keys=True,
+            ),
+        )
     except Exception as exp:
-        LOG.exception(exp)
-    return False
+        LOG.info("write_telemetry failed: %s", exp, exc_info=True)
+        return False
+    return True
 
 
 def ensure_list(environ, key, parse_commas=True) -> list:
@@ -617,6 +621,7 @@ def _iemapp_emit_telemetry(
             environ.get("SCRIPT_NAME"),
             environ.get("REQUEST_URI"),
             environ.get("HTTP_HOST"),
+            end_time.strftime(ISO8601),
         )
     )
 
