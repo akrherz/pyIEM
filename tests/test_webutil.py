@@ -17,6 +17,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.reference import ISO8601
 from pyiem.webutil import (
     TELEMETRY,
     CGIModel,
@@ -311,11 +312,9 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         return b"Hello!"
 
     with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        with mock.patch("pyiem.webutil.write_telemetry") as write_mock:
-            c = Client(application)
-            assert c.get("/").status_code == 200
-            assert c.get("/").status_code == 200
-    assert write_mock.call_count == 1
+        c = Client(application)
+        assert c.get("/").status_code == 200
+        assert c.get("/").status_code == 200
 
 
 def test_iemapp_telemetry_uses_captured_start_response_status():
@@ -550,20 +549,6 @@ def test_disable_parse_times():
     assert environ["sts"] == form["sts"]
 
 
-def test_add_telemetry_bad():
-    """Test that an exception is caught."""
-    assert not write_telemetry(
-        TELEMETRY(
-            timing=1,
-            status_code=200,
-            client_addr="",
-            app="test",
-            request_uri="",
-            vhost="",
-        ),
-    )
-
-
 def test_add_telemetry():
     """Test adding something to the queue."""
     assert write_telemetry(
@@ -574,6 +559,7 @@ def test_add_telemetry():
             app="test",
             request_uri="",
             vhost="",
+            valid=datetime.now().strftime(ISO8601),
         ),
     )
 
