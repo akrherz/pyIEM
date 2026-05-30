@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post52+gf9447d813</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post54+g58cc087b9</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../_static/documentation_options.js?v=b08df49e"></script>
+    <script src="../../_static/documentation_options.js?v=efc13413"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post52+gf9447d813" />
+  <meta name="docsearch:version" content="1.27.0.post54+g58cc087b9" />
     <meta name="docbuild:last-update" content="May 30, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post52+gf9447d813</p>
+    <p class="title logo__title">pyIEM 1.27.0.post54+g58cc087b9</p>
   
 </a></div>
     
@@ -460,9 +460,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">syslog</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
@@ -530,7 +530,6 @@
     <span class="p">],</span>
 <span class="p">)</span>
 <span class="n">TELEMETRY_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;Telemetry &quot;</span>
-<span class="n">TELEMETRY_SOCKET</span> <span class="o">=</span> <span class="s2">&quot;/run/rsyslog/telemetry.sock&quot;</span>
 <span class="n">XSS_SENTINEL</span> <span class="o">=</span> <span class="s2">&quot;XSS&quot;</span>
 <span class="n">MEMCACHED_HIT</span> <span class="o">=</span> <span class="s2">&quot;_mhit&quot;</span>
 
@@ -670,18 +669,19 @@
 <div class="viewcode-block" id="write_telemetry">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.write_telemetry">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">write_telemetry</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">TELEMETRY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort telemetry write.&quot;&quot;&quot;</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">TELEMETRY_PREFIX</span>
-        <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-    <span class="c1"># We need to avoid syslog as systemd/journal will intercept this and</span>
-    <span class="c1"># fill logs quickly.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write telemetry to syslog.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span> <span class="k">as</span> <span class="n">sock</span><span class="p">:</span>
-            <span class="n">sock</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">sock</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">TELEMETRY_SOCKET</span><span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">BlockingIOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
+        <span class="n">syslog</span><span class="o">.</span><span class="n">syslog</span><span class="p">(</span>
+            <span class="n">syslog</span><span class="o">.</span><span class="n">LOG_LOCAL1</span> <span class="o">|</span> <span class="n">syslog</span><span class="o">.</span><span class="n">LOG_INFO</span><span class="p">,</span>
+            <span class="n">TELEMETRY_PREFIX</span>
+            <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span>
+                <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span>
+                <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;write_telemetry failed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
