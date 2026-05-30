@@ -7,9 +7,9 @@ import json
 import os
 import random
 import re
+import socket
 import string
 import sys
-import syslog
 import traceback
 import warnings
 from collections import namedtuple
@@ -77,6 +77,7 @@ TELEMETRY = namedtuple(
     ],
 )
 TELEMETRY_PREFIX = "Telemetry "
+TELEMETRY_SOCKET = "/run/rsyslog/telemetry.sock"
 XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
 
@@ -205,19 +206,18 @@ equivalent to ``?foo=1,2``.
 
 
 def write_telemetry(data: TELEMETRY) -> bool:
-    """Write telemetry to syslog."""
+    """Best-effort telemetry write."""
+    payload = (
+        TELEMETRY_PREFIX
+        + json.dumps(data._asdict(), separators=(",", ":"), sort_keys=True)
+    ).encode("utf-8")
+    # We need to avoid syslog as systemd/journal will intercept this and
+    # fill logs quickly.
     try:
-        syslog.syslog(
-            syslog.LOG_LOCAL1 | syslog.LOG_INFO,
-            TELEMETRY_PREFIX
-            + json.dumps(
-                data._asdict(),
-                separators=(",", ":"),
-                sort_keys=True,
-            ),
-        )
-    except Exception as exp:
-        LOG.info("write_telemetry failed: %s", exp, exc_info=True)
+        with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+            sock.setblocking(False)
+            sock.sendto(payload, TELEMETRY_SOCKET)
+    except (BlockingIOError, OSError):
         return False
     return True
 

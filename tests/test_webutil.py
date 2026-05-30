@@ -20,6 +20,7 @@ from pyiem.exceptions import (
 from pyiem.reference import ISO8601
 from pyiem.webutil import (
     TELEMETRY,
+    TELEMETRY_SOCKET,
     CGIModel,
     ListOrCSVType,
     _is_xss_payload,
@@ -552,23 +553,39 @@ def test_disable_parse_times():
 
 
 def test_add_telemetry():
-    """Test adding something to the queue."""
-    assert write_telemetry(
-        TELEMETRY(
-            timing=1,
-            status_code=200,
-            client_addr=None,
-            app="test",
-            request_uri="",
-            vhost="",
-            valid=datetime.now().strftime(ISO8601),
+    """Test adding something to the telemetry socket."""
+    data = TELEMETRY(
+        timing=1,
+        status_code=200,
+        client_addr=None,
+        app="test",
+        request_uri="",
+        vhost="",
+        valid=datetime.now().strftime(ISO8601),
+    )
+    socket_mock = mock.MagicMock()
+    cm_mock = mock.MagicMock()
+    cm_mock.__enter__.return_value = socket_mock
+    cm_mock.__exit__.return_value = False
+    with mock.patch("pyiem.webutil.socket.socket", return_value=cm_mock):
+        assert write_telemetry(data)
+
+    socket_mock.setblocking.assert_called_once_with(False)
+    socket_mock.sendto.assert_called_once_with(
+        b"Telemetry "
+        + (
+            b'{"app":"test","client_addr":null,"request_uri":"",'
+            b'"status_code":200,"timing":1,"valid":"'
+            + data.valid.encode("utf-8")
+            + b'","vhost":""}'
         ),
+        TELEMETRY_SOCKET,
     )
 
 
 def test_add_telemetry_failure_is_swallowed():
     """Test telemetry failures stay contained inside write_telemetry."""
-    with mock.patch("pyiem.webutil.syslog.syslog", side_effect=RuntimeError()):
+    with mock.patch("pyiem.webutil.socket.socket", side_effect=OSError()):
         assert not write_telemetry(
             TELEMETRY(
                 timing=1,
