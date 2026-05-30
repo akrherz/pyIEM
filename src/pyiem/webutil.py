@@ -206,15 +206,19 @@ equivalent to ``?foo=1,2``.
 
 def write_telemetry(data: TELEMETRY) -> bool:
     """Write telemetry to syslog."""
-    syslog.syslog(
-        syslog.LOG_LOCAL1 | syslog.LOG_INFO,
-        TELEMETRY_PREFIX
-        + json.dumps(
-            data._asdict(),
-            separators=(",", ":"),
-            sort_keys=True,
-        ),
-    )
+    try:
+        syslog.syslog(
+            syslog.LOG_LOCAL1 | syslog.LOG_INFO,
+            TELEMETRY_PREFIX
+            + json.dumps(
+                data._asdict(),
+                separators=(",", ":"),
+                sort_keys=True,
+            ),
+        )
+    except Exception as exp:
+        LOG.info("write_telemetry failed: %s", exp, exc_info=True)
+        return False
     return True
 
 

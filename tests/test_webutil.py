@@ -312,9 +312,11 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         return b"Hello!"
 
     with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        c = Client(application)
-        assert c.get("/").status_code == 200
-        assert c.get("/").status_code == 200
+        with mock.patch("pyiem.webutil.write_telemetry") as write_mock:
+            c = Client(application)
+            assert c.get("/").status_code == 200
+            assert c.get("/").status_code == 200
+    assert write_mock.call_count == 1
 
 
 def test_iemapp_telemetry_uses_captured_start_response_status():
@@ -562,6 +564,22 @@ def test_add_telemetry():
             valid=datetime.now().strftime(ISO8601),
         ),
     )
+
+
+def test_add_telemetry_failure_is_swallowed():
+    """Test telemetry failures stay contained inside write_telemetry."""
+    with mock.patch("pyiem.webutil.syslog.syslog", side_effect=RuntimeError()):
+        assert not write_telemetry(
+            TELEMETRY(
+                timing=1,
+                status_code=200,
+                client_addr=None,
+                app="test",
+                request_uri="",
+                vhost="",
+                valid=datetime.now().strftime(ISO8601),
+            ),
+        )
 
 
 def test_ensure_list():
