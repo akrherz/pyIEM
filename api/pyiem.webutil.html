@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post47+g4edbb7a26</title>
+    <title>pyiem.webutil module &#8212; pyIEM 1.27.0.post50+g4cc79703e</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=e17b3407"></script>
+    <script src="../_static/documentation_options.js?v=222b27bc"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.webutil';</script>
@@ -50,8 +50,8 @@
     <link rel="prev" title="pyiem.util module" href="pyiem.util.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post47+g4edbb7a26" />
-    <meta name="docbuild:last-update" content="May 29, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post50+g4cc79703e" />
+    <meta name="docbuild:last-update" content="May 30, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post47+g4edbb7a26</p>
+    <p class="title logo__title">pyIEM 1.27.0.post50+g4cc79703e</p>
   
 </a></div>
     
@@ -584,7 +584,7 @@
 <p>Utility functions for iemwebfarm applications.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.webutil.TELEMETRY">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">TELEMETRY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vhost</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.webutil.TELEMETRY" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">TELEMETRY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vhost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.webutil.TELEMETRY" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.webutil.TELEMETRY.app">
@@ -614,6 +614,12 @@
 <dt class="sig sig-object py" id="pyiem.webutil.TELEMETRY.timing">
 <span class="sig-name descname"><span class="pre">timing</span></span><a class="headerlink" href="#pyiem.webutil.TELEMETRY.timing" title="Link to this definition">#</a></dt>
 <dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.webutil.TELEMETRY.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><a class="headerlink" href="#pyiem.webutil.TELEMETRY.valid" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 6</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -663,7 +669,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.webutil.write_telemetry">
 <span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">write_telemetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#write_telemetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.write_telemetry" title="Link to this definition">#</a></dt>
-<dd><p>Write telemetry to the database.</p>
+<dd><p>Write telemetry to syslog.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<a class="reference internal" href="#pyiem.webutil.TELEMETRY" title="pyiem.webutil.TELEMETRY"><em>TELEMETRY</em></a>)</p>
@@ -858,6 +864,7 @@ trigger the following HTTP status codes sent to the client.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.TELEMETRY.request_uri"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.request_uri</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.TELEMETRY.status_code"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.status_code</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.TELEMETRY.timing"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.timing</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.TELEMETRY.valid"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.valid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.TELEMETRY.vhost"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.vhost</span></code></a></li>
 </ul>
 </li>

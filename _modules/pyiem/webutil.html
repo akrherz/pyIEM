@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post47+g4edbb7a26</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post50+g4cc79703e</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../_static/documentation_options.js?v=e17b3407"></script>
+    <script src="../../_static/documentation_options.js?v=222b27bc"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post47+g4edbb7a26" />
-    <meta name="docbuild:last-update" content="May 29, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post50+g4cc79703e" />
+    <meta name="docbuild:last-update" content="May 30, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post47+g4edbb7a26</p>
+    <p class="title logo__title">pyIEM 1.27.0.post50+g4cc79703e</p>
   
 </a></div>
     
@@ -456,11 +456,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">syslog</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
@@ -491,6 +493,7 @@
     <span class="n">NewDatabaseConnectionFailure</span><span class="p">,</span>
     <span class="n">NoDataFound</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ISO8601</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.templates.iem</span><span class="w"> </span><span class="kn">import</span> <span class="n">TEMPLATE</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
 
@@ -516,8 +519,17 @@
 <span class="n">YEAR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">TELEMETRY</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
     <span class="s2">&quot;TELEMETRY&quot;</span><span class="p">,</span>
-    <span class="p">[</span><span class="s2">&quot;timing&quot;</span><span class="p">,</span> <span class="s2">&quot;status_code&quot;</span><span class="p">,</span> <span class="s2">&quot;client_addr&quot;</span><span class="p">,</span> <span class="s2">&quot;app&quot;</span><span class="p">,</span> <span class="s2">&quot;request_uri&quot;</span><span class="p">,</span> <span class="s2">&quot;vhost&quot;</span><span class="p">],</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;timing&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_addr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;app&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;request_uri&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;vhost&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;valid&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
 <span class="p">)</span>
+<span class="n">TELEMETRY_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;Telemetry &quot;</span>
 <span class="n">XSS_SENTINEL</span> <span class="o">=</span> <span class="s2">&quot;XSS&quot;</span>
 <span class="n">MEMCACHED_HIT</span> <span class="o">=</span> <span class="s2">&quot;_mhit&quot;</span>
 
@@ -657,29 +669,21 @@
 <div class="viewcode-block" id="write_telemetry">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.write_telemetry">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">write_telemetry</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">TELEMETRY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write telemetry to the database.&quot;&quot;&quot;</span>
-    <span class="c1"># Yes, this blocks, but if this database is not working, we are in trouble</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write telemetry to syslog.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="n">sql_helper</span><span class="p">(</span>
-<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                insert into website_telemetry(timing, status_code,</span>
-<span class="sd">                client_addr, app, request_uri, vhost)</span>
-<span class="sd">                values (:timing, :status_code, :client_addr,</span>
-<span class="sd">                :app, :request_uri, :vhost)</span>
-<span class="sd">                &quot;&quot;&quot;</span>
-                <span class="p">),</span>
+        <span class="n">syslog</span><span class="o">.</span><span class="n">syslog</span><span class="p">(</span>
+            <span class="n">syslog</span><span class="o">.</span><span class="n">LOG_LOCAL1</span> <span class="o">|</span> <span class="n">syslog</span><span class="o">.</span><span class="n">LOG_INFO</span><span class="p">,</span>
+            <span class="n">TELEMETRY_PREFIX</span>
+            <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span>
-            <span class="p">)</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="n">NewDatabaseConnectionFailure</span><span class="p">:</span>
-        <span class="c1"># swallow this</span>
-        <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span>
+                <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;write_telemetry failed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 
@@ -1103,6 +1107,7 @@
             <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
             <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
             <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+            <span class="n">end_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">ISO8601</span><span class="p">),</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
