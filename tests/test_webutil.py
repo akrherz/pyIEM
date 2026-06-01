@@ -19,8 +19,8 @@ from pyiem.exceptions import (
 )
 from pyiem.reference import ISO8601
 from pyiem.webutil import (
+    RSYSLOG_SIDEDOOR_SOCKET,
     TELEMETRY,
-    TELEMETRY_SOCKET,
     CGIModel,
     ListOrCSVType,
     _is_xss_payload,
@@ -553,7 +553,7 @@ def test_disable_parse_times():
 
 
 def test_add_telemetry():
-    """Test adding something to the telemetry socket."""
+    """Test adding something to the rsyslog sidedoor socket."""
     data = TELEMETRY(
         timing=1,
         status_code=200,
@@ -579,7 +579,7 @@ def test_add_telemetry():
             + data.valid.encode("utf-8")
             + b'","vhost":""}'
         ),
-        TELEMETRY_SOCKET,
+        RSYSLOG_SIDEDOOR_SOCKET,
     )
 
 

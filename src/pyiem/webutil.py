@@ -77,7 +77,10 @@ TELEMETRY = namedtuple(
     ],
 )
 TELEMETRY_PREFIX = "Telemetry "
-TELEMETRY_SOCKET = "/run/rsyslog/telemetry.sock"
+# A rsyslog socket established via akrherz/infra-ansible that is a side-door
+# to send rsyslog messages without systemd intercepting them and filling
+# journal logs
+RSYSLOG_SIDEDOOR_SOCKET = "/run/rsyslog/iemweb.sock"
 XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
 
@@ -219,8 +222,8 @@ def write_telemetry(data: TELEMETRY) -> bool:
     try:
         with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
             sock.setblocking(False)
-            sock.sendto(payload, TELEMETRY_SOCKET)
-    except (BlockingIOError, OSError):
+            sock.sendto(payload, RSYSLOG_SIDEDOOR_SOCKET)
+    except OSError:
         return False
     return True
 

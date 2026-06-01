@@ -12,7 +12,7 @@ All notable changes to this library are documented in this file.
   of reported units in MPH.
 - Return signature of `str2multipolygon` changed to include a list of errors.
 - `webutil.write_telemetry` now writes to dedicated socket
-  `/run/rsyslog/telemetry.sock` with
+  `/run/rsyslog/iemweb.sock` with
   `webutil.TELEMETRY_PREFIX` and a JSON payload string.
 
 ### New Features
