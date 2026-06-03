@@ -1,7 +1,7 @@
 """Tests for webutil."""
 
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Annotated, Optional, Union
 from zoneinfo import ZoneInfo
 
@@ -30,6 +30,20 @@ from pyiem.webutil import (
     ip_is_throttled,
     write_telemetry,
 )
+
+
+def test_telemetry_bad_ip():
+    """Test that we do not allow a bad IP within TELEMETRY."""
+    with pytest.raises(ValueError):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="not_an_ip",
+            app="test",
+            request_uri="",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
 
 
 def test_xss_detect_script_tag():
@@ -554,6 +568,7 @@ def test_disable_parse_times():
 
 def test_add_telemetry():
     """Test adding something to the rsyslog sidedoor socket."""
+    now = datetime.now(timezone.utc)
     data = TELEMETRY(
         timing=1,
         status_code=200,
@@ -561,7 +576,7 @@ def test_add_telemetry():
         app="test",
         request_uri="",
         vhost="",
-        valid=datetime.now().strftime(ISO8601),
+        valid=now.strftime(ISO8601),
     )
     socket_mock = mock.MagicMock()
     cm_mock = mock.MagicMock()
@@ -574,10 +589,10 @@ def test_add_telemetry():
     socket_mock.sendto.assert_called_once_with(
         b"<141>Telemetry "
         + (
-            b'{"app":"test","client_addr":null,"request_uri":"",'
-            b'"status_code":200,"timing":1,"valid":"'
-            + data.valid.encode("utf-8")
-            + b'","vhost":""}'
+            b'{"timing":1.0,"status_code":200,"client_addr":null,'
+            b'"app":"test","request_uri":"","vhost":"","valid":"'
+            + now.strftime(ISO8601).encode("utf-8")
+            + b'"}'
         ),
         RSYSLOG_SIDEDOOR_SOCKET,
     )

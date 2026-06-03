@@ -3,7 +3,6 @@
 import html
 import inspect
 import io
-import json
 import os
 import random
 import re
@@ -12,7 +11,6 @@ import string
 import sys
 import traceback
 import warnings
-from collections import namedtuple
 from collections.abc import Callable
 from datetime import datetime, timezone
 from http import HTTPStatus
@@ -26,6 +24,7 @@ from pydantic import (
     BaseModel,
     BeforeValidator,
     ConfigDict,
+    Field,
     ValidationError,
     WithJsonSchema,
     field_validator,
@@ -64,18 +63,36 @@ TZ_TYPOS = {
 }
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
-TELEMETRY = namedtuple(
-    "TELEMETRY",
-    [
-        "timing",
-        "status_code",
-        "client_addr",
-        "app",
-        "request_uri",
-        "vhost",
-        "valid",
-    ],
-)
+
+
+class TELEMETRY(BaseModel):
+    timing: Annotated[
+        float, Field(description="Request processing time in seconds")
+    ]
+    status_code: Annotated[int, Field(description="HTTP response code")]
+    client_addr: Annotated[
+        str | None,
+        Field(
+            pattern=(
+                r"^(([0-9]{1,3}\.){3}[0-9]{1,3}|"
+                r"([a-fA-F0-9:]+:+)+[a-fA-F0-9]+)$"
+            ),
+            description="Valid IPv4/IPv6 address",
+        ),
+    ] = None
+    app: Annotated[
+        str | None, Field(description="App generating this telemetry")
+    ] = None
+    request_uri: Annotated[str | None, Field(description="Request URI")] = None
+    vhost: Annotated[str | None, Field(description="virtual host")] = None
+    valid: Annotated[
+        datetime,
+        Field(
+            description="Timestamp when this telemetry record was generated"
+        ),
+    ]
+
+
 TELEMETRY_PREFIX = "Telemetry "
 # A rsyslog socket established via akrherz/infra-ansible that is a side-door
 # to send rsyslog messages without systemd intercepting them and filling
@@ -213,9 +230,7 @@ def write_telemetry(data: TELEMETRY) -> bool:
     # 141 is local1.notice and is critical to make this work.
     # The TELEMETRY_PREFIX becomes the syslog tag
     payload = (
-        "<141>"
-        + TELEMETRY_PREFIX
-        + json.dumps(data._asdict(), separators=(",", ":"), sort_keys=True)
+        "<141>" + TELEMETRY_PREFIX + data.model_dump_json(indent=None)
     ).encode("utf-8")
     # We need to avoid syslog as systemd/journal will intercept this and
     # fill logs quickly.
@@ -621,13 +636,13 @@ def _iemapp_emit_telemetry(
     end_time = datetime.now(timezone.utc)
     write_telemetry(
         TELEMETRY(
-            (end_time - start_time).total_seconds(),
-            status_code,
-            environ.get("REMOTE_ADDR"),
-            environ.get("SCRIPT_NAME"),
-            environ.get("REQUEST_URI"),
-            environ.get("HTTP_HOST"),
-            end_time.strftime(ISO8601),
+            timing=(end_time - start_time).total_seconds(),
+            status_code=status_code,
+            client_addr=environ.get("REMOTE_ADDR"),
+            app=environ.get("SCRIPT_NAME"),
+            request_uri=environ.get("REQUEST_URI"),
+            vhost=environ.get("HTTP_HOST"),
+            valid=end_time.strftime(ISO8601),
         )
     )
 

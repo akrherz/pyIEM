@@ -13,7 +13,8 @@ All notable changes to this library are documented in this file.
 - Return signature of `str2multipolygon` changed to include a list of errors.
 - `webutil.write_telemetry` now writes to dedicated socket
   `/run/rsyslog/iemweb.sock` with
-  `webutil.TELEMETRY_PREFIX` and a JSON payload string.
+  `webutil.TELEMETRY_PREFIX` and a JSON payload string. `webutil.TELEMETRY` is
+  a pydantic model.
 
 ### New Features
 
