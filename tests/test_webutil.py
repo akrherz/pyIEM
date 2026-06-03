@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 import mock
 import pytest
-from pydantic import AwareDatetime, Field, field_validator
+from pydantic import AwareDatetime, Field, ValidationError, field_validator
 from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
@@ -32,9 +32,37 @@ from pyiem.webutil import (
 )
 
 
+def test_telemetry_null_byte_request_uri():
+    """Ensure null bytes are not allowed in the URL."""
+    with pytest.raises(ValidationError, match="request_uri"):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="127.0.0.1",
+            app="test",
+            request_uri="/hi\x00",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
+
+
+def test_telemetry_null_byte_app():
+    """Ensure null bytes are not allowed in the URL."""
+    with pytest.raises(ValidationError, match="app"):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="127.0.0.1",
+            app="test\x00",
+            request_uri="/hi",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
+
+
 def test_telemetry_bad_ip():
     """Test that we do not allow a bad IP within TELEMETRY."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError, match="client_addr"):
         TELEMETRY(
             timing=1,
             status_code=200,

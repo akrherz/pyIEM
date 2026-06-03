@@ -40,7 +40,6 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.reference import ISO8601
 from pyiem.templates.iem import TEMPLATE
 from pyiem.util import LOG
 
@@ -88,6 +87,14 @@ class TELEMETRY(BaseModel):
             description="Timestamp when this telemetry record was generated"
         ),
     ]
+
+    @field_validator("app", "request_uri", mode="before")
+    @classmethod
+    def prevent_null_bytes(cls, v):
+        """Prevent null bytes in these fields."""
+        if isinstance(v, str) and "\x00" in v:
+            raise ValueError("Null bytes are not allowed")
+        return v
 
 
 TELEMETRY_PREFIX = "Telemetry "
@@ -639,7 +646,7 @@ def _iemapp_emit_telemetry(
             app=environ.get("SCRIPT_NAME"),
             request_uri=environ.get("REQUEST_URI"),
             vhost=environ.get("HTTP_HOST"),
-            valid=end_time.strftime(ISO8601),
+            valid=end_time,
         )
     )
 
