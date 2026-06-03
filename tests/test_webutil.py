@@ -143,13 +143,17 @@ def test_ip_throttled_callable():
 def test_ip_throttled():
     """Test how our throttle behaves."""
 
-    @iemapp(allowed_as_list=["q"], ip_throttle_secs=10)
+    @iemapp(ip_throttle_secs=10)
     def application(_environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    eo = {"REMOTE_ADDR": "8.8.8.8"}
+    random_ip = (
+        f"{random.randint(1, 255)}.{random.randint(1, 255)}."
+        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
+    )
+    eo = {"REMOTE_ADDR": random_ip}
     c = Client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 200
