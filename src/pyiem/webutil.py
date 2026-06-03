@@ -3,7 +3,6 @@
 import html
 import inspect
 import io
-import json
 import os
 import random
 import re
@@ -12,7 +11,6 @@ import string
 import sys
 import traceback
 import warnings
-from collections import namedtuple
 from collections.abc import Callable
 from datetime import datetime, timezone
 from http import HTTPStatus
@@ -26,6 +24,8 @@ from pydantic import (
     BaseModel,
     BeforeValidator,
     ConfigDict,
+    Field,
+    IPvAnyAddress,
     ValidationError,
     WithJsonSchema,
     field_validator,
@@ -40,7 +40,6 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.reference import ISO8601
 from pyiem.templates.iem import TEMPLATE
 from pyiem.util import LOG
 
@@ -64,18 +63,40 @@ TZ_TYPOS = {
 }
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
-TELEMETRY = namedtuple(
-    "TELEMETRY",
-    [
-        "timing",
-        "status_code",
-        "client_addr",
-        "app",
-        "request_uri",
-        "vhost",
-        "valid",
-    ],
-)
+
+
+class TELEMETRY(BaseModel):
+    timing: Annotated[
+        float, Field(description="Request processing time in seconds")
+    ]
+    status_code: Annotated[int, Field(description="HTTP response code")]
+    client_addr: Annotated[
+        IPvAnyAddress | None,
+        Field(
+            description="Valid IPv4/IPv6 address",
+        ),
+    ] = None
+    app: Annotated[
+        str | None, Field(description="App generating this telemetry")
+    ] = None
+    request_uri: Annotated[str | None, Field(description="Request URI")] = None
+    vhost: Annotated[str | None, Field(description="virtual host")] = None
+    valid: Annotated[
+        datetime,
+        Field(
+            description="Timestamp when this telemetry record was generated"
+        ),
+    ]
+
+    @field_validator("app", "request_uri", mode="before")
+    @classmethod
+    def prevent_null_bytes(cls, v):
+        """Prevent null bytes in these fields."""
+        if isinstance(v, str) and "\x00" in v:
+            raise ValueError("Null bytes are not allowed")
+        return v
+
+
 TELEMETRY_PREFIX = "Telemetry "
 # A rsyslog socket established via akrherz/infra-ansible that is a side-door
 # to send rsyslog messages without systemd intercepting them and filling
@@ -213,9 +234,7 @@ def write_telemetry(data: TELEMETRY) -> bool:
     # 141 is local1.notice and is critical to make this work.
     # The TELEMETRY_PREFIX becomes the syslog tag
     payload = (
-        "<141>"
-        + TELEMETRY_PREFIX
-        + json.dumps(data._asdict(), separators=(",", ":"), sort_keys=True)
+        "<141>" + TELEMETRY_PREFIX + data.model_dump_json(indent=None)
     ).encode("utf-8")
     # We need to avoid syslog as systemd/journal will intercept this and
     # fill logs quickly.
@@ -619,17 +638,20 @@ def _iemapp_emit_telemetry(
 ) -> None:
     """Emit telemetry for an iemapp request."""
     end_time = datetime.now(timezone.utc)
-    write_telemetry(
-        TELEMETRY(
-            (end_time - start_time).total_seconds(),
-            status_code,
-            environ.get("REMOTE_ADDR"),
-            environ.get("SCRIPT_NAME"),
-            environ.get("REQUEST_URI"),
-            environ.get("HTTP_HOST"),
-            end_time.strftime(ISO8601),
+    try:
+        write_telemetry(
+            TELEMETRY(
+                timing=(end_time - start_time).total_seconds(),
+                status_code=status_code,
+                client_addr=environ.get("REMOTE_ADDR"),
+                app=environ.get("SCRIPT_NAME"),
+                request_uri=environ.get("REQUEST_URI"),
+                vhost=environ.get("HTTP_HOST"),
+                valid=end_time,
+            )
         )
-    )
+    except ValidationError:
+        LOG.exception("Failed to write telemetry for request")
 
 
 def _parse_status_code(status: str) -> int | None:

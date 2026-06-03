@@ -1,13 +1,13 @@
 """Tests for webutil."""
 
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Annotated, Optional, Union
 from zoneinfo import ZoneInfo
 
 import mock
 import pytest
-from pydantic import AwareDatetime, Field, field_validator
+from pydantic import AwareDatetime, Field, ValidationError, field_validator
 from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
@@ -30,6 +30,48 @@ from pyiem.webutil import (
     ip_is_throttled,
     write_telemetry,
 )
+
+
+def test_telemetry_null_byte_request_uri():
+    """Ensure null bytes are not allowed in the URL."""
+    with pytest.raises(ValidationError, match="request_uri"):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="127.0.0.1",
+            app="test",
+            request_uri="/hi\x00",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
+
+
+def test_telemetry_null_byte_app():
+    """Ensure null bytes are not allowed in the URL."""
+    with pytest.raises(ValidationError, match="app"):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="127.0.0.1",
+            app="test\x00",
+            request_uri="/hi",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
+
+
+def test_telemetry_bad_ip():
+    """Test that we do not allow a bad IP within TELEMETRY."""
+    with pytest.raises(ValidationError, match="client_addr"):
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="not_an_ip",
+            app="test",
+            request_uri="",
+            vhost="",
+            valid=datetime.now().strftime(ISO8601),
+        )
 
 
 def test_xss_detect_script_tag():
@@ -101,13 +143,18 @@ def test_ip_throttled_callable():
 def test_ip_throttled():
     """Test how our throttle behaves."""
 
-    @iemapp(allowed_as_list=["q"], ip_throttle_secs=10)
+    @iemapp(ip_throttle_secs=10)
     def application(_environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    eo = {"REMOTE_ADDR": "8.8.8.8"}
+    # First octet can't trip our ISU self-network check, sigh
+    random_ip = (
+        f"100.{random.randint(1, 255)}."
+        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
+    )
+    eo = {"REMOTE_ADDR": random_ip}
     c = Client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 200
@@ -132,7 +179,7 @@ def test_allowed_as_list():
 
 
 def test_empty_string():
-    """Test that emptry strings are not passed through..."""
+    """Test that empty strings are not passed through..."""
 
     class MyModel(CGIModel):
         bogus: Annotated[float | None, Field("Float")] = None
@@ -554,6 +601,7 @@ def test_disable_parse_times():
 
 def test_add_telemetry():
     """Test adding something to the rsyslog sidedoor socket."""
+    now = datetime.now(timezone.utc)
     data = TELEMETRY(
         timing=1,
         status_code=200,
@@ -561,7 +609,7 @@ def test_add_telemetry():
         app="test",
         request_uri="",
         vhost="",
-        valid=datetime.now().strftime(ISO8601),
+        valid=now.strftime(ISO8601),
     )
     socket_mock = mock.MagicMock()
     cm_mock = mock.MagicMock()
@@ -574,10 +622,10 @@ def test_add_telemetry():
     socket_mock.sendto.assert_called_once_with(
         b"<141>Telemetry "
         + (
-            b'{"app":"test","client_addr":null,"request_uri":"",'
-            b'"status_code":200,"timing":1,"valid":"'
-            + data.valid.encode("utf-8")
-            + b'","vhost":""}'
+            b'{"timing":1.0,"status_code":200,"client_addr":null,'
+            b'"app":"test","request_uri":"","vhost":"","valid":"'
+            + now.strftime(ISO8601).encode("utf-8")
+            + b'"}'
         ),
         RSYSLOG_SIDEDOOR_SOCKET,
     )
