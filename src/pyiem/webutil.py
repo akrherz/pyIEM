@@ -25,6 +25,7 @@ from pydantic import (
     BeforeValidator,
     ConfigDict,
     Field,
+    IPvAnyAddress,
     ValidationError,
     WithJsonSchema,
     field_validator,
@@ -71,12 +72,8 @@ class TELEMETRY(BaseModel):
     ]
     status_code: Annotated[int, Field(description="HTTP response code")]
     client_addr: Annotated[
-        str | None,
+        IPvAnyAddress | None,
         Field(
-            pattern=(
-                r"^(([0-9]{1,3}\.){3}[0-9]{1,3}|"
-                r"([a-fA-F0-9:]+:+)+[a-fA-F0-9]+)$"
-            ),
             description="Valid IPv4/IPv6 address",
         ),
     ] = None
