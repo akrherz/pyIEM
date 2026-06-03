@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post58+g83bed8c6b</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post64+g31240d52f</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../_static/documentation_options.js?v=2adfebdd"></script>
+    <script src="../../_static/documentation_options.js?v=ee882312"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post58+g83bed8c6b" />
-    <meta name="docbuild:last-update" content="Jun 01, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post64+g31240d52f" />
+    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post58+g83bed8c6b</p>
+    <p class="title logo__title">pyIEM 1.27.0.post64+g31240d52f</p>
   
 </a></div>
     
@@ -456,7 +456,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -465,7 +464,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPStatus</span>
@@ -479,6 +477,8 @@
     <span class="n">BaseModel</span><span class="p">,</span>
     <span class="n">BeforeValidator</span><span class="p">,</span>
     <span class="n">ConfigDict</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">IPvAnyAddress</span><span class="p">,</span>
     <span class="n">ValidationError</span><span class="p">,</span>
     <span class="n">WithJsonSchema</span><span class="p">,</span>
     <span class="n">field_validator</span><span class="p">,</span>
@@ -493,7 +493,6 @@
     <span class="n">NewDatabaseConnectionFailure</span><span class="p">,</span>
     <span class="n">NoDataFound</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ISO8601</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.templates.iem</span><span class="w"> </span><span class="kn">import</span> <span class="n">TEMPLATE</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
 
@@ -517,18 +516,46 @@
 <span class="p">}</span>
 <span class="c1"># Match something that looks like a four digit year</span>
 <span class="n">YEAR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">TELEMETRY</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s2">&quot;TELEMETRY&quot;</span><span class="p">,</span>
-    <span class="p">[</span>
-        <span class="s2">&quot;timing&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;status_code&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;client_addr&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;app&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;request_uri&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;vhost&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;valid&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">)</span>
+
+
+<div class="viewcode-block" id="TELEMETRY">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.TELEMETRY">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TELEMETRY</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">timing</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Request processing time in seconds&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">status_code</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;HTTP response code&quot;</span><span class="p">)]</span>
+    <span class="n">client_addr</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">IPvAnyAddress</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Valid IPv4/IPv6 address&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">app</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;App generating this telemetry&quot;</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">request_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Request URI&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">vhost</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;virtual host&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">valid</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">datetime</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Timestamp when this telemetry record was generated&quot;</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+<div class="viewcode-block" id="TELEMETRY.prevent_null_bytes">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.TELEMETRY.prevent_null_bytes">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">,</span> <span class="s2">&quot;request_uri&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prevent_null_bytes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prevent null bytes in these fields.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Null bytes are not allowed&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+</div>
+
+
+
 <span class="n">TELEMETRY_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;Telemetry &quot;</span>
 <span class="c1"># A rsyslog socket established via akrherz/infra-ansible that is a side-door</span>
 <span class="c1"># to send rsyslog messages without systemd intercepting them and filling</span>
@@ -677,9 +704,7 @@
     <span class="c1"># 141 is local1.notice and is critical to make this work.</span>
     <span class="c1"># The TELEMETRY_PREFIX becomes the syslog tag</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;&lt;141&gt;&quot;</span>
-        <span class="o">+</span> <span class="n">TELEMETRY_PREFIX</span>
-        <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="s2">&quot;&lt;141&gt;&quot;</span> <span class="o">+</span> <span class="n">TELEMETRY_PREFIX</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="c1"># We need to avoid syslog as systemd/journal will intercept this and</span>
     <span class="c1"># fill logs quickly.</span>
@@ -1105,17 +1130,20 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit telemetry for an iemapp request.&quot;&quot;&quot;</span>
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-    <span class="n">write_telemetry</span><span class="p">(</span>
-        <span class="n">TELEMETRY</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
-            <span class="n">status_code</span><span class="p">,</span>
-            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
-            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
-            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
-            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
-            <span class="n">end_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">ISO8601</span><span class="p">),</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">write_telemetry</span><span class="p">(</span>
+            <span class="n">TELEMETRY</span><span class="p">(</span>
+                <span class="n">timing</span><span class="o">=</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                <span class="n">status_code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+                <span class="n">client_addr</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
+                <span class="n">app</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
+                <span class="n">request_uri</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
+                <span class="n">vhost</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+                <span class="n">valid</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="p">)</span>
-    <span class="p">)</span>
+    <span class="k">except</span> <span class="n">ValidationError</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to write telemetry for request&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_status_code</span><span class="p">(</span><span class="n">status</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
