@@ -638,17 +638,20 @@ def _iemapp_emit_telemetry(
 ) -> None:
     """Emit telemetry for an iemapp request."""
     end_time = datetime.now(timezone.utc)
-    write_telemetry(
-        TELEMETRY(
-            timing=(end_time - start_time).total_seconds(),
-            status_code=status_code,
-            client_addr=environ.get("REMOTE_ADDR"),
-            app=environ.get("SCRIPT_NAME"),
-            request_uri=environ.get("REQUEST_URI"),
-            vhost=environ.get("HTTP_HOST"),
-            valid=end_time,
+    try:
+        write_telemetry(
+            TELEMETRY(
+                timing=(end_time - start_time).total_seconds(),
+                status_code=status_code,
+                client_addr=environ.get("REMOTE_ADDR"),
+                app=environ.get("SCRIPT_NAME"),
+                request_uri=environ.get("REQUEST_URI"),
+                vhost=environ.get("HTTP_HOST"),
+                valid=end_time,
+            )
         )
-    )
+    except ValidationError:
+        LOG.exception("Failed to write telemetry for request")
 
 
 def _parse_status_code(status: str) -> int | None:

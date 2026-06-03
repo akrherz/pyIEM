@@ -149,8 +149,9 @@ def test_ip_throttled():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
+    # First octet can't trip our ISU self-network check, sigh
     random_ip = (
-        f"{random.randint(1, 255)}.{random.randint(1, 255)}."
+        f"100.{random.randint(1, 255)}."
         f"{random.randint(1, 255)}.{random.randint(1, 255)}"
     )
     eo = {"REMOTE_ADDR": random_ip}
@@ -178,7 +179,7 @@ def test_allowed_as_list():
 
 
 def test_empty_string():
-    """Test that emptry strings are not passed through..."""
+    """Test that empty strings are not passed through..."""
 
     class MyModel(CGIModel):
         bogus: Annotated[float | None, Field("Float")] = None
