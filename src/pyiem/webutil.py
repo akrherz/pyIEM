@@ -40,7 +40,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.templates.iem import TEMPLATE
+from pyiem.templates import get_site_template
 from pyiem.util import LOG
 
 # Forgive some typos
@@ -430,11 +430,12 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             raise IncompleteWebRequest("Invalid timezone specified") from exp
 
 
-def _handle_help(start_response, **kwargs):
+def _handle_help(start_response: callable, httphost: str, **kwargs):
     """Handle the help request.
 
     Args:
         start_response: the WSGI start_response function
+        httphost: the HTTP_HOST header value for this request
         kwargs: the keyword arguments passed to the decorator
 
     Returns The HTML response
@@ -476,7 +477,13 @@ def _handle_help(start_response, **kwargs):
     )
 
     res = {"content": styled_content}
-    return TEMPLATE.render(res).encode("utf-8")
+    # avert your eyes
+    mapper = {
+        "mesonet-dep.agron.iastate.edu": "dep",
+        "depbackend.local": "dep",
+    }
+    template = get_site_template(mapper.get(httphost, "iem"), "full.j2")
+    return template.render(res).encode("utf-8")
 
 
 def _debracket(form):
@@ -604,7 +611,8 @@ def _iemapp_preflight(
     form = parse_formvars(environ).mixed()
     form = clean_form(form)
     if "help" in form:
-        return True, _handle_help(start_response, **kwargs)
+        hostname = environ.get("HTTP_HOST", "unknown")
+        return True, _handle_help(start_response, hostname, **kwargs)
     add_to_environ(environ, form, **kwargs)
     if ip_is_throttled(environ, ip_throttle_secs):
         start_response(
@@ -808,7 +816,7 @@ def iemapp(**kwargs):
                     # Once streaming has started, we cannot safely restart
                     # the response with a new status/body.
                     LOG.exception(
-                        "iemapp: exception raised after start_response."
+                        f"iemapp: exception raised after start_response. {exp}"
                     )
                     res = []
                     status_code = response_state["status_code"] or status_code
