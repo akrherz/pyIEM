@@ -115,8 +115,8 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         def __init__(self, _server):
             """."""
 
-        def get(self, _key):
-            raise Exception("Memcache get failed")
+        def add(self, _key, _value, expire=None, noreply=False):
+            raise Exception("Memcache add failed")
 
         def close(self):
             """."""
@@ -162,9 +162,9 @@ def test_ip_throttled(random_ipv4: str):
     eo = {"REMOTE_ADDR": random_ipv4}
     c = Client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
-    assert resp.status_code == 200
+    assert resp.status_code == 200, resp.text
     resp = c.get("/?q=1", environ_overrides=eo)
-    assert resp.status_code == 429
+    assert resp.status_code == 429, resp.text
 
 
 def test_allowed_as_list():

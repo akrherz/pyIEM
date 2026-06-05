@@ -553,15 +553,23 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
         throttle_secs = throttle_secs(environ)
     if throttle_secs > 0:
         # No connection happens until it is used, so this should not fail
-        mc = Client("iem-memcached:11211")
+        mc = Client(("iem-memcached", 11211))
         key = f"throttle:{client_ip}"
+        expire = int(throttle_secs) + 1
         try:
-            res = mc.get(key)
-            if res:
-                return True
-            mc.set(key, "1", expire=int(throttle_secs) + 1)
-        except Exception as exp:
-            LOG.info(exp, exc_info=True)
+            # Important to set noreply=False to ensure add returns reality
+            return not mc.add(key, "1", expire=expire, noreply=False)
+        except Exception:
+            LOG.warning(
+                "ip_is_throttled backend exception for ip=%s key=%s "
+                "ttl=%s pid=%s uri=%s",
+                client_ip,
+                key,
+                expire,
+                os.getpid(),
+                environ.get("REQUEST_URI", "?"),
+                exc_info=True,
+            )
         finally:
             mc.close()
     return False
