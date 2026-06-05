@@ -25,6 +25,7 @@ All notable changes to this library are documented in this file.
   what happens during Exception to status_code mapping.
 - Improve `pyiem.util.exponential_backoff` to generate useful log messages.
 - Prevent a GIGO on certain autoplot date fields.
+- Scaffold provision of other IEM friend's website templates, namely DEP.
 
 ### Bug Fixes
 
