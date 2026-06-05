@@ -158,7 +158,7 @@ def test_windrose_upperair():
 def test_windrose_upperair_text():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
-    return windrose(
+    res = windrose(
         "_XXX",
         sknt=sknt,
         drct=drct,
@@ -168,13 +168,14 @@ def test_windrose_upperair_text():
         justdata=True,
         tzname="UTC",
     )
+    assert isinstance(res, str)
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_hads_wind():
     """Test the database filtering with actual database data."""
     # Faked from iem-database repo store_test_data
-    return windrose(
+    res = windrose(
         "EOKI4",
         database="hads",
         months=[4, 5, 6],
@@ -183,12 +184,13 @@ def test_windrose_hads_wind():
         tzname="America/Chicago",
         nogenerated=True,
     )
+    assert res
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
-    return windrose(
+    res = windrose(
         "_XXX",
         level=500,
         months=[
@@ -196,6 +198,7 @@ def test_windrose_upperair_nodata():
         ],
         nogenerated=True,
     )
+    assert res
 
 
 def test_windrose_upperair_nodata_text():
@@ -226,7 +229,7 @@ def test_windrose():
     res = windrose("XXXXX")
     assert res is not None
 
-    return windrose(
+    res = windrose(
         "AMW2",
         sknt=sknt,
         drct=drct,
@@ -235,3 +238,4 @@ def test_windrose():
         ets=datetime.datetime(2016, 1, 1),
         nogenerated=True,
     )
+    assert res
