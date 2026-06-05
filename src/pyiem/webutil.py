@@ -40,7 +40,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.templates.iem import TEMPLATE
+from pyiem.templates import get_site_template
 from pyiem.util import LOG
 
 # Forgive some typos
@@ -414,14 +414,14 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 environ["sts"] = sts
                 if (
                     "_cgimodel_schema" in environ
-                    and "sts" in environ["_cgimodel_schema"].model_fields
+                    and "sts" in type(environ["_cgimodel_schema"]).model_fields
                 ):
                     environ["_cgimodel_schema"].sts = sts
             if ets:
                 environ["ets"] = ets
                 if (
                     "_cgimodel_schema" in environ
-                    and "ets" in environ["_cgimodel_schema"].model_fields
+                    and "ets" in type(environ["_cgimodel_schema"]).model_fields
                 ):
                     environ["_cgimodel_schema"].ets = ets
         except (TypeError, ValueError) as exp:
@@ -430,16 +430,16 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             raise IncompleteWebRequest("Invalid timezone specified") from exp
 
 
-def _handle_help(start_response, **kwargs):
+def _handle_help(httphost: str, **kwargs):
     """Handle the help request.
 
     Args:
         start_response: the WSGI start_response function
+        httphost: the HTTP_HOST header value for this request
         kwargs: the keyword arguments passed to the decorator
 
     Returns The HTML response
     """
-    start_response("200 OK", [("Content-type", "text/html")])
     # return the module docstring for the func
 
     sdoc = kwargs.get("help", "Help not available")
@@ -476,7 +476,14 @@ def _handle_help(start_response, **kwargs):
     )
 
     res = {"content": styled_content}
-    return TEMPLATE.render(res).encode("utf-8")
+    # avert your eyes
+    mapper = {
+        "mesonet-dep.agron.iastate.edu": "dep",
+        "depbackend.local": "dep",
+    }
+    hostkey = httphost.split(":", 1)[0].lower()
+    template = get_site_template(mapper.get(hostkey, "iem"), "full.j2")
+    return template.render(res).encode("utf-8")
 
 
 def _debracket(form):
@@ -546,15 +553,23 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
         throttle_secs = throttle_secs(environ)
     if throttle_secs > 0:
         # No connection happens until it is used, so this should not fail
-        mc = Client("iem-memcached:11211")
+        mc = Client(("iem-memcached", 11211))
         key = f"throttle:{client_ip}"
+        expire = int(throttle_secs) + 1
         try:
-            res = mc.get(key)
-            if res:
-                return True
-            mc.set(key, "1", expire=int(throttle_secs) + 1)
-        except Exception as exp:
-            LOG.info(exp, exc_info=True)
+            # Important to set noreply=False to ensure add returns reality
+            return not mc.add(key, "1", expire=expire, noreply=False)
+        except Exception:
+            LOG.warning(
+                "ip_is_throttled backend exception for ip=%s key=%s "
+                "ttl=%s pid=%s uri=%s",
+                client_ip,
+                key,
+                expire,
+                os.getpid(),
+                environ.get("REQUEST_URI", "?"),
+                exc_info=True,
+            )
         finally:
             mc.close()
     return False
@@ -604,7 +619,10 @@ def _iemapp_preflight(
     form = parse_formvars(environ).mixed()
     form = clean_form(form)
     if "help" in form:
-        return True, _handle_help(start_response, **kwargs)
+        hostname = environ.get("HTTP_HOST", "unknown")
+        payload = _handle_help(hostname, **kwargs)
+        start_response("200 OK", [("Content-type", "text/html")])
+        return True, payload
     add_to_environ(environ, form, **kwargs)
     if ip_is_throttled(environ, ip_throttle_secs):
         start_response(
@@ -808,7 +826,8 @@ def iemapp(**kwargs):
                     # Once streaming has started, we cannot safely restart
                     # the response with a new status/body.
                     LOG.exception(
-                        "iemapp: exception raised after start_response."
+                        "iemapp: exception raised after start_response. %s",
+                        exp,
                     )
                     res = []
                     status_code = response_state["status_code"] or status_code

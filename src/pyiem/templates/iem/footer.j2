@@ -56,7 +56,7 @@
     <script src="/js/iastate-iem.js"></script>
     {% endif %}
 
-    {{ jsextra }}
+    {{ jsextra|safe }}
 
 {% if iemss is defined %}
 <script src="/vendor/openlayers/3.9.0/ol.js"></script>

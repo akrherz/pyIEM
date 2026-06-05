@@ -158,7 +158,7 @@ def test_windrose_upperair():
 def test_windrose_upperair_text():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
-    return windrose(
+    res = windrose(
         "_XXX",
         sknt=sknt,
         drct=drct,
@@ -168,12 +168,14 @@ def test_windrose_upperair_text():
         justdata=True,
         tzname="UTC",
     )
+    assert isinstance(res, str)
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_hads_wind():
     """Test the database filtering with actual database data."""
     # Faked from iem-database repo store_test_data
+    # Inspected by MPL
     return windrose(
         "EOKI4",
         database="hads",
@@ -188,6 +190,7 @@ def test_windrose_hads_wind():
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
+    # Used for MPL
     return windrose(
         "_XXX",
         level=500,
@@ -226,6 +229,7 @@ def test_windrose():
     res = windrose("XXXXX")
     assert res is not None
 
+    # for MPL inspection
     return windrose(
         "AMW2",
         sknt=sknt,

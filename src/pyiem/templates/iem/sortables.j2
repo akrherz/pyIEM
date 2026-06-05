@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
 
-{{ breadcrumbs }}
+{{ breadcrumbs|safe }}
 {% set pages = [
     ("ASOS", "/ASOS/current.phtml"),
     ("CoCoRaHS", "/cocorahs/current.phtml"),
@@ -52,6 +52,6 @@
 
 {% endblock %}
 
-{% block content %}{{ content }}{% endblock %}
+{% block content %}{{ content|safe }}{% endblock %}
 
 {% block footer %}{% include 'footer.j2' %}{% endblock %}

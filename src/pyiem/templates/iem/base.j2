@@ -22,7 +22,7 @@
     {% endif %}
 
 	<!-- Any page specific headextra content here -->
-	{{ headextra }}
+	{{ headextra|safe }}
 
     {% if appmode is defined %}
     <!-- We still need the default styling for the IEM, but after headextra -->
@@ -50,7 +50,7 @@
     <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
   </head>
 
-<body{{ bodyextra }}>
+<body{{ bodyextra|safe }}>
 
 {% block navbar %}{% endblock %}
 {% block sortables %}{% endblock %}

@@ -32,6 +32,16 @@ from pyiem.webutil import (
 )
 
 
+@pytest.fixture
+def random_ipv4():
+    """GEnerate a quasi random IP."""
+    # First octet can't trip our ISU self-network check, sigh
+    return (
+        f"100.{random.randint(1, 255)}."
+        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
+    )
+
+
 def test_telemetry_null_byte_request_uri():
     """Ensure null bytes are not allowed in the URL."""
     with pytest.raises(ValidationError, match="request_uri"):
@@ -96,7 +106,7 @@ def test_xss_false_positive_ampersand():
     assert not _is_xss_payload("Bread &amp; Butter")
 
 
-def test_ip_is_throttled_with_memcache_exception():
+def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
     """Test that a memcache exception is properly handled."""
 
     class DummyMemcacheClient:
@@ -105,17 +115,17 @@ def test_ip_is_throttled_with_memcache_exception():
         def __init__(self, _server):
             """."""
 
-        def get(self, _key):
-            raise Exception("Memcache get failed")
+        def add(self, _key, _value, expire=None, noreply=False):
+            raise Exception("Memcache add failed")
 
         def close(self):
             """."""
 
     with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        assert not ip_is_throttled({"REMOTE_ADDR": "1.1.1.1"}, 1)
+        assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
-def test_ip_throttled_callable():
+def test_ip_throttled_callable(random_ipv4: str):
     """Test that the ip throttle is callable."""
 
     class Schema(CGIModel):
@@ -132,7 +142,7 @@ def test_ip_throttled_callable():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    eo = {"REMOTE_ADDR": "7.7.7.7"}
+    eo = {"REMOTE_ADDR": random_ipv4}
     c = Client(application)
     resp = c.get("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 200
@@ -140,7 +150,7 @@ def test_ip_throttled_callable():
     assert resp.status_code == 200
 
 
-def test_ip_throttled():
+def test_ip_throttled(random_ipv4: str):
     """Test how our throttle behaves."""
 
     @iemapp(ip_throttle_secs=10)
@@ -149,17 +159,12 @@ def test_ip_throttled():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    # First octet can't trip our ISU self-network check, sigh
-    random_ip = (
-        f"100.{random.randint(1, 255)}."
-        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
-    )
-    eo = {"REMOTE_ADDR": random_ip}
+    eo = {"REMOTE_ADDR": random_ipv4}
     c = Client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
-    assert resp.status_code == 200
+    assert resp.status_code == 200, resp.text
     resp = c.get("/?q=1", environ_overrides=eo)
-    assert resp.status_code == 429
+    assert resp.status_code == 429, resp.text
 
 
 def test_allowed_as_list():
@@ -384,7 +389,7 @@ def test_iemapp_telemetry_uses_captured_start_response_status():
     assert write_mock.call_args[0][0].status_code == 404
 
 
-def test_iemapp_generator_exception_after_start_response():
+def test_iemapp_generator_exception_after_start_response(random_ipv4: str):
     """Test post-start generator exceptions are logged without restart."""
 
     start_response_calls = []
@@ -400,7 +405,7 @@ def test_iemapp_generator_exception_after_start_response():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "",
         "REQUEST_URI": "/",
-        "REMOTE_ADDR": "127.0.0.1",
+        "REMOTE_ADDR": random_ipv4,
     }
 
     def sr(status, headers):

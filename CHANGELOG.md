@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 - [SHEF] Tweak narrative storage to re-include the `:` delimiter.
 - Disable IEMAccess write of wind information from the DSM due to inprecision
   of reported units in MPH.
+- Raise minimum pydantic requirement to `2.11`.
 - Return signature of `str2multipolygon` changed to include a list of errors.
 - `webutil.write_telemetry` now writes to dedicated socket
   `/run/rsyslog/iemweb.sock` with
@@ -25,6 +26,7 @@ All notable changes to this library are documented in this file.
   what happens during Exception to status_code mapping.
 - Improve `pyiem.util.exponential_backoff` to generate useful log messages.
 - Prevent a GIGO on certain autoplot date fields.
+- Scaffold provision of other IEM friend's website templates, namely DEP.
 
 ### Bug Fixes
 
