@@ -17,20 +17,17 @@ Example:
 
 """
 
-# stdlib
-import datetime
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
 import warnings
+from datetime import date, datetime, timedelta, timezone
 from io import BytesIO
 from typing import Optional
 
 import geopandas as gpd
-
-# third party
 import httpx
 import matplotlib.cm as mpcm
 import matplotlib.colors as mpcolors
@@ -49,8 +46,6 @@ from scipy.signal import convolve2d
 from shapely.geometry import shape
 
 from pyiem.plot.colormaps import radar_ptype, stretch_cmap
-
-# local
 from pyiem.plot.use_agg import figure
 from pyiem.plot.util import (
     draw_features_from_shapefile,
@@ -262,7 +257,7 @@ class MapPlot:
                 0.01,
                 0.03,
                 f"{kwargs.get('caption', 'Iowa Environmental Mesonet')} :: "
-                f"generated {datetime.datetime.now():%d %B %Y %I:%M %p %Z}",
+                f"generated {datetime.now():%d %B %Y %I:%M %p %Z}",
             )
 
     def close(self):
@@ -270,7 +265,9 @@ class MapPlot:
         # this is ugly, but it seems effective
         del self.fig
 
-    def draw_usdm(self, valid=None, filled=True, hatched=False, **kwargs):
+    def draw_usdm(
+        self, valid=None, filled=True, hatched=False, **kwargs
+    ) -> date | None:
         """Overlay the US Drought Monitor
 
         This utilizes a GeoJSON web service provided by the IEM.  The provided
@@ -290,7 +287,7 @@ class MapPlot:
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
         hatches = ["+", "/", "\\", "-", "x"]
         params = {}
-        if isinstance(valid, (datetime.date, datetime.datetime)):
+        if isinstance(valid, (date, datetime)):
             valid = valid.strftime("%Y-%m-%d")
             params["date"] = valid
         url = "http://mesonet.agron.iastate.edu/geojson/usdm.py"
@@ -304,12 +301,11 @@ class MapPlot:
             )
             return None
         lw = 1 if filled else 4.0
-        usdm_valid = None
+        usdm_valid = df.iloc[0]["date"]
         alpha = kwargs.pop("alpha", 0.5)
         for _, row in df.iterrows():
             color = colors[row["dm"]]
             geom = shape(row["geometry"])
-            usdm_valid = row["date"]
             fc = color if filled else "None"
             ec = color if not filled else "k"
             self.panels[0].add_geometries(
@@ -339,75 +335,73 @@ class MapPlot:
                     zorder=Z_OVERLAY2 + 2,
                 )
 
-        if usdm_valid is not None:
-            self.panels[0].ax.text(
-                0.99,
-                0.99,
-                "D4",
-                color="k",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color=colors[4]),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            self.panels[0].ax.text(
-                0.955,
-                0.99,
-                "D3",
-                color="k",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color=colors[3]),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            self.panels[0].ax.text(
-                0.92,
-                0.99,
-                "D2",
-                color="k",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color=colors[2]),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            self.panels[0].ax.text(
-                0.885,
-                0.99,
-                "D1",
-                color="k",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color=colors[1]),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            self.panels[0].ax.text(
-                0.85,
-                0.99,
-                "D0",
-                color="k",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color=colors[0]),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            self.panels[0].ax.text(
-                0.815,
-                0.99,
-                f"USDM {usdm_valid}",
-                color="w",
-                transform=self.panels[0].ax.transAxes,
-                va="top",
-                ha="right",
-                bbox=dict(color="k"),
-                zorder=Z_OVERLAY2 + 3,
-            )
-            return datetime.datetime.strptime(usdm_valid, "%Y-%m-%d")
-        return None
+        self.panels[0].ax.text(
+            0.99,
+            0.99,
+            "D4",
+            color="k",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color=colors[4]),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        self.panels[0].ax.text(
+            0.955,
+            0.99,
+            "D3",
+            color="k",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color=colors[3]),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        self.panels[0].ax.text(
+            0.92,
+            0.99,
+            "D2",
+            color="k",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color=colors[2]),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        self.panels[0].ax.text(
+            0.885,
+            0.99,
+            "D1",
+            color="k",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color=colors[1]),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        self.panels[0].ax.text(
+            0.85,
+            0.99,
+            "D0",
+            color="k",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color=colors[0]),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        self.panels[0].ax.text(
+            0.815,
+            0.99,
+            f"USDM {usdm_valid}",
+            color="w",
+            transform=self.panels[0].ax.transAxes,
+            va="top",
+            ha="right",
+            bbox=dict(color="k"),
+            zorder=Z_OVERLAY2 + 3,
+        )
+        return datetime.strptime(usdm_valid, "%Y-%m-%d")
 
     def draw_radar_ptype_legend(self):
         """Draw a legend for radar precipitation type."""
@@ -1480,7 +1474,7 @@ class MapPlot:
         if valid is None:
             valid = utc()
         if hasattr(valid, "tzinfo"):
-            valid = valid.astimezone(datetime.timezone.utc)
+            valid = valid.astimezone(timezone.utc)
         url = (
             "https://mesonet.agron.iastate.edu/"
             "api/1/iowa_winter_roadcond.geojson"
@@ -1529,11 +1523,11 @@ class MapPlot:
         if valid is None:
             valid = utc()
         if hasattr(valid, "tzinfo"):
-            valid = valid.astimezone(datetime.timezone.utc)
+            valid = valid.astimezone(timezone.utc)
         if product not in ["N0R", "N0Q"]:
             raise ValueError("nexrad `product` not in {N0R,N0Q}")
         # Rectify to modulus 5 minutes
-        valid -= datetime.timedelta(minutes=valid.minute % 5)
+        valid -= timedelta(minutes=valid.minute % 5)
         compsector = "us"
         if self.sector == "state" and self.state in ["AK", "HI", "PR", "GU"]:
             compsector = self.state.lower()
