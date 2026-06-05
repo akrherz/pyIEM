@@ -430,7 +430,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             raise IncompleteWebRequest("Invalid timezone specified") from exp
 
 
-def _handle_help(start_response: callable, httphost: str, **kwargs):
+def _handle_help(httphost: str, **kwargs):
     """Handle the help request.
 
     Args:
@@ -440,7 +440,6 @@ def _handle_help(start_response: callable, httphost: str, **kwargs):
 
     Returns The HTML response
     """
-    start_response("200 OK", [("Content-type", "text/html")])
     # return the module docstring for the func
 
     sdoc = kwargs.get("help", "Help not available")
@@ -482,7 +481,8 @@ def _handle_help(start_response: callable, httphost: str, **kwargs):
         "mesonet-dep.agron.iastate.edu": "dep",
         "depbackend.local": "dep",
     }
-    template = get_site_template(mapper.get(httphost, "iem"), "full.j2")
+    hostkey = httphost.split(":", 1)[0].lower()
+    template = get_site_template(mapper.get(hostkey, "iem"), "full.j2")
     return template.render(res).encode("utf-8")
 
 
@@ -620,7 +620,9 @@ def _iemapp_preflight(
     form = clean_form(form)
     if "help" in form:
         hostname = environ.get("HTTP_HOST", "unknown")
-        return True, _handle_help(start_response, hostname, **kwargs)
+        payload = _handle_help(hostname, **kwargs)
+        start_response("200 OK", [("Content-type", "text/html")])
+        return True, payload
     add_to_environ(environ, form, **kwargs)
     if ip_is_throttled(environ, ip_throttle_secs):
         start_response(
