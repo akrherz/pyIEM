@@ -414,14 +414,14 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 environ["sts"] = sts
                 if (
                     "_cgimodel_schema" in environ
-                    and "sts" in environ["_cgimodel_schema"].model_fields
+                    and "sts" in type(environ["_cgimodel_schema"]).model_fields
                 ):
                     environ["_cgimodel_schema"].sts = sts
             if ets:
                 environ["ets"] = ets
                 if (
                     "_cgimodel_schema" in environ
-                    and "ets" in environ["_cgimodel_schema"].model_fields
+                    and "ets" in type(environ["_cgimodel_schema"]).model_fields
                 ):
                     environ["_cgimodel_schema"].ets = ets
         except (TypeError, ValueError) as exp:

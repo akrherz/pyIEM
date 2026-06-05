@@ -34,7 +34,7 @@ dependencies = [
   "pillow",
   "psycopg",
   "pyarrow",
-  "pydantic",
+  "pydantic>=2.11",
   "pygrib",
   "pymemcache",
   "pyogrio",
@@ -50,9 +50,9 @@ dependencies = [
 urls.homepage = "https://github.com/akrherz/pyIEM"
 
 [tool.setuptools]
-include-package-data = true
-package-dir."" = "src"
 packages.find.where = [ "src" ]
+package-dir."" = "src"
+include-package-data = true
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
@@ -82,15 +82,15 @@ lint.preview = true
 ignore = [ "W503", "E203" ]
 
 [tool.pytest]
-ini_options.log_level = "INFO"
 ini_options.markers = [
   "mpl_image_compare",
 ]
 ini_options.filterwarnings = [
   "error::pandas.errors.Pandas4Warning",
-  "ignore:numpy.ndarray size changed:RuntimeWarning",
   "ignore:'cgi' is deprecated and slated for removal:DeprecationWarning",
+  "ignore:numpy.ndarray size changed:RuntimeWarning",
 ]
+ini_options.log_level = "INFO"
 
 [tool.pycodestyle]
 ignore = [ "W503", "E203" ]

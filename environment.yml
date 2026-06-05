@@ -34,7 +34,7 @@ dependencies:
   # parquet format support in geopandas
   - pyarrow
   # Models
-  - pydantic
+  - pydantic>=2.11
   # docs
   - pydata-sphinx-theme
   - pygrib
