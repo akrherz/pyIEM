@@ -816,7 +816,8 @@ def iemapp(**kwargs):
                     # Once streaming has started, we cannot safely restart
                     # the response with a new status/body.
                     LOG.exception(
-                        f"iemapp: exception raised after start_response. {exp}"
+                        "iemapp: exception raised after start_response. %s",
+                        exp,
                     )
                     res = []
                     status_code = response_state["status_code"] or status_code
