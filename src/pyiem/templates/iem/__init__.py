@@ -4,11 +4,15 @@ import datetime
 import json
 import os
 
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, PackageLoader, select_autoescape
 
-# Can not support auto_escape at this time as parts of the template are
-# being provided verbatim.
-TEMPLATE_ENV = Environment(loader=PackageLoader("pyiem", "templates/iem"))
+TEMPLATE_ENV = Environment(
+    loader=PackageLoader("pyiem", "templates/iem"),
+    autoescape=select_autoescape(
+        enabled_extensions=("html", "xml", "j2"),
+        default_for_string=True,
+    ),
+)
 NAVBAR_JSON_FN = "/opt/iem/config/navbar.json"
 
 
