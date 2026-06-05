@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.templates package &#8212; pyIEM 1.27.0.post64+g31240d52f</title>
+    <title>pyiem.templates package &#8212; pyIEM 1.27.0.post78+gee98fdaf4</title>
   
   
   
@@ -39,19 +39,19 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=ee882312"></script>
+    <script src="../_static/documentation_options.js?v=aaf8851c"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.templates';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyiem.templates.iem package" href="pyiem.templates.iem.html" />
+    <link rel="next" title="pyiem.templates.dep package" href="pyiem.templates.dep.html" />
     <link rel="prev" title="pyiem.plot.windrose module" href="pyiem.plot.windrose.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post64+g31240d52f" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post78+gee98fdaf4" />
+    <meta name="docbuild:last-update" content="Jun 05, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post64+g31240d52f</p>
+    <p class="title logo__title">pyIEM 1.27.0.post78+gee98fdaf4</p>
   
 </a></div>
     
@@ -413,6 +413,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.templates.dep.html">pyiem.templates.dep package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.templates.iem.html">pyiem.templates.iem package</a></li>
 </ul>
 </div>
@@ -480,6 +481,13 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.templates.dep.html">pyiem.templates.dep package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.templates.dep.html#module-pyiem.templates.dep">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.templates.dep.html#pyiem.templates.dep.get_template"><code class="docutils literal notranslate"><span class="pre">get_template()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.templates.iem.html">pyiem.templates.iem package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.templates.iem.html#module-pyiem.templates.iem">Module contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.templates.iem.html#pyiem.templates.iem.get_template"><code class="docutils literal notranslate"><span class="pre">get_template()</span></code></a></li>
@@ -492,7 +500,21 @@
 </section>
 <section id="module-pyiem.templates">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.templates" title="Link to this heading">#</a></h2>
-<p>Placeholder.</p>
+<p>Bundled website templates.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.templates.get_site_template">
+<span class="sig-prename descclassname"><span class="pre">pyiem.templates.</span></span><span class="sig-name descname"><span class="pre">get_site_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/templates.html#get_site_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.templates.get_site_template" title="Link to this definition">#</a></dt>
+<dd><p>Helper for getting a template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – the site to get the template for, such as “dep”</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – the template file to open.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -516,11 +538,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="pyiem.templates.iem.html"
+       href="pyiem.templates.dep.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pyiem.templates.iem package</p>
+        <p class="prev-next-title">pyiem.templates.dep package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -544,7 +566,10 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyiem.templates">Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyiem.templates">Module contents</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.templates.get_site_template"><code class="docutils literal notranslate"><span class="pre">get_site_template()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

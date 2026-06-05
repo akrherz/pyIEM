@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.models.igra &#8212; pyIEM 1.27.0.post78+gee98fdaf4</title>
+    <title>pyiem.templates.dep &#8212; pyIEM 1.27.0.post78+gee98fdaf4</title>
   
   
   
@@ -41,7 +41,7 @@
     <script src="../../../_static/documentation_options.js?v=aaf8851c"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/models/igra';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/templates/dep';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -433,7 +433,10 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.models.igra</span></li>
+    
+    <li class="breadcrumb-item"><a href="../templates.html" class="nav-link">pyiem.templates</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.templates.dep</span></li>
   </ul>
 </nav>
 </div>
@@ -450,68 +453,39 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for pyiem.models.igra</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Data Model for IGRA.&quot;&quot;&quot;</span>
+  <h1>Source code for pyiem.templates.dep</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Our default DEP template environ.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jinja2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span><span class="p">,</span> <span class="n">select_autoescape</span>
 
-
-<div class="viewcode-block" id="SoundingHeader">
-<a class="viewcode-back" href="../../../api/pyiem.models.igra.html#pyiem.models.igra.SoundingHeader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SoundingHeader</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Center Weather Advisory.&quot;&quot;&quot;</span>
-
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">station</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span>
-    <span class="n">release_valid</span><span class="p">:</span> <span class="n">datetime</span>
-    <span class="n">p_src</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pressure Source&quot;</span><span class="p">)</span>
-    <span class="n">np_src</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of Pressure Levels Source&quot;</span><span class="p">)</span>
-    <span class="n">geom</span><span class="p">:</span> <span class="n">Point</span></div>
+<span class="n">TEMPLATE_ENV</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+    <span class="n">loader</span><span class="o">=</span><span class="n">PackageLoader</span><span class="p">(</span><span class="s2">&quot;pyiem&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/dep&quot;</span><span class="p">),</span>
+    <span class="n">autoescape</span><span class="o">=</span><span class="n">select_autoescape</span><span class="p">(</span>
+        <span class="n">enabled_extensions</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="s2">&quot;j2&quot;</span><span class="p">),</span>
+        <span class="n">default_for_string</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 
+<div class="viewcode-block" id="get_template">
+<a class="viewcode-back" href="../../../api/pyiem.templates.dep.html#pyiem.templates.dep.get_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_template</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper for getting a template.</span>
 
-<div class="viewcode-block" id="SoundingRecord">
-<a class="viewcode-back" href="../../../api/pyiem.models.igra.html#pyiem.models.igra.SoundingRecord">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SoundingRecord</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a sounding record.&quot;&quot;&quot;</span>
-
-    <span class="c1"># 0 should not be possible, but alas</span>
-    <span class="n">lvltyp1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Level Type 1&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">lvltyp2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Level Type 2&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">valid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Valid Time&quot;</span><span class="p">)</span>
-    <span class="n">press</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pressure&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">pflag</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">gph</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Geopotential Height&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">zflag</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">temp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Temperature&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
-    <span class="n">tflag</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">rh</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Relative Humidity&quot;</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">105</span>
-    <span class="p">)</span>
-    <span class="n">dewp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dewpoint Temperature&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=-</span><span class="mi">100</span>
-    <span class="p">)</span>
-    <span class="n">wdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wind Direction&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">360</span>
-    <span class="p">)</span>
-    <span class="n">wspd</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wind Speed&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+<span class="sd">    Args:</span>
+<span class="sd">      filename (str): the template file to open.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tpl</span> <span class="o">=</span> <span class="n">TEMPLATE_ENV</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">tpl</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s2">&quot;footer_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">tpl</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s2">&quot;navbardata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">tpl</span></div>
 
 
 
-<div class="viewcode-block" id="SoundingModel">
-<a class="viewcode-back" href="../../../api/pyiem.models.igra.html#pyiem.models.igra.SoundingModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SoundingModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a sounding.&quot;&quot;&quot;</span>
-
-    <span class="n">header</span><span class="p">:</span> <span class="n">SoundingHeader</span>
-    <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SoundingRecord</span><span class="p">]</span></div>
-
+<span class="c1"># Default template used downstream.</span>
+<span class="n">TEMPLATE</span> <span class="o">=</span> <span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;full.j2&quot;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

@@ -1,0 +1,10 @@
+pyiem.templates.dep package
+===========================
+
+Module contents
+---------------
+
+.. automodule:: pyiem.templates.dep
+   :members:
+   :show-inheritance:
+   :undoc-members:

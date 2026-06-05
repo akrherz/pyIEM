@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pyiem.templates.dep
    pyiem.templates.iem
 
 Module contents

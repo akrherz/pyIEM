@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.templates.iem &#8212; pyIEM 1.27.0.post64+g31240d52f</title>
+    <title>pyiem.templates.iem &#8212; pyIEM 1.27.0.post78+gee98fdaf4</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../_static/documentation_options.js?v=ee882312"></script>
+    <script src="../../../_static/documentation_options.js?v=aaf8851c"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/templates/iem';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post64+g31240d52f" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post78+gee98fdaf4" />
+    <meta name="docbuild:last-update" content="Jun 05, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post64+g31240d52f</p>
+    <p class="title logo__title">pyIEM 1.27.0.post78+gee98fdaf4</p>
   
 </a></div>
     
@@ -433,6 +433,9 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
+    
+    <li class="breadcrumb-item"><a href="../templates.html" class="nav-link">pyiem.templates</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.templates.iem</span></li>
   </ul>
 </nav>
@@ -457,11 +460,15 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">jinja2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jinja2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span><span class="p">,</span> <span class="n">select_autoescape</span>
 
-<span class="c1"># Can not support auto_escape at this time as parts of the template are</span>
-<span class="c1"># being provided verbatim.</span>
-<span class="n">TEMPLATE_ENV</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">PackageLoader</span><span class="p">(</span><span class="s2">&quot;pyiem&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/iem&quot;</span><span class="p">))</span>
+<span class="n">TEMPLATE_ENV</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+    <span class="n">loader</span><span class="o">=</span><span class="n">PackageLoader</span><span class="p">(</span><span class="s2">&quot;pyiem&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/iem&quot;</span><span class="p">),</span>
+    <span class="n">autoescape</span><span class="o">=</span><span class="n">select_autoescape</span><span class="p">(</span>
+        <span class="n">enabled_extensions</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="s2">&quot;j2&quot;</span><span class="p">),</span>
+        <span class="n">default_for_string</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">NAVBAR_JSON_FN</span> <span class="o">=</span> <span class="s2">&quot;/opt/iem/config/navbar.json&quot;</span>
 
 
