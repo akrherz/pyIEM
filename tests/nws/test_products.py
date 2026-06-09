@@ -242,7 +242,7 @@ def test_tcp():
         "Post-Tropical Cyclone "
         "#Arthur ADVISORY 19 issued. Strong winds and heavy rains to "
         "continue over portions of southeastern canada through tonight. "
-        "http://go.usa.gov/W3H"
+        "https://www.nhc.noaa.gov/#Arthur"
     )
     assert j[0][2]["twitter"] == ans
 

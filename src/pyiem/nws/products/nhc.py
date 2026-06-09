@@ -40,7 +40,7 @@ class NHCProduct(TextProduct):
         tformat = (
             "%(classification)s #%(storm_name)s "
             "%(btype)s %(num)s issued. %(headline)s "
-            "http://go.usa.gov/W3H"
+            "https://www.nhc.noaa.gov/#%(storm_name)s"
         )
         tdict = {
             "classification": classification.title(),

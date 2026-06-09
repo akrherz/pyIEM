@@ -34,6 +34,7 @@ All notable changes to this library are documented in this file.
 - Add preflight check of MOS database write for known column storage.
 - Improve enforcement of str types into autoplot context parsing.
 - Support `with_sqlalchemy_conn` to decorate a generator.
+- Update NHC website link due to now-defunct URL shortener service.
 
 ## **1.27.0** (14 Apr 2026)
 
