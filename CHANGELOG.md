@@ -35,6 +35,8 @@ All notable changes to this library are documented in this file.
 - Improve enforcement of str types into autoplot context parsing.
 - Support `with_sqlalchemy_conn` to decorate a generator.
 - Update NHC website link due to now-defunct URL shortener service.
+- Update SPC direct outlook images to reflect their migration to PNG on
+  6 March 2026.
 
 ## **1.27.0** (14 Apr 2026)
 
