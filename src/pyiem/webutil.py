@@ -114,7 +114,7 @@ def _conv2list(mixed: str | list) -> list:
         for item in mixed:
             result.extend(x.strip() for x in item.split(","))
         return result
-    return mixed.split(",")
+    return [x.strip() for x in mixed.split(",")]
 
 
 def _ensure_all_strings(mixed) -> list:

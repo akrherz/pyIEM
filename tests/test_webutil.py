@@ -509,6 +509,18 @@ def test_listorcsvtype_provided_list_with_csv():
     assert res.wfo == ["BGM", "DMX"]
 
 
+def test_listorcsvtype_provided_list_with_csv_and_other():
+    """Test that we flatten this situation."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        wfo: ListOrCSVType = Field(None)
+
+    res = MyModel(wfo=["BGM,DMX", "DVN"])
+    assert res.wfo == ["BGM", "DMX", "DVN"]
+
+
 def test_iemapp_bracket_variable():
     """Test that a bracked variable is handled within pydantic schema."""
 
