@@ -42,12 +42,15 @@ def imgsrc_from_row(row: dict) -> Optional[str]:
     """Compute the SPC image source for a given database row."""
     if row["cycle"] == -1 or row["cycle"] is None:
         return None
+    ymd = row["product_issue"].strftime("%Y%m%d")
+    # When SPC flipped to PNGs
+    suffix = "png" if ymd >= "20260306" else "gif"
     if row["day"] > 3:
         # Le Sigh
         return (
             "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
             f"{row['product_issue'].year}/day{row['day']}prob_"
-            f"{row['product_issue']:%Y%m%d}_1200.gif"
+            f"{ymd}_1200.{suffix}"
         )
     url = "https://www.spc.noaa.gov/products/outlook/archive/"
     # year is based on the issue date
@@ -58,7 +61,7 @@ def imgsrc_from_row(row: dict) -> Optional[str]:
         url += "prob"
     else:
         url += "probotlk"
-    url += f"_{row['product_issue']:%Y%m%d}_"
+    url += f"_{ymd}_"
     conv = {}
     if row["day"] == 1:
         conv = {6: "1200", 16: "1630"}
@@ -69,7 +72,7 @@ def imgsrc_from_row(row: dict) -> Optional[str]:
     url += conv.get(row["cycle"], f"{row['cycle']:02.0f}00") + "_"
     if row["category"] in ["TORNADO", "HAIL", "WIND"]:
         url += f"{row['category'].lower()[:4]}_"
-    return f"{url}prt.gif"
+    return f"{url}prt.{suffix}"
 
 
 def compute_times(afos, issue, expire, day):
