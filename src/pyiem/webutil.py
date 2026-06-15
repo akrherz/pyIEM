@@ -106,10 +106,14 @@ XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
 
 
-def _conv2list(mixed) -> list:
-    """Convert to a list."""
+def _conv2list(mixed: str | list) -> list:
+    """Ensure we have a list of strings without csv delimination."""
     if isinstance(mixed, list):
-        return mixed
+        # pydantic my come here with a string that is still delimited
+        result = []
+        for item in mixed:
+            result.extend(x.strip() for x in item.split(","))
+        return result
     return mixed.split(",")
 
 
