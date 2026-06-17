@@ -18,7 +18,8 @@ dependencies:
   - httpx
   # templating
   - jinja2
-  - matplotlib-base
+  # Need for stable tests
+  - matplotlib-base>=3.11.0
   - metpy
   - metar>=1.7.0
   - mock
