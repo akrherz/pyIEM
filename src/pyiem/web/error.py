@@ -38,7 +38,7 @@ def log_request(
     remoteip = environ.get("REMOTE_ADDR")
     if redirect_status == 404:
         error_log(
-            environ, f"404 {snipped} referer: {environ.get('HTTP_REFERER')}\n"
+            environ, f"404 {snipped} referer: {environ.get('HTTP_REFERER')}"
         )
     conn.execute(
         sql_helper(
