@@ -210,8 +210,9 @@ def error_log(environ: dict, msg: str) -> None:
     client_addr = environ.get(
         "HTTP_X_FORWARDED_FOR", environ.get("REMOTE_ADDR")
     )
+    host = environ.get("HTTP_HOST", "unknown")
     # 141 is local1.notice
-    payload = (f"<141>iemwebErrorLog client: `{client_addr}` `{msg}`").encode()
+    payload = (f"<141>iemwebErrorLog {client_addr} [{host}] {msg}").encode()
     emit_to_sidedoor(payload)
 
 
