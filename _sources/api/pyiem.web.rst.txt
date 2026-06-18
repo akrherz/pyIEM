@@ -1,0 +1,18 @@
+pyiem.web package
+=================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyiem.web.error
+
+Module contents
+---------------
+
+.. automodule:: pyiem.web
+   :members:
+   :show-inheritance:
+   :undoc-members:

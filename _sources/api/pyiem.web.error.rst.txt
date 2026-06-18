@@ -1,0 +1,7 @@
+pyiem.web.error module
+======================
+
+.. automodule:: pyiem.web.error
+   :members:
+   :show-inheritance:
+   :undoc-members:

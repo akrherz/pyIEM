@@ -13,6 +13,7 @@ Subpackages
    pyiem.nws
    pyiem.plot
    pyiem.templates
+   pyiem.web
 
 Submodules
 ----------

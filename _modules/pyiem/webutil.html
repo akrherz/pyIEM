@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post89+g15ffa8848</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post91+gd64a4f8b5</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=d1218242"></script>
+    <script src="../../_static/documentation_options.js?v=5f0d6ccf"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post89+g15ffa8848" />
-    <meta name="docbuild:last-update" content="Jun 17, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post91+gd64a4f8b5" />
+    <meta name="docbuild:last-update" content="Jun 18, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post89+g15ffa8848</p>
+    <p class="title logo__title">pyIEM 1.27.0.post91+gd64a4f8b5</p>
   
 </a></div>
     
@@ -649,6 +649,40 @@
         <span class="c1"># a non-str datatype</span>
         <span class="k">return</span> <span class="n">v</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="emit_to_sidedoor">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.emit_to_sidedoor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">emit_to_sidedoor</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send the given payload to the rsyslog sidedoor.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span> <span class="k">as</span> <span class="n">sock</span><span class="p">:</span>
+            <span class="n">sock</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">sock</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">RSYSLOG_SIDEDOOR_SOCKET</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to send telemetry payload&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="error_log">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.error_log">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Properly send an error log message.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      environ (dict): The mod_wsgi environment</span>
+<span class="sd">      msg (str): The message to log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># For whatever reason, when this error message is logged, Apache does not</span>
+    <span class="c1"># have the headers to include with the message, so we need to include them</span>
+    <span class="c1"># ourselves.</span>
+    <span class="n">client_addr</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># 141 is local1.notice</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;141&gt;iemwebErrorLog client: `</span><span class="si">{</span><span class="n">client_addr</span><span class="si">}</span><span class="s2">` `</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="n">emit_to_sidedoor</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
 
 
 
