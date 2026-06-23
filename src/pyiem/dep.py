@@ -38,11 +38,11 @@ RAMPS = {
 
 def load_scenarios() -> pd.DataFrame:
     """Build a dataframe of DEP scenarios."""
-    with get_sqlalchemy_conn("idep") as conn:
+    with get_sqlalchemy_conn("dep") as conn:
         return pd.read_sql(
-            sql_helper("SELECT * from scenarios ORDER by id ASC"),
+            sql_helper("SELECT * from scenario ORDER by scenario_id ASC"),
             conn,
-            index_col="id",
+            index_col="scenario_id",
         )
 
 
