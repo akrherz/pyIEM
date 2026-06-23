@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.dep &#8212; pyIEM 1.27.0.post93+g397de9f2a</title>
+    <title>pyiem.dep &#8212; pyIEM 1.27.0.post96+g820427608</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../_static/documentation_options.js?v=d2c48462"></script>
+    <script src="../../_static/documentation_options.js?v=249fc525"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/dep';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post93+g397de9f2a" />
-    <meta name="docbuild:last-update" content="Jun 18, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post96+g820427608" />
+    <meta name="docbuild:last-update" content="Jun 23, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post93+g397de9f2a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post96+g820427608</p>
   
 </a></div>
     
@@ -493,11 +493,11 @@
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.load_scenarios">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_scenarios</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a dataframe of DEP scenarios.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;idep&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;dep&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
-            <span class="n">sql_helper</span><span class="p">(</span><span class="s2">&quot;SELECT * from scenarios ORDER by id ASC&quot;</span><span class="p">),</span>
+            <span class="n">sql_helper</span><span class="p">(</span><span class="s2">&quot;SELECT * from scenario ORDER by scenario_id ASC&quot;</span><span class="p">),</span>
             <span class="n">conn</span><span class="p">,</span>
-            <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;scenario_id&quot;</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
