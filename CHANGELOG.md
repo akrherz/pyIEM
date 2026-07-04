@@ -33,6 +33,7 @@ All notable changes to this library are documented in this file.
 - Move `iem` `error_log` handler to `pyiem.webutil`.
 - Prevent a GIGO on certain autoplot date fields.
 - Scaffold provision of other IEM friend's website templates, namely DEP.
+- Support provision of `alpha` to `MapPlot#pcolormesh`
 
 ### Bug Fixes
 
