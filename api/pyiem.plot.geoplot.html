@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.plot.geoplot module &#8212; pyIEM 1.27.0.post98+ge4291028c</title>
+    <title>pyiem.plot.geoplot module &#8212; pyIEM 1.27.0.post101+g76a0e5340</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=97ff53db"></script>
+    <script src="../_static/documentation_options.js?v=5a4c0c35"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.plot.geoplot';</script>
@@ -50,8 +50,8 @@
     <link rel="prev" title="pyiem.plot.colormaps module" href="pyiem.plot.colormaps.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post98+ge4291028c" />
-    <meta name="docbuild:last-update" content="Jul 01, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post101+g76a0e5340" />
+    <meta name="docbuild:last-update" content="Jul 04, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post98+ge4291028c</p>
+    <p class="title logo__title">pyIEM 1.27.0.post101+g76a0e5340</p>
   
 </a></div>
     
@@ -721,7 +721,25 @@ not want this, then pass your own lons + lats that is 1 column and 1
 row greater than vals.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>draw_colorbar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>,</em><em>optional</em>) – Draw colorbar default True.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lons</strong> (<em>np.ndarray</em>) – The longitude values for the grid</p></li>
+<li><p><strong>lats</strong> (<em>np.ndarray</em>) – The latitude values for the grid</p></li>
+<li><p><strong>vals</strong> (<em>np.ndarray</em>) – The values to plot</p></li>
+<li><p><strong>clevs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – The levels to use for the colormap</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>,</em><em>optional</em>) – The alpha value to use for the image,
+default 1.0.</p></li>
+<li><p><strong>cmap</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – The colormap to use, default jet.</p></li>
+<li><p><strong>crs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – The CRS of the lons/lats, default LATLON.</p></li>
+<li><p><strong>extend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – The extend value for the colormap.</p></li>
+<li><p><strong>clip_on</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>,</em><em>optional</em>) – Clip the image to the map region.</p></li>
+<li><p><strong>draw_colorbar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>,</em><em>optional</em>) – Draw colorbar default True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the pcolormesh call.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>res</p>
 </dd>
 </dl>
 </dd></dl>
