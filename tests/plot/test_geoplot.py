@@ -318,7 +318,7 @@ def test_fema_region_pcolormesh():
         [lats.shape[0], lons.shape[0]]
     )
     lons, lats = np.meshgrid(lons, lats)
-    res = mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
+    res = mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1), alpha=1)
     res.set_rasterized(True)
     return mp.fig
 

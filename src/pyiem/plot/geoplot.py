@@ -1046,7 +1046,20 @@ class MapPlot:
         row greater than vals.
 
         Args:
+            lons (np.ndarray): The longitude values for the grid
+            lats (np.ndarray): The latitude values for the grid
+            vals (np.ndarray): The values to plot
+            clevs (list): The levels to use for the colormap
+            alpha (float,optional): The alpha value to use for the image,
+              default 1.0.
+            cmap (str,optional): The colormap to use, default jet.
+            crs (str,optional): The CRS of the lons/lats, default LATLON.
+            extend (str,optional): The extend value for the colormap.
+            clip_on (bool,optional): Clip the image to the map region.
             draw_colorbar (bool,optional): Draw colorbar default True.
+
+        Returns:
+            res: The result of the pcolormesh call.
         """
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
@@ -1071,6 +1084,7 @@ class MapPlot:
             cmap=cmap,
             zorder=Z_FILL,
             crs=kwargs.pop("crs", LATLON),
+            alpha=kwargs.pop("alpha", 1.0),
         )
 
         if kwargs.get("clip_on", True):
