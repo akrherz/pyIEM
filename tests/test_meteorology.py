@@ -29,7 +29,8 @@ def test_comprehensive_climate_index():
         units("m/s") * 1,
         units("W/m^2") * 500,
     )
-    assert abs(res - 37.93) < 0.01
+    assert res.units == units("degC")
+    assert abs(res.m - 37.93) < 0.01
     res = meteorology.comprehensive_climate_index(
         units("degC") * 30,
         units("percent") * 50,
@@ -37,7 +38,7 @@ def test_comprehensive_climate_index():
         units("W/m^2") * 500,
         shade_effect=True,
     )
-    assert abs(res - 34.58) < 0.01
+    assert abs(res.m - 34.58) < 0.01
 
 
 def test_gdd_with_metpy_units():

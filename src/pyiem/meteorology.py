@@ -36,6 +36,14 @@ def comprehensive_climate_index(
 ):
     """Compute the Comprehensive Climate Index.
 
+    A comprehensive index for assessing environmental stress in animals. 2010.
+    T.L. Mader, Leslie J. Johnson and John B. Gaughan. Journal of Animal
+    Science 2010, Volume 88: pages 2153-2165.
+    The formula was corrected as Erratum in Journal of Animal Science 2011,
+    Volume 89: page 2955.
+    https://academic.oup.com/jas/article/88/6/2153/4779866
+    https://content.prod.mesonet.org/learn/ag/tools_documentation/Cattle_Comfort_Description.201605.pdf
+
     Note: shade_effect multiplies the ``solarrad`` value by 0.2 (80% reduction)
     """
     tmpc = airtemp.to(units("degC")).m
@@ -49,7 +57,7 @@ def comprehensive_climate_index(
         + 0.000_001_14 * np.power(ws, 2.5)
         - np.log(np.power(2.26 * ws + 0.33, -2)) / np.log(0.3)
     )
-    return (
+    return units("degC") * (
         tmpc
         + (
             np.exp(0.00182 * rh + 0.000018 * tmpc * rh)
