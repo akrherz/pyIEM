@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.meteorology module &#8212; pyIEM 1.27.0.post105+ge05ab155c</title>
+    <title>pyiem.meteorology module &#8212; pyIEM 1.27.0.post108+gb77955b71</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=b6c864ee"></script>
+    <script src="../_static/documentation_options.js?v=1f003b93"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.meteorology';</script>
@@ -50,7 +50,7 @@
     <link rel="prev" title="pyiem.iemre module" href="pyiem.iemre.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post105+ge05ab155c" />
+  <meta name="docsearch:version" content="1.27.0.post108+gb77955b71" />
     <meta name="docbuild:last-update" content="Jul 17, 2026"/>
   
     
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post105+ge05ab155c</p>
+    <p class="title logo__title">pyIEM 1.27.0.post108+gb77955b71</p>
   
 </a></div>
     
@@ -612,6 +612,13 @@
 <dt class="sig sig-object py" id="pyiem.meteorology.comprehensive_climate_index">
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">comprehensive_climate_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">airtemp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windspeed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solarrad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shade_effect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#comprehensive_climate_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.comprehensive_climate_index" title="Link to this definition">#</a></dt>
 <dd><p>Compute the Comprehensive Climate Index.</p>
+<p>A comprehensive index for assessing environmental stress in animals. 2010.
+T.L. Mader, Leslie J. Johnson and John B. Gaughan. Journal of Animal
+Science 2010, Volume 88: pages 2153-2165.
+The formula was corrected as Erratum in Journal of Animal Science 2011,
+Volume 89: page 2955.
+<a class="reference external" href="https://academic.oup.com/jas/article/88/6/2153/4779866">https://academic.oup.com/jas/article/88/6/2153/4779866</a>
+<a class="reference external" href="https://content.prod.mesonet.org/learn/ag/tools_documentation/Cattle_Comfort_Description.201605.pdf">https://content.prod.mesonet.org/learn/ag/tools_documentation/Cattle_Comfort_Description.201605.pdf</a></p>
 <p>Note: shade_effect multiplies the <code class="docutils literal notranslate"><span class="pre">solarrad</span></code> value by 0.2 (80% reduction)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

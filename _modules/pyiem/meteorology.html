@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.meteorology &#8212; pyIEM 1.27.0.post105+ge05ab155c</title>
+    <title>pyiem.meteorology &#8212; pyIEM 1.27.0.post108+gb77955b71</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=b6c864ee"></script>
+    <script src="../../_static/documentation_options.js?v=1f003b93"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/meteorology';</script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post105+ge05ab155c" />
+  <meta name="docsearch:version" content="1.27.0.post108+gb77955b71" />
     <meta name="docbuild:last-update" content="Jul 17, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post105+ge05ab155c</p>
+    <p class="title logo__title">pyIEM 1.27.0.post108+gb77955b71</p>
   
 </a></div>
     
@@ -494,6 +494,14 @@
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Comprehensive Climate Index.</span>
 
+<span class="sd">    A comprehensive index for assessing environmental stress in animals. 2010.</span>
+<span class="sd">    T.L. Mader, Leslie J. Johnson and John B. Gaughan. Journal of Animal</span>
+<span class="sd">    Science 2010, Volume 88: pages 2153-2165.</span>
+<span class="sd">    The formula was corrected as Erratum in Journal of Animal Science 2011,</span>
+<span class="sd">    Volume 89: page 2955.</span>
+<span class="sd">    https://academic.oup.com/jas/article/88/6/2153/4779866</span>
+<span class="sd">    https://content.prod.mesonet.org/learn/ag/tools_documentation/Cattle_Comfort_Description.201605.pdf</span>
+
 <span class="sd">    Note: shade_effect multiplies the ``solarrad`` value by 0.2 (80% reduction)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tmpc</span> <span class="o">=</span> <span class="n">airtemp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
@@ -507,7 +515,7 @@
         <span class="o">+</span> <span class="mf">0.000_001_14</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
         <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">2.26</span> <span class="o">*</span> <span class="n">ws</span> <span class="o">+</span> <span class="mf">0.33</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span>
+    <span class="k">return</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;degC&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
         <span class="n">tmpc</span>
         <span class="o">+</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.00182</span> <span class="o">*</span> <span class="n">rh</span> <span class="o">+</span> <span class="mf">0.000018</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
