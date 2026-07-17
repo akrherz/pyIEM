@@ -29,6 +29,7 @@ def test_comprehensive_climate_index():
         units("m/s") * 1,
         units("W/m^2") * 500,
     )
+    assert res.units == units("degC")
     assert abs(res.m - 37.93) < 0.01
     res = meteorology.comprehensive_climate_index(
         units("degC") * 30,
