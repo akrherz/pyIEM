@@ -159,14 +159,14 @@ def get_number_year(text):
     return val
 
 
-def get_number(text):
+def get_number(text: str | None):
     """Convert a string into a number, preferable a float!"""
     if text is None:
         return None
     text = text.strip()
     if text == "":
         retval = None
-    elif text == "MM":
+    elif text in ["MM", "M"]:
         retval = None
     elif text == "T":
         retval = TRACE_VALUE
@@ -178,7 +178,7 @@ def get_number(text):
             else:
                 retval = int(number[0])
         else:
-            LOG.warning("get_number() failed for |%s|", text)
+            LOG.warning("pyiem CLI get_number() failed for |%s|", text)
             retval = None
     return retval
 
@@ -502,6 +502,9 @@ class CLIProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
+        # Prevent an un-necessary database load of UGCs
+        if ugc_provider is None:
+            ugc_provider = {}
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
         self.data = []

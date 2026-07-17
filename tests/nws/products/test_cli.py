@@ -11,6 +11,7 @@ from pyiem.reference import TRACE_VALUE, StationAttributes
 from pyiem.util import get_test_file, utc
 
 NWSLI_PROVIDER = {
+    "KDCA": dict(name="WASHINGTON DULLES", access_network="ZZ_ASOS"),
     "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),
     "KDMH": dict(
         name="", attributes={StationAttributes.MAPS_TO: "QQQ|ZZ_ASOS"}
@@ -31,6 +32,12 @@ NWSLI_PROVIDER = {
 def factory(fn):
     """Common cliparser logic."""
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
+
+
+def test_260717_get_number(caplog):
+    """Test that no logging message is generated for this CLI."""
+    cliparser(get_test_file("CLI/CLIDCA.txt"), nwsli_provider=NWSLI_PROVIDER)
+    assert caplog.text == ""
 
 
 def test_241020_2007cli():
