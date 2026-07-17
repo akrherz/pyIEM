@@ -502,6 +502,9 @@ class CLIProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
+        # Prevent an un-necessary database load of UGCs
+        if ugc_provider is None:
+            ugc_provider = {}
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
         self.data = []
