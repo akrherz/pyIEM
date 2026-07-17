@@ -1,0 +1,98 @@
+337 
+CDUS41 KLWX 290640
+CLIDCA
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE BALTIMORE MD/WASHINGTON DC 
+240 AM EDT MON JUN 29 2026
+
+...................................
+
+...THE WASHINGTON NATIONAL DC CLIMATE SUMMARY FOR JUNE 28 2026...
+
+CLIMATE NORMAL PERIOD: 1991 TO 2020
+CLIMATE RECORD PERIOD: 1871 TO 2026
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST      
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL           
+...................................................................
+TEMPERATURE (F)                                                          
+ YESTERDAY                                                           
+  MAXIMUM         76   6:27 PM 100    1969  89    -13       88        
+  MINIMUM         72   8:46 AM  54    1927  71      1       71        
+  AVERAGE         55                        80     -6       80     
+
+PRECIPITATION (IN)                                                    
+  YESTERDAY        0.33          2.95 1914   0.15   0.18     0.00     
+  MONTH TO DATE    1.68                      3.90  -2.22     5.48     
+  SINCE JUN 1      1.68                      3.90  -2.22     5.48     
+  SINCE JAN 1     13.71                     20.03  -6.32    23.52     
+
+SNOWFALL (IN)                                                              
+  YESTERDAY        0.0           MM      MM   0.0   MM        0.0      
+  MONTH TO DATE    0.0                       0.0    0.0      0.0      
+  SINCE JUN 1      0.0                       0.0    0.0      0.0      
+  SINCE JUL 1     10.6                      13.7   -3.1     14.9      
+  SNOW DEPTH         0                                                  
+
+DEGREE DAYS                                                           
+ HEATING                                                              
+  YESTERDAY       10                         0     10        0        
+  MONTH TO DATE   10                         2      8        8        
+  SINCE JUN 1     10                         2      8        8        
+  SINCE JUL 1   3877                      3768    109     3299        
+
+ COOLING                                                              
+  YESTERDAY        0                        15    -15       15        
+  MONTH TO DATE  348                       312     36      336        
+  SINCE JUN 1    348                       312     36      336        
+  SINCE JAN 1    572                       479     93      537        
+...................................................................
+
+
+WIND (MPH)                                                            
+  HIGHEST WIND SPEED    13   HIGHEST WIND DIRECTION     N (20)        
+  HIGHEST GUST SPEED    21   HIGHEST GUST DIRECTION     N (20)        
+  AVERAGE WIND SPEED     5.9                                        
+
+
+SKY COVER                                                             
+  AVERAGE SKY COVER 0.9                                                 
+
+
+WEATHER CONDITIONS                                                    
+THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                         
+  LIGHT RAIN                                                          
+  FOG                                                                 
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    97           8:00 AM                                      
+ LOWEST     84           6:00 PM                                      
+ AVERAGE    91                                                        
+
+..........................................................
+
+
+THE WASHINGTON NATIONAL DC CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                     
+ MAXIMUM TEMPERATURE (F)   89       104      2012                      
+ MINIMUM TEMPERATURE (F)   71        54      1888                      
+
+
+SUNRISE AND SUNSET                                                    
+JUNE 29 2026..........SUNRISE   5:46 AM EDT   SUNSET   8:37 PM EDT     
+JUNE 30 2026..........SUNRISE   5:46 AM EDT   SUNSET   8:37 PM EDT     
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+
+
+
+$$
