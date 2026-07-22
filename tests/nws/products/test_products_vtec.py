@@ -1082,7 +1082,8 @@ def test_gh614_messages():
     prod = vtecparser(get_test_file("TCV/TCVAKQ.txt"))
     j = prod.get_jabbers("")
     ans = (
-        "AKQ updates Tropical Storm Warning (36 zones)  "
+        "AKQ updates Tropical Storm Warning (21 forecast zones in [VA] and "
+        "10 forecast zones in [NC] and 5 forecast zones in [MD])  "
         "2016-O-NEW-KAKQ-TR-W-1009_2016-09-02T15:55Z"
     )
     assert len(j) == 1
@@ -1508,16 +1509,10 @@ def test_wcn_updates():
     )
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "MEG updates Severe Thunderstorm Watch (expands area to include "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 11 counties in "
-        "[TN], continues 12 counties in [AR] and "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 22 counties in "
-        "[MS] and aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN]) till Jun 6, 7:00 PM "
+        "MEG updates Severe Thunderstorm Watch (expands area to include 1 "
+        "counties in [MO] and 11 counties in [TN], continues 12 counties in "
+        "[AR] and 1 counties in [MO] and 22 counties in [MS] and 6 counties "
+        "in [TN]) till Jun 6, 7:00 PM "
         "CDT. http://localhost2014-O-EXA-KMEG-SV-A-0240_2014-06-06T20:37Z"
     )
     assert j[0][0] == ans
@@ -1546,16 +1541,9 @@ def test_140714_segmented_watch():
     prod = vtecparser(get_test_file("WCN/WCNPHI.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "PHI issues Severe Thunderstorm Watch (((DEC001)), "
-        "((DEC003)), ((DEC005)) [DE] and ((MDC011)), ((MDC015)), "
-        "((MDC029)), ((MDC035)), ((MDC041)) [MD] and ((NJC001)), "
-        "((NJC005)), ((NJC007)), ((NJC009)), ((NJC011)), ((NJC015)), "
-        "((NJC019)), ((NJC021)), ((NJC023)), ((NJC025)), ((NJC027)), "
-        "((NJC029)), ((NJC033)), ((NJC035)), ((NJC037)), ((NJC041)) [NJ] "
-        "and ((PAC011)), ((PAC017)), ((PAC025)), ((PAC029)), ((PAC045)), "
-        "((PAC077)), ((PAC089)), ((PAC091)), ((PAC095)), ((PAC101)) [PA] "
-        "and ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
-        "((ANZ452)), ((ANZ453)), ((ANZ454)), ((ANZ455)) [AN]) "
+        "PHI issues Severe Thunderstorm Watch (3 forecast zones in [DE] and "
+        "5 forecast zones in [MD] and 16 forecast zones in [NJ] and "
+        "10 forecast zones in [PA] and 8 forecast zones in [AN]) "
         "till Jul 14, 8:00 PM EDT. "
         "http://localhost2014-O-NEW-KPHI-SV-A-0418_2014-07-14T17:25Z"
     )

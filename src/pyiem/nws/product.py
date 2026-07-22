@@ -735,7 +735,8 @@ class TextProduct(WMOProduct):
         ):
             # We set a somewhat restrictive size limit
             ugctext = ugcs_to_text(self.segments[0].ugcs, total_chars_limit=90)
-            data["for"] = f" for {ugctext}"
+            if ugctext:
+                data["for"] = f" for {ugctext}"
 
         plain = (templates[0] + "%(url)s") % data
         html = (
