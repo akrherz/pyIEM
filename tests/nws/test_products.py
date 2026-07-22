@@ -28,7 +28,7 @@ def test_260722_ugcs_in_jabber_message():
     jmsgs = prod.get_jabbers("")
     ans = (
         "#PQR issues Air Quality Alert (AQA) at Jul 21, 1:30 PM PDT for "
-        "47, 5, 51 [OR]  ...AIR QUALITY ADVISORY IN EFFECT UNTIL 6 PM PDT "
+        "47, 5, 51 [OR] ...AIR QUALITY ADVISORY IN EFFECT UNTIL 6 PM PDT "
         "WEDNESDAY... ?pid=202607212030-KPQR-AEUS76-AQAPQR"
     )
     assert jmsgs[0][2]["twitter"] == ans
