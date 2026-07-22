@@ -1,0 +1,40 @@
+251 
+AEUS76 KPQR 212030
+AQAPQR
+
+Air Quality Alert Message
+
+Oregon Department of Environmental Quality
+Relayed by National Weather Service Portland OR
+130 PM PDT Tue Jul 21 2026
+
+ORC005-047-051-221700-
+Clackamas-Marion-Multnomah-
+Including the cities of Oregon City, Mollala, Sandy, 
+Government Camp, Salem, Stayton, Detroit, Portland, Gresham, 
+and Multnomah Falls
+130 PM PDT Tue Jul 21 2026
+
+
+...AIR QUALITY ADVISORY IN EFFECT UNTIL 6 PM PDT WEDNESDAY...
+
+Oregon Department of Environmental Quality has issued an Air Quality
+Advisory, which is IN EFFECT UNTIL 6 PM PDT WEDNESDAY.
+
+An Air Quality Advisory for Smoke has been issued for Clackamas
+County. An Air Quality Advisory for Ozone has been issued for the 
+Portland-Metro Area and around Salem. Wildfires burning in the region
+combined with forecasted conditions will cause air quality to reach 
+unhealthy levels due to smoke and ozone at times through 6 PM 
+Wednesday.
+
+Pollutants in smoke can cause burning eyes, runny nose, aggravate
+heart and lung diseases, and aggravate other serious health
+problems. Limit outdoor activities and keep children indoors if it
+is smoky. Please follow medical advice if you have a heart or lung
+condition.
+
+More information about air quality can be found at:
+www.oregon.gov/DEQ
+
+$$

@@ -29,6 +29,8 @@ All notable changes to this library are documented in this file.
 - Improve `iemapp` to better capture actual HTTP status_code and document
   what happens during Exception to status_code mapping.
 - Improve `pyiem.util.exponential_backoff` to generate useful log messages.
+- Include UGCs within generic product jabber message result, when provided
+  within the product text.
 - Introduce `pyiem.web` namespace to hold common things used by IEM webfarm
   hosts to handle mod_wsgi requests.
 - Move `iem` `error_log` handler to `pyiem.webutil`.

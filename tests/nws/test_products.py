@@ -4,6 +4,7 @@ import pytest
 
 from pyiem.exceptions import HWOException, TextProductException
 from pyiem.nws.products import parser
+from pyiem.nws.ugc import UGC
 from pyiem.util import get_test_file, utc
 
 
@@ -14,6 +15,23 @@ def filter_warnings(ar, startswith="get_gid"):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
+
+
+def test_260722_ugcs_in_jabber_message():
+    """Test that we get the UGCS listed out in the jabber message."""
+    ugcdict = {
+        "ORC005": UGC("OR", "C", "005", name="5", wfos=["PQR"]),
+        "ORC047": UGC("OR", "C", "047", name="47", wfos=["PQR"]),
+        "ORC051": UGC("OR", "C", "051", name="51", wfos=["PQR"]),
+    }
+    prod = parser(get_test_file("AQAPQR.txt"), ugc_provider=ugcdict)
+    jmsgs = prod.get_jabbers("")
+    ans = (
+        "#PQR issues Air Quality Alert (AQA) at Jul 21, 1:30 PM PDT for "
+        "47, 5, 51 [OR]  ...AIR QUALITY ADVISORY IN EFFECT UNTIL 6 PM PDT "
+        "WEDNESDAY... ?pid=202607212030-KPQR-AEUS76-AQAPQR"
+    )
+    assert jmsgs[0][2]["twitter"] == ans
 
 
 def test_240425_mnd_timestamp():

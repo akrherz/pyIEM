@@ -11,6 +11,7 @@ from shapely.wkt import dumps
 from pyiem import reference
 from pyiem.exceptions import InvalidPolygon, TextProductException
 from pyiem.nws import hvtec, ugc
+from pyiem.nws.ugc import ugcs_to_text
 from pyiem.nws.vtec import VTEC
 from pyiem.nws.vtec import parse as vtec_parse
 from pyiem.util import LOG
@@ -709,7 +710,10 @@ class TextProduct(WMOProduct):
           [(str, str, dict)]
         """
         templates = [
-            "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s%(headline)s ",
+            (
+                "%(source)s issues %(name)s (%(aaa)s) "
+                "at %(stamp)s%(for)s%(headline)s "
+            ),
             "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s ",
         ]
         aaa = "" if self.afos is None else self.afos[:3]
@@ -723,11 +727,18 @@ class TextProduct(WMOProduct):
             ),
             "stamp": self.get_nicedate(),
             "url": f"{uri}?pid={self.get_product_id()}",
+            "for": "",
         }
+        # Thread a neddle here on when this should fire
+        if (self.segments and self.segments[0].ugcs) and not (
+            len(self.segments) > 1 and self.segments[1].ugcs
+        ):
+            data["for"] = f" for {ugcs_to_text(self.segments[0].ugcs)}"
+
         plain = (templates[0] + "%(url)s") % data
         html = (
             '<p>%(source)s issues <a href="%(url)s">%(name)s (%(aaa)s)</a>'
-            " at %(stamp)s</p>"
+            " at %(stamp)s%(for)s</p>"
         ) % data
         tweet = templates[0] % data
         if (len(tweet) - 25) > reference.TWEET_CHARS:
