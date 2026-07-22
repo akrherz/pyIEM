@@ -397,8 +397,11 @@ def quality_control(prod):
                         continue
                     passes_check = False
                     msg = (
-                        f"Discarding polygon idx: {i} as it intersects "
-                        f"idx: {i2} Area: {poly.area:.2f}"
+                        f"{outlook.category} {outlook.threshold} "
+                        f"discarding polygon#{i}[xmin:{poly.bounds[0]:.2f},"
+                        f"ymin:{poly.bounds[1]:.2f}], intersects "
+                        f"polygon#{i2}[xmin:{poly2.bounds[0]:.2f},"
+                        f"ymin:{poly2.bounds[1]:.2f}] Area: {poly2.area:.2f}"
                     )
                     LOG.warning(msg)
                     prod.warnings.append(msg)

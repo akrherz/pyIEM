@@ -11,7 +11,26 @@ from pyiem.nws.products.spcpts import (
     load_conus_data,
     str2multipolygon,
 )
+from pyiem.nws.products.spcpts import parser as spcpts_parser
 from pyiem.util import get_test_file, utc
+
+
+def _parser(fn: str, utcnow=None) -> SPCPTS:
+    """helper to remove boilerplate."""
+    return spcpts_parser(
+        get_test_file(fn),
+        utcnow=utcnow,
+        ugc_provider={},
+    )
+
+
+def test_260722_log_message():
+    """Test for improvements to the warning message generated."""
+    prod = _parser(
+        "SPCPTS/PTSDY1_overlap.txt",
+        utcnow=utc(2026, 7, 22, 2),
+    )
+    assert prod.warnings[0].startswith("CATEGORICAL TSTM")
 
 
 def test_260420_reversed_hail_polygon():

@@ -45,6 +45,7 @@ All notable changes to this library are documented in this file.
 - Add preflight check of MOS database write for known column storage.
 - Handle `M` in CLI parsing as missing, improve log message.
 - Improve enforcement of str types into autoplot context parsing.
+- Improve log message for SPC PTS parsing failures.
 - Support `with_sqlalchemy_conn` to decorate a generator.
 - Update NHC website link due to now-defunct URL shortener service.
 - Update SPC direct outlook images to reflect their migration to PNG on
