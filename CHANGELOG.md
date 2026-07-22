@@ -25,6 +25,7 @@ All notable changes to this library are documented in this file.
 - Account for SPC PTS one-off with reversed and closed polygon.
 - Account for FastAPI usage of `webutil.ListOrCSVType`.
 - Add `ip_throttle_secs` to `webutil.iemapp` to deal with IEM pain.
+- Add knob to `ugcs_to_text` to control total generated message size.
 - Gracefully handle `XTEUS` product without a value set.
 - Improve `iemapp` to better capture actual HTTP status_code and document
   what happens during Exception to status_code mapping.

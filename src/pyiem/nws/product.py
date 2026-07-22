@@ -733,7 +733,9 @@ class TextProduct(WMOProduct):
         if (self.segments and self.segments[0].ugcs) and not (
             len(self.segments) > 1 and self.segments[1].ugcs
         ):
-            data["for"] = f" for {ugcs_to_text(self.segments[0].ugcs)}"
+            # We set a somewhat restrictive size limit
+            ugctext = ugcs_to_text(self.segments[0].ugcs, total_chars_limit=90)
+            data["for"] = f" for {ugctext}"
 
         plain = (templates[0] + "%(url)s") % data
         html = (
