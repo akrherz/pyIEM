@@ -25,10 +25,13 @@ All notable changes to this library are documented in this file.
 - Account for SPC PTS one-off with reversed and closed polygon.
 - Account for FastAPI usage of `webutil.ListOrCSVType`.
 - Add `ip_throttle_secs` to `webutil.iemapp` to deal with IEM pain.
+- Add knob to `ugcs_to_text` to control total generated message size.
 - Gracefully handle `XTEUS` product without a value set.
 - Improve `iemapp` to better capture actual HTTP status_code and document
   what happens during Exception to status_code mapping.
 - Improve `pyiem.util.exponential_backoff` to generate useful log messages.
+- Include UGCs within generic product jabber message result, when provided
+  within the product text.
 - Introduce `pyiem.web` namespace to hold common things used by IEM webfarm
   hosts to handle mod_wsgi requests.
 - Move `iem` `error_log` handler to `pyiem.webutil`.

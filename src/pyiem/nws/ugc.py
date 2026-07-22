@@ -21,32 +21,6 @@ UGC_RE = re.compile(
 )
 
 
-def ugcs_to_text(ugcs):
-    """Convert a list of UGC objects to a textual string"""
-    states = OrderedDict()
-    geotype = "counties"
-    for ugc in ugcs:
-        code = str(ugc)
-        state_abbr = code[:2]
-        if code[2] == "Z":
-            geotype = "forecast zones"
-        if state_abbr not in states:
-            states[state_abbr] = []
-        states[state_abbr].append(ugc.name)
-
-    txt = []
-    for st, state in states.items():
-        state.sort()
-        part = f" {', '.join(state)} [{st}]"
-        if len(part) > 350:
-            if st == "LA" and geotype == "counties":
-                geotype = "parishes"
-            part = f" {len(state)} {geotype} in [{st}]"
-        txt.append(part)
-
-    return (" and".join(txt)).strip()
-
-
 def str2time(text, valid):
     """Convert a string that is the UGC product expiration to a valid
     datetime
@@ -310,3 +284,46 @@ def parse(
                         )
                     )
     return ugcs, expire
+
+
+def ugcs_to_text(
+    ugcs: list[UGC],
+    total_chars_limit: int = 350,
+) -> str:
+    """Convert a list of UGC objects to a human readable string.
+
+    Args:
+        ugcs (list[UGC]): list of UGC objects
+        total_chars_limit (int): maximum number of characters for the output
+            string. If exceeded, the message counts UGCs by state.
+    Returns:
+        str: human readable string, typically sent to social media
+    """
+    names_by_state: dict[str, list[str]] = OrderedDict()
+    geotype = "counties"
+    for ugc in ugcs:
+        code = str(ugc)
+        state_abbr = code[:2]
+        if code[2] == "Z":
+            geotype = "forecast zones"
+        names_by_state.setdefault(state_abbr, []).append(ugc.name)
+
+    # Make two attempts at this, ensuring we stay below the total
+    do_state_truncation = False
+    for _ in range(2):
+        txt = []
+        for st, names in names_by_state.items():
+            names.sort()
+            part = f" {', '.join(names)} [{st}]"
+            if do_state_truncation:
+                this_geotype = geotype
+                if st == "LA" and this_geotype == "counties":
+                    this_geotype = "parishes"
+                part = f" {len(names)} {this_geotype} in [{st}]"
+            txt.append(part)
+        result = " and".join(txt).strip()
+        if len(result) <= total_chars_limit:
+            break
+        do_state_truncation = True
+
+    return result if len(result) <= total_chars_limit else ""
