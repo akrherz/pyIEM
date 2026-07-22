@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.product &#8212; pyIEM 1.27.0.post108+gb77955b71</title>
+    <title>pyiem.nws.product &#8212; pyIEM 1.27.0.post113+g571a11423</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=1f003b93"></script>
+    <script src="../../../_static/documentation_options.js?v=87c51905"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/product';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post108+gb77955b71" />
-    <meta name="docbuild:last-update" content="Jul 17, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post113+g571a11423" />
+    <meta name="docbuild:last-update" content="Jul 22, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post108+gb77955b71</p>
+    <p class="title logo__title">pyIEM 1.27.0.post113+g571a11423</p>
   
 </a></div>
     
@@ -464,6 +464,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">reference</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidPolygon</span><span class="p">,</span> <span class="n">TextProductException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws</span><span class="w"> </span><span class="kn">import</span> <span class="n">hvtec</span><span class="p">,</span> <span class="n">ugc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.ugc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ugcs_to_text</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.vtec</span><span class="w"> </span><span class="kn">import</span> <span class="n">VTEC</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.vtec</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">vtec_parse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
@@ -1247,7 +1248,10 @@
 <span class="sd">          [(str, str, dict)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">templates</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;</span><span class="si">%(source)s</span><span class="s2"> issues </span><span class="si">%(name)s</span><span class="s2"> (</span><span class="si">%(aaa)s</span><span class="s2">) at </span><span class="si">%(stamp)s%(headline)s</span><span class="s2"> &quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">%(source)s</span><span class="s2"> issues </span><span class="si">%(name)s</span><span class="s2"> (</span><span class="si">%(aaa)s</span><span class="s2">) &quot;</span>
+                <span class="s2">&quot;at </span><span class="si">%(stamp)s%(for)s%(headline)s</span><span class="s2"> &quot;</span>
+            <span class="p">),</span>
             <span class="s2">&quot;</span><span class="si">%(source)s</span><span class="s2"> issues </span><span class="si">%(name)s</span><span class="s2"> (</span><span class="si">%(aaa)s</span><span class="s2">) at </span><span class="si">%(stamp)s</span><span class="s2"> &quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">aaa</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
@@ -1261,11 +1265,21 @@
             <span class="p">),</span>
             <span class="s2">&quot;stamp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nicedate</span><span class="p">(),</span>
             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;for&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="c1"># Thread a neddle here on when this should fire</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ugcs</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ugcs</span>
+        <span class="p">):</span>
+            <span class="c1"># We set a somewhat restrictive size limit</span>
+            <span class="n">ugctext</span> <span class="o">=</span> <span class="n">ugcs_to_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ugcs</span><span class="p">,</span> <span class="n">total_chars_limit</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ugctext</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;for&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; for </span><span class="si">{</span><span class="n">ugctext</span><span class="si">}</span><span class="s2">&quot;</span>
+
         <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span><span class="n">templates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%(url)s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">data</span>
         <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s1">&#39;&lt;p&gt;</span><span class="si">%(source)s</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;</span><span class="si">%(name)s</span><span class="s1"> (</span><span class="si">%(aaa)s</span><span class="s1">)&lt;/a&gt;&#39;</span>
-            <span class="s2">&quot; at </span><span class="si">%(stamp)s</span><span class="s2">&lt;/p&gt;&quot;</span>
+            <span class="s2">&quot; at </span><span class="si">%(stamp)s%(for)s</span><span class="s2">&lt;/p&gt;&quot;</span>
         <span class="p">)</span> <span class="o">%</span> <span class="n">data</span>
         <span class="n">tweet</span> <span class="o">=</span> <span class="n">templates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="n">data</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">reference</span><span class="o">.</span><span class="n">TWEET_CHARS</span><span class="p">:</span>
