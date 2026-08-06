@@ -24,6 +24,15 @@ def _parser(fn: str, utcnow=None) -> SPCPTS:
     )
 
 
+def test_260806_reversed_warning_message():
+    """Test that the generated warning is helpful to me for reporting."""
+    prod = _parser(
+        "SPCPTS/PTSDY1_reversed2.txt",
+        utcnow=utc(2026, 8, 6, 13),
+    )
+    assert "first_pt: (-96.36, 37.0)" in prod.warnings[0]
+
+
 def test_260722_log_message():
     """Test for improvements to the warning message generated."""
     prod = _parser(
