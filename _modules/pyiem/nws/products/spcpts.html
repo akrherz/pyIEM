@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post119+g559d0fe41</title>
+    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post122+gdec920b8d</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0b1ef837"></script>
+    <script src="../../../../_static/documentation_options.js?v=17ef148a"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/spcpts';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post119+g559d0fe41" />
-    <meta name="docbuild:last-update" content="Aug 01, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post122+gdec920b8d" />
+    <meta name="docbuild:last-update" content="Aug 06, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post119+g559d0fe41</p>
+    <p class="title logo__title">pyIEM 1.27.0.post122+gdec920b8d</p>
   
 </a></div>
     
@@ -619,7 +619,10 @@
     <span class="n">polygons</span><span class="p">,</span> <span class="n">interiors</span><span class="p">,</span> <span class="n">linestrings</span> <span class="o">=</span> <span class="n">convert_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
     <span class="c1"># Account for situation of an interior without a polygon (likely reversed)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">polygons</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">linestrings</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">interiors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Found one interior poly without enclosing poly, reversing...&quot;</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Interior polygon without exterior, reversing. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;first_pt: </span><span class="si">{</span><span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, sampled: </span><span class="si">{</span><span class="n">s</span><span class="p">[:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">...&quot;</span>
+        <span class="p">)</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
         <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
         <span class="n">lr</span><span class="p">:</span> <span class="n">LinearRing</span> <span class="o">=</span> <span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
