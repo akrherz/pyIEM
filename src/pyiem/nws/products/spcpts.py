@@ -149,7 +149,10 @@ def str2multipolygon(s) -> tuple[MultiPolygon, list[str]]:
     polygons, interiors, linestrings = convert_segments(segments)
     # Account for situation of an interior without a polygon (likely reversed)
     if not polygons and not linestrings and len(interiors) == 1:
-        errmsg = "Found one interior poly without enclosing poly, reversing..."
+        errmsg = (
+            "Interior polygon without exterior, reversing. "
+            f"first_pt: {interiors[0].coords[0]}, sampled: {s[:40].strip()}..."
+        )
         LOG.warning(errmsg)
         errors.append(errmsg)
         lr: LinearRing = interiors[0]
