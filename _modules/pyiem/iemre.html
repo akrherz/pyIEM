@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.iemre &#8212; pyIEM 1.27.0.post125+g643b1fb18</title>
+    <title>pyiem.iemre &#8212; pyIEM 1.27.0.post127+g5a6290021</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=9d673a4b"></script>
+    <script src="../../_static/documentation_options.js?v=0d4338e5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/iemre';</script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post125+g643b1fb18" />
+  <meta name="docsearch:version" content="1.27.0.post127+g5a6290021" />
     <meta name="docbuild:last-update" content="Aug 07, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post125+g643b1fb18</p>
+    <p class="title logo__title">pyIEM 1.27.0.post127+g5a6290021</p>
   
 </a></div>
     
@@ -841,19 +841,33 @@
     <span class="n">pparams</span> <span class="o">=</span> <span class="n">grb</span><span class="o">.</span><span class="n">projparams</span>
     <span class="n">lat1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;latitudeOfFirstGridPointInDegrees&quot;</span><span class="p">]</span>
     <span class="n">lon1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;longitudeOfFirstGridPointInDegrees&quot;</span><span class="p">]</span>
-    <span class="n">llx</span><span class="p">,</span> <span class="n">lly</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">pparams</span><span class="p">)(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">)</span>
     <span class="c1"># The reprojected first grid cell is the centroid, not the outer edge</span>
-    <span class="n">aff</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
-        <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">],</span>
-        <span class="mf">0.0</span><span class="p">,</span>
-        <span class="n">llx</span> <span class="o">-</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="mf">0.0</span><span class="p">,</span>
-        <span class="o">-</span><span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">],</span>
-        <span class="n">lly</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;Ny&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">reproject2iemre</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">grb</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">aff</span><span class="p">,</span> <span class="n">pparams</span><span class="p">,</span> <span class="n">resampling</span><span class="p">,</span> <span class="n">domain</span>
-    <span class="p">)</span></div>
+    <span class="n">llx</span><span class="p">,</span> <span class="n">lly</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">pparams</span><span class="p">)(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pparams</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;longlat&quot;</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;iDirectionIncrementInDegrees&quot;</span><span class="p">]</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">dx</span>
+        <span class="k">if</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;jScansNegatively&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="o">-</span><span class="n">dy</span>
+        <span class="n">aff</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
+            <span class="n">dx</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">llx</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">dy</span><span class="p">,</span>
+            <span class="n">lly</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">grb</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">aff</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
+            <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">],</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">llx</span> <span class="o">-</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">],</span>
+            <span class="n">lly</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;Ny&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">grb</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reproject2iemre</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">aff</span><span class="p">,</span> <span class="n">pparams</span><span class="p">,</span> <span class="n">resampling</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span></div>
 
 
 
