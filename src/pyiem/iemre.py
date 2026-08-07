@@ -344,19 +344,33 @@ def grb2iemre(grb, resampling=None, domain: str = "conus") -> np.ndarray:
     pparams = grb.projparams
     lat1 = grb["latitudeOfFirstGridPointInDegrees"]
     lon1 = grb["longitudeOfFirstGridPointInDegrees"]
-    llx, lly = pyproj.Proj(pparams)(lon1, lat1)
     # The reprojected first grid cell is the centroid, not the outer edge
-    aff = Affine(
-        grb["DxInMetres"],
-        0.0,
-        llx - grb["DxInMetres"] / 2.0,
-        0.0,
-        -grb["DyInMetres"],
-        lly + grb["DyInMetres"] * grb["Ny"] + grb["DyInMetres"] / 2.0,
-    )
-    return reproject2iemre(
-        np.flipud(grb.values), aff, pparams, resampling, domain
-    )
+    llx, lly = pyproj.Proj(pparams)(lon1, lat1)
+    if pparams["proj"] == "longlat":
+        dx = grb["iDirectionIncrementInDegrees"]
+        dy = dx
+        if grb["jScansNegatively"] == 1:
+            dy = -dy
+        aff = Affine(
+            dx,
+            0.0,
+            llx - dx / 2.0,
+            0.0,
+            dy,
+            lly + dy / 2.0,
+        )
+        vals = grb.values
+    else:
+        aff = Affine(
+            grb["DxInMetres"],
+            0.0,
+            llx - grb["DxInMetres"] / 2.0,
+            0.0,
+            -grb["DyInMetres"],
+            lly + grb["DyInMetres"] * grb["Ny"] + grb["DyInMetres"] / 2.0,
+        )
+        vals = np.flipud(grb.values)
+    return reproject2iemre(vals, aff, pparams, resampling, domain)
 
 
 def reproject2iemre(
