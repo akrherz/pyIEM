@@ -8,6 +8,7 @@ import pygrib
 from affine import Affine
 
 from pyiem import database, iemre
+from pyiem.grid.nav import get_nav
 from pyiem.util import get_test_filepath, utc
 
 
@@ -20,6 +21,14 @@ def test_axis_size():
 def test_d2l():
     """Test our logic."""
     assert iemre.d2l("europe") == "iemre_europe"
+
+
+def test_grb2iemre_cfs():
+    """Test that the CFS data can work with grb2iemre."""
+    grbs = pygrib.open(get_test_filepath("grib/cfstmpk.grib2"))
+    res = iemre.grb2iemre(grbs[1], domain="china")
+    nav = get_nav("iemre", "china")
+    assert res.shape == (nav.ny, nav.nx)
 
 
 def test_grb2iemre():
