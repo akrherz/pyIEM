@@ -23,10 +23,20 @@ def test_d2l():
     assert iemre.d2l("europe") == "iemre_europe"
 
 
+def test_grb2iemre_cfs_conus():
+    """Test that we don't get bad values for CFS 2 CONUS IEMRE."""
+    grbs = pygrib.open(get_test_filepath("grib/cfstmpk.grib2"))
+    res = np.ma.masked_array(iemre.grb2iemre(grbs[1], domain="conus"))
+    # There should not be any masked values
+    assert not res.mask.any()
+
+
 def test_grb2iemre_cfs():
     """Test that the CFS data can work with grb2iemre."""
     grbs = pygrib.open(get_test_filepath("grib/cfstmpk.grib2"))
-    res = iemre.grb2iemre(grbs[1], domain="china")
+    res = np.ma.masked_array(iemre.grb2iemre(grbs[1], domain="china"))
+    # There should not be any masked values
+    assert not res.mask.any()
     nav = get_nav("iemre", "china")
     assert res.shape == (nav.ny, nav.nx)
 

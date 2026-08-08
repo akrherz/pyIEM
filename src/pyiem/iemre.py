@@ -351,6 +351,13 @@ def grb2iemre(grb, resampling=None, domain: str = "conus") -> np.ndarray:
         dy = dx
         if grb["jScansNegatively"] == 1:
             dy = -dy
+        # Ugly situation here for data that starts at 0° and goes to 360°
+        vals = grb.values
+        if np.isclose(llx, 0.0) and np.isclose(
+            vals.shape[1] * abs(dx), 360.0, atol=1
+        ):
+            vals = np.roll(vals, vals.shape[1] // 2, axis=1)
+            llx = -180.0
         aff = Affine(
             dx,
             0.0,
@@ -359,7 +366,6 @@ def grb2iemre(grb, resampling=None, domain: str = "conus") -> np.ndarray:
             dy,
             lly + dy / 2.0,
         )
-        vals = grb.values
     else:
         aff = Affine(
             grb["DxInMetres"],
