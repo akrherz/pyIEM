@@ -807,6 +807,8 @@ shef_english_units = {}
 shef_standard_units = {}
 shef_table7 = {}
 state_names = {}
+# Includes all two letter codes used by NWS UGC
+ugc_state_names = {}
 prodDefinitions = {}
 ncei_state_codes = {}
 nwsli2state = {}
@@ -826,6 +828,7 @@ class Wrapper:
         "shef_send_codes",
         "shef_table7",
         "state_names",
+        "ugc_state_names",
         "prodDefinitions",
         "ncei_state_codes",
         "nwsli2state",
