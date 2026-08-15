@@ -799,6 +799,7 @@ IEMVARS = {
 }
 DATADIR = os.sep.join([os.path.dirname(__file__), "data", "reference"])
 
+igra2icao: dict[str, str] = {}
 # The below are dynamically generated on-demand, but are hard coded here
 # so that code introspection works.  Likely a better way!
 shef_physical_codes = {}
