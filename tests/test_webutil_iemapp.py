@@ -6,6 +6,7 @@ from typing import Annotated, Optional, Union
 from unittest import mock
 from zoneinfo import ZoneInfo
 
+import pytest
 from pydantic import AwareDatetime, Field, field_validator
 from werkzeug.test import Client
 
@@ -15,7 +16,36 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.webutil import CGIModel, ListOrCSVType, iemapp
+from pyiem.webutil import CGIModel, ListOrCSVType, iemapp, ip_is_throttled
+
+
+@pytest.fixture
+def random_ipv4():
+    """GEnerate a quasi random IP."""
+    # First octet can't trip our ISU self-network check, sigh
+    return (
+        f"100.{random.randint(1, 255)}."
+        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
+    )
+
+
+def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
+    """Test that a memcache exception is properly handled."""
+
+    class DummyMemcacheClient:
+        """Simple in-memory memcache stand-in for deterministic testing."""
+
+        def __init__(self, _server):
+            """."""
+
+        def add(self, _key, _value, expire=None, noreply=False):
+            raise Exception("Memcache add failed")
+
+        def close(self):
+            """."""
+
+    with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
+        assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
 def test_iemapp_help_with_linereturns():

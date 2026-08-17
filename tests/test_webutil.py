@@ -1,6 +1,5 @@
 """Tests for webutil."""
 
-import random
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
@@ -21,19 +20,8 @@ from pyiem.webutil import (
     _is_xss_payload,
     add_to_environ,
     ensure_list,
-    ip_is_throttled,
     write_telemetry,
 )
-
-
-@pytest.fixture
-def random_ipv4():
-    """GEnerate a quasi random IP."""
-    # First octet can't trip our ISU self-network check, sigh
-    return (
-        f"100.{random.randint(1, 255)}."
-        f"{random.randint(1, 255)}.{random.randint(1, 255)}"
-    )
 
 
 def test_telemetry_null_byte_request_uri():
@@ -98,25 +86,6 @@ def test_xss_false_positive_simple_text():
 def test_xss_false_positive_ampersand():
     # Strings with entities but benign content should not trigger
     assert not _is_xss_payload("Bread &amp; Butter")
-
-
-def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
-    """Test that a memcache exception is properly handled."""
-
-    class DummyMemcacheClient:
-        """Simple in-memory memcache stand-in for deterministic testing."""
-
-        def __init__(self, _server):
-            """."""
-
-        def add(self, _key, _value, expire=None, noreply=False):
-            raise Exception("Memcache add failed")
-
-        def close(self):
-            """."""
-
-    with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
 def test_listorcsvtype_provided_list_with_csv():
