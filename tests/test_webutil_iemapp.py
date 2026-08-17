@@ -499,22 +499,23 @@ def test_iemapp_memcache():
 def test_iemapp_telemetry_skipped_on_memcache_hit():
     """Test that telemetry is not written when response is memcache-backed."""
 
-    cache = {}
-
     class DummyMemcacheClient:
         """Simple in-memory memcache stand-in for deterministic testing."""
 
         def __init__(self, _server):
-            pass
+            """."""
+            self.cache = {}
 
         def get(self, key):
-            return cache.get(key)
+            """."""
+            return self.cache.get(key)
 
         def set(self, key, value, expire=None):
-            cache[key] = value
+            """."""
+            self.cache[key] = value
 
         def close(self):
-            pass
+            """."""
 
     @iemapp(memcachekey="iem")
     def application(_environ, start_response):
@@ -522,11 +523,13 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         start_response("200 OK", [("Content-type", "text/plain")])
         return b"Hello!"
 
-    with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        with mock.patch("pyiem.webutil.write_telemetry") as write_mock:
-            c = Client(application)
-            assert c.get("/").status_code == 200
-            assert c.get("/").status_code == 200
+    with (
+        mock.patch("pyiem.webutil.Client", DummyMemcacheClient),
+        mock.patch("pyiem.webutil.write_telemetry") as write_mock,
+    ):
+        c = Client(application)
+        assert c.get("/").status_code == 200
+        assert c.get("/").status_code == 200
     assert write_mock.call_count == 1
 
 
