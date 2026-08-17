@@ -37,9 +37,10 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
 
         def __init__(self, _server):
             """."""
+            self.cache = {}
 
         def add(self, _key, _value, expire=None, noreply=False):
-            raise Exception("Memcache add failed")
+            return self.cache["WillRaiseException"]
 
         def close(self):
             """."""
@@ -311,6 +312,7 @@ def test_options(random_ipv4: str):
     resp = c.options("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 204
     assert not resp.text
+    assert resp.headers["Allow"] == "GET, OPTIONS"
 
 
 def test_ip_throttled_callable(random_ipv4: str):
@@ -529,22 +531,24 @@ def test_iemapp_memcache():
 def test_iemapp_telemetry_skipped_on_memcache_hit():
     """Test that telemetry is not written when response is memcache-backed."""
 
+    cache = {}
+
     class DummyMemcacheClient:
         """Simple in-memory memcache stand-in for deterministic testing."""
 
         def __init__(self, _server):
             """."""
-            self.cache = {}
 
         def get(self, key):
             """."""
-            return self.cache.get(key)
+            return cache.get(key)
 
         def set(self, key, value, expire=None):
             """."""
-            self.cache[key] = value
+            cache[key] = value
 
-        def close(self):
+        @classmethod
+        def close():
             """."""
 
     @iemapp(memcachekey="iem")
