@@ -29,6 +29,7 @@ All notable changes to this library are documented in this file.
 - Add reference `ugc_state_names` to provide the two character prefix codes
   used within NWS UGCs.
 - Gracefully handle `XTEUS` product without a value set.
+- Handle `OPTIONS` requests within `iemapp` decorator.
 - Improve `iemapp` to better capture actual HTTP status_code and document
   what happens during Exception to status_code mapping.
 - Improve `pyiem.util.exponential_backoff` to generate useful log messages.

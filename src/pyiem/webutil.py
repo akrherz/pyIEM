@@ -648,6 +648,14 @@ def _iemapp_preflight(
     ip_throttle_secs: float | Callable,
 ) -> tuple[bool, bytes | None]:
     """Run request preflight checks and return early payload when needed."""
+    # Handle OPTIONS requests
+    if environ.get("REQUEST_METHOD", "") == "OPTIONS":
+        start_response(
+            "204 No Content",
+            [("Content-type", "text/plain"), ("Allow", "GET, OPTIONS")],
+        )
+        return True, b""
+
     # mixed converts this to a regular dict
     form = parse_formvars(environ).mixed()
     form = clean_form(form)

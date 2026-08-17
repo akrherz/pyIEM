@@ -125,6 +125,22 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
+def test_options(random_ipv4: str):
+    """Test that OPTIONS requests are automagically handled."""
+
+    @iemapp()
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return f"{random.random()}"
+
+    eo = {"REMOTE_ADDR": random_ipv4}
+    c = Client(application)
+    resp = c.options("/?q=-1", environ_overrides=eo)
+    assert resp.status_code == 204
+    assert not resp.text
+
+
 def test_ip_throttled_callable(random_ipv4: str):
     """Test that the ip throttle is callable."""
 
