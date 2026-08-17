@@ -539,11 +539,13 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         def __init__(self, _server):
             """."""
 
-        def get(self, key):
+        @staticmethod
+        def get(key):
             """."""
             return cache.get(key)
 
-        def set(self, key, value, expire=None):
+        @staticmethod
+        def set(key, value, expire=None):
             """."""
             cache[key] = value
 
