@@ -548,7 +548,7 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
             cache[key] = value
 
         @classmethod
-        def close():
+        def close(cls):
             """."""
 
     @iemapp(memcachekey="iem")
