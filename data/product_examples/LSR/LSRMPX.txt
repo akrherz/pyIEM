@@ -1,0 +1,21 @@
+675 
+NWUS53 KMPX 180006
+LSRMPX
+
+Preliminary Local Storm Report
+National Weather Service Twin Cities/Chanhassen MN
+705 PM CDT Mon Aug 17 2026
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0635 PM     Hail             3 N Bertha              46.30N 95.05W
+08/17/2026  M1.00 in         Todd               MN   Trained Spotter
+
+            Piles of hail still in the yard 30 minutes
+            later.
+
+&&
+TDK
+$$

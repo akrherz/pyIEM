@@ -35,7 +35,7 @@ ICE_XREF = {
 }
 
 MAG_UNITS = re.compile(
-    r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|MI|M|TRACE)", re.IGNORECASE
+    r"(ACRE|INCHES|INCH|IN|MILE|MPH|KTS|U|FT|F|E|MI|M|TRACE)", re.IGNORECASE
 )
 # Products that are considered delayed reports
 DELAYED_THRESHOLD = timedelta(hours=12)

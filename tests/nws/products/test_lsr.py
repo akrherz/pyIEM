@@ -7,6 +7,12 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_260817_nwsconnect():
+    """Support a one off emitted from some new NWS software."""
+    prod = parser(get_test_file("LSR/LSRMPX.txt"))
+    assert abs(prod.lsrs[0].magnitude_f - 1.0) < 0.001
+
+
 def test_251120_lsrppg():
     """Test that we can handle a south latitude, gasp."""
     prod = parser(get_test_file("LSR/LSRPPG.txt"))
