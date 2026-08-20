@@ -45,6 +45,7 @@ WSPD           47- 51   Integer
 """
 
 from datetime import datetime, timedelta
+from io import StringIO
 from typing import Optional
 
 from pydantic import ValidationError
@@ -261,16 +262,32 @@ def process_sounding(text: str) -> Sounding:
 
 def process_ytd(filename: str):
     """Process the YTD file on NCEI's webserver."""
-    msg = ""
+
+    def _parser(text: str):
+        """Protect the parser."""
+        try:
+            return process_sounding(text)
+        except Exception:
+            LOG.exception(
+                "Failed to process %s, first line: %s",
+                filename,
+                text.split("\n")[0],
+            )
+        return None
+
+    sio = None
     with open(filename) as fh:
         for line in fh:
             if line.strip() == "":
                 continue
             if line.startswith("#"):
-                if msg:
-                    yield process_sounding(msg)
-                msg = line
-            else:
-                msg += line
-    if msg:
-        yield process_sounding(msg)
+                if sio is not None:
+                    res = _parser(sio.getvalue())
+                    if res is not None:
+                        yield res
+                sio = StringIO()
+            sio.write(line)
+    if sio is not None:
+        res = _parser(sio.getvalue())
+        if res is not None:
+            yield res

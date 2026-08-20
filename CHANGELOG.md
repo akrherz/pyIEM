@@ -51,6 +51,7 @@ All notable changes to this library are documented in this file.
 - Handle `M` in CLI parsing as missing, improve log message.
 - Improve enforcement of str types into autoplot context parsing.
 - Improve warning log message for SPC PTS polygon QC.
+- Protect NCEI IGRA2 parsing failures.
 - Support `with_sqlalchemy_conn` to decorate a generator.
 - Update NHC website link due to now-defunct URL shortener service.
 - Update SPC direct outlook images to reflect their migration to PNG on
