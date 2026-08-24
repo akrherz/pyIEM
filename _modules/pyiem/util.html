@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.util &#8212; pyIEM 1.27.0.post149+g25fb94c59</title>
+    <title>pyiem.util &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=86dbfefe"></script>
+    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/util';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post149+g25fb94c59" />
-    <meta name="docbuild:last-update" content="Aug 20, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
+    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post149+g25fb94c59</p>
+    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
   
 </a></div>
     
@@ -474,8 +474,8 @@
 <span class="c1"># !important</span>
 <span class="c1"># Lazy import everything possible here, since this module is imported by</span>
 <span class="c1"># most everything.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>  <span class="c1"># used too many places</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="c1"># NB: careful with circular imports!</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">database</span>
@@ -561,7 +561,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">      bool - success of this workflow.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
@@ -1074,19 +1074,26 @@
 
     <span class="n">tmp</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">partialpath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># NB: only wrap the actual fetch in this broad except, not the yields</span>
+    <span class="c1"># below, otherwise exceptions raised by the `with` block&#39;s caller get</span>
+    <span class="c1"># thrown into this generator at the yield and are swallowed here,</span>
+    <span class="c1"># triggering `RuntimeError: generator didn&#39;t stop after throw()`.</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;head&quot;</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">return</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;archive_fetch(</span><span class="si">%s</span><span class="s2">) failed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="kc">None</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;head&quot;</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span>
+
+    <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
             <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="k">yield</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;archive_fetch(</span><span class="si">%s</span><span class="s2">) failed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="kc">None</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">tmp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
