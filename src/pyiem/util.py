@@ -547,19 +547,26 @@ def archive_fetch(
 
     tmp = None
     suffix = "." + os.path.basename(partialpath).split(".")[-1]
+    # NB: only wrap the actual fetch in this broad except, not the yields
+    # below, otherwise exceptions raised by the `with` block's caller get
+    # thrown into this generator at the yield and are swallowed here,
+    # triggering `RuntimeError: generator didn't stop after throw()`.
     try:
         resp = httpx.request(method.upper(), url, timeout=30)
         resp.raise_for_status()
-        if method.lower() == "head":
-            yield ""
-            return
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(resp.content)
-        yield tmp.name
-        return
     except Exception as exp:
         LOG.info("archive_fetch(%s) failed: %s", url, exp)
         yield None
+        return
+
+    if method.lower() == "head":
+        yield ""
+        return
+
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            tmp.write(resp.content)
+        yield tmp.name
     finally:
         if tmp is not None:
             os.unlink(tmp.name)
