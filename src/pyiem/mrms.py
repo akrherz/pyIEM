@@ -9,8 +9,8 @@ import struct
 from datetime import datetime, timezone
 from typing import Optional
 
-import httpx
 import numpy as np
+import requests
 from affine import Affine
 
 from pyiem.util import LOG
@@ -120,9 +120,9 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
     # Option 2, go fetch it from mtarchive
     url = get_url("mtarchive", valid, product)
     try:
-        resp = httpx.get(url, timeout=30)
+        resp = requests.get(url, timeout=30)
         resp.raise_for_status()
-    except Exception:
+    except requests.exceptions.RequestException:
         LOG.info("Failed to fetch %s", url)
         resp = None
     if resp and is_gzipped(resp.content):
@@ -140,9 +140,9 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
     for center in ["", "-bldr", "-cprk"]:
         url = get_url(center, valid, product)
         try:
-            resp = httpx.get(url, timeout=30)
+            resp = requests.get(url, timeout=30)
             resp.raise_for_status()
-        except Exception:
+        except requests.exceptions.RequestException:
             LOG.info("Failed to fetch %s", url)
             resp = None
         if resp and is_gzipped(resp.content):

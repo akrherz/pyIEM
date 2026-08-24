@@ -22,7 +22,6 @@ dependencies = [
   "defusedxml",
   "docutils",
   "geopandas",
-  "httpx",
   "jinja2",
   "matplotlib>=3.5",
   "metar",
@@ -41,6 +40,7 @@ dependencies = [
   "pyproj",
   "rasterio",
   "rasterstats",
+  "requests",
   "scipy",
   "shapely",
   # since psycopg 3 support requires it
