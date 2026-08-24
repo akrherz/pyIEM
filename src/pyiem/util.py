@@ -21,8 +21,8 @@ from html import escape
 # !important
 # Lazy import everything possible here, since this module is imported by
 # most everything.
-import httpx
 import numpy as np  # used too many places
+import requests
 
 # NB: careful with circular imports!
 from pyiem import database
@@ -94,7 +94,7 @@ def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     Returns:
       bool - success of this workflow.
     """
-    resp = httpx.get(url, timeout=60)
+    resp = requests.get(url, timeout=60)
     if resp.status_code != 200:
         return False
     with tempfile.NamedTemporaryFile(mode="wb", delete=False) as tmp:
@@ -547,19 +547,26 @@ def archive_fetch(
 
     tmp = None
     suffix = "." + os.path.basename(partialpath).split(".")[-1]
+    # NB: only wrap the actual fetch in this broad except, not the yields
+    # below, otherwise exceptions raised by the `with` block's caller get
+    # thrown into this generator at the yield and are swallowed here,
+    # triggering `RuntimeError: generator didn't stop after throw()`.
     try:
-        resp = httpx.request(method.upper(), url, timeout=30)
+        resp = requests.request(method.upper(), url, timeout=30)
         resp.raise_for_status()
-        if method.lower() == "head":
-            yield ""
-            return
+    except requests.exceptions.RequestException as exp:
+        LOG.info("archive_fetch(%s) failed: %s", url, exp)
+        yield None
+        return
+
+    if method.lower() == "head":
+        yield ""
+        return
+
+    try:
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             tmp.write(resp.content)
         yield tmp.name
-        return
-    except Exception as exp:
-        LOG.info("archive_fetch(%s) failed: %s", url, exp)
-        yield None
     finally:
         if tmp is not None:
             os.unlink(tmp.name)
