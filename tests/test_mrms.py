@@ -127,10 +127,10 @@ def test_colorramp():
     assert len(cmap) == 256 * 3
 
 
-def test_write_worldfile():
+def test_write_worldfile(tmpdir):
     """see if we can write a world file"""
-    mrms.write_worldfile("/tmp/bah.wld")
-    assert os.path.isfile("/tmp/bah.wld")
+    mrms.write_worldfile(tmpdir / "bah.wld")
+    assert os.path.isfile(tmpdir / "bah.wld")
 
 
 def test_reader():
