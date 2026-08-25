@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.grid.util &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.grid.util &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/grid/util';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.grid.util</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;pyIEM grid utilities.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""pyIEM grid utilities."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -459,7 +459,7 @@
 <div class="viewcode-block" id="grid_smear">
 <a class="viewcode-back" href="../../../api/pyiem.grid.util.html#pyiem.grid.util.grid_smear">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">grid_smear</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Smear data around to fill in masked values (likely near coastlines).</span>
+<span class="w">    </span><span class="sd">"""Smear data around to fill in masked values (likely near coastlines).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        grid: 2D numpy array</span>
@@ -467,7 +467,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        2D numpy array with smeared data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Pad grid</span>
     <span class="n">padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_all</span><span class="p">(</span>
         <span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">shift</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">shift</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>

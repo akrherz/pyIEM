@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.ncei.igra &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.ncei.igra &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/ncei/igra';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.ncei.igra</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Processing of NCEI IGRA2.2 data.</span>
+<span></span><span class="sd">"""Processing of NCEI IGRA2.2 data.</span>
 
 <span class="sd">---------------------</span>
 <span class="sd">Header Record Format:</span>
@@ -495,7 +495,7 @@
 <span class="sd">WDIR           41- 45   Integer</span>
 <span class="sd">WSPD           47- 51   Integer</span>
 <span class="sd">-------------------------------</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
@@ -512,10 +512,10 @@
 <div class="viewcode-block" id="Sounding">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.Sounding">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sounding</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encapsulate a sounding.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Encapsulate a sounding."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">SoundingHeader</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SoundingRecord</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Sounding object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create a Sounding object."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">:</span> <span class="n">SoundingModel</span> <span class="o">=</span> <span class="n">SoundingModel</span><span class="p">(</span>
             <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span>
             <span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">,</span>
@@ -524,35 +524,35 @@
 <div class="viewcode-block" id="Sounding.sql">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.Sounding.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the database insert.</span>
+<span class="w">        </span><span class="sd">"""Do the database insert.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            txn (psycopg2.cursor): Database cursor</span>
 <span class="sd">            overwrite (bool): Should we overwrite existing data?</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">icao</span> <span class="o">=</span> <span class="n">igra2icao</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">station</span><span class="p">]</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;select fid from raob_flights where station = </span><span class="si">%s</span><span class="s2"> and valid = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">"select fid from raob_flights where station = </span><span class="si">%s</span><span class="s2"> and valid = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">(</span><span class="n">icao</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;INSERT into raob_flights(station, valid) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) &quot;</span>
-                <span class="s2">&quot;RETURNING fid&quot;</span><span class="p">,</span>
+                <span class="s2">"INSERT into raob_flights(station, valid) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) "</span>
+                <span class="s2">"RETURNING fid"</span><span class="p">,</span>
                 <span class="p">(</span><span class="n">icao</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;Skipping </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] as record exists&quot;</span><span class="p">,</span>
+                <span class="s2">"Skipping </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] as record exists"</span><span class="p">,</span>
                 <span class="n">icao</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="n">fid</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;fid&quot;</span><span class="p">]</span>
+        <span class="n">fid</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">"fid"</span><span class="p">]</span>
         <span class="c1"># Delete any existing data</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;raob_profile_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"raob_profile_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;DELETE from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> where fid = %s&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"DELETE from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> where fid = %s"</span><span class="p">,</span>
             <span class="p">(</span><span class="n">fid</span><span class="p">,),</span>
         <span class="p">)</span>
         <span class="n">tropo_level</span> <span class="o">=</span> <span class="kc">None</span>
@@ -569,10 +569,10 @@
             <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">lvltyp2</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># tropopause</span>
                 <span class="n">tropo_level</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">press</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+                <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">    INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (fid, ts, levelcode, pressure, height, tmpc, dwpc,</span>
 <span class="s2">    drct, smps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    """</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="n">fid</span><span class="p">,</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
@@ -586,13 +586,13 @@
                 <span class="p">),</span>
             <span class="p">)</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""</span>
 <span class="sd">    UPDATE raob_flights SET release_time = %s, ingested_at = now(),</span>
-<span class="sd">    tropo_level = %s, computed = &#39;f&#39; WHERE fid = %s&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">    tropo_level = %s, computed = 'f' WHERE fid = %s"""</span><span class="p">,</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">release_valid</span><span class="p">,</span> <span class="n">tropo_level</span><span class="p">,</span> <span class="n">fid</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Added </span><span class="si">%s</span><span class="s2"> records for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">][fid:</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+            <span class="s2">"Added </span><span class="si">%s</span><span class="s2"> records for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">][fid:</span><span class="si">%s</span><span class="s2">]"</span><span class="p">,</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">records</span><span class="p">),</span>
             <span class="n">icao</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
@@ -605,7 +605,7 @@
 <div class="viewcode-block" id="parse_header">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.parse_header">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_header</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SoundingHeader</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute all the things.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute all the things."""</span>
     <span class="n">station</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">13</span><span class="p">:</span><span class="mi">17</span><span class="p">])</span>
     <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span>
@@ -615,7 +615,7 @@
     <span class="n">rlshh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">29</span><span class="p">])</span>
     <span class="n">rlsmm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">31</span><span class="p">])</span>
     <span class="n">release_valid</span> <span class="o">=</span> <span class="n">valid</span>
-    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">31</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;9999&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">31</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"9999"</span><span class="p">:</span>
         <span class="n">release_valid</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">rlshh</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">rlsmm</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rlshh</span> <span class="o">&gt;</span> <span class="n">hour</span><span class="p">:</span>
             <span class="c1"># Yesterday</span>
@@ -636,9 +636,9 @@
 <div class="viewcode-block" id="compute_time">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.compute_time">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_time</span><span class="p">(</span><span class="n">release_valid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">etime</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the valid time.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute the valid time."""</span>
     <span class="c1"># etime is MMMSS with a negative number being missing</span>
-    <span class="k">if</span> <span class="n">etime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">etime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"-"</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">etime</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
     <span class="n">minutes</span> <span class="o">=</span> <span class="mi">0</span>
@@ -651,7 +651,7 @@
 <div class="viewcode-block" id="convert_pressure">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.convert_pressure">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_pressure</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the pressure value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the pressure value."""</span>
     <span class="n">pressure</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
     <span class="k">if</span> <span class="n">pressure</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -662,7 +662,7 @@
 <div class="viewcode-block" id="convert_height">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.convert_height">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_height</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the height value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the height value."""</span>
     <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -673,7 +673,7 @@
 <div class="viewcode-block" id="calc_dewp">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.calc_dewp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc_dewp</span><span class="p">(</span><span class="n">tmpc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the dewpoint from the dew point depression.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute the dewpoint from the dew point depression."""</span>
     <span class="n">dpdp</span> <span class="o">=</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">tmpc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dpdp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -686,7 +686,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_float</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the temperature value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the temperature value."""</span>
     <span class="n">val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">/</span> <span class="mf">10.0</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">val</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">100</span>
@@ -701,7 +701,7 @@
 <div class="viewcode-block" id="convert_wind">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.convert_wind">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_wind</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the wind value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the wind value."""</span>
     <span class="n">wind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">wind</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -712,33 +712,33 @@
 <div class="viewcode-block" id="process_sounding">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.process_sounding">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_sounding</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sounding</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the IGRA sounding text.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Process the IGRA sounding text."""</span>
     <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">header</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">parse_header</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="n">tmpc</span> <span class="o">=</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
         <span class="n">record</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;lvltyp1&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]),</span>
-            <span class="s2">&quot;lvltyp2&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]),</span>
-            <span class="s2">&quot;valid&quot;</span><span class="p">:</span> <span class="n">compute_time</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">release_valid</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-            <span class="s2">&quot;press&quot;</span><span class="p">:</span> <span class="n">convert_pressure</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]),</span>
-            <span class="s2">&quot;pflag&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">16</span><span class="p">],</span>
-            <span class="s2">&quot;gph&quot;</span><span class="p">:</span> <span class="n">convert_height</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">21</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-            <span class="s2">&quot;zflag&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">21</span><span class="p">:</span><span class="mi">22</span><span class="p">],</span>
-            <span class="s2">&quot;temp&quot;</span><span class="p">:</span> <span class="n">tmpc</span><span class="p">,</span>
-            <span class="s2">&quot;tflag&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">28</span><span class="p">],</span>
-            <span class="s2">&quot;rh&quot;</span><span class="p">:</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">28</span><span class="p">:</span><span class="mi">33</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">104</span><span class="p">),</span>
-            <span class="s2">&quot;dewp&quot;</span><span class="p">:</span> <span class="n">calc_dewp</span><span class="p">(</span><span class="n">tmpc</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">34</span><span class="p">:</span><span class="mi">39</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-            <span class="s2">&quot;wdir&quot;</span><span class="p">:</span> <span class="n">convert_wind</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">45</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-            <span class="s2">&quot;wspd&quot;</span><span class="p">:</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">46</span><span class="p">:</span><span class="mi">51</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
+            <span class="s2">"lvltyp1"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">"lvltyp2"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="s2">"valid"</span><span class="p">:</span> <span class="n">compute_time</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">release_valid</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
+            <span class="s2">"press"</span><span class="p">:</span> <span class="n">convert_pressure</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]),</span>
+            <span class="s2">"pflag"</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">16</span><span class="p">],</span>
+            <span class="s2">"gph"</span><span class="p">:</span> <span class="n">convert_height</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">21</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
+            <span class="s2">"zflag"</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">21</span><span class="p">:</span><span class="mi">22</span><span class="p">],</span>
+            <span class="s2">"temp"</span><span class="p">:</span> <span class="n">tmpc</span><span class="p">,</span>
+            <span class="s2">"tflag"</span><span class="p">:</span> <span class="n">line</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">28</span><span class="p">],</span>
+            <span class="s2">"rh"</span><span class="p">:</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">28</span><span class="p">:</span><span class="mi">33</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">104</span><span class="p">),</span>
+            <span class="s2">"dewp"</span><span class="p">:</span> <span class="n">calc_dewp</span><span class="p">(</span><span class="n">tmpc</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">34</span><span class="p">:</span><span class="mi">39</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
+            <span class="s2">"wdir"</span><span class="p">:</span> <span class="n">convert_wind</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">45</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
+            <span class="s2">"wspd"</span><span class="p">:</span> <span class="n">convert_float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">46</span><span class="p">:</span><span class="mi">51</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
         <span class="p">}</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SoundingRecord</span><span class="p">(</span><span class="o">**</span><span class="n">record</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Record: </span><span class="si">%s</span><span class="s2"> failed valdiation: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Record: </span><span class="si">%s</span><span class="s2"> failed valdiation: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Sounding</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">records</span><span class="p">)</span></div>
 
 
@@ -746,26 +746,26 @@
 <div class="viewcode-block" id="process_ytd">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.igra.html#pyiem.ncei.igra.process_ytd">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_ytd</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the YTD file on NCEI&#39;s webserver.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Process the YTD file on NCEI's webserver."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parser</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Protect the parser.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Protect the parser."""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">process_sounding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to process </span><span class="si">%s</span><span class="s2">, first line: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"Failed to process </span><span class="si">%s</span><span class="s2">, first line: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="n">filename</span><span class="p">,</span>
-                <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">sio</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">sio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="n">_parser</span><span class="p">(</span><span class="n">sio</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
                     <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.nldn &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.nldn &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/nldn';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,9 +454,9 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.nldn</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">http://www.unidata.ucar.edu/data/lightning/nldn.html</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
@@ -467,35 +467,35 @@
 <div class="viewcode-block" id="NLDNProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nldn.html#pyiem.nws.products.nldn.NLDNProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NLDNProduct</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple class representing obs found in a NLDNProduct.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Simple class representing obs found in a NLDNProduct."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Constructor."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="NLDNProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nldn.html#pyiem.nws.products.nldn.NLDNProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist data to the database&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Persist data to the database"""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;nldn</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">%Y_%m</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;POINT(</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"nldn</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'valid'</span><span class="p">]</span><span class="si">:</span><span class="s2">%Y_%m</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SRID=4326;POINT(</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (valid, geom, signal, multiplicity, &quot;</span>
-                <span class="s2">&quot;axis, eccentricity, ellipse, chisqr) VALUES (</span><span class="si">%s</span><span class="s2">, &quot;</span>
-                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (valid, geom, signal, multiplicity, "</span>
+                <span class="s2">"axis, eccentricity, ellipse, chisqr) VALUES (</span><span class="si">%s</span><span class="s2">, "</span>
+                <span class="s2">"</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                 <span class="p">(</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span>
                     <span class="n">giswkt</span><span class="p">,</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;signal&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;multiplicity&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;axis&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;eccentricity&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ellipse&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;chisqr&quot;</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"signal"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"multiplicity"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"axis"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"eccentricity"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"ellipse"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"chisqr"</span><span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span></div>
 </div>
@@ -505,11 +505,11 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nldn.html#pyiem.nws.products.nldn.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">buf</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;NLDN (unencrypted product)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""NLDN (unencrypted product)"""</span>
 
     <span class="n">np</span> <span class="o">=</span> <span class="n">NLDNProduct</span><span class="p">()</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># NLDN</span>
-    <span class="n">records</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;i&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"&gt;i"</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
     <span class="n">np</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">28</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># SGDS SUNY@ALBANY Thu Sep  ...</span>
 
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -517,13 +517,13 @@
         <span class="n">chunk</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
             <span class="k">break</span>
-        <span class="p">(</span><span class="n">tsec</span><span class="p">,</span> <span class="n">nsec</span><span class="p">,</span> <span class="n">lat1000</span><span class="p">,</span> <span class="n">lon1000</span><span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;4i&quot;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[:</span><span class="mi">16</span><span class="p">])</span>
+        <span class="p">(</span><span class="n">tsec</span><span class="p">,</span> <span class="n">nsec</span><span class="p">,</span> <span class="n">lat1000</span><span class="p">,</span> <span class="n">lon1000</span><span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"&gt;4i"</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[:</span><span class="mi">16</span><span class="p">])</span>
         <span class="n">secs</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tsec</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">nsec</span> <span class="o">/</span> <span class="mf">1000000.0</span><span class="p">)</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">secs</span><span class="p">)</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">sgnl10</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;3h&quot;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">22</span><span class="p">])</span>
+        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">sgnl10</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"&gt;3h"</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">22</span><span class="p">])</span>
         <span class="p">(</span><span class="n">multi</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eccentricity</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">chisqr</span><span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
-            <span class="s2">&quot;6b&quot;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
+            <span class="s2">"6b"</span><span class="p">,</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="nb">dict</span><span class="p">(</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.autoplot &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.autoplot &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/autoplot';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.autoplot</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Content from util for IEM Autoplot work.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Content from util for IEM Autoplot work."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -465,61 +465,61 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">NetworkTable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">state_names</span>
 
-<span class="n">WFO_FOURCHAR</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AFG&quot;</span><span class="p">,</span> <span class="s2">&quot;GUM&quot;</span><span class="p">,</span> <span class="s2">&quot;AFG&quot;</span><span class="p">,</span> <span class="s2">&quot;HFO&quot;</span><span class="p">,</span> <span class="s2">&quot;AFC&quot;</span><span class="p">,</span> <span class="s2">&quot;AJK&quot;</span><span class="p">]</span>
-<span class="n">DEFAULT_MINVAL</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;zhour&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="n">DEFAULT_MAXVAL</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;zhour&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">31</span><span class="p">}</span>
+<span class="n">WFO_FOURCHAR</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"AFG"</span><span class="p">,</span> <span class="s2">"GUM"</span><span class="p">,</span> <span class="s2">"AFG"</span><span class="p">,</span> <span class="s2">"HFO"</span><span class="p">,</span> <span class="s2">"AFC"</span><span class="p">,</span> <span class="s2">"AJK"</span><span class="p">]</span>
+<span class="n">DEFAULT_MINVAL</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"month"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"zhour"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"hour"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"day"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">DEFAULT_MAXVAL</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"month"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">"zhour"</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s2">"hour"</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s2">"day"</span><span class="p">:</span> <span class="mi">31</span><span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_handle_date_err</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to fix up a date string, when possible.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s2">&quot;day&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;range&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Attempt to fix up a date string, when possible."""</span>
+    <span class="k">if</span> <span class="s2">"day"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"range"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">exp</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
     <span class="n">datepart</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="p">(</span><span class="n">yyyy</span><span class="p">,</span> <span class="n">mm</span><span class="p">,</span> <span class="n">_dd</span><span class="p">)</span> <span class="o">=</span> <span class="n">datepart</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">yyyy</span><span class="p">,</span> <span class="n">mm</span><span class="p">,</span> <span class="n">_dd</span><span class="p">)</span> <span class="o">=</span> <span class="n">datepart</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span>
     <span class="c1"># construct a new month date and then substract one day</span>
     <span class="n">lastday</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">yyyy</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">mm</span><span class="p">),</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
         <span class="n">day</span><span class="o">=</span><span class="mi">1</span>
     <span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># Reconstruct the date string</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">lastday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">lastday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="c1"># Careful here, we don&#39;t want a recursive loop</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Careful here, we don't want a recursive loop</span>
     <span class="k">return</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">rectify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_strptime</span><span class="p">(</span><span class="n">ins</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rectify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper around strptime.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Wrapper around strptime."""</span>
     <span class="c1"># Forgive an encoded space</span>
-    <span class="n">ins</span> <span class="o">=</span> <span class="n">ins</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">ins</span> <span class="o">=</span> <span class="n">ins</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"+"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">rectify</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_handle_date_err</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">ins</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;String provided: `</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s2">` does not match format: `</span><span class="si">{</span><span class="n">fmt</span><span class="si">}</span><span class="s2">`&quot;</span>
+            <span class="sa">f</span><span class="s2">"String provided: `</span><span class="si">{</span><span class="n">ins</span><span class="si">}</span><span class="s2">` does not match format: `</span><span class="si">{</span><span class="n">fmt</span><span class="si">}</span><span class="s2">`"</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_float</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert string to float, if possible.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert string to float, if possible."""</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid float value: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
+        <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid float value: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_text_handler</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle text type with pattern.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle text type with pattern."""</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">default</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">default</span>
     <span class="k">return</span> <span class="n">value</span>
 
@@ -527,33 +527,33 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_station_handler</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">opt</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">dict</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle station.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle station."""</span>
     <span class="c1"># A bit of hackery here if we have a name ending in a number</span>
-    <span class="n">_n</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">netname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;network</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">_n</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">,</span> <span class="s2">"3"</span><span class="p">,</span> <span class="s2">"4"</span><span class="p">,</span> <span class="s2">"5"</span><span class="p">]</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="n">netname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"network</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">"</span>
     <span class="c1"># The network variable tags along and within a non-PHP context,</span>
     <span class="c1"># this variable is unset, so we do some more hackery here</span>
-    <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">netname</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;network&quot;</span><span class="p">))</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">netname</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"network"</span><span class="p">))</span>
     <span class="c1"># Convience we load up the network metadata</span>
-    <span class="n">ntname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_nt</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">ntname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"_nt</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span> <span class="o">=</span> <span class="n">NetworkTable</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">],</span> <span class="n">only_online</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="p">:</span>
         <span class="c1"># HACK for three/four char ugliness</span>
-        <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WFO&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">WFO_FOURCHAR</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;P</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WFO&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;JSJ&quot;</span><span class="p">,</span> <span class="s2">&quot;SJU&quot;</span><span class="p">]:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;TJSJ&quot;</span>
+        <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WFO"</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">WFO_FOURCHAR</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"P</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">elif</span> <span class="n">ctx</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WFO"</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"JSJ"</span><span class="p">,</span> <span class="s2">"SJU"</span><span class="p">]:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s2">"TJSJ"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UnknownStationException</span><span class="p">(</span><span class="s2">&quot;Unknown station provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">UnknownStationException</span><span class="p">(</span><span class="s2">"Unknown station provided."</span><span class="p">)</span>
     <span class="c1"># A helper to remove downstream boilerplate</span>
-    <span class="n">sname</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">))&quot;</span><span class="p">})[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;_sname</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">sname</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="n">ntname</span><span class="p">]</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"((</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">))"</span><span class="p">})[</span><span class="s2">"name"</span><span class="p">]</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">"_sname</span><span class="si">{</span><span class="n">_n</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">value</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_cmap_handler</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle colormap.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle colormap."""</span>
     <span class="c1"># Ensure that our value is a valid colormap known to matplotlib</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
@@ -563,10 +563,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_select_handler</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">opt</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle select type options.&quot;&quot;&quot;</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="w">    </span><span class="sd">"""Handle select type options."""</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="p">{})</span>
     <span class="c1"># Allow for legacy variable aliases</span>
-    <span class="n">alias</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alias&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">alias</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"alias"</span><span class="p">,</span> <span class="p">{})</span>
     <span class="c1"># in case of multi, value could be a list</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
@@ -575,7 +575,7 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">alias</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multiple&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"multiple"</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">newvalue</span> <span class="o">=</span> <span class="p">[]</span>
@@ -595,27 +595,27 @@
     <span class="n">maxval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle datetime type options.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle datetime type options."""</span>
     <span class="c1"># tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
+        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">)</span>
+        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2"> %H%M"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># A common problem is for the space to be missing</span>
-        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">+=</span> <span class="s2">&quot; 0000&quot;</span>
+                <span class="n">value</span> <span class="o">+=</span> <span class="s2">" 0000"</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span>
-            <span class="n">value</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H%M&quot;</span><span class="p">,</span>
-            <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rectify_dates&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">value</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">),</span>
+            <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H%M"</span><span class="p">,</span>
+            <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rectify_dates"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span>
 
@@ -623,19 +623,19 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_sday_handler</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">minval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">maxval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle sday type options.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle sday type options."""</span>
     <span class="c1"># supports legacy uris with yyyy-mm-dd, before migration to sday</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">minval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000</span><span class="si">{</span><span class="n">minval</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">maxval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000</span><span class="si">{</span><span class="n">maxval</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2000</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span>
 
 
@@ -648,16 +648,16 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
     <span class="c1"># tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">minval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">maxval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">maxval</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span><span class="n">maxval</span><span class="p">,</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_strptime</span><span class="p">(</span>
             <span class="n">value</span><span class="p">,</span>
-            <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rectify_dates&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">rectify</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rectify_dates"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
         <span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span>
 
@@ -669,118 +669,118 @@
     <span class="n">defaults</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Only set a default value when the field is not optional</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;phenomena&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;significance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;phenomena&quot;</span><span class="p">,</span> <span class="s2">&quot;significance&quot;</span><span class="p">]:</span>
+            <span class="n">defaults</span><span class="p">[</span><span class="s2">"phenomena"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">defaults</span><span class="p">[</span><span class="s2">"significance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"phenomena"</span><span class="p">,</span> <span class="s2">"significance"</span><span class="p">]:</span>
         <span class="n">label2</span> <span class="o">=</span> <span class="n">label</span> <span class="o">+</span> <span class="n">name</span>
         <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label2</span><span class="p">,</span> <span class="n">defaults</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
         <span class="c1"># Prevent empty strings from being set</span>
-        <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="n">ctx</span><span class="p">[</span><span class="n">label2</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_filtervar_handler</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">fdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">opt</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle autoplot filtervar type.&quot;&quot;&quot;</span>
-    <span class="n">valid_comparators</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;gt&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span> <span class="s2">&quot;ne&quot;</span><span class="p">}</span>
-    <span class="n">param_name</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Handle autoplot filtervar type."""</span>
+    <span class="n">valid_comparators</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"ge"</span><span class="p">,</span> <span class="s2">"gt"</span><span class="p">,</span> <span class="s2">"le"</span><span class="p">,</span> <span class="s2">"lt"</span><span class="p">,</span> <span class="s2">"eq"</span><span class="p">,</span> <span class="s2">"ne"</span><span class="p">}</span>
+    <span class="n">param_name</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
     <span class="n">cgi_value</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span>
-    <span class="n">default_value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cgi_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+    <span class="n">default_value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cgi_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="p">{}):</span>
         <span class="n">cgi_value</span> <span class="o">=</span> <span class="n">default_value</span>
-    <span class="n">default_comp</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comp_default&quot;</span><span class="p">,</span> <span class="s2">&quot;ge&quot;</span><span class="p">)</span>
+    <span class="n">default_comp</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"comp_default"</span><span class="p">,</span> <span class="s2">"ge"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">default_comp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_comparators</span><span class="p">:</span>
-        <span class="n">default_comp</span> <span class="o">=</span> <span class="s2">&quot;ge&quot;</span>
-    <span class="n">comp_value</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_comp&quot;</span><span class="p">,</span> <span class="n">default_comp</span><span class="p">)</span>
+        <span class="n">default_comp</span> <span class="o">=</span> <span class="s2">"ge"</span>
+    <span class="n">comp_value</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_comp"</span><span class="p">,</span> <span class="n">default_comp</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">comp_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_comparators</span><span class="p">:</span>
         <span class="n">comp_value</span> <span class="o">=</span> <span class="n">default_comp</span>
     <span class="n">thres_value</span> <span class="o">=</span> <span class="n">_float</span><span class="p">(</span>
-        <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_t&quot;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;t_default&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+        <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_t"</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"t_default"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
     <span class="p">)</span>
     <span class="c1"># We should be ready now to write these into the context</span>
     <span class="n">ctx</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">cgi_value</span>
-    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_comp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp_value</span>
-    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_t&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thres_value</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_comp"</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp_value</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">_t"</span><span class="p">]</span> <span class="o">=</span> <span class="n">thres_value</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_process_option</span><span class="p">(</span>
     <span class="n">opt</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">fdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process an option dictionary and update the context accordingly.&quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
-    <span class="n">default</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
-    <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-    <span class="n">minval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">DEFAULT_MINVAL</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
-    <span class="n">maxval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="n">DEFAULT_MAXVAL</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
-    <span class="n">optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optional&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Process an option dictionary and update the context accordingly."""</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+    <span class="n">default</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
+    <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span>
+    <span class="n">minval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"min"</span><span class="p">,</span> <span class="n">DEFAULT_MINVAL</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
+    <span class="n">maxval</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max"</span><span class="p">,</span> <span class="n">DEFAULT_MAXVAL</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
+    <span class="n">optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"optional"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="c1"># value needs to be either None or `str` type, anything else is a problem</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multiple&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"multiple"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid value for parameter: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;expected a string.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Invalid value for parameter: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">, "</span>
+            <span class="s2">"expected a string."</span>
         <span class="p">)</span>
     <span class="c1"># vtec_ps is special since we have special logic to get its value</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">optional</span>
-        <span class="ow">and</span> <span class="n">typ</span> <span class="o">!=</span> <span class="s2">&quot;vtec_ps&quot;</span>
+        <span class="ow">and</span> <span class="n">typ</span> <span class="o">!=</span> <span class="s2">"vtec_ps"</span>
         <span class="ow">and</span> <span class="p">(</span>
             <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">enforce_optional</span> <span class="ow">and</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_opt_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;on&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">enforce_optional</span> <span class="ow">and</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_opt_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"on"</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">):</span>
         <span class="k">return</span>
-    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;vtec_ps&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"vtec_ps"</span><span class="p">:</span>
         <span class="n">_vtec_ps_handler</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">optional</span><span class="p">,</span> <span class="n">fdict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
         <span class="k">return</span>
-    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;filtervar&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"filtervar"</span><span class="p">:</span>
         <span class="n">_filtervar_handler</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">fdict</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
         <span class="k">return</span>
 
-    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">_text_handler</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pattern&quot;</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;zstation&quot;</span><span class="p">,</span> <span class="s2">&quot;sid&quot;</span><span class="p">,</span> <span class="s2">&quot;networkselect&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"text"</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_text_handler</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pattern"</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"station"</span><span class="p">,</span> <span class="s2">"zstation"</span><span class="p">,</span> <span class="s2">"sid"</span><span class="p">,</span> <span class="s2">"networkselect"</span><span class="p">]:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_station_handler</span><span class="p">(</span><span class="n">value</span> <span class="ow">or</span> <span class="n">default</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fdict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">_cmap_handler</span><span class="p">(</span><span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;zhour&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"cmap"</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_cmap_handler</span><span class="p">(</span><span class="n">value</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"int"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"zhour"</span><span class="p">,</span> <span class="s2">"hour"</span><span class="p">,</span> <span class="s2">"day"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">default</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_float</span><span class="p">(</span><span class="n">default</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"float"</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">default</span> <span class="o">=</span> <span class="n">_float</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;state&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"state"</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">state_names</span> <span class="ow">and</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;select&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"select"</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_select_handler</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;datetime&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"datetime"</span><span class="p">:</span>
         <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">_datetime_handler</span><span class="p">(</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;sday&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"sday"</span><span class="p">:</span>
         <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">_sday_handler</span><span class="p">(</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span>
         <span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"date"</span><span class="p">:</span>
         <span class="n">value</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">_date_handler</span><span class="p">(</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;dat&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">"dat"</span><span class="p">:</span>
         <span class="c1"># Damage Assessment Toolkit</span>
-        <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;datglobalid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;datglobalid&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s2">"datglobalid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"datglobalid"</span><span class="p">)</span>
     <span class="c1"># validation</span>
     <span class="k">if</span> <span class="n">minval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">minval</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">default</span>
@@ -794,7 +794,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_autoplot_context</span><span class="p">(</span>
     <span class="n">fdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the variables out of a dict of strings</span>
+<span class="w">    </span><span class="sd">"""Get the variables out of a dict of strings</span>
 
 <span class="sd">    This helper for IEM autoplot gets values out of a dictionary of strings,</span>
 <span class="sd">    as provided by CGI.  It does some magic to get types right, defaults right</span>
@@ -811,24 +811,24 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      dictionary of variable names and values, with proper types!</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">ctx</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Check for DPI setting</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dpi&quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dpi"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s2">"dpi"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="c1"># Copy internal parameters, these are not specified by the autoplot cfg</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="n">fdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">),</span> <span class="n">fdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">escape</span><span class="p">(</span><span class="n">fdict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
     <span class="c1"># Check over autoplot provided arguments</span>
-    <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+    <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"arguments"</span><span class="p">,</span> <span class="p">[]):</span>
         <span class="n">_process_option</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">fdict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">enforce_optional</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Ensure defaults are set, if they exist</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;defaults&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"defaults"</span><span class="p">,</span> <span class="p">{}):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">:</span>
-            <span class="n">ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;defaults&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">"defaults"</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">ctx</span></div>
 
 </pre></div>

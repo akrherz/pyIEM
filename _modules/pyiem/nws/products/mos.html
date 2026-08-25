@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.mos &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.mos &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/mos';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,9 +454,9 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.mos</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Supports parsing of Textual Model Output Statistics files</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -465,69 +465,69 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">utc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.wmo</span><span class="w"> </span><span class="kn">import</span> <span class="n">WMOProduct</span>
 
-<span class="n">REMAP_VARS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;X_N&quot;</span><span class="p">:</span> <span class="s2">&quot;N_X&quot;</span><span class="p">,</span> <span class="s2">&quot;WND&quot;</span><span class="p">:</span> <span class="s2">&quot;WSP&quot;</span><span class="p">,</span> <span class="s2">&quot;WGS&quot;</span><span class="p">:</span> <span class="s2">&quot;GST&quot;</span><span class="p">}</span>
+<span class="n">REMAP_VARS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"X_N"</span><span class="p">:</span> <span class="s2">"N_X"</span><span class="p">,</span> <span class="s2">"WND"</span><span class="p">:</span> <span class="s2">"WSP"</span><span class="p">,</span> <span class="s2">"WGS"</span><span class="p">:</span> <span class="s2">"GST"</span><span class="p">}</span>
 <span class="n">DATABASE_COLS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="populate_database_cols">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.populate_database_cols">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">populate_database_cols</span><span class="p">(</span><span class="n">txn</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Query the database to see which variables we can store.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Query the database to see which variables we can store."""</span>
     <span class="c1"># query the alldata table for its columns</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""</span>
 <span class="s2">        SELECT column_name from information_schema.columns</span>
-<span class="s2">        WHERE table_name = &#39;alldata&#39;</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">        WHERE table_name = 'alldata'</span>
+<span class="s2">    """</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="n">DATABASE_COLS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;column_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
-    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loaded </span><span class="si">%s</span><span class="s2"> columns from MOS alldata&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">DATABASE_COLS</span><span class="p">))</span></div>
+        <span class="n">DATABASE_COLS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"column_name"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loaded </span><span class="si">%s</span><span class="s2"> columns from MOS alldata"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">DATABASE_COLS</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="section_parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.section_parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">section_parser</span><span class="p">(</span><span class="n">sect</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse this section of text&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse this section of text"""</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
         <span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;([A-Z0-9_]{3,10})\s+(....?) (V[0-9]\.[0-9] )?(....?) GUIDANCE\s+&quot;</span>
-            <span class="sa">r</span><span class="s2">&quot;([01]?[0-9])/([0-3][0-9])/([0-9]</span><span class="si">{4}</span><span class="s2">)\s+&quot;</span>
-            <span class="sa">r</span><span class="s2">&quot;([0-2][0-9][0-6][0-9]) UTC&quot;</span>
+            <span class="sa">r</span><span class="s2">"([A-Z0-9_]{3,10})\s+(....?) (V[0-9]\.[0-9] )?(....?) GUIDANCE\s+"</span>
+            <span class="sa">r</span><span class="s2">"([01]?[0-9])/([0-3][0-9])/([0-9]</span><span class="si">{4}</span><span class="s2">)\s+"</span>
+            <span class="sa">r</span><span class="s2">"([0-2][0-9][0-6][0-9]) UTC"</span>
         <span class="p">),</span>
         <span class="n">sect</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">_bogus</span><span class="p">,</span> <span class="n">mos</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">hhmm</span><span class="p">)</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;NBM&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"NBM"</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">mos</span>
-        <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">&quot;NBX&quot;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;NBE&quot;</span>
-    <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">&quot;LAMP&quot;</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;LAV&quot;</span>
-    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;GFSX&quot;</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;MEX&quot;</span>
+        <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">"NBX"</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="s2">"NBE"</span>
+    <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">"LAMP"</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="s2">"LAV"</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"GFSX"</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="s2">"MEX"</span>
     <span class="c1"># We drop the minutes for the LAV, which has :30 after for some reason?</span>
     <span class="n">initts</span> <span class="o">=</span> <span class="n">utc</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">month</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">hhmm</span><span class="p">[:</span><span class="mi">2</span><span class="p">]))</span>
 
     <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">initts</span><span class="p">]</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">sect</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;;;&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">sect</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";;;"</span><span class="p">)</span>
     <span class="n">hrline</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MEX&quot;</span><span class="p">,</span> <span class="s2">&quot;LAV&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"MEX"</span><span class="p">,</span> <span class="s2">"LAV"</span><span class="p">]:</span>
         <span class="n">hrline</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">elif</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NBE&quot;</span><span class="p">,</span> <span class="s2">&quot;NBS&quot;</span><span class="p">]:</span>
+    <span class="k">elif</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"NBE"</span><span class="p">,</span> <span class="s2">"NBS"</span><span class="p">]:</span>
         <span class="n">hrline</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="n">hrs</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">hrline</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">hrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DT&quot;</span><span class="p">:</span>  <span class="c1"># Hack</span>
+    <span class="n">hrs</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">hrline</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"|"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">hrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"DT"</span><span class="p">:</span>  <span class="c1"># Hack</span>
         <span class="n">hrs</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">hr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hrs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-        <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;LAV&quot;</span> <span class="ow">and</span> <span class="n">hrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HR&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"LAV"</span> <span class="ow">and</span> <span class="n">hrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"HR"</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">initts</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;LAV&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"LAV"</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">initts</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">ts</span><span class="o">.</span><span class="n">hour</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">hr</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MEX&quot;</span><span class="p">,</span> <span class="s2">&quot;NBE&quot;</span><span class="p">,</span> <span class="s2">&quot;NBS&quot;</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"MEX"</span><span class="p">,</span> <span class="s2">"NBE"</span><span class="p">,</span> <span class="s2">"NBS"</span><span class="p">]:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">initts</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">hr</span> <span class="o">==</span> <span class="s2">&quot;00&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">hr</span> <span class="o">==</span> <span class="s2">"00"</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -537,38 +537,38 @@
     <span class="c1"># Double check</span>
     <span class="n">bad_ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">times</span> <span class="k">if</span> <span class="n">ts</span> <span class="o">&lt;</span> <span class="n">initts</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">bad_ts</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed ts of </span><span class="si">{</span><span class="n">bad_ts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt; initts </span><span class="si">{</span><span class="n">initts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Computed ts of </span><span class="si">{</span><span class="n">bad_ts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt; initts </span><span class="si">{</span><span class="n">initts</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">chars</span> <span class="o">=</span> <span class="s2">&quot;(...)&quot;</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MEX&quot;</span><span class="p">,</span> <span class="s2">&quot;NBE&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;(....)&quot;</span>
-    <span class="n">startline</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;LAV&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">3</span>
-    <span class="n">startlinepos</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NBE&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">5</span>
-    <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">&quot;NBX&quot;</span> <span class="ow">or</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;MEX&quot;</span><span class="p">:</span>
+    <span class="n">chars</span> <span class="o">=</span> <span class="s2">"(...)"</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"MEX"</span><span class="p">,</span> <span class="s2">"NBE"</span><span class="p">]</span> <span class="k">else</span> <span class="s2">"(....)"</span>
+    <span class="n">startline</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"LAV"</span><span class="p">]</span> <span class="k">else</span> <span class="mi">3</span>
+    <span class="n">startlinepos</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"NBE"</span><span class="p">]</span> <span class="k">else</span> <span class="mi">5</span>
+    <span class="k">if</span> <span class="n">mos</span> <span class="o">==</span> <span class="s2">"NBX"</span> <span class="ow">or</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"MEX"</span><span class="p">:</span>
         <span class="n">startlinepos</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">startline</span><span class="p">:]:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">vname</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"|"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
+        <span class="n">vname</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">vals</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="n">startlinepos</span><span class="p">:])</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vals</span><span class="p">):</span>
             <span class="c1"># Some products have more data than columns :(</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">&quot;T06&quot;</span> <span class="ow">and</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">&quot;T06_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">vals</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">"T06"</span> <span class="ow">and</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">]:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">"T06_1"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">vals</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="p">)</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">&quot;T06_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">&quot;T06&quot;</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">"T06_2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">"T06"</span><span class="p">:</span>
                 <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">&quot;T12&quot;</span> <span class="ow">and</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">&quot;T12_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">vals</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">"T12"</span> <span class="ow">and</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">"T12_1"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">vals</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="p">)</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">&quot;T12_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">&quot;T12&quot;</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s2">"T12_2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">"T12"</span><span class="p">:</span>
                 <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">&quot;WDR&quot;</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">vname</span> <span class="o">==</span> <span class="s2">"WDR"</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="n">vname</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">*</span> <span class="mi">10</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="n">vname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -579,8 +579,8 @@
 <div class="viewcode-block" id="make_null">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.make_null">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_null</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hmmm, perhaps we should set 999 as null too?&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;NG&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hmmm, perhaps we should set 999 as null too?"""</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"NG"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">val</span></div>
 
@@ -589,14 +589,14 @@
 <div class="viewcode-block" id="MOSProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.MOSProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MOSProduct</span><span class="p">(</span><span class="n">WMOProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Represents a Model Output Statistics file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constructor"""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ugc_provider</span> <span class="o">=</span> <span class="n">ugc_provider</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nwsli_provider</span> <span class="o">=</span> <span class="n">nwsli_provider</span>
@@ -606,49 +606,49 @@
 <div class="viewcode-block" id="MOSProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.MOSProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist our data to the database</span>
+<span class="w">        </span><span class="sd">"""Persist our data to the database</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          txn: Database cursor</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          int number of inserts made to the database</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Initial bootstrap</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">DATABASE_COLS</span><span class="p">:</span>
             <span class="n">populate_database_cols</span><span class="p">(</span><span class="n">txn</span><span class="p">)</span>
 
         <span class="n">inserts</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">sect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">sect</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
-                <span class="c1"># Account for &#39;empty&#39; MOS products</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">sect</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">ts</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">sect</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]:</span>
+                <span class="c1"># Account for 'empty' MOS products</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">sect</span><span class="p">[</span><span class="s2">"data"</span><span class="p">][</span><span class="n">ts</span><span class="p">]:</span>
                     <span class="k">continue</span>
                 <span class="n">fst</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;INSERT into t</span><span class="si">{</span><span class="n">sect</span><span class="p">[</span><span class="s1">&#39;initts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> &quot;</span>
-                    <span class="s2">&quot;(station, model, runtime, ftime, &quot;</span>
+                    <span class="sa">f</span><span class="s2">"INSERT into t</span><span class="si">{</span><span class="n">sect</span><span class="p">[</span><span class="s1">'initts'</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> "</span>
+                    <span class="s2">"(station, model, runtime, ftime, "</span>
                 <span class="p">)</span>
-                <span class="n">sst</span> <span class="o">=</span> <span class="s2">&quot;VALUES(</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,&quot;</span>
-                <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sect</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">],</span> <span class="n">sect</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span> <span class="n">sect</span><span class="p">[</span><span class="s2">&quot;initts&quot;</span><span class="p">],</span> <span class="n">ts</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">vname</span> <span class="ow">in</span> <span class="n">sect</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">ts</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="c1"># variables we don&#39;t wish to database</span>
-                    <span class="k">if</span> <span class="n">vname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;FHR&quot;</span><span class="p">,</span> <span class="s2">&quot;HR&quot;</span><span class="p">,</span> <span class="s2">&quot;UTC&quot;</span><span class="p">]:</span>
+                <span class="n">sst</span> <span class="o">=</span> <span class="s2">"VALUES(</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,"</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sect</span><span class="p">[</span><span class="s2">"station"</span><span class="p">],</span> <span class="n">sect</span><span class="p">[</span><span class="s2">"model"</span><span class="p">],</span> <span class="n">sect</span><span class="p">[</span><span class="s2">"initts"</span><span class="p">],</span> <span class="n">ts</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">vname</span> <span class="ow">in</span> <span class="n">sect</span><span class="p">[</span><span class="s2">"data"</span><span class="p">][</span><span class="n">ts</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="c1"># variables we don't wish to database</span>
+                    <span class="k">if</span> <span class="n">vname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"FHR"</span><span class="p">,</span> <span class="s2">"HR"</span><span class="p">,</span> <span class="s2">"UTC"</span><span class="p">]:</span>
                         <span class="k">continue</span>
                     <span class="n">colname</span> <span class="o">=</span> <span class="n">REMAP_VARS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">vname</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">colname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DATABASE_COLS</span><span class="p">:</span>
                         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;No database storage for column: </span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2">, &quot;</span>
-                            <span class="s2">&quot;ignoring.&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">"No database storage for column: </span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2">, "</span>
+                            <span class="s2">"ignoring."</span><span class="p">,</span>
                             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                         <span class="p">)</span>
                         <span class="k">continue</span>
-                    <span class="n">fst</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2">,&quot;</span>
-                    <span class="n">sst</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">,&quot;</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_null</span><span class="p">(</span><span class="n">sect</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">ts</span><span class="p">][</span><span class="n">vname</span><span class="p">]))</span>
+                    <span class="n">fst</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2">,"</span>
+                    <span class="n">sst</span> <span class="o">+=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">,"</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_null</span><span class="p">(</span><span class="n">sect</span><span class="p">[</span><span class="s2">"data"</span><span class="p">][</span><span class="n">ts</span><span class="p">][</span><span class="n">vname</span><span class="p">]))</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
                     <span class="c1"># No data was found</span>
                     <span class="k">continue</span>
-                <span class="n">sql</span> <span class="o">=</span> <span class="n">fst</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;) &quot;</span> <span class="o">+</span> <span class="n">sst</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                <span class="n">sql</span> <span class="o">=</span> <span class="n">fst</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">") "</span> <span class="o">+</span> <span class="n">sst</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">")"</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
                 <span class="n">inserts</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">inserts</span></div>
@@ -657,19 +657,19 @@
 <div class="viewcode-block" id="MOSProduct.parse_data">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.MOSProduct.parse_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse out our data!&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Parse out our data!"""</span>
         <span class="c1"># Whitespace trim</span>
-        <span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
-        <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;;;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x1e</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)])</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">";;;"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\x1e</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="n">sections</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;([A-Z0-9_]{3,10}\s+....? V?[0-9]?\.?[0-9]? ?&quot;</span>
-            <span class="sa">r</span><span class="s2">&quot;....? GUIDANCE .*?);;;;;;&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">"([A-Z0-9_]{3,10}\s+....? V?[0-9]?\.?[0-9]? ?"</span>
+            <span class="sa">r</span><span class="s2">"....? GUIDANCE .*?);;;;;;"</span><span class="p">,</span>
             <span class="n">raw</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">section_parser</span><span class="p">,</span> <span class="n">sections</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Failed to split MOS Product&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Failed to split MOS Product"</span><span class="p">)</span></div>
 </div>
 
 
@@ -677,7 +677,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.mos.html#pyiem.nws.products.mos.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper function"""</span>
     <span class="k">return</span> <span class="n">MOSProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

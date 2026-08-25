@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A generalized parser frontend.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A generalized parser frontend."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">absolute_import</span>
 
@@ -469,7 +469,7 @@
     <span class="n">ugc_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">UGCProvider</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Omnibus parser of NWS Text Data</span>
+<span class="w">    </span><span class="sd">"""Omnibus parser of NWS Text Data</span>
 
 <span class="sd">    This is intended to be a catch-all parser of text data.  As it currently</span>
 <span class="sd">    stands, it does not correctly hand products off to the correct</span>
@@ -490,7 +490,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">      TextProduct: A TextProduct instance</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">TextProduct</span><span class="p">,</span>
         <span class="n">TextProductException</span><span class="p">,</span>
@@ -513,28 +513,28 @@
     <span class="p">)</span>
 
     <span class="n">XREF</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;CLI&quot;</span><span class="p">:</span> <span class="n">cli</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;FFG&quot;</span><span class="p">:</span> <span class="n">mcd</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;HWO&quot;</span><span class="p">:</span> <span class="n">hwo</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;LSR&quot;</span><span class="p">:</span> <span class="n">lsr</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;NHC&quot;</span><span class="p">:</span> <span class="n">nhc</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;PFW&quot;</span><span class="p">:</span> <span class="n">spcpts</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;PTS&quot;</span><span class="p">:</span> <span class="n">spcpts</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;RBG&quot;</span><span class="p">:</span> <span class="n">ero</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;SAW&quot;</span><span class="p">:</span> <span class="n">saw</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;SEL&quot;</span><span class="p">:</span> <span class="n">sel</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;SPS&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;SWO&quot;</span><span class="p">:</span> <span class="n">mcd</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;TAF&quot;</span><span class="p">:</span> <span class="n">taf</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;TCP&quot;</span><span class="p">:</span> <span class="n">nhc</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
-        <span class="s2">&quot;WWP&quot;</span><span class="p">:</span> <span class="n">wwp</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"CLI"</span><span class="p">:</span> <span class="n">cli</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"FFG"</span><span class="p">:</span> <span class="n">mcd</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"HWO"</span><span class="p">:</span> <span class="n">hwo</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"LSR"</span><span class="p">:</span> <span class="n">lsr</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"NHC"</span><span class="p">:</span> <span class="n">nhc</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"PFW"</span><span class="p">:</span> <span class="n">spcpts</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"PTS"</span><span class="p">:</span> <span class="n">spcpts</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"RBG"</span><span class="p">:</span> <span class="n">ero</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"SAW"</span><span class="p">:</span> <span class="n">saw</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"SEL"</span><span class="p">:</span> <span class="n">sel</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"SPS"</span><span class="p">:</span> <span class="n">sps</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"SWO"</span><span class="p">:</span> <span class="n">mcd</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"TAF"</span><span class="p">:</span> <span class="n">taf</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"TCP"</span><span class="p">:</span> <span class="n">nhc</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
+        <span class="s2">"WWP"</span><span class="p">:</span> <span class="n">wwp</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="c1"># Kind of wasteful, but alas</span>
     <span class="n">wmo</span> <span class="o">=</span> <span class="n">WMOProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">wmo</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;KWNP&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">wmo</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s2">"KWNP"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">spacewx</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">wmo</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">TextProductException</span><span class="p">(</span><span class="s2">&quot;Could not locate AFOS Identifier&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">TextProductException</span><span class="p">(</span><span class="s2">"Could not locate AFOS Identifier"</span><span class="p">)</span>
     <span class="n">func</span> <span class="o">=</span> <span class="n">XREF</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">wmo</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">TextProduct</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 

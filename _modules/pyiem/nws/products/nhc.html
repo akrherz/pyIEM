@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.nhc &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.nhc &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/nhc';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.nhc</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Handle some of the fun things that come from the Hurricane Center&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Handle some of the fun things that come from the Hurricane Center"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -463,55 +463,55 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TWEET_CHARS</span>
 
 <span class="n">TITLE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|&quot;</span>
-    <span class="s2">&quot;POTENTIAL TROPICAL CYCLONE|TROPICAL CYCLONE|&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) &quot;</span>
-    <span class="s2">&quot;(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) &quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;NUMBER\s+([0-9A-Z]+)&quot;</span>
+    <span class="s2">"(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"</span>
+    <span class="s2">"POTENTIAL TROPICAL CYCLONE|TROPICAL CYCLONE|"</span>
+    <span class="sa">r</span><span class="s2">"TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "</span>
+    <span class="s2">"(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "</span>
+    <span class="sa">r</span><span class="s2">"NUMBER\s+([0-9A-Z]+)"</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="NHCProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nhc.html#pyiem.nws.products.nhc.NHCProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NHCProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Represents a NHC</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="NHCProduct.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nhc.html#pyiem.nws.products.nhc.NHCProduct.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the jabber variant of this message&quot;&quot;&quot;</span>
-        <span class="n">myurl</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="sd">"""Get the jabber variant of this message"""</span>
+        <span class="n">myurl</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">TITLE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">TITLE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">!=</span> <span class="s2">&quot;KNHC&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">!=</span> <span class="s2">"KNHC"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[]</span>
-            <span class="k">raise</span> <span class="n">NHCException</span><span class="p">(</span><span class="s2">&quot;Could not parse header from NHC Product!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NHCException</span><span class="p">(</span><span class="s2">"Could not parse header from NHC Product!"</span><span class="p">)</span>
 
         <span class="n">classification</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">twitter_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">twitter_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
         <span class="n">prodtype</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">prodnumber</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;National Hurricane Center&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="s2">"National Hurricane Center"</span>
 
         <span class="n">tformat</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">%(classification)s</span><span class="s2"> #</span><span class="si">%(storm_name)s</span><span class="s2"> &quot;</span>
-            <span class="s2">&quot;</span><span class="si">%(btype)s</span><span class="s2"> </span><span class="si">%(num)s</span><span class="s2"> issued. </span><span class="si">%(headline)s</span><span class="s2"> &quot;</span>
-            <span class="s2">&quot;https://www.nhc.noaa.gov/#</span><span class="si">%(storm_name)s</span><span class="s2">&quot;</span>
+            <span class="s2">"</span><span class="si">%(classification)s</span><span class="s2"> #</span><span class="si">%(storm_name)s</span><span class="s2"> "</span>
+            <span class="s2">"</span><span class="si">%(btype)s</span><span class="s2"> </span><span class="si">%(num)s</span><span class="s2"> issued. </span><span class="si">%(headline)s</span><span class="s2"> "</span>
+            <span class="s2">"https://www.nhc.noaa.gov/#</span><span class="si">%(storm_name)s</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="n">tdict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="n">classification</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span>
-            <span class="s2">&quot;storm_name&quot;</span><span class="p">:</span> <span class="n">twitter_name</span><span class="p">,</span>
-            <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="n">prodnumber</span><span class="p">,</span>
-            <span class="s2">&quot;btype&quot;</span><span class="p">:</span> <span class="n">prodtype</span><span class="p">,</span>
-            <span class="s2">&quot;headline&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">myurl</span><span class="p">,</span>
+            <span class="s2">"classification"</span><span class="p">:</span> <span class="n">classification</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span>
+            <span class="s2">"storm_name"</span><span class="p">:</span> <span class="n">twitter_name</span><span class="p">,</span>
+            <span class="s2">"num"</span><span class="p">:</span> <span class="n">prodnumber</span><span class="p">,</span>
+            <span class="s2">"btype"</span><span class="p">:</span> <span class="n">prodtype</span><span class="p">,</span>
+            <span class="s2">"headline"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">myurl</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> issues </span><span class="si">%s</span><span class="s2"> #</span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">mess</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> issues </span><span class="si">%s</span><span class="s2"> #</span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span>
             <span class="n">center</span><span class="p">,</span>
             <span class="n">prodtype</span><span class="p">,</span>
             <span class="n">prodnumber</span><span class="p">,</span>
@@ -519,7 +519,7 @@
             <span class="n">name</span><span class="p">,</span>
             <span class="n">myurl</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">htmlmess</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;</span><span class="si">%s</span><span class="s1"> #</span><span class="si">%s</span><span class="s1">&lt;/a&gt; for </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">htmlmess</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1"> issues &lt;a href="</span><span class="si">%s</span><span class="s1">"&gt;</span><span class="si">%s</span><span class="s1"> #</span><span class="si">%s</span><span class="s1">&lt;/a&gt; for </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span>
             <span class="n">center</span><span class="p">,</span>
             <span class="n">myurl</span><span class="p">,</span>
             <span class="n">prodtype</span><span class="p">,</span>
@@ -531,26 +531,26 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">headlines</span><span class="p">:</span>
             <span class="n">headline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">headlines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">headline</span> <span class="o">=</span> <span class="n">headline</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">twitter_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">twitter_name</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
-            <span class="n">headline</span> <span class="o">=</span> <span class="n">headline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">headline</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+            <span class="n">headline</span> <span class="o">=</span> <span class="n">headline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">headline</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="s2">"."</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">TWEET_CHARS</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tformat</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">headline</span><span class="p">):</span>
-                <span class="n">tdict</span><span class="p">[</span><span class="s2">&quot;headline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headline</span>
+                <span class="n">tdict</span><span class="p">[</span><span class="s2">"headline"</span><span class="p">]</span> <span class="o">=</span> <span class="n">headline</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">headline</span> <span class="o">=</span> <span class="n">headline</span><span class="p">[:</span> <span class="n">headline</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+                <span class="n">headline</span> <span class="o">=</span> <span class="n">headline</span><span class="p">[:</span> <span class="n">headline</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">TWEET_CHARS</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tformat</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">headline</span><span class="p">):</span>
-                    <span class="n">tdict</span><span class="p">[</span><span class="s2">&quot;headline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headline</span>
+                    <span class="n">tdict</span><span class="p">[</span><span class="s2">"headline"</span><span class="p">]</span> <span class="o">=</span> <span class="n">headline</span>
 
         <span class="n">tweet</span> <span class="o">=</span> <span class="n">tformat</span> <span class="o">%</span> <span class="n">tdict</span>
 
         <span class="k">return</span> <span class="p">[</span>
             <span class="p">[</span>
-                <span class="n">mess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">,</span>
-                <span class="n">htmlmess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">,</span>
+                <span class="n">mess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"#"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">,</span>
+                <span class="n">htmlmess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"#"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">%</span> <span class="n">tdict</span><span class="p">,</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;NHC,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                    <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span>
+                    <span class="s2">"channels"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"NHC,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"product_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                    <span class="s2">"twitter"</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span>
                 <span class="p">},</span>
             <span class="p">]</span>
         <span class="p">]</span></div>
@@ -561,7 +561,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.nhc.html#pyiem.nws.products.nhc.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper function"""</span>
     <span class="k">return</span> <span class="n">NHCProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

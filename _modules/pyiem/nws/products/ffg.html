@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.ffg &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.ffg &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/ffg';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,11 +454,11 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.ffg</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parsing of Flash Flood Guidances</span>
+<span></span><span class="sd">"""Parsing of Flash Flood Guidances</span>
 
 <span class="sd">NWS Discontinued 30 Sep 2018</span>
 <span class="sd">https://www.weather.gov/media/notification/pdfs/pns18-13disc_county_ffg.pdf</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -469,17 +469,17 @@
 
 <span class="n">SHEFRE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;\.B (?P&lt;src&gt;[A-Z]</span><span class="si">{3}</span><span class="s2">) (?P&lt;date&gt;[0-9]{6,8}) Z &quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;DH(?P&lt;hh&gt;[0-9]</span><span class="si">{2}</span><span class="s2">)/DC(?P&lt;valid&gt;[0-9]{10,12}) &quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;/DUE/PPHCF/PPTCF/PPQCF&quot;</span>
+        <span class="sa">r</span><span class="s2">"\.B (?P&lt;src&gt;[A-Z]</span><span class="si">{3}</span><span class="s2">) (?P&lt;date&gt;[0-9]{6,8}) Z "</span>
+        <span class="sa">r</span><span class="s2">"DH(?P&lt;hh&gt;[0-9]</span><span class="si">{2}</span><span class="s2">)/DC(?P&lt;valid&gt;[0-9]{10,12}) "</span>
+        <span class="sa">r</span><span class="s2">"/DUE/PPHCF/PPTCF/PPQCF"</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">DATARE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;^(?P&lt;ugc&gt;[A-Z0-9]</span><span class="si">{6}</span><span class="s2">)\s+(?P&lt;hour01&gt;[0-9\.]+)/\s+&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;(?P&lt;hour03&gt;[0-9\.]+)/\s+(?P&lt;hour06&gt;[0-9\.]+)\s*&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;/?\s*(?P&lt;hour12&gt;[0-9\.]+)?\s*&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;/?\s*(?P&lt;hour24&gt;[0-9\.]+)?\s*&quot;</span>
+        <span class="sa">r</span><span class="s2">"^(?P&lt;ugc&gt;[A-Z0-9]</span><span class="si">{6}</span><span class="s2">)\s+(?P&lt;hour01&gt;[0-9\.]+)/\s+"</span>
+        <span class="sa">r</span><span class="s2">"(?P&lt;hour03&gt;[0-9\.]+)/\s+(?P&lt;hour06&gt;[0-9\.]+)\s*"</span>
+        <span class="sa">r</span><span class="s2">"/?\s*(?P&lt;hour12&gt;[0-9\.]+)?\s*"</span>
+        <span class="sa">r</span><span class="s2">"/?\s*(?P&lt;hour24&gt;[0-9\.]+)?\s*"</span>
     <span class="p">),</span>
     <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">,</span>
 <span class="p">)</span>
@@ -488,7 +488,7 @@
 <div class="viewcode-block" id="safe">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.ffg.html#pyiem.nws.products.ffg.safe">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">safe</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe conversion to float&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Safe conversion to float"""</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
@@ -498,16 +498,16 @@
 <div class="viewcode-block" id="FFGProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.ffg.html#pyiem.nws.products.ffg.FFGProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FFGProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a FFG Product&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class representing a FFG Product"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          text (str): text to parse</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>
@@ -521,44 +521,44 @@
 <div class="viewcode-block" id="FFGProduct.do_parsing">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.ffg.html#pyiem.nws.products.ffg.FFGProduct.do_parsing">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">do_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process this file and save data&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Process this file and save data"""</span>
         <span class="n">shef</span> <span class="o">=</span> <span class="n">SHEFRE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">shef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Failed to find SHEF variable!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Failed to find SHEF variable!"</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="n">group</span> <span class="o">=</span> <span class="n">shef</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">6</span><span class="p">:],</span> <span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"date"</span><span class="p">][</span><span class="o">-</span><span class="mi">6</span><span class="p">:],</span> <span class="s2">"%y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hh&quot;</span><span class="p">])</span> <span class="o">%</span> <span class="mi">24</span><span class="p">)</span>
-        <span class="n">dc</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:],</span> <span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hh"</span><span class="p">])</span> <span class="o">%</span> <span class="mi">24</span><span class="p">)</span>
+        <span class="n">dc</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:],</span> <span class="s2">"%y%m</span><span class="si">%d</span><span class="s2">%H%M"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
         <span class="p">)</span>
         <span class="c1"># Emailed KTUA about this on 17 Apr 2017</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="nb">abs</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">-</span> <span class="n">dc</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="mf">3600.0</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">!=</span> <span class="s2">&quot;KTUA&quot;</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">!=</span> <span class="s2">"KTUA"</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s2">&quot;Product has large delta between DC: &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dc</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> and &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;SHEF Date: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"Product has large delta between DC: "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dc</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ'</span><span class="p">)</span><span class="si">}</span><span class="s2"> and "</span>
+                <span class="sa">f</span><span class="s2">"SHEF Date: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">pos1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.B &quot;</span><span class="p">)</span>
-        <span class="n">pos2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.END&quot;</span><span class="p">)</span>
+        <span class="n">pos1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".B "</span><span class="p">)</span>
+        <span class="n">pos2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".END"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pos1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">pos2</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">DATARE</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">[</span><span class="n">pos1</span><span class="p">:</span><span class="n">pos2</span><span class="p">]):</span>
             <span class="n">group</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">ugc</span><span class="o">=</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;ugc&quot;</span><span class="p">],</span>
-                    <span class="n">hour01</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hour01&quot;</span><span class="p">]),</span>
-                    <span class="n">hour03</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hour03&quot;</span><span class="p">]),</span>
-                    <span class="n">hour06</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hour06&quot;</span><span class="p">]),</span>
-                    <span class="n">hour12</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hour12&quot;</span><span class="p">]),</span>
-                    <span class="n">hour24</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;hour24&quot;</span><span class="p">]),</span>
+                    <span class="n">ugc</span><span class="o">=</span><span class="n">group</span><span class="p">[</span><span class="s2">"ugc"</span><span class="p">],</span>
+                    <span class="n">hour01</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hour01"</span><span class="p">]),</span>
+                    <span class="n">hour03</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hour03"</span><span class="p">]),</span>
+                    <span class="n">hour06</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hour06"</span><span class="p">]),</span>
+                    <span class="n">hour12</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hour12"</span><span class="p">]),</span>
+                    <span class="n">hour24</span><span class="o">=</span><span class="n">safe</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">"hour24"</span><span class="p">]),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
@@ -567,27 +567,27 @@
 <div class="viewcode-block" id="FFGProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.ffg.html#pyiem.nws.products.ffg.FFGProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the necessary database work</span>
+<span class="w">        </span><span class="sd">"""Do the necessary database work</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          (psycopg.transaction): a database transaction</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;sql() was called with no data parsed!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"sql() was called with no data parsed!"</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ffg_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"ffg_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (ugc, valid, hour01, hour03, hour06, &quot;</span>
-                <span class="s2">&quot;hour12, hour24) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (ugc, valid, hour01, hour03, hour06, "</span>
+                <span class="s2">"hour12, hour24) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                 <span class="p">(</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ugc&quot;</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"ugc"</span><span class="p">],</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hour01&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hour03&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hour06&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hour12&quot;</span><span class="p">],</span>
-                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hour24&quot;</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"hour01"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"hour03"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"hour06"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"hour12"</span><span class="p">],</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"hour24"</span><span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span></div>
 </div>
@@ -597,7 +597,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.ffg.html#pyiem.nws.products.ffg.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;parser of raw SPC SAW Text</span>
+<span class="w">    </span><span class="sd">"""parser of raw SPC SAW Text</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): the raw text to parse</span>
@@ -605,7 +605,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      SAWProduct instance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">FFGProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.scp &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.scp &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/scp';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.scp</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parsing NESDIS Satellite Cloud Product (SCP).&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Parsing NESDIS Satellite Cloud Product (SCP)."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
@@ -463,21 +463,21 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 
 <span class="n">SCP</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s2">&quot;SCP&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;mid&quot;</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">,</span> <span class="s2">&quot;cldtop1&quot;</span><span class="p">,</span> <span class="s2">&quot;cldtop2&quot;</span><span class="p">,</span> <span class="s2">&quot;eca&quot;</span><span class="p">]</span>
+    <span class="s2">"SCP"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"station"</span><span class="p">,</span> <span class="s2">"valid"</span><span class="p">,</span> <span class="s2">"mid"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="s2">"cldtop1"</span><span class="p">,</span> <span class="s2">"cldtop2"</span><span class="p">,</span> <span class="s2">"eca"</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="n">LINEFMT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^([A-Z0-9]){3,5}\s+[0-3][0-9]/[0-2][0-9][0-5][0-9]\s&quot;</span><span class="p">)</span>
+<span class="n">LINEFMT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^([A-Z0-9]){3,5}\s+[0-3][0-9]/[0-2][0-9][0-5][0-9]\s"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_to_str</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe conversion.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Safe conversion."""</span>
+    <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_to_int</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe conversion.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Safe conversion."""</span>
+    <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="n">multi</span>
@@ -486,12 +486,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_processor</span><span class="p">(</span><span class="n">textprod</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse out what we can find in the text product.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse out what we can find in the text product."""</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">textprod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">textprod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">LINEFMT</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"/"</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">station</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">da</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">9</span><span class="p">])</span>
@@ -517,16 +517,16 @@
 <div class="viewcode-block" id="SCPProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.scp.html#pyiem.nws.products.scp.SCPProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SCPProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a SCP Product&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class representing a SCP Product"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          text (str): text to parse</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>
@@ -538,18 +538,18 @@
 <div class="viewcode-block" id="SCPProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.scp.html#pyiem.nws.products.scp.SCPProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the necessary database work</span>
+<span class="w">        </span><span class="sd">"""Do the necessary database work</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          (psycopg.transaction): a database transaction</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">inserts</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">inserts</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;INSERT into scp_alldata(station, valid, mid, high, cldtop1, &quot;</span>
-                <span class="s2">&quot;cldtop2, eca, source) &quot;</span>
-                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="s2">"INSERT into scp_alldata(station, valid, mid, high, cldtop1, "</span>
+                <span class="s2">"cldtop2, eca, source) "</span>
+                <span class="s2">"VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="n">ob</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
                     <span class="n">ob</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
@@ -569,7 +569,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.scp.html#pyiem.nws.products.scp.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;parser of raw SCP Text.</span>
+<span class="w">    </span><span class="sd">"""parser of raw SCP Text.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): the raw text to parse</span>
@@ -577,7 +577,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      SCPProduct instance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">SCPProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

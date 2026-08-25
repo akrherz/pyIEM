@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.nwsli &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.nwsli &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/nwsli';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,10 +451,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.nwsli</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;National Weather Service Location Idenitifiers (NWSLI)</span>
+<span></span><span class="sd">"""National Weather Service Location Idenitifiers (NWSLI)</span>
 
 <span class="sd">A class to store metadata associated with a NWSLI entry.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 
@@ -462,10 +462,10 @@
 <div class="viewcode-block" id="NWSLI">
 <a class="viewcode-back" href="../../../api/pyiem.nws.nwsli.html#pyiem.nws.nwsli.NWSLI">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NWSLI</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;National Weather Service Location Idenitifiers (NWSLI)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""National Weather Service Location Idenitifiers (NWSLI)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wfos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          identifier(str): The string identifier for this NWSLI</span>
@@ -473,7 +473,7 @@
 <span class="sd">          wfo(list, optional): The wfo(s) associated with this NWSLI</span>
 <span class="sd">          lon(float, optional): The longitude in decimal degrees</span>
 <span class="sd">          lat(float, optional): The latitude in decimal degress</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">identifier</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wfos</span> <span class="o">=</span> <span class="n">wfos</span> <span class="k">if</span> <span class="n">wfos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
@@ -482,23 +482,23 @@
 <div class="viewcode-block" id="NWSLI.get_name">
 <a class="viewcode-back" href="../../../api/pyiem.nws.nwsli.html#pyiem.nws.nwsli.NWSLI.get_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of this NWSLI, uses `self.id` if name is unset</span>
+<span class="w">        </span><span class="sd">"""Return the name of this NWSLI, uses `self.id` if name is unset</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: the name of this site</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">))&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">))"</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="NWSLI.__getitem__">
 <a class="viewcode-back" href="../../../api/pyiem.nws.nwsli.html#pyiem.nws.nwsli.NWSLI.__getitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overload __getitem__ to return the value of the attribute&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;lat&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Overload __getitem__ to return the value of the attribute"""</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"lat"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"lon"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
 </div>

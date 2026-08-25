@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.fd &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.fd &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/fd';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.fd</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parser for the FD (Temp Wind Aloft Forecasts).&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Parser for the FD (Temp Wind Aloft Forecasts)."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
@@ -464,14 +464,14 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 
-<span class="n">BASED_ON_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^DATA BASED ON ([0-9]</span><span class="si">{6}</span><span class="s2">)Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-<span class="n">VALID_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^VALID ([0-9]</span><span class="si">{6}</span><span class="s2">)Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+<span class="n">BASED_ON_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"^DATA BASED ON ([0-9]</span><span class="si">{6}</span><span class="s2">)Z"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+<span class="n">VALID_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"^VALID ([0-9]</span><span class="si">{6}</span><span class="s2">)Z"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="parse_encoding">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.parse_encoding">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_encoding</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the encoded text into drct, sknt, tmpc.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the encoded text into drct, sknt, tmpc."""</span>
     <span class="n">tmpc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">drct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">sknt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -480,12 +480,12 @@
     <span class="n">drct</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="mi">10</span>
     <span class="n">sknt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
     <span class="c1"># NWSI 10-812 section 6</span>
-    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;9900&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"9900"</span><span class="p">):</span>
         <span class="n">drct</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">sknt</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
         <span class="n">tmpc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"-"</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
             <span class="n">tmpc</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="c1"># Fun</span>
     <span class="k">if</span> <span class="n">drct</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">:</span>
@@ -498,7 +498,7 @@
 <div class="viewcode-block" id="compute_time">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.compute_time">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_time</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out the timestamp of interest here.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Figure out the timestamp of interest here."""</span>
     <span class="n">dd</span><span class="p">,</span> <span class="n">hh</span><span class="p">,</span> <span class="n">mi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="n">valid2</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">hh</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;</span> <span class="mi">25</span> <span class="ow">and</span> <span class="n">dd</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
@@ -508,7 +508,7 @@
     <span class="n">valid2</span> <span class="o">=</span> <span class="n">valid2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">dd</span><span class="p">)</span>
     <span class="c1"># In theory, we should not be far apart</span>
     <span class="k">if</span> <span class="nb">abs</span><span class="p">((</span><span class="n">valid2</span> <span class="o">-</span> <span class="n">valid</span><span class="p">)</span><span class="o">.</span><span class="n">days</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Timestamp </span><span class="si">{</span><span class="n">valid2</span><span class="si">}</span><span class="s2"> too far from </span><span class="si">{</span><span class="n">valid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Timestamp </span><span class="si">{</span><span class="n">valid2</span><span class="si">}</span><span class="s2"> too far from </span><span class="si">{</span><span class="n">valid</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">valid2</span></div>
 
 
@@ -516,28 +516,28 @@
 <div class="viewcode-block" id="make4">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.make4">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make4</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">afos</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make this 3 character station, 4!&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make this 3 character station, 4!"""</span>
     <span class="n">ccode</span> <span class="o">=</span> <span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">ccode</span> <span class="o">==</span> <span class="s2">&quot;US&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">ccode</span> <span class="o">==</span> <span class="s2">&quot;CN&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;P</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&quot;</span></div>
+    <span class="k">if</span> <span class="n">ccode</span> <span class="o">==</span> <span class="s2">"US"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"K</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="n">ccode</span> <span class="o">==</span> <span class="s2">"CN"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"P</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span></div>
 
 
 
 <div class="viewcode-block" id="FDProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.FDProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FDProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Represents a FD Product</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x1e</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># Aviation Control</span>
+<span class="w">        </span><span class="sd">"""constructor"""</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\x1e</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>  <span class="c1"># Aviation Control</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obtime</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span>
@@ -549,65 +549,65 @@
 <div class="viewcode-block" id="FDProduct.parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.FDProduct.parser">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the parsing we need to do!&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Do the parsing we need to do!"""</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">levels</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;FT &quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"FT "</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
                 <span class="n">levels</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">levels</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;station&quot;</span><span class="p">:</span> <span class="n">make4</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">)}</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"station"</span><span class="p">:</span> <span class="n">make4</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">)}</span>
             <span class="c1"># fill right to left</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="p">(</span>
-                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;drct</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;sknt</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;tmpc</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"drct</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"sknt</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+                    <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"tmpc</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
                 <span class="p">)</span> <span class="o">=</span> <span class="n">parse_encoding</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rows</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;station&quot;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"station"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FDProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.FDProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send the data to the database.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Send the data to the database."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="c1"># Prevent NaN numbers from going to the database.</span>
-        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = %s&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = %s"</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="c1"># Need upsert as data is split over products</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;SELECT station from alldata_tempwind_aloft &quot;</span>
-                <span class="s2">&quot;where ftime = </span><span class="si">%s</span><span class="s2"> and station = </span><span class="si">%s</span><span class="s2"> and obtime = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"SELECT station from alldata_tempwind_aloft "</span>
+                <span class="s2">"where ftime = </span><span class="si">%s</span><span class="s2"> and station = </span><span class="si">%s</span><span class="s2"> and obtime = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftime</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">obtime</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;INSERT into alldata_tempwind_aloft&quot;</span>
-                    <span class="s2">&quot;(ftime, station, obtime) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="s2">"INSERT into alldata_tempwind_aloft"</span>
+                    <span class="s2">"(ftime, station, obtime) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftime</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">obtime</span><span class="p">),</span>
                 <span class="p">)</span>
 
             <span class="c1"># np.nan + float64 columns + psycopg life is fun here</span>
             <span class="k">def</span><span class="w"> </span><span class="nf">_fint</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;Force an int.&quot;&quot;&quot;</span>
+<span class="w">                </span><span class="sd">"""Force an int."""</span>
                 <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
                     <span class="k">return</span> <span class="kc">None</span>
                 <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+                <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">                UPDATE alldata_tempwind_aloft SET </span><span class="si">{</span><span class="n">sql</span><span class="si">}</span>
 <span class="s2">                WHERE ftime = %s and station = %s and obtime = %s</span>
-<span class="s2">                &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">                """</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="o">*</span><span class="p">[</span><span class="n">_fint</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ftime</span><span class="p">,</span>
@@ -622,7 +622,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.fd.html#pyiem.nws.products.fd.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide back FD objects based on the parsing of this text&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide back FD objects based on the parsing of this text"""</span>
     <span class="k">return</span> <span class="n">FDProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

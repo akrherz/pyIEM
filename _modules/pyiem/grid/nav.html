@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.grid.nav &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.grid.nav &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/grid/nav';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,154 +451,154 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.grid.nav</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Build Grid Navigation Metadata from the NetCDF file.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Build Grid Navigation Metadata from the NetCDF file."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.gridnav</span><span class="w"> </span><span class="kn">import</span> <span class="n">CartesianGridNavigation</span>
 
 <span class="n">_GRID_CONFIGS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;IEMRE_CONUS&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.0625</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">22.9375</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">488</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">216</span><span class="p">,</span>
+    <span class="s2">"IEMRE_CONUS"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.0625</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">22.9375</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">488</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">216</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;IEMRE_CHINA&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">14.9375</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">560</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
+    <span class="s2">"IEMRE_CHINA"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">14.9375</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">560</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;IEMRE_EUROPE&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">34.9375</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
+    <span class="s2">"IEMRE_EUROPE"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">34.9375</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;IEMRE_SA&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">380</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span>
+    <span class="s2">"IEMRE_SA"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.125</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">380</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;IFC&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">97.1562505</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">40.1312475</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.004167</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.004167</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">1741</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">1057</span><span class="p">,</span>
+    <span class="s2">"IFC"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">97.1562505</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">40.1312475</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.004167</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.004167</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">1741</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">1057</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="c1"># Lamely hardcoded for now</span>
-    <span class="s2">&quot;ERA5LAND_CONUS&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.05</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">22.95</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">610</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
+    <span class="s2">"ERA5LAND_CONUS"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.05</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">22.95</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">610</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">270</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;ERA5LAND_CHINA&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="mf">69.95</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">14.95</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s2">"ERA5LAND_CHINA"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="mf">69.95</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">14.95</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;ERA5LAND_EUROPE&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.05</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">34.95</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span>
+    <span class="s2">"ERA5LAND_EUROPE"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.05</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">34.95</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;ERA5LAND_SA&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.55</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.95</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">480</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">690</span><span class="p">,</span>
+    <span class="s2">"ERA5LAND_SA"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.55</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.95</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">480</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">690</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;STAGE4&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="s2">&quot;+proj=stere +a=6371200 +b=6371200 +lat_0=90 &quot;</span>
-            <span class="s2">&quot;+lon_0=-105 +lat_ts=60&quot;</span>
+    <span class="s2">"STAGE4"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"crs"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"+proj=stere +a=6371200 +b=6371200 +lat_0=90 "</span>
+            <span class="s2">"+lon_0=-105 +lat_ts=60"</span>
         <span class="p">),</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1_904_912.924</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7_619_986.180</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">4_762.5</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">4_762.5</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">1121</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">881</span><span class="p">,</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">1_904_912.924</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7_619_986.180</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">4_762.5</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">4_762.5</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">1121</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">881</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;STAGE4_PRE2002&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="s2">&quot;+proj=stere +a=6371200 +b=6371200 +lat_0=90 &quot;</span>
-            <span class="s2">&quot;+lon_0=-105 +lat_ts=60&quot;</span>
+    <span class="s2">"STAGE4_PRE2002"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"crs"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"+proj=stere +a=6371200 +b=6371200 +lat_0=90 "</span>
+            <span class="s2">"+lon_0=-105 +lat_ts=60"</span>
         <span class="p">),</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2_097_827.439</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7_622_315.608</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">4_763.0</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">4_763.0</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">1160</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">880</span><span class="p">,</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">2_097_827.439</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7_622_315.608</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">4_763.0</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">4_763.0</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">1160</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">880</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;MRMS_IEMRE&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Specific to the IEM and not in general</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">23.0</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">6100</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">2700</span><span class="p">,</span>
+    <span class="s2">"MRMS_IEMRE"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Specific to the IEM and not in general</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">23.0</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">6100</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">2700</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;PRISM&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># New 800m grid, which is a simple 5x of the 4km grid</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">7025</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">3105</span><span class="p">,</span>
+    <span class="s2">"PRISM"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># New 800m grid, which is a simple 5x of the 4km grid</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">7025</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">3105</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;PRISM800&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Redundantly defined for now, will remove, use PRISM</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">7025</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">3105</span><span class="p">,</span>
+    <span class="s2">"PRISM800"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Redundantly defined for now, will remove, use PRISM</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">120.0</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">7025</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">3105</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;PRISM4KM&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Legacy 4km grid</span>
-        <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">,</span>
-        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">1405</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">621</span><span class="p">,</span>
+    <span class="s2">"PRISM4KM"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Legacy 4km grid</span>
+        <span class="s2">"left_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">125.0</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"bottom_edge"</span><span class="p">:</span> <span class="mf">24.083333</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"dx"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">,</span>
+        <span class="s2">"dy"</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">1405</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">621</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="c1"># Internal alias, for now</span>
-<span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="s2">&quot;IEMRE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="s2">&quot;IEMRE_CONUS&quot;</span><span class="p">]</span>
+<span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="s2">"IEMRE"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="s2">"IEMRE_CONUS"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="get_nav">
 <a class="viewcode-back" href="../../../api/pyiem.grid.nav.html#pyiem.grid.nav.get_nav">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_nav</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dom</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CartesianGridNavigation</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to remove some boilerplate for fetching gridnav.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper to remove some boilerplate for fetching gridnav."""</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_GRID_CONFIGS</span> <span class="ow">and</span> <span class="n">dom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">CartesianGridNavigation</span><span class="p">(</span><span class="o">**</span><span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-    <span class="n">extra</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">dom</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;_CONUS&quot;</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">extra</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">dom</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">dom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"_CONUS"</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">extra</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">CartesianGridNavigation</span><span class="p">(</span><span class="o">**</span><span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
 
@@ -606,11 +606,11 @@
 <div class="viewcode-block" id="__getattr__">
 <a class="viewcode-back" href="../../../api/pyiem.grid.nav.html#pyiem.grid.nav.__getattr__">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build stuff on the fly.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Build stuff on the fly."""</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_GRID_CONFIGS</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">CartesianGridNavigation</span><span class="p">(</span><span class="o">**</span><span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module &#39;</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"module '</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">' has no attribute '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.database &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.database &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/database';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.database</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Database helpers.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Database helpers."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
@@ -472,20 +472,20 @@
 
 <span class="c1"># Map system users back to something supported by akrherz/iem-database repo</span>
 <span class="n">USERNAME_MAPPER</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;apache&quot;</span><span class="p">:</span> <span class="s2">&quot;nobody&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;www-data&quot;</span><span class="p">:</span> <span class="s2">&quot;nobody&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;akrherz&quot;</span><span class="p">:</span> <span class="s2">&quot;mesonet&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;runner&quot;</span><span class="p">:</span> <span class="s2">&quot;mesonet&quot;</span><span class="p">,</span>  <span class="c1"># github actions</span>
-    <span class="s2">&quot;meteor_ldm&quot;</span><span class="p">:</span> <span class="s2">&quot;ldm&quot;</span><span class="p">,</span>
+    <span class="s2">"apache"</span><span class="p">:</span> <span class="s2">"nobody"</span><span class="p">,</span>
+    <span class="s2">"www-data"</span><span class="p">:</span> <span class="s2">"nobody"</span><span class="p">,</span>
+    <span class="s2">"akrherz"</span><span class="p">:</span> <span class="s2">"mesonet"</span><span class="p">,</span>
+    <span class="s2">"runner"</span><span class="p">:</span> <span class="s2">"mesonet"</span><span class="p">,</span>  <span class="c1"># github actions</span>
+    <span class="s2">"meteor_ldm"</span><span class="p">:</span> <span class="s2">"ldm"</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_FloatDumper</span><span class="p">(</span><span class="n">Dumper</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prevent NaN from reaching the database.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Prevent NaN from reaching the database."""</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opinionated dumper.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Opinionated dumper."""</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
@@ -501,7 +501,7 @@
 <div class="viewcode-block" id="get_dbconnstr">
 <a class="viewcode-back" href="../../api/pyiem.database.html#pyiem.database.get_dbconnstr">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_dbconnstr</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a database connection string/URI.</span>
+<span class="w">    </span><span class="sd">"""Create a database connection string/URI.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      name (str): the database name to connect to.</span>
@@ -515,40 +515,40 @@
 <span class="sd">          logic happens.  If `nobody` is computed, then read-only is assumed.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">      str</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user"</span><span class="p">)</span>
     <span class="c1"># RW1. Default to requiring a read-write connection</span>
     <span class="c1"># RW4. Covers the case of rw=True</span>
-    <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">&quot;read-write&quot;</span>
+    <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">"read-write"</span>
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">USERNAME_MAPPER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">(),</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">())</span>
         <span class="c1"># RW2. If we compute nobody and no rw specified, any will work</span>
-        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s2">&quot;nobody&quot;</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rw&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">&quot;any&quot;</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s2">"nobody"</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rw"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">"any"</span>
     <span class="c1"># RW3. If rw is explicitly False, then any will work</span>
-    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rw&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">&quot;any&quot;</span>
-    <span class="n">host</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rw"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">target_session_attrs</span> <span class="o">=</span> <span class="s2">"any"</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"host"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">host</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;iemdb-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.local&quot;</span>
-    <span class="n">port</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">)</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"iemdb-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.local"</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"port"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">port</span> <span class="o">=</span> <span class="mi">5432</span>
 
     <span class="c1"># 15 seconds found to be a bit tight for local ISU congestion</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;postgresql://</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">?&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;connect_timeout=</span><span class="si">{</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;connect_timeout&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;gssencmode=</span><span class="si">{</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;gssencmode&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;disable&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;target_session_attrs=</span><span class="si">{</span><span class="n">target_session_attrs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"postgresql://</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">?"</span>
+        <span class="sa">f</span><span class="s2">"connect_timeout=</span><span class="si">{</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'connect_timeout'</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;"</span>
+        <span class="sa">f</span><span class="s2">"gssencmode=</span><span class="si">{</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'gssencmode'</span><span class="p">,</span><span class="w"> </span><span class="s1">'disable'</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;"</span>
+        <span class="sa">f</span><span class="s2">"target_session_attrs=</span><span class="si">{</span><span class="n">target_session_attrs</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="get_dbconn">
 <a class="viewcode-back" href="../../api/pyiem.database.html#pyiem.database.get_dbconn">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_dbconn</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s2">&quot;mesosite&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5432</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function with business logic to get a database connection</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dbconn</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s2">"mesosite"</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5432</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Helper function with business logic to get a database connection</span>
 
 <span class="sd">    Note that this helper could return a read-only database connection if the</span>
 <span class="sd">    connection to the primary server fails.</span>
@@ -568,7 +568,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      psycopg database connection</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">dsn</span> <span class="o">=</span> <span class="n">get_dbconnstr</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">conn</span> <span class="o">=</span> <span class="kc">None</span>
@@ -588,13 +588,13 @@
 <div class="viewcode-block" id="get_dbconnc">
 <a class="viewcode-back" href="../../api/pyiem.database.html#pyiem.database.get_dbconnc">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_dbconnc</span><span class="p">(</span>
-    <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mesosite&quot;</span><span class="p">,</span>
+    <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mesosite"</span><span class="p">,</span>
     <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">cursor_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">psycopg</span><span class="o">.</span><span class="n">Connection</span><span class="p">[</span><span class="n">DictRow</span><span class="p">],</span> <span class="n">psycopg</span><span class="o">.</span><span class="n">ServerCursor</span><span class="p">[</span><span class="n">DictRow</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to get a database connection + dict_row cursor.</span>
+<span class="w">    </span><span class="sd">"""Helper function to get a database connection + dict_row cursor.</span>
 
 <span class="sd">    Note that this helper could return a read-only database connection if the</span>
 <span class="sd">    connection to the primary server fails.</span>
@@ -613,7 +613,7 @@
 <span class="sd">        write requests.  The default is `None`, which some opinionated</span>
 <span class="sd">        logic happens.  If `nobody` is computed, then read-only is assumed.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">conn</span> <span class="o">=</span> <span class="n">get_dbconn</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">dict_row</span>
     <span class="k">return</span> <span class="n">conn</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">cursor_name</span><span class="p">)</span></div>
@@ -626,10 +626,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_sqlalchemy_conn</span><span class="p">(</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Connection</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An auto-disposing sqlalchemy context-manager helper.</span>
+<span class="w">    </span><span class="sd">"""An auto-disposing sqlalchemy context-manager helper.</span>
 
 <span class="sd">    This is used for when we really do not want to manage having pools of</span>
-<span class="sd">    database connections open.  So this isn&#39;t something that is fast!</span>
+<span class="sd">    database connections open.  So this isn't something that is fast!</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name (str): the database to connect to, passed to get_dbconnstr</span>
@@ -638,11 +638,11 @@
 <span class="sd">          logic happens.  If `nobody` is computed, then read-only is assumed.</span>
 
 <span class="sd">        **kwargs: any additional arguments to pass to get_dbconnstr</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Le Sigh</span>
     <span class="n">connstr</span> <span class="o">=</span> <span class="n">get_dbconnstr</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-        <span class="s2">&quot;postgresql&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;postgresql+psycopg&quot;</span><span class="p">,</span>
+        <span class="s2">"postgresql"</span><span class="p">,</span>
+        <span class="s2">"postgresql+psycopg"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">connstr</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -658,11 +658,11 @@
 <div class="viewcode-block" id="with_sqlalchemy_conn">
 <a class="viewcode-back" href="../../api/pyiem.database.html#pyiem.database.with_sqlalchemy_conn">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">with_sqlalchemy_conn</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator variant of get_sqlalchemy_conn adding ``conn=`` to function.</span>
+<span class="w">    </span><span class="sd">"""Decorator variant of get_sqlalchemy_conn adding ``conn=`` to function.</span>
 
 <span class="sd">    Usage::</span>
 
-<span class="sd">        @with_sqlalchemy_conn(&quot;dbname&quot;)</span>
+<span class="sd">        @with_sqlalchemy_conn("dbname")</span>
 <span class="sd">        def foo(args, conn=None, **kwargs):</span>
 <span class="sd">            ...</span>
 
@@ -677,7 +677,7 @@
 <span class="sd">          logic happens.  If `nobody` is computed, then read-only is assumed.</span>
 
 <span class="sd">        **kwargs: any additional arguments to pass to get_dbconnstr</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -703,21 +703,21 @@
 <div class="viewcode-block" id="sql_helper">
 <a class="viewcode-back" href="../../api/pyiem.database.html#pyiem.database.sql_helper">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sql_helper</span><span class="p">(</span><span class="n">sql</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextClause</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run string through psycopg.sql machinery destined for sqlalchemy.Allows</span>
+<span class="w">    </span><span class="sd">"""Run string through psycopg.sql machinery destined for sqlalchemy.Allows</span>
 <span class="sd">    for removal of boilerplate and appease SQL injection detection.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        ```python</span>
-<span class="sd">        sql = &quot;select bah from {table} where {limiter} foo = :bar&quot;</span>
-<span class="sd">        stm = sql_helper(sql, table=&#39;foo&#39;, limiter=&#39;a = :a and &#39;)</span>
-<span class="sd">        pd.read_sql(stm, conn, params={&#39;bar&#39;: &#39;baz&#39;, &#39;a&#39;: 1})</span>
+<span class="sd">        sql = "select bah from {table} where {limiter} foo = :bar"</span>
+<span class="sd">        stm = sql_helper(sql, table='foo', limiter='a = :a and ')</span>
+<span class="sd">        pd.read_sql(stm, conn, params={'bar': 'baz', 'a': 1})</span>
 <span class="sd">        ```</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sql (str): the SQL statement to process</span>
 <span class="sd">        **kwargs: arguments needed to build the string.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="n">Identifier</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))}</span>
+<span class="sd">    """</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"table"</span><span class="p">:</span> <span class="n">Identifier</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"table"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))}</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">args</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">SQL</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">text</span><span class="p">(</span><span class="n">SQL</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span></div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.metarcollect &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.metarcollect &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/metarcollect';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.metarcollect</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Encapsulates a text product holding METARs.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Encapsulates a text product holding METARs."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
@@ -470,12 +470,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRACE_VALUE</span><span class="p">,</span> <span class="n">TWEET_CHARS</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">drct2text</span>
 
-<span class="n">NIL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\s\n]NIL&quot;</span><span class="p">)</span>
-<span class="n">ERROR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;Unparsed groups in body &#39;(?P&lt;msg&gt;.*)&#39; while processing&quot;</span><span class="p">)</span>
-<span class="n">TORNADO_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \+FC |TORNADO&quot;</span><span class="p">)</span>
-<span class="n">FUNNEL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; FC |FUNNEL&quot;</span><span class="p">)</span>
+<span class="n">NIL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[\s\n]NIL"</span><span class="p">)</span>
+<span class="n">ERROR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"Unparsed groups in body '(?P&lt;msg&gt;.*)' while processing"</span><span class="p">)</span>
+<span class="n">TORNADO_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">" \+FC |TORNADO"</span><span class="p">)</span>
+<span class="n">FUNNEL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">" FC |FUNNEL"</span><span class="p">)</span>
 <span class="c1"># Match what looks like SA formatted messages</span>
-<span class="n">SA_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z]</span><span class="si">{3}</span><span class="s2">\sSA&quot;</span><span class="p">)</span>
+<span class="n">SA_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[A-Z]</span><span class="si">{3}</span><span class="s2">\sSA"</span><span class="p">)</span>
 <span class="c1"># Sites we should route to Jabber</span>
 <span class="n">JABBER_SITES</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="c1"># Keep track of Wind alerts to prevent dups</span>
@@ -489,7 +489,7 @@
 <div class="viewcode-block" id="normalize_temp">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.normalize_temp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">normalize_temp</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;When temperatures are close to an int, return that int!&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""When temperatures are close to an int, return that int!"""</span>
     <span class="n">rounded</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounded</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">rounded</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.199</span> <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
@@ -498,8 +498,8 @@
 <div class="viewcode-block" id="normid">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.normid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">normid</span><span class="p">(</span><span class="n">station_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a station identifer.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">station_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Normalize a station identifer."""</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">station_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"K"</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">station_id</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="k">return</span> <span class="n">station_id</span></div>
 
@@ -508,61 +508,61 @@
 <div class="viewcode-block" id="wind_logic">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.wind_logic">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">wind_logic</span><span class="p">(</span><span class="n">iem</span><span class="p">,</span> <span class="n">mtr</span><span class="p">:</span> <span class="n">Metar</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hairy logic for now we handle winds.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Hairy logic for now we handle winds."""</span>
     <span class="c1"># Explicit storages</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"sknt"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gust&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"gust"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;drct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"drct"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;peak_wind_gust&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"peak_wind_gust"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;peak_wind_drct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"peak_wind_drct"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="p">:</span>
         <span class="c1"># python-metar has an edge case for events crossing a month</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span> <span class="o">&gt;</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="p">:</span>
             <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
                 <span class="n">year</span><span class="o">=</span><span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">month</span>
             <span class="p">)</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;peak_wind_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"peak_wind_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
         <span class="p">)</span>
 
     <span class="c1"># Figure out if we have a new max_drct</span>
     <span class="n">old_max_wind</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_sknt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_gust&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_sknt"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_gust"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="n">new_max_wind</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sknt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gust&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sknt"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gust"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="c1"># if our sknt or gust is a new max, use drct</span>
     <span class="k">if</span> <span class="n">new_max_wind</span> <span class="o">&gt;</span> <span class="n">old_max_wind</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_drct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;drct&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_drct"</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"drct"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="c1"># if our PK WND is greater than all yall, use PK WND</span>
     <span class="c1"># TODO: PK WND potentially could be from last hour / thus yesterday?</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span>
         <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span>
-        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">old_max_wind</span>
-        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">new_max_wind</span>
+        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">old_max_wind</span>
+        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">new_max_wind</span>
     <span class="p">):</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_drct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_gust_ts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_drct"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_gust_ts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
         <span class="p">)</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_gust&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span></div>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_gust"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="trace">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.trace">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="n">pobj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert this precip object to a numeric value&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert this precip object to a numeric value"""</span>
     <span class="k">if</span> <span class="n">pobj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">pobj</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;IN&quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">pobj</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"IN"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># IEM denotation of trace</span>
         <span class="k">return</span> <span class="n">TRACE_VALUE</span>
@@ -573,7 +573,7 @@
 <div class="viewcode-block" id="to_metar">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.to_metar">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">to_metar</span><span class="p">(</span><span class="n">textprod</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Metar</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a METAR object, if possible&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Create a METAR object, if possible"""</span>
     <span class="c1"># Do some cleaning and whitespace trimming</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">sanitize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="p">:</span>  <span class="c1"># arb</span>
@@ -593,23 +593,23 @@
                 <span class="c1"># So tokens contains a series of groups that needs updated</span>
                 <span class="n">newtext</span> <span class="o">=</span> <span class="n">text</span>
                 <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
-                    <span class="n">newtext</span> <span class="o">=</span> <span class="n">newtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">newtext</span> <span class="o">=</span> <span class="n">newtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">newtext</span> <span class="o">!=</span> <span class="n">text</span><span class="p">:</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="n">newtext</span>
             <span class="c1"># Somewhat brittle logic checking exception message</span>
-            <span class="k">if</span> <span class="s2">&quot;day&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;range&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="ow">and</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"day"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"range"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="ow">and</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
                 <span class="n">valid</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="n">mtr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Attempt to figure out more things</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Aborting due to station_id being None |</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Aborting due to station_id being None |</span><span class="si">%s</span><span class="s2">|"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Aborting due to time being None |</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Aborting due to time being None |</span><span class="si">%s</span><span class="s2">|"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="c1"># don&#39;t allow data more than an hour into the future</span>
+        <span class="c1"># don't allow data more than an hour into the future</span>
         <span class="n">ceiling</span> <span class="o">=</span> <span class="p">(</span><span class="n">textprod</span><span class="o">.</span><span class="n">utcnow</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">ceiling</span><span class="p">:</span>
             <span class="c1"># careful, we may have obs from the previous month</span>
@@ -620,8 +620,8 @@
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Aborting due to time in the future &quot;</span>
-                    <span class="s2">&quot;ceiling: </span><span class="si">%s</span><span class="s2"> mtr.time: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Aborting due to time in the future "</span>
+                    <span class="s2">"ceiling: </span><span class="si">%s</span><span class="s2"> mtr.time: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                     <span class="n">ceiling</span><span class="p">,</span>
                     <span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -634,27 +634,27 @@
 <div class="viewcode-block" id="sanitize">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.sanitize">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sanitize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean our text string with METAR data&quot;&quot;&quot;</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\015</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Clean our text string with METAR data"""</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"</span><span class="se">\015</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="c1"># Remove any multiple whitespace, bad chars</span>
     <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xa0</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\003</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\xa0</span><span class="s2">"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">" "</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\001</span><span class="s2">"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\003</span><span class="s2">"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
     <span class="c1"># Look to see that our METAR starts with A-Z</span>
-    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^[0-9]&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">"^[0-9]"</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
     <span class="k">return</span> <span class="n">text</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_same_day</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">tzname</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Can we trust a six hour total?&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Can we trust a six hour total?"""</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="n">tzname</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -667,44 +667,44 @@
 <div class="viewcode-block" id="wind_message">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.wind_message">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">wind_message</span><span class="p">(</span><span class="n">mtr</span><span class="p">:</span> <span class="n">Metar</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert this into a Jabber style message&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert this into a Jabber style message"""</span>
     <span class="n">drct</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">sknt</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="p">:</span>
-        <span class="n">sknt</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+        <span class="n">sknt</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir</span><span class="p">:</span>
             <span class="n">drct</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="p">:</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span>
         <span class="n">d1</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_dir_peak</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">peak_wind_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v1</span> <span class="o">&gt;</span> <span class="n">sknt</span><span class="p">:</span>
             <span class="n">sknt</span> <span class="o">=</span> <span class="n">v1</span>
             <span class="n">drct</span> <span class="o">=</span> <span class="n">d1</span>
             <span class="n">time</span> <span class="o">=</span> <span class="n">t1</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">sknt</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">sknt</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">WIND_ALERTS</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="n">WIND_ALERTS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">speed</span> <span class="o">=</span> <span class="n">datatypes</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="n">sknt</span><span class="p">,</span> <span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+    <span class="n">speed</span> <span class="o">=</span> <span class="n">datatypes</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="n">sknt</span><span class="p">,</span> <span class="s2">"KT"</span><span class="p">)</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;gust of </span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;KT&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> knots &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;MPH&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mph) from </span><span class="si">{</span><span class="n">drct2text</span><span class="p">(</span><span class="n">drct</span><span class="p">)</span><span class="si">}</span><span class="s2"> @ </span><span class="si">{</span><span class="n">time</span><span class="si">:</span><span class="s2">%H%M</span><span class="si">}</span><span class="s2">Z&quot;</span>
+        <span class="sa">f</span><span class="s2">"gust of </span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">'KT'</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> knots "</span>
+        <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">'MPH'</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mph) from </span><span class="si">{</span><span class="n">drct2text</span><span class="p">(</span><span class="n">drct</span><span class="p">)</span><span class="si">}</span><span class="s2"> @ </span><span class="si">{</span><span class="n">time</span><span class="si">:</span><span class="s2">%H%M</span><span class="si">}</span><span class="s2">Z"</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">msg</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">msg</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="over_wind_threshold">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.over_wind_threshold">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">over_wind_threshold</span><span class="p">(</span><span class="n">mtr</span><span class="p">:</span> <span class="n">Metar</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is this METAR over the wind threshold for alerting&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span> <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WIND_ALERT_THRESHOLD_KTS</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Is this METAR over the wind threshold for alerting"""</span>
+    <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span> <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_gust</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WIND_ALERT_THRESHOLD_KTS</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span>
-        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WIND_ALERT_THRESHOLD_KTS</span>
+        <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">wind_speed_peak</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"KT"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WIND_ALERT_THRESHOLD_KTS</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span></div>
@@ -721,7 +721,7 @@
     <span class="n">force_current_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">skip_current</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Persist parsed data to IEMAccess Database.</span>
+<span class="w">    </span><span class="sd">"""Persist parsed data to IEMAccess Database.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        txn (psycopg.cursor): database cursor / transaction</span>
@@ -730,7 +730,7 @@
 <span class="sd">        tzname (str): Local timezone of station.</span>
 <span class="sd">        force_current_log (boolean): should this ob always go to current_log</span>
 <span class="sd">        skip_current (boolean): should this ob always skip current table</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">gts</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
     <span class="n">iem</span> <span class="o">=</span> <span class="n">Observation</span><span class="p">(</span><span class="n">valid</span><span class="o">=</span><span class="n">gts</span><span class="p">,</span> <span class="n">iemid</span><span class="o">=</span><span class="n">iemid</span><span class="p">,</span> <span class="n">tzname</span><span class="o">=</span><span class="n">tzname</span><span class="p">)</span>
     <span class="c1"># Load the observation from the database, if the same time exists!</span>
@@ -738,96 +738,96 @@
 
     <span class="c1"># Need to figure out if we have a duplicate ob, if so, check</span>
     <span class="c1"># the length of the raw data, if greater, take the temps</span>
-    <span class="k">if</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">])</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">temp</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">temp</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">temp</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">)</span>
             <span class="c1"># Place reasonable bounds on the temperature before saving it!</span>
             <span class="k">if</span> <span class="o">-</span><span class="mi">90</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">:</span>
-                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"tmpf"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">dewpt</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">dewpt</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">dewpt</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">)</span>
             <span class="c1"># Place reasonable bounds on the temperature before saving it!</span>
             <span class="k">if</span> <span class="o">-</span><span class="mi">150</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
-                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"dwpf"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="c1"># Database only allows len 254</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">[:</span><span class="mi">254</span><span class="p">]</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">[:</span><span class="mi">254</span><span class="p">]</span>
     <span class="c1"># Always take a COR</span>
-    <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; COR &quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">[:</span><span class="mi">254</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">" COR "</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">[:</span><span class="mi">254</span><span class="p">]</span>
 
     <span class="n">wind_logic</span><span class="p">(</span><span class="n">iem</span><span class="p">,</span> <span class="n">mtr</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_6hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_tmpf_6hr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_6hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">tzname</span> <span class="ow">and</span> <span class="n">_is_same_day</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span> <span class="n">tzname</span><span class="p">):</span>
-            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_tmpf_cond&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_tmpf_6hr&quot;</span><span class="p">]</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_tmpf_6hr"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_6hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">tzname</span> <span class="ow">and</span> <span class="n">_is_same_day</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span> <span class="n">tzname</span><span class="p">):</span>
+            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_tmpf_cond"</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_tmpf_6hr"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_6hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;min_tmpf_6hr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_6hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">tzname</span> <span class="ow">and</span> <span class="n">_is_same_day</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span> <span class="n">tzname</span><span class="p">):</span>
-            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;min_tmpf_cond&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;min_tmpf_6hr&quot;</span><span class="p">]</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"min_tmpf_6hr"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_6hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">tzname</span> <span class="ow">and</span> <span class="n">_is_same_day</span><span class="p">(</span><span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span> <span class="n">tzname</span><span class="p">):</span>
+            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"min_tmpf_cond"</span><span class="p">]</span> <span class="o">=</span> <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"min_tmpf_6hr"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_24hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_tmpf_24hr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span>
-            <span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_24hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"max_tmpf_24hr"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span>
+            <span class="n">mtr</span><span class="o">.</span><span class="n">max_temp_24hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_24hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;min_tmpf_24hr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span>
-            <span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_24hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"min_tmpf_24hr"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span>
+            <span class="n">mtr</span><span class="o">.</span><span class="n">min_temp_24hr</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"F"</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">precip_3hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;p03i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_3hr</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"p03i"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_3hr</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">precip_6hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;p06i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_6hr</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"p06i"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_6hr</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">precip_24hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;p24i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_24hr</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"p24i"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_24hr</span><span class="p">)</span>
     <span class="c1"># We assume the value is zero, sad!</span>
-    <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;phour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"phour"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">precip_1hr</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;phour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_1hr</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"phour"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">precip_1hr</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">snowdepth</span><span class="p">:</span>
         <span class="c1"># NOTE snowd is a summary variable that wants to be daily, this</span>
         <span class="c1"># METAR value is more instantaneous, so goes to current table</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;snowdepth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">snowdepth</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;IN&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"snowdepth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">snowdepth</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"IN"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">vis</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;vsby&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;SM&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"SM"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alti&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;IN&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"alti"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"IN"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span><span class="p">:</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mslp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;MB&quot;</span><span class="p">)</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mslp"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"MB"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span> <span class="ow">and</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="p">:</span>
-        <span class="n">alti</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;MB&quot;</span><span class="p">)</span>
-        <span class="n">mslp</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;MB&quot;</span><span class="p">)</span>
+        <span class="n">alti</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"MB"</span><span class="p">)</span>
+        <span class="n">mslp</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">press_sea_level</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"MB"</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">alti</span> <span class="o">-</span> <span class="n">mslp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;PRESSURE ERROR </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> ALTI: </span><span class="si">%s</span><span class="s2"> MSLP: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"PRESSURE ERROR </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> ALTI: </span><span class="si">%s</span><span class="s2"> MSLP: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="p">,</span>
-                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span>
+                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span>
                 <span class="n">alti</span><span class="p">,</span>
                 <span class="n">mslp</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">alti</span> <span class="o">&gt;</span> <span class="n">mslp</span><span class="p">:</span>
-                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mslp&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">100.0</span>
+                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mslp"</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">100.0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mslp&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">100.0</span>
+                <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mslp"</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">100.0</span>
     <span class="c1"># Do something with sky coverage</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">hgh</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">sky</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
         <span class="k">if</span> <span class="n">hgh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hgh</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;FT&quot;</span><span class="p">))</span>
+            <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hgh</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">"FT"</span><span class="p">))</span>
 
     <span class="c1"># Presentwx</span>
     <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">weather</span><span class="p">:</span>
         <span class="n">pwx</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">wx</span> <span class="ow">in</span> <span class="n">mtr</span><span class="o">.</span><span class="n">weather</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">wx</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="s2">&quot;/&quot;</span><span class="p">]:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">wx</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="s2">"/"</span><span class="p">]:</span>
                 <span class="k">continue</span>
             <span class="n">pwx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;wxcodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pwx</span>
+        <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"wxcodes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pwx</span>
 
     <span class="c1"># Ice Accretion</span>
     <span class="k">for</span> <span class="n">hr</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ice_accretion_</span><span class="si">{</span><span class="n">hr</span><span class="si">}</span><span class="s2">hr&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"ice_accretion_</span><span class="si">{</span><span class="n">hr</span><span class="si">}</span><span class="s2">hr"</span>
         <span class="n">iem</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">mtr</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">iem</span><span class="p">,</span> <span class="n">iem</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">force_current_log</span><span class="p">,</span> <span class="n">skip_current</span><span class="p">)</span></div>
 
@@ -836,17 +836,17 @@
 <div class="viewcode-block" id="METARCollective">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.METARCollective">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">METARCollective</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A TextProduct containing METAR information</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">          text (string): the raw string to process&quot;&quot;&quot;</span>
+<span class="sd">          text (string): the raw string to process"""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metars</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">split_and_parse</span><span class="p">()</span>
@@ -854,19 +854,19 @@
 <div class="viewcode-block" id="METARCollective.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.METARCollective.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make this into jabber messages&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Make this into jabber messages"""</span>
         <span class="n">jmsgs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mtr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metars</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">sknt</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">weatheri</span> <span class="ow">in</span> <span class="n">mtr</span><span class="o">.</span><span class="n">weather</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">wx</span> <span class="ow">in</span> <span class="n">weatheri</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">wx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;GR&quot;</span> <span class="ow">in</span> <span class="n">wx</span><span class="p">:</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Hail&quot;</span>
+                    <span class="k">if</span> <span class="n">wx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"GR"</span> <span class="ow">in</span> <span class="n">wx</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Hail"</span>
             <span class="k">if</span> <span class="n">TORNADO_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">):</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Tornado&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Tornado"</span>
             <span class="k">elif</span> <span class="n">FUNNEL_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="p">):</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Funnel Cloud&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Funnel Cloud"</span>
             <span class="c1"># Search for Peak wind gust info....</span>
             <span class="k">elif</span> <span class="n">over_wind_threshold</span><span class="p">(</span><span class="n">mtr</span><span class="p">):</span>
                 <span class="n">msg</span><span class="p">,</span> <span class="n">sknt</span> <span class="o">=</span> <span class="n">wind_message</span><span class="p">(</span><span class="n">mtr</span><span class="p">)</span>
@@ -876,24 +876,24 @@
                 <span class="ow">and</span> <span class="n">JABBER_SITES</span><span class="p">[</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span>
             <span class="p">):</span>
                 <span class="n">JABBER_SITES</span><span class="p">[</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtr</span><span class="o">.</span><span class="n">time</span>
-                <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SPECI&quot;</span><span class="p">:</span>
-                    <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SPECI.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">mstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="n">jmsgs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">mstr</span><span class="p">,</span> <span class="n">mstr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">))])</span>
+                <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SPECI"</span><span class="p">:</span>
+                    <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SPECI.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">mstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">jmsgs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">mstr</span><span class="p">,</span> <span class="n">mstr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">))])</span>
             <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">sid</span> <span class="o">=</span> <span class="n">normid</span><span class="p">(</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="p">)</span>
             <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">wfo</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wfo&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">wfo</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">wfo</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">wfo</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"wfo"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wfo</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">wfo</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Unknown WFO for </span><span class="si">%s</span><span class="s2">, skipping alert&quot;</span><span class="p">,</span> <span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span>
+                    <span class="s2">"Unknown WFO for </span><span class="si">%s</span><span class="s2">, skipping alert"</span><span class="p">,</span> <span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
-            <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SPECI&quot;</span><span class="p">:</span>
-                <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SPECI.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SPECI"</span><span class="p">:</span>
+                <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SPECI.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sknt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Custom stuff for how this wind reports maps to channels</span>
                 <span class="k">if</span> <span class="n">sknt</span> <span class="o">&gt;=</span> <span class="n">WIND_ALERT_THRESHOLD_KTS_BY_ICAO</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -904,31 +904,31 @@
                 <span class="k">for</span> <span class="n">_sknt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
                     <span class="nb">int</span><span class="p">(</span><span class="n">WIND_ALERT_THRESHOLD_KTS</span><span class="p">),</span> <span class="n">sknt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span>
                 <span class="p">):</span>
-                    <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">.WIND</span><span class="si">{</span><span class="n">_sknt</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"METAR.</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">station_id</span><span class="si">}</span><span class="s2">.WIND</span><span class="si">{</span><span class="n">_sknt</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wfo</span><span class="p">)</span>
-            <span class="n">st</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
-            <span class="n">nm</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"state"</span><span class="p">)</span>
+            <span class="n">nm</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
 
-            <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;(Caution: Maintenance Check Indicator)&quot;</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}{</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;network&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="s2">""</span>
+            <span class="k">if</span> <span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"$"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">extra</span> <span class="o">=</span> <span class="s2">"(Caution: Maintenance Check Indicator)"</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="si">}{</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'network'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">jtxt</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">) ASOS </span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2"> reports </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">) ASOS </span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2"> reports </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">jhtml</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s1">&lt;/a&gt; (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s1">) ASOS &#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2"> reports &lt;strong&gt;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&lt;/strong&gt;&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;&lt;br/&gt;</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s1">'&lt;p&gt;&lt;a href="</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">"&gt;</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s1">&lt;/a&gt; (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s1">) ASOS '</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2"> reports &lt;strong&gt;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&lt;/strong&gt;"</span>
+                <span class="sa">f</span><span class="s2">"&lt;br/&gt;</span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&lt;/p&gt;"</span>
             <span class="p">)</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
-                <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)),</span>
-                <span class="s2">&quot;long&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)),</span>
-                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">) ASOS reports </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"channels"</span><span class="p">:</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+                <span class="s2">"lat"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lat"</span><span class="p">)),</span>
+                <span class="s2">"long"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lon"</span><span class="p">)),</span>
+                <span class="s2">"twitter"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">) ASOS reports </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">mtr</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)[:</span><span class="n">TWEET_CHARS</span><span class="p">],</span>
             <span class="p">}</span>
             <span class="n">jmsgs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">jtxt</span><span class="p">,</span> <span class="n">jhtml</span><span class="p">,</span> <span class="n">xtra</span><span class="p">])</span>
@@ -939,25 +939,25 @@
 <div class="viewcode-block" id="METARCollective.split_and_parse">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.METARCollective.split_and_parse">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">split_and_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create METAR objects as we find products in the text&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create METAR objects as we find products in the text"""</span>
         <span class="c1"># unixtext is conditioned, so first line is LDM, WMO</span>
         <span class="c1"># the question is what is on the third line</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="c1"># not METAR or SPECI, so take it</span>
         <span class="n">linenum</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="mi">3</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">:])</span>
-        <span class="c1"># Tokenize on the &#39;=&#39;, which splits a product with METARs</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">:])</span>
+        <span class="c1"># Tokenize on the '=', which splits a product with METARs</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
             <span class="c1"># Dump METARs that have NIL in them</span>
-            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;METAR&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">&quot;SPECI&quot;</span> <span class="k">else</span> <span class="s2">&quot;SPECI&quot;</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">"METAR"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">"SPECI"</span> <span class="k">else</span> <span class="s2">"SPECI"</span>
             <span class="k">if</span> <span class="n">NIL_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;METAR&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[(</span><span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;METAR&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="p">:]</span>
-            <span class="k">elif</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;SPECI&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[(</span><span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;SPECI&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="p">:]</span>
-                <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;SPECI&quot;</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"METAR"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[(</span><span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"METAR"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="p">:]</span>
+            <span class="k">elif</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"SPECI"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[(</span><span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"SPECI"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="p">:]</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="s2">"SPECI"</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">to_metar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
@@ -971,7 +971,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.metarcollect.html#pyiem.nws.products.metarcollect.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper function"""</span>
     <span class="k">return</span> <span class="n">METARCollective</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

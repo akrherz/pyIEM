@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.hvtec &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.hvtec &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/hvtec';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.hvtec</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Process HVTEC encoding.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Process HVTEC encoding."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -461,49 +461,49 @@
 
 <span class="c1">#         nwsli        sev         cause</span>
 <span class="n">_re</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;(/([A-Z0-9]</span><span class="si">{5}</span><span class="s2">)\.([N0123U])\.([A-Z]</span><span class="si">{2}</span><span class="s2">)\.([0-9TZ]+)\.&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]</span><span class="si">{2}</span><span class="s2">)/)&quot;</span>
+    <span class="sa">r</span><span class="s2">"(/([A-Z0-9]</span><span class="si">{5}</span><span class="s2">)\.([N0123U])\.([A-Z]</span><span class="si">{2}</span><span class="s2">)\.([0-9TZ]+)\."</span>
+    <span class="sa">r</span><span class="s2">"([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]</span><span class="si">{2}</span><span class="s2">)/)"</span>
 <span class="p">)</span>
 
 <span class="n">HVTEC_RECORD</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;OO&quot;</span><span class="p">:</span> <span class="s2">&quot;is not applicable&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;NO&quot;</span><span class="p">:</span> <span class="s2">&quot;is not expected&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;NR&quot;</span><span class="p">:</span> <span class="s2">&quot;may be expected&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;UU&quot;</span><span class="p">:</span> <span class="s2">&quot;is not available&quot;</span><span class="p">,</span>
+    <span class="s2">"OO"</span><span class="p">:</span> <span class="s2">"is not applicable"</span><span class="p">,</span>
+    <span class="s2">"NO"</span><span class="p">:</span> <span class="s2">"is not expected"</span><span class="p">,</span>
+    <span class="s2">"NR"</span><span class="p">:</span> <span class="s2">"may be expected"</span><span class="p">,</span>
+    <span class="s2">"UU"</span><span class="p">:</span> <span class="s2">"is not available"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">HVTEC_CAUSE</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;ER&quot;</span><span class="p">:</span> <span class="s2">&quot;Excessive Rainfall&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SM&quot;</span><span class="p">:</span> <span class="s2">&quot;Snowmelt&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RS&quot;</span><span class="p">:</span> <span class="s2">&quot;Rain and Snowmelt&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;DM&quot;</span><span class="p">:</span> <span class="s2">&quot;Dam or Levee Failure&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;GO&quot;</span><span class="p">:</span> <span class="s2">&quot;Glacier-Dammed Lake Outburst&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;IJ&quot;</span><span class="p">:</span> <span class="s2">&quot;Ice Jam&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;IC&quot;</span><span class="p">:</span> <span class="s2">&quot;Rain and/or Snowmelt and/or Ice Jam&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FS&quot;</span><span class="p">:</span> <span class="s2">&quot;Upstream Flooding plus Storm Surge&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FT&quot;</span><span class="p">:</span> <span class="s2">&quot;Upstream Flooding plus Tidal Effects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ET&quot;</span><span class="p">:</span> <span class="s2">&quot;Elevated Upstream Flow plus Tidal Effects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;WT&quot;</span><span class="p">:</span> <span class="s2">&quot;Wind and/or Tidal Effects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;DR&quot;</span><span class="p">:</span> <span class="s2">&quot;Upstream Dam or Reservoir Release&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MC&quot;</span><span class="p">:</span> <span class="s2">&quot;Other Multiple Causes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;OT&quot;</span><span class="p">:</span> <span class="s2">&quot;Other Effects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;UU&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="s2">"ER"</span><span class="p">:</span> <span class="s2">"Excessive Rainfall"</span><span class="p">,</span>
+    <span class="s2">"SM"</span><span class="p">:</span> <span class="s2">"Snowmelt"</span><span class="p">,</span>
+    <span class="s2">"RS"</span><span class="p">:</span> <span class="s2">"Rain and Snowmelt"</span><span class="p">,</span>
+    <span class="s2">"DM"</span><span class="p">:</span> <span class="s2">"Dam or Levee Failure"</span><span class="p">,</span>
+    <span class="s2">"GO"</span><span class="p">:</span> <span class="s2">"Glacier-Dammed Lake Outburst"</span><span class="p">,</span>
+    <span class="s2">"IJ"</span><span class="p">:</span> <span class="s2">"Ice Jam"</span><span class="p">,</span>
+    <span class="s2">"IC"</span><span class="p">:</span> <span class="s2">"Rain and/or Snowmelt and/or Ice Jam"</span><span class="p">,</span>
+    <span class="s2">"FS"</span><span class="p">:</span> <span class="s2">"Upstream Flooding plus Storm Surge"</span><span class="p">,</span>
+    <span class="s2">"FT"</span><span class="p">:</span> <span class="s2">"Upstream Flooding plus Tidal Effects"</span><span class="p">,</span>
+    <span class="s2">"ET"</span><span class="p">:</span> <span class="s2">"Elevated Upstream Flow plus Tidal Effects"</span><span class="p">,</span>
+    <span class="s2">"WT"</span><span class="p">:</span> <span class="s2">"Wind and/or Tidal Effects"</span><span class="p">,</span>
+    <span class="s2">"DR"</span><span class="p">:</span> <span class="s2">"Upstream Dam or Reservoir Release"</span><span class="p">,</span>
+    <span class="s2">"MC"</span><span class="p">:</span> <span class="s2">"Other Multiple Causes"</span><span class="p">,</span>
+    <span class="s2">"OT"</span><span class="p">:</span> <span class="s2">"Other Effects"</span><span class="p">,</span>
+    <span class="s2">"UU"</span><span class="p">:</span> <span class="s2">"Unknown"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">HVTEC_SEVERITY</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;Minor&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;Major&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="s2">"N"</span><span class="p">:</span> <span class="s2">"None"</span><span class="p">,</span>
+    <span class="s2">"0"</span><span class="p">:</span> <span class="s2">"None"</span><span class="p">,</span>
+    <span class="s2">"1"</span><span class="p">:</span> <span class="s2">"Minor"</span><span class="p">,</span>
+    <span class="s2">"2"</span><span class="p">:</span> <span class="s2">"Moderate"</span><span class="p">,</span>
+    <span class="s2">"3"</span><span class="p">:</span> <span class="s2">"Major"</span><span class="p">,</span>
+    <span class="s2">"U"</span><span class="p">:</span> <span class="s2">"Unknown"</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="parse">
 <a class="viewcode-back" href="../../../api/pyiem.nws.hvtec.html#pyiem.nws.hvtec.parse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of HVTEC entries found within text.</span>
+<span class="w">    </span><span class="sd">"""Return list of HVTEC entries found within text.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): String to look for HVTEC tokens within.</span>
@@ -512,7 +512,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      list(HVTEC)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">hvtec</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">_re</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nwsli_provider</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -522,11 +522,11 @@
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
         <span class="n">entry</span> <span class="o">=</span> <span class="n">HVTEC</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">entry</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="s2">&quot;00000&quot;</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="s2">"00000"</span>
             <span class="ow">and</span> <span class="n">entry</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nwsli_provider</span>
             <span class="ow">and</span> <span class="n">tp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">):</span>
-            <span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HVTEC NWSLI </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> is unknown.&quot;</span><span class="p">)</span>
+            <span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"HVTEC NWSLI </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> is unknown."</span><span class="p">)</span>
         <span class="n">hvtec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hvtec</span></div>
 
@@ -535,11 +535,11 @@
 <div class="viewcode-block" id="contime">
 <a class="viewcode-back" href="../../../api/pyiem.nws.hvtec.html#pyiem.nws.hvtec.contime">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">contime</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process a string into time.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;0000*T&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Process a string into time."""</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"0000*T"</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">T%H%MZ&quot;</span><span class="p">)</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"%y%m</span><span class="si">%d</span><span class="s2">T%H%MZ"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
@@ -550,10 +550,10 @@
 <div class="viewcode-block" id="HVTEC">
 <a class="viewcode-back" href="../../../api/pyiem.nws.hvtec.html#pyiem.nws.hvtec.HVTEC">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HVTEC</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hydro VTEC.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Hydro VTEC."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Constructor"""</span>
         <span class="k">if</span> <span class="n">nwsli_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nwsli_provider</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -568,18 +568,18 @@
 <div class="viewcode-block" id="HVTEC.__str__">
 <a class="viewcode-back" href="../../../api/pyiem.nws.hvtec.html#pyiem.nws.hvtec.HVTEC.__str__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;string representation of this HVTEC&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""string representation of this HVTEC"""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span></div>
 
 
 <div class="viewcode-block" id="HVTEC.__repr__">
 <a class="viewcode-back" href="../../../api/pyiem.nws.hvtec.html#pyiem.nws.hvtec.HVTEC.__repr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a representation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return a representation."""</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;cause: </span><span class="si">{</span><span class="n">HVTEC_CAUSE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cause</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;severity: </span><span class="si">{</span><span class="n">HVTEC_SEVERITY</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">severity</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;record: </span><span class="si">{</span><span class="n">HVTEC_RECORD</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"cause: </span><span class="si">{</span><span class="n">HVTEC_CAUSE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cause</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"severity: </span><span class="si">{</span><span class="n">HVTEC_SEVERITY</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">severity</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"record: </span><span class="si">{</span><span class="n">HVTEC_RECORD</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span></div>
 </div>
 

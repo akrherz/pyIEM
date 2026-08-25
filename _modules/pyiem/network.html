@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.network &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.network &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/network';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.network</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Network Table.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Network Table."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
@@ -461,10 +461,10 @@
 <div class="viewcode-block" id="Table">
 <a class="viewcode-back" href="../../api/pyiem.network.html#pyiem.network.Table">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Table</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Our class&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Our class"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only_online</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A class representing a network(s) of IEM metadata</span>
+<span class="w">        </span><span class="sd">"""A class representing a network(s) of IEM metadata</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          network (str or list): A network identifier used by the IEM, this can</span>
@@ -472,23 +472,23 @@
 <span class="sd">          cursor (dbcursor,optional): A database cursor to use for the query</span>
 <span class="sd">          only_online (bool,otional): Should the listing of stations include</span>
 <span class="sd">            only those that are currently flagged as online.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">network</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">dbconn</span><span class="p">,</span> <span class="n">_cursor</span> <span class="o">=</span> <span class="n">get_dbconnc</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">)</span>
+            <span class="n">dbconn</span><span class="p">,</span> <span class="n">_cursor</span> <span class="o">=</span> <span class="n">get_dbconnc</span><span class="p">(</span><span class="s2">"mesosite"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dbconn</span><span class="p">,</span> <span class="n">_cursor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cursor</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">network</span> <span class="o">=</span> <span class="p">[</span><span class="n">network</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">network</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
-        <span class="n">online_extra</span> <span class="o">=</span> <span class="s2">&quot; and online &quot;</span> <span class="k">if</span> <span class="n">only_online</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">online_extra</span> <span class="o">=</span> <span class="s2">" and online "</span> <span class="k">if</span> <span class="n">only_online</span> <span class="k">else</span> <span class="s2">""</span>
 
         <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">            WITH myattrs as (</span>
 <span class="s2">                SELECT a.iemid, array_agg(attr) as attrs,</span>
 <span class="s2">                array_agg(value) as attr_values from stations s JOIN</span>
@@ -497,7 +497,7 @@
 <span class="s2">            ), mythreading as (</span>
 <span class="s2">                SELECT a.iemid, array_agg(source_iemid) as threading_sources,</span>
 <span class="s2">                array_agg(begin_date) as threading_begin_dates,</span>
-<span class="s2">                array_agg(coalesce(end_date, &#39;TOMORROW&#39;::date))</span>
+<span class="s2">                array_agg(coalesce(end_date, 'TOMORROW'::date))</span>
 <span class="s2">                  as threading_end_dates</span>
 <span class="s2">                from stations s JOIN</span>
 <span class="s2">                station_threading a on (s.iemid = a.iemid) WHERE</span>
@@ -510,29 +510,29 @@
 <span class="s2">            LEFT JOIN myattrs a on (s.iemid = a.iemid)</span>
 <span class="s2">            LEFT JOIN mythreading m on (s.iemid = m.iemid)</span>
 <span class="s2">            WHERE network = any(%s) </span><span class="si">{</span><span class="n">online_extra</span><span class="si">}</span><span class="s2"> ORDER by name ASC</span>
-<span class="s2">            &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">            """</span><span class="p">,</span>
             <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">network</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">_cursor</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]][</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;attrs&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;attr_values&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]][</span><span class="s2">"attributes"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"attrs"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">row</span><span class="p">[</span><span class="s2">"attr_values"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">td</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;threading&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">td</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"threading"</span><span class="p">,</span> <span class="p">[])</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;threading_sources&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
-                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;threading_begin_dates&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
-                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;threading_end_dates&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"threading_sources"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"threading_begin_dates"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"threading_end_dates"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span>
                 <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">):</span>
-                <span class="n">td</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;iemid&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;begin_date&quot;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">e</span><span class="p">})</span>
+                <span class="n">td</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"iemid"</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">"begin_date"</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s2">"end_date"</span><span class="p">:</span> <span class="n">e</span><span class="p">})</span>
         <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dbconn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Table.get_threading_id">
 <a class="viewcode-back" href="../../api/pyiem.network.html#pyiem.network.Table.get_threading_id">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_threading_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">valid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a station identifier (not iemid) based on threading.</span>
+<span class="w">        </span><span class="sd">"""Return a station identifier (not iemid) based on threading.</span>
 
 <span class="sd">        Lookup what the threaded station identifier is based on this given</span>
 <span class="sd">        timestamp/date.</span>
@@ -540,21 +540,21 @@
 <span class="sd">        Args:</span>
 <span class="sd">          sid (str): station identifier to check threading for.</span>
 <span class="sd">          valid (datetime.date): lookup for comparison.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;threading&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"threading"</span><span class="p">]:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">for</span> <span class="n">tinfo</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;threading&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">valid</span> <span class="o">&lt;</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">&quot;begin_date&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">valid</span> <span class="o">&gt;=</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">tinfo</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"threading"</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">valid</span> <span class="o">&lt;</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">"begin_date"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">valid</span> <span class="o">&gt;=</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">"end_date"</span><span class="p">]:</span>
                 <span class="k">continue</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id_by_key</span><span class="p">(</span><span class="s2">&quot;iemid&quot;</span><span class="p">,</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">&quot;iemid&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id_by_key</span><span class="p">(</span><span class="s2">"iemid"</span><span class="p">,</span> <span class="n">tinfo</span><span class="p">[</span><span class="s2">"iemid"</span><span class="p">])</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Table.get_id_by_key">
 <a class="viewcode-back" href="../../api/pyiem.network.html#pyiem.network.Table.get_id_by_key">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_id_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find a station id by a given attribute = value.</span>
+<span class="w">        </span><span class="sd">"""Find a station id by a given attribute = value.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          key (str): attribute to lookup.</span>
@@ -562,7 +562,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">          station_id</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">sid</span>

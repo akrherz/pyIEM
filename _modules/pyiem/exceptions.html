@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.exceptions &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.exceptions &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/exceptions';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,132 +451,132 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.exceptions</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Custom Exceptions.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Custom Exceptions."""</span>
 
 
 <div class="viewcode-block" id="BadWebRequest">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.BadWebRequest">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BadWebRequest</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a bad web request is made.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when a bad web request is made."""</span></div>
 
 
 
 <div class="viewcode-block" id="CLIException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.CLIException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CLIException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom Exception for CLI Parsing Issues&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Custom Exception for CLI Parsing Issues"""</span></div>
 
 
 
 <div class="viewcode-block" id="HWOException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.HWOException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HWOException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for HWO Parsing.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for HWO Parsing."""</span></div>
 
 
 
 <div class="viewcode-block" id="IncompleteWebRequest">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.IncompleteWebRequest">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IncompleteWebRequest</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised for a HTTP GET request without required params (422).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised for a HTTP GET request without required params (422)."""</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidArguments">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.InvalidArguments">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidArguments</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provided method arguments were not valid (invalid units).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Provided method arguments were not valid (invalid units)."""</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidPolygon">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.InvalidPolygon">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidPolygon</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parsing of polygon raised a known error condition.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Parsing of polygon raised a known error condition."""</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidSHEFEncoding">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.InvalidSHEFEncoding">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidSHEFEncoding</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Product is not encoded to SHEF standard specification.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Product is not encoded to SHEF standard specification."""</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidSHEFValue">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.InvalidSHEFValue">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidSHEFValue</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SHEF element value fails to be processed to a float.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""SHEF element value fails to be processed to a float."""</span></div>
 
 
 
 <div class="viewcode-block" id="MCDException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.MCDException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MCDException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception"""</span></div>
 
 
 
 <div class="viewcode-block" id="NHCException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.NHCException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NHCException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception"""</span></div>
 
 
 
 <div class="viewcode-block" id="NewDatabaseConnectionFailure">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.NewDatabaseConnectionFailure">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NewDatabaseConnectionFailure</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for when a new database connection fails.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for when a new database connection fails."""</span></div>
 
 
 
 <div class="viewcode-block" id="NoDataFound">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.NoDataFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NoDataFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for when no data was found for request.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for when no data was found for request."""</span></div>
 
 
 
 <div class="viewcode-block" id="SAWException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.SAWException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SAWException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom local exception&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Custom local exception"""</span></div>
 
 
 
 <div class="viewcode-block" id="SIGMETException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.SIGMETException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SIGMETException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom SIGMET Parsing Exception.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Custom SIGMET Parsing Exception."""</span></div>
 
 
 
 <div class="viewcode-block" id="TextProductException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.TextProductException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TextProductException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for Text Parsing.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for Text Parsing."""</span></div>
 
 
 
 <div class="viewcode-block" id="UGCParseException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.UGCParseException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UGCParseException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom Exception this parser can raise&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Custom Exception this parser can raise"""</span></div>
 
 
 
 <div class="viewcode-block" id="UnitsError">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.UnitsError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UnitsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for bad Units.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for bad Units."""</span></div>
 
 
 
 <div class="viewcode-block" id="UnknownStationException">
 <a class="viewcode-back" href="../../api/pyiem.exceptions.html#pyiem.exceptions.UnknownStationException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UnknownStationException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception for unknown station.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Exception for unknown station."""</span></div>
 
 </pre></div>
 

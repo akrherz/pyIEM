@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.wwp &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.wwp &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/wwp';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.wwp</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parsing of Storm Prediction Center WWP Product.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Parsing of Storm Prediction Center WWP Product."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -462,121 +462,121 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 
 <span class="c1"># The product format has been remarkably consistent over 16+ years!</span>
-<span class="n">WS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;W(?P&lt;typ&gt;[ST])\s+(?P&lt;num&gt;\d\d\d\d)\s*P?D?S?\n&quot;</span><span class="p">)</span>
+<span class="n">WS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"W(?P&lt;typ&gt;[ST])\s+(?P&lt;num&gt;\d\d\d\d)\s*P?D?S?\n"</span><span class="p">)</span>
 <span class="n">PROB_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 2 OR MORE TORNADOES\s+:\s+(?P&lt;tornadoes_2m&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 1 OR MORE STRONG /E?F2-E?F5/ TORNADOES\s+:&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;\s+(?P&lt;tornadoes_1m_strong&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 10 OR MORE SEVERE WIND EVENTS\s+:\s+(?P&lt;wind_10m&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 1 OR MORE WIND EVENTS &gt;= 65 KNOTS\s+:&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;\s+(?P&lt;wind_1m_65kt&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 10 OR MORE SEVERE HAIL EVENTS\s+:\s+(?P&lt;hail_10m&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 1 OR MORE HAIL EVENTS &gt;= 2 INCHES\s+:&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;\s+(?P&lt;hail_1m_2inch&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PROB OF 6 OR MORE COMBINED SEVERE HAIL/WIND EVENTS\s+:&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;\s+(?P&lt;wind_hail_6m&gt;[\&lt;\&gt;\d]+)%\n&quot;</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 2 OR MORE TORNADOES\s+:\s+(?P&lt;tornadoes_2m&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 1 OR MORE STRONG /E?F2-E?F5/ TORNADOES\s+:"</span>
+    <span class="sa">r</span><span class="s2">"\s+(?P&lt;tornadoes_1m_strong&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 10 OR MORE SEVERE WIND EVENTS\s+:\s+(?P&lt;wind_10m&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 1 OR MORE WIND EVENTS &gt;= 65 KNOTS\s+:"</span>
+    <span class="sa">r</span><span class="s2">"\s+(?P&lt;wind_1m_65kt&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 10 OR MORE SEVERE HAIL EVENTS\s+:\s+(?P&lt;hail_10m&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 1 OR MORE HAIL EVENTS &gt;= 2 INCHES\s+:"</span>
+    <span class="sa">r</span><span class="s2">"\s+(?P&lt;hail_1m_2inch&gt;[\&lt;\&gt;\d]+)%\n"</span>
+    <span class="sa">r</span><span class="s2">"PROB OF 6 OR MORE COMBINED SEVERE HAIL/WIND EVENTS\s+:"</span>
+    <span class="sa">r</span><span class="s2">"\s+(?P&lt;wind_hail_6m&gt;[\&lt;\&gt;\d]+)%\n"</span>
 <span class="p">)</span>
 <span class="n">ATTR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;MAX HAIL /INCHES/\s+:\s+(?P&lt;max_hail_size&gt;[\&lt;\d\.]+)\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;MAX WIND GUSTS SURFACE /KNOTS/\s+:\s+(?P&lt;max_wind_gust_knots&gt;[\&lt;\d]+)\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;MAX TOPS /X 100 FEET/\s+:\s+(?P&lt;tops&gt;\d*)\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;MEAN STORM MOTION VECTOR /DEGREES AND KNOTS/\s+:&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;\s+(?P&lt;drct&gt;\d\d\d)(?P&lt;sknt&gt;\d\d)\n&quot;</span>
-    <span class="sa">r</span><span class="s2">&quot;PARTICULARLY DANGEROUS SITUATION\s+:\s+(?P&lt;is_pds&gt;NO|YES)&quot;</span>
+    <span class="sa">r</span><span class="s2">"MAX HAIL /INCHES/\s+:\s+(?P&lt;max_hail_size&gt;[\&lt;\d\.]+)\n"</span>
+    <span class="sa">r</span><span class="s2">"MAX WIND GUSTS SURFACE /KNOTS/\s+:\s+(?P&lt;max_wind_gust_knots&gt;[\&lt;\d]+)\n"</span>
+    <span class="sa">r</span><span class="s2">"MAX TOPS /X 100 FEET/\s+:\s+(?P&lt;tops&gt;\d*)\n"</span>
+    <span class="sa">r</span><span class="s2">"MEAN STORM MOTION VECTOR /DEGREES AND KNOTS/\s+:"</span>
+    <span class="sa">r</span><span class="s2">"\s+(?P&lt;drct&gt;\d\d\d)(?P&lt;sknt&gt;\d\d)\n"</span>
+    <span class="sa">r</span><span class="s2">"PARTICULARLY DANGEROUS SITUATION\s+:\s+(?P&lt;is_pds&gt;NO|YES)"</span>
 <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_convprob</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe conversion.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Safe conversion."""</span>
     <span class="c1"># appears currently that these values are always static</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data</span><span class="p">(</span><span class="n">tp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill out the data model.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Fill out the data model."""</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">WS_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="n">PROB_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
     <span class="n">attr</span> <span class="o">=</span> <span class="n">ATTR_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">WWPModel</span><span class="p">(</span>
-        <span class="n">typ</span><span class="o">=</span><span class="s2">&quot;TOR&quot;</span> <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="k">else</span> <span class="s2">&quot;SVR&quot;</span><span class="p">,</span>
-        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ws</span><span class="p">[</span><span class="s2">&quot;num&quot;</span><span class="p">]),</span>
-        <span class="n">tornadoes_2m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;tornadoes_2m&quot;</span><span class="p">]),</span>
-        <span class="n">tornadoes_1m_strong</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;tornadoes_1m_strong&quot;</span><span class="p">]),</span>
-        <span class="n">wind_10m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;wind_10m&quot;</span><span class="p">]),</span>
-        <span class="n">wind_1m_65kt</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;wind_1m_65kt&quot;</span><span class="p">]),</span>
-        <span class="n">hail_10m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;hail_10m&quot;</span><span class="p">]),</span>
-        <span class="n">hail_1m_2inch</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;hail_1m_2inch&quot;</span><span class="p">]),</span>
-        <span class="n">hail_wind_6m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">&quot;wind_hail_6m&quot;</span><span class="p">]),</span>
-        <span class="n">max_hail_size</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;max_hail_size&quot;</span><span class="p">]),</span>
-        <span class="n">max_wind_gust_knots</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;max_wind_gust_knots&quot;</span><span class="p">]),</span>
-        <span class="n">max_tops_feet</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;tops&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">,</span>
-        <span class="n">storm_motion_drct</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;drct&quot;</span><span class="p">]),</span>
-        <span class="n">storm_motion_sknt</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]),</span>
-        <span class="n">is_pds</span><span class="o">=</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">&quot;is_pds&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;YES&quot;</span><span class="p">),</span>
+        <span class="n">typ</span><span class="o">=</span><span class="s2">"TOR"</span> <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="s2">"typ"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"T"</span> <span class="k">else</span> <span class="s2">"SVR"</span><span class="p">,</span>
+        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ws</span><span class="p">[</span><span class="s2">"num"</span><span class="p">]),</span>
+        <span class="n">tornadoes_2m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"tornadoes_2m"</span><span class="p">]),</span>
+        <span class="n">tornadoes_1m_strong</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"tornadoes_1m_strong"</span><span class="p">]),</span>
+        <span class="n">wind_10m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"wind_10m"</span><span class="p">]),</span>
+        <span class="n">wind_1m_65kt</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"wind_1m_65kt"</span><span class="p">]),</span>
+        <span class="n">hail_10m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"hail_10m"</span><span class="p">]),</span>
+        <span class="n">hail_1m_2inch</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"hail_1m_2inch"</span><span class="p">]),</span>
+        <span class="n">hail_wind_6m</span><span class="o">=</span><span class="n">_convprob</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s2">"wind_hail_6m"</span><span class="p">]),</span>
+        <span class="n">max_hail_size</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"max_hail_size"</span><span class="p">]),</span>
+        <span class="n">max_wind_gust_knots</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"max_wind_gust_knots"</span><span class="p">]),</span>
+        <span class="n">max_tops_feet</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"tops"</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">storm_motion_drct</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"drct"</span><span class="p">]),</span>
+        <span class="n">storm_motion_sknt</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"sknt"</span><span class="p">]),</span>
+        <span class="n">is_pds</span><span class="o">=</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s2">"is_pds"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"YES"</span><span class="p">),</span>
     <span class="p">)</span>
 
 
 <div class="viewcode-block" id="WWPProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.wwp.html#pyiem.nws.products.wwp.WWPProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WWPProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a WWP Product&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class representing a WWP Product"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          text (str): text to parse</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="WWPProduct.is_test">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.wwp.html#pyiem.nws.products.wwp.WWPProduct.is_test">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this a test product?&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">9000</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;...TEST&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+<span class="w">        </span><span class="sd">"""Is this a test product?"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">9000</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"...TEST"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="WWPProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.wwp.html#pyiem.nws.products.wwp.WWPProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the necessary database work</span>
+<span class="w">        </span><span class="sd">"""Do the necessary database work</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          (psycopg.transaction): a database transaction</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># First, check to see if we already have this num</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;SELECT num from watches where &quot;</span>
-            <span class="s2">&quot;extract(year from issued at time zone &#39;UTC&#39;) = </span><span class="si">%s</span><span class="s2"> and num = </span><span class="si">%s</span><span class="s2"> &quot;</span>
-            <span class="s2">&quot;and type = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">"SELECT num from watches where "</span>
+            <span class="s2">"extract(year from issued at time zone 'UTC') = </span><span class="si">%s</span><span class="s2"> and num = </span><span class="si">%s</span><span class="s2"> "</span>
+            <span class="s2">"and type = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">typ</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># Insert an entry</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;INSERT into watches (num, issued, type) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="s2">"INSERT into watches (num, issued, type) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">typ</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="c1"># Now, update the data</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;UPDATE watches SET &quot;</span>
-            <span class="s2">&quot;tornadoes_2m = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;tornadoes_1m_strong = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;wind_10m = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;wind_1m_65kt = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;hail_10m = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;hail_1m_2inch = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;hail_wind_6m = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;max_hail_size = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;max_wind_gust_knots = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;max_tops_feet = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;storm_motion_drct = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;storm_motion_sknt = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;is_pds = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;product_id_wwp = </span><span class="si">%s</span><span class="s2"> &quot;</span>
-            <span class="s2">&quot;WHERE extract(year from issued at time zone &#39;UTC&#39;) = </span><span class="si">%s</span><span class="s2"> &quot;</span>
-            <span class="s2">&quot;and num = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">"UPDATE watches SET "</span>
+            <span class="s2">"tornadoes_2m = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"tornadoes_1m_strong = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"wind_10m = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"wind_1m_65kt = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"hail_10m = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"hail_1m_2inch = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"hail_wind_6m = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"max_hail_size = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"max_wind_gust_knots = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"max_tops_feet = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"storm_motion_drct = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"storm_motion_sknt = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"is_pds = </span><span class="si">%s</span><span class="s2">, "</span>
+            <span class="s2">"product_id_wwp = </span><span class="si">%s</span><span class="s2"> "</span>
+            <span class="s2">"WHERE extract(year from issued at time zone 'UTC') = </span><span class="si">%s</span><span class="s2"> "</span>
+            <span class="s2">"and num = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tornadoes_2m</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tornadoes_1m_strong</span><span class="p">,</span>
@@ -603,7 +603,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.wwp.html#pyiem.nws.products.wwp.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse SPC WWP Product.</span>
+<span class="w">    </span><span class="sd">"""Parse SPC WWP Product.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): the raw text to parse</span>
@@ -611,7 +611,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      WWPProduct instance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">WWPProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">)</span></div>
 
 </pre></div>

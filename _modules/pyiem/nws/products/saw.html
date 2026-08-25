@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.saw &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.saw &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/saw';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,10 +454,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.saw</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parsing of Storm Prediction Center SAW Product</span>
+<span></span><span class="sd">"""Parsing of Storm Prediction Center SAW Product</span>
 
 <span class="sd">This does not process the legacy SAW products that did not have LAT...LON</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
@@ -470,30 +470,30 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_geodf</span><span class="p">,</span> <span class="n">utc</span>
 
-<span class="n">LATLON</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;LAT\.\.\.LON\s+((?:[0-9]</span><span class="si">{8}</span><span class="s2">\s+)+)&quot;</span><span class="p">)</span>
+<span class="n">LATLON</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"LAT\.\.\.LON\s+((?:[0-9]</span><span class="si">{8}</span><span class="s2">\s+)+)"</span><span class="p">)</span>
 <span class="n">NUM_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;WW ([0-9]*) (TEST)?\s?(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)&quot;</span>
+    <span class="sa">r</span><span class="s2">"WW ([0-9]*) (TEST)?\s?(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)"</span>
 <span class="p">)</span>
-<span class="n">REPLACES_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;REPLACES WW ([0-9]*)&quot;</span><span class="p">)</span>
-<span class="n">DBTYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TOR&quot;</span><span class="p">,</span> <span class="s2">&quot;SVR&quot;</span><span class="p">]</span>
-<span class="n">TYPE2STRING</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tornado&quot;</span><span class="p">,</span> <span class="s2">&quot;Severe Thunderstorm&quot;</span><span class="p">]</span>
-<span class="n">SPCURL</span> <span class="o">=</span> <span class="s2">&quot;https://www.spc.noaa.gov/products/watch&quot;</span>
+<span class="n">REPLACES_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"REPLACES WW ([0-9]*)"</span><span class="p">)</span>
+<span class="n">DBTYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TOR"</span><span class="p">,</span> <span class="s2">"SVR"</span><span class="p">]</span>
+<span class="n">TYPE2STRING</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Tornado"</span><span class="p">,</span> <span class="s2">"Severe Thunderstorm"</span><span class="p">]</span>
+<span class="n">SPCURL</span> <span class="o">=</span> <span class="s2">"https://www.spc.noaa.gov/products/watch"</span>
 
 
 <div class="viewcode-block" id="SAWProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SAWProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a SAW Product&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class representing a SAW Product"""</span>
 
     <span class="p">(</span><span class="n">TORNADO</span><span class="p">,</span> <span class="n">SEVERE_THUNDERSTORM</span><span class="p">)</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="p">(</span><span class="n">ISSUES</span><span class="p">,</span> <span class="n">CANCELS</span><span class="p">)</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          text (str): text to parse</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_action</span><span class="p">()</span>
@@ -507,7 +507,7 @@
 <div class="viewcode-block" id="SAWProduct.find_replaces">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_replaces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_replaces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out what this watch replaces.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Figure out what this watch replaces."""</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">REPLACES_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -517,12 +517,12 @@
 <div class="viewcode-block" id="SAWProduct.find_action">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_action">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out if this is an issuance or cancells statement</span>
+<span class="w">        </span><span class="sd">"""Figure out if this is an issuance or cancells statement</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">          (int): either ISSUES or CANCELS</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;CANCELLED&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"CANCELLED"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CANCELS</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ISSUES</span></div>
 
@@ -530,10 +530,10 @@
 <div class="viewcode-block" id="SAWProduct.compute_wfos">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.compute_wfos">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_wfos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_txn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out who is impacted by this watch&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Figure out who is impacted by this watch"""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">gdf</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">&quot;cwa&quot;</span><span class="p">)</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">"cwa"</span><span class="p">)</span>
         <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">affected_wfos</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span></div>
 
@@ -541,33 +541,33 @@
 <div class="viewcode-block" id="SAWProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the necessary database work</span>
+<span class="w">        </span><span class="sd">"""Do the necessary database work</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          (psycopg.transaction): a database transaction</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ISSUES</span><span class="p">:</span>
             <span class="c1"># Ensure we have a watch to update</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;select 1 from watches WHERE num = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
-                <span class="s2">&quot;extract(year from issued at time zone &#39;UTC&#39;) = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"select 1 from watches WHERE num = </span><span class="si">%s</span><span class="s2"> and "</span>
+                <span class="s2">"extract(year from issued at time zone 'UTC') = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;INSERT into watches (num, issued) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="s2">"INSERT into watches (num, issued) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="c1"># Insert into the main watches table</span>
-            <span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;</span><span class="si">{</span><span class="n">MultiPolygon</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">])</span><span class="o">.</span><span class="n">wkt</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SRID=4326;</span><span class="si">{</span><span class="n">MultiPolygon</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">])</span><span class="o">.</span><span class="n">wkt</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;UPDATE watches SET sel = </span><span class="si">%s</span><span class="s2">, issued = </span><span class="si">%s</span><span class="s2">, expired = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-                <span class="s2">&quot;type = </span><span class="si">%s</span><span class="s2">, geom = </span><span class="si">%s</span><span class="s2">, product_id_saw = </span><span class="si">%s</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;WHERE num = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
-                <span class="s2">&quot;extract(year from issued at time zone &#39;UTC&#39;) = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="s2">"UPDATE watches SET sel = </span><span class="si">%s</span><span class="s2">, issued = </span><span class="si">%s</span><span class="s2">, expired = </span><span class="si">%s</span><span class="s2">, "</span>
+                <span class="s2">"type = </span><span class="si">%s</span><span class="s2">, geom = </span><span class="si">%s</span><span class="s2">, product_id_saw = </span><span class="si">%s</span><span class="s2"> "</span>
+                <span class="s2">"WHERE num = </span><span class="si">%s</span><span class="s2"> and "</span>
+                <span class="s2">"extract(year from issued at time zone 'UTC') = </span><span class="si">%s</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;SEL</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">saw</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"SEL</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">saw</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="p">,</span>
                 <span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">],</span>
@@ -579,8 +579,8 @@
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
             <span class="c1"># Update the watches_current table</span>
             <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;UPDATE watches_current SET issued = </span><span class="si">%s</span><span class="s2">, expired = </span><span class="si">%s</span><span class="s2">, &quot;</span>
-                <span class="s2">&quot;type = </span><span class="si">%s</span><span class="s2">, geom = </span><span class="si">%s</span><span class="s2">, num = </span><span class="si">%s</span><span class="s2"> WHERE sel = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="s2">"UPDATE watches_current SET issued = </span><span class="si">%s</span><span class="s2">, expired = </span><span class="si">%s</span><span class="s2">, "</span>
+                <span class="s2">"type = </span><span class="si">%s</span><span class="s2">, geom = </span><span class="si">%s</span><span class="s2">, num = </span><span class="si">%s</span><span class="s2"> WHERE sel = </span><span class="si">%s</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">,</span>
@@ -588,43 +588,43 @@
                 <span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">],</span>
                 <span class="n">giswkt</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;SEL</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">saw</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"SEL</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">saw</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
             <span class="c1"># Is this a replacement?</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;UPDATE watches SET expired = </span><span class="si">%s</span><span class="s2"> &quot;</span>
-                    <span class="s2">&quot;WHERE num = </span><span class="si">%s</span><span class="s2"> and extract(year from expired) = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"UPDATE watches SET expired = </span><span class="si">%s</span><span class="s2"> "</span>
+                    <span class="s2">"WHERE num = </span><span class="si">%s</span><span class="s2"> and extract(year from expired) = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">CANCELS</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;watches&quot;</span><span class="p">,</span> <span class="s2">&quot;watches_current&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"watches"</span><span class="p">,</span> <span class="s2">"watches_current"</span><span class="p">):</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;UPDATE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> SET expired = %s &quot;</span>
-                    <span class="s2">&quot;WHERE num = </span><span class="si">%s</span><span class="s2"> and extract(year from expired) = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"UPDATE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> SET expired = %s "</span>
+                    <span class="s2">"WHERE num = </span><span class="si">%s</span><span class="s2"> and extract(year from expired) = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">&quot;watches&quot;</span> <span class="ow">and</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">"watches"</span> <span class="ow">and</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;Expiration of watch resulted in &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;update of </span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="si">}</span><span class="s2"> rows, instead of 1.&quot;</span>
+                        <span class="s2">"Expiration of watch resulted in "</span>
+                        <span class="sa">f</span><span class="s2">"update of </span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="si">}</span><span class="s2"> rows, instead of 1."</span>
                     <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SAWProduct.find_time">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_time">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the start and end valid time of this watch</span>
+<span class="w">        </span><span class="sd">"""Find the start and end valid time of this watch</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          (datetime, datetime): representing the time of this watch</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">CANCELS</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-            <span class="s2">&quot;([0-3][0-9])([0-2][0-9])([0-6][0-9])Z - &quot;</span>
-            <span class="s2">&quot;([0-3][0-9])([0-2][0-9])([0-6][0-9])Z&quot;</span><span class="p">,</span>
+            <span class="s2">"([0-3][0-9])([0-2][0-9])([0-6][0-9])Z - "</span>
+            <span class="s2">"([0-3][0-9])([0-2][0-9])([0-6][0-9])Z"</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -651,43 +651,43 @@
 <div class="viewcode-block" id="SAWProduct.find_ww_num">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_ww_num">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_ww_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the Weather Watch Number</span>
+<span class="w">        </span><span class="sd">"""Find the Weather Watch Number</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          (int): The Weather Watch Number</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">NUM_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">&quot;Could not locate Weather Watch Number&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">"Could not locate Weather Watch Number"</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="SAWProduct.is_test">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.is_test">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this a test watch?</span>
+<span class="w">        </span><span class="sd">"""Is this a test watch?</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          boolean if this SAW is a test or not</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">NUM_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">&quot;Could not locate Weather Watch Number&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;TEST&quot;</span></div>
+            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">"Could not locate Weather Watch Number"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"TEST"</span></div>
 
 
 <div class="viewcode-block" id="SAWProduct.find_ww_type">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_ww_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_ww_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the Weather Watch Type</span>
+<span class="w">        </span><span class="sd">"""Find the Weather Watch Type</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          (int): The Weather Watch Type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">NUM_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">&quot;Could not locate Weather Watch Type&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;TORNADO&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">"Could not locate Weather Watch Type"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"TORNADO"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TORNADO</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEVERE_THUNDERSTORM</span></div>
 
@@ -695,16 +695,16 @@
 <div class="viewcode-block" id="SAWProduct.find_polygon">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.find_polygon">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search out the text for the LAT...LON polygon</span>
+<span class="w">        </span><span class="sd">"""Search out the text for the LAT...LON polygon</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          (str): Well Known Text (WKT) representation</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">CANCELS</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">LATLON</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">LATLON</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">&quot;Could not parse LAT...LON geometry&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SAWException</span><span class="p">(</span><span class="s2">"Could not parse LAT...LON geometry"</span><span class="p">)</span>
         <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
             <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pair</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span>
@@ -718,9 +718,9 @@
 <div class="viewcode-block" id="SAWProduct.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.SAWProduct.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the jabber messages for this product.</span>
+<span class="w">        </span><span class="sd">"""Generate the jabber messages for this product.</span>
 
-<span class="sd">        NOTE: In the past, the messages generated here have tripped twitter&#39;s</span>
+<span class="sd">        NOTE: In the past, the messages generated here have tripped twitter's</span>
 <span class="sd">        spam logic, so we are careful to craft unique messages</span>
 
 <span class="sd">        NOTE: Since interesting watch information comes within three products</span>
@@ -732,88 +732,88 @@
 <span class="sd">          _uri2 (str): unused in this context.</span>
 <span class="sd">          wwpprod (WWPProduct): the WWPProduct object.</span>
 <span class="sd">          selprod (SELProduct): the SELProduct object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">selprod</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selprod&quot;</span><span class="p">)</span>
-        <span class="n">wwpprod</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wwpprod&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">selprod</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"selprod"</span><span class="p">)</span>
+        <span class="n">wwpprod</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"wwpprod"</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SPCURL</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/ww</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">:</span><span class="s2">04.0f</span><span class="si">}</span><span class="s2">.html&quot;</span>
-        <span class="n">spc_channels</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SPC,SPC.</span><span class="si">{</span><span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s2">WATCH&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">SPCURL</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/ww</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">:</span><span class="s2">04.0f</span><span class="si">}</span><span class="s2">.html"</span>
+        <span class="n">spc_channels</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SPC,SPC.</span><span class="si">{</span><span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s2">WATCH"</span>
         <span class="n">pds</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">wwpprod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">pds</span> <span class="o">=</span> <span class="n">wwpprod</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_pds</span>
         <span class="k">if</span> <span class="n">pds</span><span class="p">:</span>
-            <span class="n">spc_channels</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;,</span><span class="si">{</span><span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">.PDS&quot;</span>
+            <span class="n">spc_channels</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">",</span><span class="si">{</span><span class="n">DBTYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">.PDS"</span>
         <span class="n">product_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">selprod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># SEL is prettier</span>
             <span class="n">product_id</span> <span class="o">=</span> <span class="n">selprod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
-        <span class="n">plain</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">"</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">CANCELS</span><span class="p">:</span>
             <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Storm Prediction Center cancels Weather Watch Number &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"Storm Prediction Center cancels Weather Watch Number "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;Storm Prediction Center cancels &lt;a href=&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;Weather Watch Number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s1">'&lt;p&gt;Storm Prediction Center cancels &lt;a href="</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">"&gt;'</span>
+                <span class="sa">f</span><span class="s2">"Weather Watch Number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;"</span>
             <span class="p">)</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">plain</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="n">spc_channels</span><span class="p">,</span> <span class="n">twitter</span><span class="o">=</span><span class="n">plain</span><span class="p">)]</span>
             <span class="p">)</span>
             <span class="c1"># Now create templates</span>
             <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Storm Prediction Center cancels Weather Watch Number &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> for portions of %s </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"Storm Prediction Center cancels Weather Watch Number "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> for portions of %s </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;Storm Prediction Center cancels &lt;a href=&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;Weather Watch Number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt; &quot;</span>
-                <span class="s2">&quot;for portions of </span><span class="si">%s</span><span class="s2">&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s1">'&lt;p&gt;Storm Prediction Center cancels &lt;a href="</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">"&gt;'</span>
+                <span class="sa">f</span><span class="s2">"Weather Watch Number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt; "</span>
+                <span class="s2">"for portions of </span><span class="si">%s</span><span class="s2">&lt;/p&gt;"</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ISSUES</span><span class="p">:</span>
-            <span class="n">pds_extra</span> <span class="o">=</span> <span class="s2">&quot; (Particularly Dangerous Situation) &quot;</span> <span class="k">if</span> <span class="n">pds</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">pds_extra</span> <span class="o">=</span> <span class="s2">" (Particularly Dangerous Situation) "</span> <span class="k">if</span> <span class="n">pds</span> <span class="k">else</span> <span class="s2">""</span>
             <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;SPC issues </span><span class="si">{</span><span class="n">TYPE2STRING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s2"> Watch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pds_extra</span><span class="si">}</span><span class="s2">till </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="si">:</span><span class="s2">%-H:%M</span><span class="si">}</span><span class="s2">Z&quot;</span>
+                <span class="sa">f</span><span class="s2">"SPC issues </span><span class="si">{</span><span class="n">TYPE2STRING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s2"> Watch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pds_extra</span><span class="si">}</span><span class="s2">till </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="si">:</span><span class="s2">%-H:%M</span><span class="si">}</span><span class="s2">Z"</span>
             <span class="p">)</span>
             <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;&lt;p&gt;Storm Prediction Center issues &quot;</span>
-                <span class="s1">&#39;&lt;a href=&quot;https://www.spc.noaa.gov/products/watch/&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;ww</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">:</span><span class="s1">04.0f</span><span class="si">}</span><span class="s1">.html&quot;&gt;</span><span class="si">{</span><span class="n">TYPE2STRING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;Watch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt; </span><span class="si">{</span><span class="n">pds_extra</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;till </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="si">:</span><span class="s2">%-H:%M</span><span class="si">}</span><span class="s2"> UTC&quot;</span>
+                <span class="s2">"&lt;p&gt;Storm Prediction Center issues "</span>
+                <span class="s1">'&lt;a href="https://www.spc.noaa.gov/products/watch/'</span>
+                <span class="sa">f</span><span class="s1">'ww</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">:</span><span class="s1">04.0f</span><span class="si">}</span><span class="s1">.html"&gt;</span><span class="si">{</span><span class="n">TYPE2STRING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_type</span><span class="p">]</span><span class="si">}</span><span class="s1"> '</span>
+                <span class="sa">f</span><span class="s2">"Watch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s2">&lt;/a&gt; </span><span class="si">{</span><span class="n">pds_extra</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"till </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="si">:</span><span class="s2">%-H:%M</span><span class="si">}</span><span class="s2"> UTC"</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">plain</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, new watch replaces WW </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, new watch replaces WW </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">plain</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">", new watch replaces WW </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">", new watch replaces WW </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">replaces_num</span><span class="si">}</span><span class="s2">"</span>
 
-            <span class="n">plain2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">plain</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">plain2</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plain2</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+            <span class="n">plain2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">plain</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">plain2</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plain2</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="n">spc_channels</span><span class="p">,</span>
-                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">plain2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">product_id</span><span class="p">,</span>
+                <span class="s2">"channels"</span><span class="p">:</span> <span class="n">spc_channels</span><span class="p">,</span>
+                <span class="s2">"twitter"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">plain2</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"product_id"</span><span class="p">:</span> <span class="n">product_id</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">html2</span> <span class="o">=</span> <span class="n">html</span> <span class="o">+</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39; (&lt;a href=&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">&amp;amp;num=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                <span class="s2">&quot;&gt;Watch &quot;</span>
-                <span class="s2">&quot;Quickview&lt;/a&gt;)&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s1">' (&lt;a href="</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">&amp;amp;num=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s1">"'</span>
+                <span class="s2">"&gt;Watch "</span>
+                <span class="s2">"Quickview&lt;/a&gt;)&lt;/p&gt;"</span>
             <span class="p">)</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">plain2</span><span class="p">,</span> <span class="n">html2</span><span class="p">,</span> <span class="n">xtra</span><span class="p">])</span>
             <span class="c1"># Now create templates</span>
-            <span class="n">plain</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; for portions of %s </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">plain</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" for portions of %s </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">html</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="s2">&quot; for portions of </span><span class="si">%s</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s1">&#39;(&lt;a href=&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">&amp;amp;num=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                <span class="s2">&quot;&gt;Watch Quickview&lt;/a&gt;)&lt;/p&gt;&quot;</span>
+                <span class="s2">" for portions of </span><span class="si">%s</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s1">'(&lt;a href="</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">&amp;amp;num=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ww_num</span><span class="si">}</span><span class="s1">"'</span>
+                <span class="s2">"&gt;Watch Quickview&lt;/a&gt;)&lt;/p&gt;"</span>
             <span class="p">)</span>
 
-        <span class="n">plain</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plain</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plain</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">wfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">affected_wfos</span><span class="p">:</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">plain</span> <span class="o">%</span> <span class="p">(</span><span class="n">wfo</span><span class="p">,),</span>
-                <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">product_id</span><span class="p">,</span>
+                <span class="s2">"channels"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"twitter"</span><span class="p">:</span> <span class="n">plain</span> <span class="o">%</span> <span class="p">(</span><span class="n">wfo</span><span class="p">,),</span>
+                <span class="s2">"product_id"</span><span class="p">:</span> <span class="n">product_id</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">plain</span> <span class="o">%</span> <span class="p">(</span><span class="n">wfo</span><span class="p">,),</span> <span class="n">html</span> <span class="o">%</span> <span class="p">(</span><span class="n">wfo</span><span class="p">,),</span> <span class="n">xtra</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">res</span></div>
@@ -824,7 +824,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.saw.html#pyiem.nws.products.saw.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;parser of raw SPC SAW Text</span>
+<span class="w">    </span><span class="sd">"""parser of raw SPC SAW Text</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): the raw text to parse</span>
@@ -832,7 +832,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      SAWProduct instance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">SAWProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">)</span></div>
 
 </pre></div>

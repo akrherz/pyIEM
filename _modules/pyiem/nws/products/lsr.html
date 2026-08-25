@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.lsr &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.lsr &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/lsr';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.lsr</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;NWS Local Storm Report (LSR) Parsing.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""NWS Local Storm Report (LSR) Parsing."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -467,11 +467,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">TextProductException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">utc</span>
 
-<span class="c1"># Don&#39;t permit LSRs that are more than 1 hour newer than product time</span>
+<span class="c1"># Don't permit LSRs that are more than 1 hour newer than product time</span>
 <span class="c1"># or future of the current time</span>
 <span class="n">FUTURE_THRESHOLD</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">SPLITTER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span>
+    <span class="sa">r</span><span class="s2">"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span>
 <span class="p">)</span>
 <span class="c1"># Limitation on number of new jabber messages possible within a single prod</span>
 <span class="n">MAX_JABBER_MESSAGES</span> <span class="o">=</span> <span class="mi">20</span>
@@ -480,19 +480,19 @@
 <div class="viewcode-block" id="LSRProductException">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProductException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LSRProductException</span><span class="p">(</span><span class="n">TextProductException</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Something we can raise when bad things happen!&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Something we can raise when bad things happen!"""</span></div>
 
 
 
 <div class="viewcode-block" id="LSRProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LSRProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a text product of the LSR variety&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents a text product of the LSR variety"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constructor"""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>
@@ -505,7 +505,7 @@
 <div class="viewcode-block" id="LSRProduct.get_temporal_domain">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProduct.get_temporal_domain">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_temporal_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the min and max timestamps of lsrs&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the min and max timestamps of lsrs"""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
         <span class="n">valids</span> <span class="o">=</span> <span class="p">[</span><span class="n">lsr</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="k">for</span> <span class="n">lsr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">]</span>
@@ -515,26 +515,26 @@
 <div class="viewcode-block" id="LSRProduct.is_summary">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProduct.is_summary">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns is this LSR is a summary or not&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;...SUMMARY&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+<span class="w">        </span><span class="sd">"""Returns is this LSR is a summary or not"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"...SUMMARY"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="LSRProduct.get_url">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProduct.get_url">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseuri</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the URL of this product&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get the URL of this product"""</span>
         <span class="n">min_time</span><span class="p">,</span> <span class="n">max_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temporal_domain</span><span class="p">()</span>
         <span class="n">wfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">baseuri</span><span class="si">}</span><span class="s2">?by=wfo&amp;amp;wfo=</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">&amp;amp;sts=</span><span class="si">{</span><span class="n">min_time</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;&amp;amp;ets=</span><span class="si">{</span><span class="n">max_time</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">baseuri</span><span class="si">}</span><span class="s2">?by=wfo&amp;amp;wfo=</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">&amp;amp;sts=</span><span class="si">{</span><span class="n">min_time</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"&amp;amp;ets=</span><span class="si">{</span><span class="n">max_time</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="LSRProduct.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.LSRProduct.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a text and html variant for Jabber stuff&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""return a text and html variant for Jabber stuff"""</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">res</span>
@@ -548,25 +548,25 @@
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mylsr</span><span class="o">.</span><span class="n">get_jabbers</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_summary</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MAX_JABBER_MESSAGES</span><span class="p">:</span>
-            <span class="n">extra_text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+            <span class="n">extra_text</span> <span class="o">=</span> <span class="s2">" "</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duplicates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">extra_text</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">duplicates</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">)</span><span class="si">}</span><span class="s2"> reports &quot;</span>
-                    <span class="s2">&quot;were previously sent and not repeated here. &quot;</span>
+                    <span class="sa">f</span><span class="s2">", </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">duplicates</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lsrs</span><span class="p">)</span><span class="si">}</span><span class="s2"> reports "</span>
+                    <span class="s2">"were previously sent and not repeated here. "</span>
                 <span class="p">)</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2"> issues Summary Local Storm Report</span><span class="si">{</span><span class="n">extra_text</span><span class="si">}{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2"> issues Summary Local Storm Report</span><span class="si">{</span><span class="n">extra_text</span><span class="si">}{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span>
 
             <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&lt;p&gt;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2"> issues &lt;a href=&#39;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#39;&gt;&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Summary Local Storm Report&lt;/a&gt;</span><span class="si">{</span><span class="n">extra_text</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s2">"&lt;p&gt;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2"> issues &lt;a href='</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">'&gt;"</span>
+                <span class="sa">f</span><span class="s2">"Summary Local Storm Report&lt;/a&gt;</span><span class="si">{</span><span class="n">extra_text</span><span class="si">}</span><span class="s2">&lt;/p&gt;"</span>
             <span class="p">)</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;LSR</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
-                <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="p">(</span>
-                    <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/242/&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;pid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">.png&quot;</span>
+                <span class="s2">"product_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                <span class="s2">"channels"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"LSR</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"twitter"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+                <span class="s2">"twitter_media"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="s2">"https://mesonet.agron.iastate.edu/plotting/auto/plot/242/"</span>
+                    <span class="sa">f</span><span class="s2">"pid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">.png"</span>
                 <span class="p">),</span>
             <span class="p">}</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">text</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">xtra</span><span class="p">])</span>
@@ -576,45 +576,45 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_mylowercase</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specialized lowercase function&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Specialized lowercase function"""</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;N&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;NNE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;NNW&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;NE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;E&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ENE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ESE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;SE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;S&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;SSE&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;SSW&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;SW&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;W&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;WSW&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;WNW&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;NW&quot;</span><span class="p">,</span>
+            <span class="s2">"N"</span><span class="p">,</span>
+            <span class="s2">"NNE"</span><span class="p">,</span>
+            <span class="s2">"NNW"</span><span class="p">,</span>
+            <span class="s2">"NE"</span><span class="p">,</span>
+            <span class="s2">"E"</span><span class="p">,</span>
+            <span class="s2">"ENE"</span><span class="p">,</span>
+            <span class="s2">"ESE"</span><span class="p">,</span>
+            <span class="s2">"SE"</span><span class="p">,</span>
+            <span class="s2">"S"</span><span class="p">,</span>
+            <span class="s2">"SSE"</span><span class="p">,</span>
+            <span class="s2">"SSW"</span><span class="p">,</span>
+            <span class="s2">"SW"</span><span class="p">,</span>
+            <span class="s2">"W"</span><span class="p">,</span>
+            <span class="s2">"WSW"</span><span class="p">,</span>
+            <span class="s2">"WNW"</span><span class="p">,</span>
+            <span class="s2">"NW"</span><span class="p">,</span>
         <span class="p">]:</span>
             <span class="k">continue</span>
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="parse_lsr">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.parse_lsr">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_lsr</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit a LSR object based on this text!</span>
+<span class="w">    </span><span class="sd">"""Emit a LSR object based on this text!</span>
 <span class="sd">    0914 PM     HAIL             SHAW                    33.60N 90.77W</span>
 <span class="sd">    04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="s2">&quot;LSR text is too short |</span><span class="si">%s</span><span class="s2">|</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;NL&gt;&quot;</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span>
+            <span class="p">(</span><span class="s2">"LSR text is too short |</span><span class="si">%s</span><span class="s2">|</span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span><span class="p">)</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"&lt;NL&gt;"</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">lsr</span> <span class="o">=</span> <span class="n">LSR</span><span class="p">()</span>
@@ -624,17 +624,17 @@
     <span class="n">h12</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">mm</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
     <span class="n">ampm</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">dstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">h12</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">mm</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ampm</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">lsr</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dstr</span><span class="p">,</span> <span class="s2">&quot;%I:%M %p %m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+    <span class="n">dstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">h12</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">mm</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ampm</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">lsr</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dstr</span><span class="p">,</span> <span class="s2">"%I:%M %p %m/</span><span class="si">%d</span><span class="s2">/%Y"</span><span class="p">)</span>
     <span class="n">lsr</span><span class="o">.</span><span class="n">assign_timezone</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">tz</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="c1"># Check that we are within bounds</span>
     <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">utcvalid</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">FUTURE_THRESHOLD</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lsr</span><span class="o">.</span><span class="n">utcvalid</span> <span class="o">&gt;</span> <span class="p">(</span>
         <span class="n">utc</span><span class="p">()</span> <span class="o">+</span> <span class="n">FUTURE_THRESHOLD</span>
     <span class="p">):</span>
         <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s2">&quot;LSR is from the future!</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;prod.valid: </span><span class="si">{</span><span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="si">}</span><span class="s2"> lsr.valid: </span><span class="si">{</span><span class="n">lsr</span><span class="o">.</span><span class="n">valid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">"LSR is from the future!</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"prod.valid: </span><span class="si">{</span><span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="si">}</span><span class="s2"> lsr.valid: </span><span class="si">{</span><span class="n">lsr</span><span class="o">.</span><span class="n">valid</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -642,7 +642,7 @@
 
     <span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">29</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reference</span><span class="o">.</span><span class="n">lsr_events</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown lsr.typetext |</span><span class="si">{</span><span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span><span class="si">}</span><span class="s2">|</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown lsr.typetext |</span><span class="si">{</span><span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span><span class="si">}</span><span class="s2">|</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">lsr</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">29</span><span class="p">:</span><span class="mi">53</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -650,44 +650,44 @@
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">53</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">lat_sign</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">lat_sign</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lat_sign</span> <span class="o">==</span> <span class="s2">"S"</span><span class="p">:</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">lat</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">lon_sign</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">lon_sign</span> <span class="o">==</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lon_sign</span> <span class="o">==</span> <span class="s2">"E"</span><span class="p">:</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">lon</span>
     <span class="k">if</span> <span class="n">lon</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">180</span> <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;=</span> <span class="mi">180</span> <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">or</span> <span class="n">lat</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">90</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Geometry Lat: </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2"> Lon: </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid Geometry Lat: </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2"> Lon: </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">lsr</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">ShapelyPoint</span><span class="p">((</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">))</span>
 
     <span class="n">lsr</span><span class="o">.</span><span class="n">consume_magnitude</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">29</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_f</span><span class="p">):</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LSR has NAN magnitude</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LSR has NAN magnitude</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="c1"># Condition for a specific spacing case we want to workaround</span>
-    <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot; &quot;</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">52</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workaround LSR spacing for |</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">:</span><span class="mi">53</span><span class="p">]</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
-        <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">47</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">" "</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">52</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">" "</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Workaround LSR spacing for |</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">:</span><span class="mi">53</span><span class="p">]</span><span class="si">}</span><span class="s2">|"</span><span class="p">)</span>
+        <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">47</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">47</span><span class="p">:]</span>
     <span class="n">lsr</span><span class="o">.</span><span class="n">county</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">29</span><span class="p">:</span><span class="mi">48</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">county</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LSR has empty county</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">county</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LSR has empty county</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">lsr</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">48</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LSR has empty state</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LSR has empty state</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">lsr</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">53</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LSR has empty source</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LSR has empty source</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">meat</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">meat</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">lsr</span><span class="o">.</span><span class="n">remark</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meat</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
-    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ICE STORM&quot;</span> <span class="ow">and</span> <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">meat</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">meat</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="n">lsr</span><span class="o">.</span><span class="n">remark</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meat</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">lsr</span><span class="o">.</span><span class="n">typetext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"ICE STORM"</span> <span class="ow">and</span> <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">_icestorm_remark</span><span class="p">(</span><span class="n">lsr</span><span class="o">.</span><span class="n">remark</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_f</span> <span class="o">=</span> <span class="n">val</span>
-            <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_qualifier</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
-            <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_units</span> <span class="o">=</span> <span class="s2">&quot;INCH&quot;</span>
+            <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_qualifier</span> <span class="o">=</span> <span class="s2">"U"</span>
+            <span class="n">lsr</span><span class="o">.</span><span class="n">magnitude_units</span> <span class="o">=</span> <span class="s2">"INCH"</span>
     <span class="k">return</span> <span class="n">lsr</span></div>
 
 
@@ -695,18 +695,18 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.lsr.html#pyiem.nws.products.lsr.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function that actually converts the raw text and emits an</span>
-<span class="sd">    LSRProduct instance or returns an exception&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper function that actually converts the raw text and emits an</span>
+<span class="sd">    LSRProduct instance or returns an exception"""</span>
     <span class="k">if</span> <span class="n">ugc_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ugc_provider</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">prod</span> <span class="o">=</span> <span class="n">LSRProduct</span><span class="p">(</span>
         <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="n">nwsli_provider</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Abort parsing as no timezone was found.&quot;</span><span class="p">)</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Abort parsing as no timezone was found."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prod</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">SPLITTER</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
-        <span class="n">lsr</span> <span class="o">=</span> <span class="n">parse_lsr</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()))</span>
+        <span class="n">lsr</span> <span class="o">=</span> <span class="n">parse_lsr</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">lsr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">prod</span><span class="o">.</span><span class="n">lsrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsr</span><span class="p">)</span>

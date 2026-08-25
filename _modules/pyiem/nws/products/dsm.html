@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.dsm &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/dsm';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.dsm</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parser of the Daily Summary Message (DSM).&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Parser of the Daily Summary Message (DSM)."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -464,7 +464,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.wmo</span><span class="w"> </span><span class="kn">import</span> <span class="n">WMOProduct</span>
 
 <span class="n">PARSER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;^(?P&lt;station&gt;[A-Z][A-Z0-9]{3})\s+</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""^(?P&lt;station&gt;[A-Z][A-Z0-9]{3})\s+</span>
 <span class="sd">   DS\s+</span>
 <span class="sd">   (COR\s)?</span>
 <span class="sd">   ([0-9]{4}\s)?</span>
@@ -492,7 +492,7 @@
 <span class="sd">    (?P&lt;sped_max&gt;[0-9]{2,3})(?P&lt;time_sped_max&gt;[0-9]{4})/</span>
 <span class="sd">    (?P&lt;drct_gust_max&gt;[0-9]{2})</span>
 <span class="sd">    (?P&lt;sped_gust_max&gt;[0-9]{2,3})(?P&lt;time_sped_gust_max&gt;[0-9]{4}))?</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">"""</span><span class="p">,</span>
     <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -500,9 +500,9 @@
 <div class="viewcode-block" id="process">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.process">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit DSMProduct object for what we can parse.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Emit DSMProduct object for what we can parse."""</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">PARSER_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\r</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -513,7 +513,7 @@
 <div class="viewcode-block" id="compute_time">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.compute_time">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_time</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a valid timestamp.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make a valid timestamp."""</span>
     <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="p">(</span>
@@ -527,45 +527,45 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_pformat</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a precipitation value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Format a precipitation value."""</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;M&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;T&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;0.00&quot;</span>
+        <span class="k">return</span> <span class="s2">"M"</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"T"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"T"</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"-"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"0.00"</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">fval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fval</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fval</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;M&quot;</span>
+        <span class="k">return</span> <span class="s2">"M"</span>
 
 
 <div class="viewcode-block" id="DSMProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DSMProduct</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a single DSM.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents a single DSM."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupdict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Contructor.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Contructor."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">high_time</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">low_time</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_max</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_gust_max</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">groupdict</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">groupdict</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span> <span class="o">=</span> <span class="n">groupdict</span>
 
 <div class="viewcode-block" id="DSMProduct.tzlocalize">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct.tzlocalize">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">tzlocalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tzinfo</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Localize the timestamps, tricky.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Localize the timestamps, tricky."""</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">tzinfo</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;high_time&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;low_time&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;time_sped_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;time_sped_gust_max&quot;</span><span class="p">,</span>
+            <span class="s2">"high_time"</span><span class="p">,</span>
+            <span class="s2">"low_time"</span><span class="p">,</span>
+            <span class="s2">"time_sped_max"</span><span class="p">,</span>
+            <span class="s2">"time_sped_gust_max"</span><span class="p">,</span>
         <span class="p">]:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -584,65 +584,65 @@
 <div class="viewcode-block" id="DSMProduct.compute_times">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct.compute_times">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out when this DSM is valid for.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Figure out when this DSM is valid for."""</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="n">utcnow</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-            <span class="n">day</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]),</span> <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">])</span>
+            <span class="n">day</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]),</span> <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="p">[</span><span class="s2">"month"</span><span class="p">])</span>
         <span class="p">)</span>
-        <span class="c1"># Is this ob from &#39;last year&#39;</span>
+        <span class="c1"># Is this ob from 'last year'</span>
         <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">12</span> <span class="ow">and</span> <span class="n">utcnow</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">high_time</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hightime&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hightime"</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">low_time</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lowtime&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low_time</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lowtime"</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_max</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_sped_max&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"time_sped_max"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_sped_gust_max</span> <span class="o">=</span> <span class="n">compute_time</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_sped_gust_max&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"time_sped_gust_max"</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DSMProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">product_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist to database given the transaction object.</span>
+<span class="w">        </span><span class="sd">"""Persist to database given the transaction object.</span>
 
 <span class="sd">        NOTE: The wind information is not persisted as the units of integer</span>
 <span class="sd">        MPH do not play well with the METAR KT source.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;high&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;max_tmpf&quot;</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"high"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">"M"</span><span class="p">:</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"max_tmpf"</span><span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;low&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;min_tmpf&quot;</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"low"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">"M"</span><span class="p">:</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"min_tmpf"</span><span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pday&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;pday&quot;</span><span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TRACE_VALUE</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pday"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s2">"M"</span><span class="p">:</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"pday"</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TRACE_VALUE</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"T"</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cols</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">cs</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = %s&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">])</span>
-        <span class="n">slicer</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;K&quot;</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = %s"</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">])</span>
+        <span class="n">slicer</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"K"</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">product_id</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="n">slicer</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">])</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">    UPDATE summary_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%Y</span><span class="si">}</span><span class="s2"> s SET </span><span class="si">{</span><span class="n">cs</span><span class="si">}</span>
 <span class="s2">    , report = case when %s::text is null then report else</span>
-<span class="s2">        coalesce(report || &#39; &#39;, &#39;&#39;) || %s::text end</span>
+<span class="s2">        coalesce(report || ' ', '') || %s::text end</span>
 <span class="s2">    FROM stations t</span>
-<span class="s2">    WHERE s.iemid = t.iemid and t.network ~* &#39;ASOS&#39;</span>
-<span class="s2">    and t.id = %s and s.day = %s&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    WHERE s.iemid = t.iemid and t.network ~* 'ASOS'</span>
+<span class="s2">    and t.id = %s and s.day = %s"""</span><span class="p">,</span>
             <span class="n">args</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span></div>
@@ -653,12 +653,12 @@
 <div class="viewcode-block" id="DSMCollective">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMCollective">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DSMCollective</span><span class="p">(</span><span class="n">WMOProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collective representing a NOAAPort Text Product with many DSMs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A collective representing a NOAAPort Text Product with many DSMs."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constructor"""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">utcnow</span><span class="p">,</span>
@@ -668,17 +668,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nwsli_provider</span> <span class="o">=</span> <span class="n">nwsli_provider</span>
         <span class="c1"># hold our parsing results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DSMProduct</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\r</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
-            <span class="n">meat</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">:]))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+            <span class="n">meat</span> <span class="o">=</span> <span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">:]))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">meat</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">:]))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+            <span class="n">meat</span> <span class="o">=</span> <span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">:]))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">piece</span> <span class="ow">in</span> <span class="n">meat</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">piece</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">piece</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DSM RE Match Failure: &#39;</span><span class="si">{</span><span class="n">piece</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"DSM RE Match Failure: '</span><span class="si">{</span><span class="n">piece</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">res</span><span class="o">.</span><span class="n">compute_times</span><span class="p">(</span><span class="n">utcnow</span> <span class="k">if</span> <span class="n">utcnow</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">utc</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
@@ -686,11 +686,11 @@
 <div class="viewcode-block" id="DSMCollective.tzlocalize">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMCollective.tzlocalize">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">tzlocalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tzprovider</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Localize our currently stored timestamps.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Localize our currently stored timestamps."""</span>
         <span class="k">for</span> <span class="n">dsm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">tzprovider</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;station </span><span class="si">{</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> has no tzinfo&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"station </span><span class="si">{</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> has no tzinfo"</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">dsm</span><span class="o">.</span><span class="n">tzlocalize</span><span class="p">(</span><span class="n">tzinfo</span><span class="p">)</span></div>
 
@@ -698,30 +698,30 @@
 <div class="viewcode-block" id="DSMCollective.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMCollective.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the jabber message(s) for this product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Generate the jabber message(s) for this product."""</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">product_id_base</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">'-'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;High: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Low: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Precip: </span><span class="si">{</span><span class="n">_pformat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pday&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"High: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'high'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"Low: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'low'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"Precip: </span><span class="si">{</span><span class="n">_pformat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pday'</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
-            <span class="n">afos</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DSM</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product_id_base</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">afos</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">afos</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"DSM</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">product_id_base</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">afos</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">mess</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Daily Summary Message: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"Daily Summary Message: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">htmlmess</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s1"> &lt;a href=&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> Daily Summary Message&lt;/a&gt;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s1"> &lt;a href="</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">"&gt;'</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">date</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> Daily Summary Message&lt;/a&gt;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
-                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">afos</span><span class="si">}</span><span class="s2">,DSM...&quot;</span><span class="p">,</span>
+                <span class="s2">"twitter"</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+                <span class="s2">"channels"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">afos</span><span class="si">}</span><span class="s2">,DSM..."</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">[</span>
@@ -736,15 +736,15 @@
 <div class="viewcode-block" id="DSMCollective.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.DSMCollective.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do databasing.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Do databasing."""</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">dsm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="c1"># Some magic is happening here to construct a product_id</span>
             <span class="c1"># that is unique for this DSM and based on the pyWWA splitting of</span>
             <span class="c1"># DSMs that is done</span>
             <span class="n">product_id</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo_valid</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="si">}</span><span class="s2">-&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;DSM</span><span class="si">{</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo_valid</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="si">}</span><span class="s2">-"</span>
+                <span class="sa">f</span><span class="s2">"DSM</span><span class="si">{</span><span class="n">dsm</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dsm</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">product_id</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span></div>
@@ -755,7 +755,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.dsm.html#pyiem.nws.products.dsm.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide back DSM objects based on the parsing of this text&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide back DSM objects based on the parsing of this text"""</span>
     <span class="k">return</span> <span class="n">DSMCollective</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

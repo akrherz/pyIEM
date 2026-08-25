@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.sps &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.sps &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/sps';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.sps</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Special Weather Statement&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Special Weather Statement"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
@@ -463,14 +463,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.ugc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ugcs_to_text</span>
 
-<span class="n">SPECIAL_WX_STATEMENT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;SPECIAL WEATHER STATEMENT&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
-<span class="n">TILL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; (TILL|UNTIL|THROUGH) [0-9]{1,2}:?[0-5][0-9]&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">SPECIAL_WX_STATEMENT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"SPECIAL WEATHER STATEMENT"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">TILL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">" (TILL|UNTIL|THROUGH) [0-9]{1,2}:?[0-5][0-9]"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="dedup_headline">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.sps.html#pyiem.nws.products.sps.dedup_headline">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dedup_headline</span><span class="p">(</span><span class="n">headline</span><span class="p">,</span> <span class="n">ugcs</span><span class="p">,</span> <span class="n">counties</span><span class="p">,</span> <span class="n">expire</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Try to not be redundant</span>
+<span class="w">    </span><span class="sd">"""Try to not be redundant</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      headline (str): our current headline</span>
@@ -481,48 +481,48 @@
 <span class="sd">    Returns:</span>
 <span class="sd">       (str): our new counties, which has been deduped</span>
 <span class="sd">       (str): our new expire, which has been deduped</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">TILL</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">headline</span><span class="p">):</span>
-        <span class="n">expire</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">expire</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="k">if</span> <span class="n">ugcs</span><span class="p">:</span>
         <span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ugc</span> <span class="ow">in</span> <span class="n">ugcs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">headline</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">ugc</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="n">hits</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ugcs</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mf">0.7</span><span class="p">:</span>
-            <span class="n">counties</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">counties</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="k">return</span> <span class="n">counties</span><span class="p">,</span> <span class="n">expire</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_sql_segment</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">seg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do the database insert for this segment.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Do the database insert for this segment."""</span>
     <span class="n">ugcs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">]</span>
     <span class="n">ets</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcexpire</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ets</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcexpire</span>
     <span class="n">tml_valid</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">&quot;tml_geom&quot;</span>
-    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_giswkt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;LINE&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">&quot;tml_geom_line&quot;</span>
+    <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">"tml_geom"</span>
+    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_giswkt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"LINE"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">"tml_geom_line"</span>
     <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_valid</span><span class="p">:</span>
         <span class="n">tml_valid</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">tml_valid</span>
 
-    <span class="n">empty</span> <span class="o">=</span> <span class="s2">&quot;POLYGON EMPTY&quot;</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="s2">"POLYGON EMPTY"</span>
     <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-        <span class="s2">&quot;INSERT into sps(product_id, pil, wfo, issue, expire, &quot;</span>
-        <span class="s2">&quot;geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;tml_valid, tml_direction, tml_sknt, </span><span class="si">{</span><span class="n">tml_column</span><span class="si">}</span><span class="s2">, segmentnum) &quot;</span>
-        <span class="s2">&quot;VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &quot;</span>
-        <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="s2">"INSERT into sps(product_id, pil, wfo, issue, expire, "</span>
+        <span class="s2">"geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "</span>
+        <span class="sa">f</span><span class="s2">"tml_valid, tml_direction, tml_sknt, </span><span class="si">{</span><span class="n">tml_column</span><span class="si">}</span><span class="s2">, segmentnum) "</span>
+        <span class="s2">"VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, "</span>
+        <span class="s2">"</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
         <span class="p">(</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
             <span class="n">ets</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;SRID=4326;</span><span class="si">{</span><span class="n">empty</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">seg</span><span class="o">.</span><span class="n">sbw</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">seg</span><span class="o">.</span><span class="n">sbw</span><span class="o">.</span><span class="n">wkt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"SRID=4326;</span><span class="si">{</span><span class="n">empty</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">seg</span><span class="o">.</span><span class="n">sbw</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">seg</span><span class="o">.</span><span class="n">sbw</span><span class="o">.</span><span class="n">wkt</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">ugcs</span><span class="p">,</span>
             <span class="n">seg</span><span class="o">.</span><span class="n">landspouttag</span><span class="p">,</span>
             <span class="n">seg</span><span class="o">.</span><span class="n">waterspouttag</span><span class="p">,</span>
@@ -540,14 +540,14 @@
 <div class="viewcode-block" id="SPSProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.sps.html#pyiem.nws.products.sps.SPSProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SPSProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Special Weather Statement&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A Special Weather Statement"""</span>
 
 <div class="viewcode-block" id="SPSProduct.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.sps.html#pyiem.nws.products.sps.SPSProduct.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do database save in the case of a polygon&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Do database save in the case of a polygon"""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;sql() save failed with no segments?&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"sql() save failed with no segments?"</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
@@ -556,13 +556,13 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of channels for this SPS.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns a list of channels for this SPS."""</span>
         <span class="n">channels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_channels</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">ugc</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
             <span class="n">sugc</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ugc</span><span class="p">)</span>
-            <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ugc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ugc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sugc</span><span class="p">)</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SPS.</span><span class="si">{</span><span class="n">sugc</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SPS.</span><span class="si">{</span><span class="n">sugc</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">if</span> <span class="n">channel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">:</span>
                 <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">channels</span>
@@ -570,58 +570,58 @@
 <div class="viewcode-block" id="SPSProduct.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.sps.html#pyiem.nws.products.sps.SPSProduct.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return the standard [[text, html, xtra], ] for jabber&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""return the standard [[text, html, xtra], ] for jabber"""</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">segnum</span><span class="p">,</span> <span class="n">seg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
-            <span class="c1"># Skip any segments that don&#39;t have UGC information</span>
+            <span class="c1"># Skip any segments that don't have UGC information</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="c1"># Need to keep this dictionary obj unique per message</span>
             <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="p">(</span>
-                    <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/217/&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;pid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">::segnum:</span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2">.png&quot;</span>
+                <span class="s2">"product_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                <span class="s2">"twitter_media"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="s2">"https://mesonet.agron.iastate.edu/plotting/auto/plot/217/"</span>
+                    <span class="sa">f</span><span class="s2">"pid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">::segnum:</span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2">.png"</span>
                 <span class="p">),</span>
             <span class="p">}</span>
-            <span class="n">headline</span> <span class="o">=</span> <span class="s2">&quot;[No headline was found in SPS]&quot;</span>
+            <span class="n">headline</span> <span class="o">=</span> <span class="s2">"[No headline was found in SPS]"</span>
             <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">headlines</span><span class="p">:</span>
-                <span class="n">headline</span> <span class="o">=</span> <span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">headlines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="n">headline</span> <span class="o">=</span> <span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">headlines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">SPECIAL_WX_STATEMENT</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
-                <span class="n">headline</span> <span class="o">=</span> <span class="s2">&quot;Special Weather Statement&quot;</span>
-            <span class="n">counties</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; for </span><span class="si">{</span><span class="n">ugcs_to_text</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">expire</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">headline</span> <span class="o">=</span> <span class="s2">"Special Weather Statement"</span>
+            <span class="n">counties</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" for </span><span class="si">{</span><span class="n">ugcs_to_text</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">expire</span> <span class="o">=</span> <span class="s2">""</span>
             <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcexpire</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">_d</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcexpire</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span>
                     <span class="n">hours</span><span class="o">=</span><span class="n">reference</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">expire</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; till </span><span class="si">{</span><span class="n">_d</span><span class="si">:</span><span class="s2">%-I:%M %p</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">expire</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" till </span><span class="si">{</span><span class="n">_d</span><span class="si">:</span><span class="s2">%-I:%M %p</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">counties</span><span class="p">,</span> <span class="n">expire</span> <span class="o">=</span> <span class="n">dedup_headline</span><span class="p">(</span>
                 <span class="n">headline</span><span class="p">,</span> <span class="n">seg</span><span class="o">.</span><span class="n">ugcs</span><span class="p">,</span> <span class="n">counties</span><span class="p">,</span> <span class="n">expire</span>
             <span class="p">)</span>
-            <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_channels</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+            <span class="n">xtra</span><span class="p">[</span><span class="s2">"channels"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_channels</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
             <span class="n">tags</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">special_tags_to_text</span><span class="p">()</span>
-            <span class="n">_u</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="n">xtra</span><span class="p">[</span><span class="s1">&#39;product_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">_u</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="n">xtra</span><span class="p">[</span><span class="s1">'product_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">mess</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2"> issues </span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2"> issues </span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">htmlmess</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?pid=&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;product_id&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">headline</span><span class="si">}</span><span class="s1">&lt;/a&gt;</span><span class="si">{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expire</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+                <span class="sa">f</span><span class="s1">'&lt;p&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s1"> issues &lt;a href="</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">?pid='</span>
+                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">xtra</span><span class="p">[</span><span class="s2">"product_id"</span><span class="p">]</span><span class="si">}</span><span class="s1">"&gt;</span><span class="si">{</span><span class="n">headline</span><span class="si">}</span><span class="s1">&lt;/a&gt;</span><span class="si">{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}</span><span class="s1">'</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">expire</span><span class="si">}</span><span class="s2">&lt;/p&gt;"</span>
             <span class="p">)</span>
-            <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">xtra</span><span class="p">[</span><span class="s2">"twitter"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="si">}{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">"</span>
             <span class="c1"># Check our length</span>
             <span class="n">remaining</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">reference</span><span class="o">.</span><span class="n">TWEET_CHARS</span>
-                <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xtra</span><span class="p">[</span><span class="s2">"twitter"</span><span class="p">]</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="o">-</span> <span class="mi">25</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">remaining</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="p">[:</span><span class="w"> </span><span class="p">(</span><span class="n">remaining</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">)]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;... &#39;</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">xtra</span><span class="p">[</span><span class="s2">"twitter"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">headline</span><span class="si">}{</span><span class="n">tags</span><span class="si">}{</span><span class="n">counties</span><span class="p">[:</span><span class="w"> </span><span class="p">(</span><span class="n">remaining</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">)]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'... '</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">expire</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">mess</span><span class="p">,</span> <span class="n">htmlmess</span><span class="p">,</span> <span class="n">xtra</span><span class="p">])</span>
 
@@ -633,7 +633,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.sps.html#pyiem.nws.products.sps.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The SPS Parser&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The SPS Parser"""</span>
     <span class="k">return</span> <span class="n">SPSProduct</span><span class="p">(</span>
         <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="n">nwsli_provider</span>
     <span class="p">)</span></div>

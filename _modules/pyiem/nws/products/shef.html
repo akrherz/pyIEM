@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.shef &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.shef &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/shef';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.shef</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Standard Hydrological Exchange Format (SHEF).</span>
+<span></span><span class="sd">"""Standard Hydrological Exchange Format (SHEF).</span>
 
 <span class="sd">https://www.weather.gov/media/mdl/SHEF_CodeManual_5July2012.pdf</span>
 
@@ -483,7 +483,7 @@
 <span class="sd">- Handle UQ variable SSS.SDDD</span>
 <span class="sd">- Handle UR (tens of degrees)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
@@ -500,54 +500,54 @@
 
 <span class="c1"># Table 8</span>
 <span class="n">TIMEZONES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+5&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+6&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;Canada/Newfoundland&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;Canada/Atlantic&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+3&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+4&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="s2">&quot;America/New_York&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ED&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+4&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ES&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+5&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;J&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT-8&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Denver&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+6&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+7&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Los_Angeles&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+7&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+8&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="s2">&quot;Canada/Yukon&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;YD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+7&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;YS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+8&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;US/Hawaii&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;HS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+10&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="s2">&quot;US/Alaska&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;LD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+8&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;LS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+9&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;Asia/Anadyr&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;BD&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+9&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;BS&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/GMT+10&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="s2">&quot;Etc/UTC&quot;</span><span class="p">,</span>
+    <span class="s2">"C"</span><span class="p">:</span> <span class="s2">"America/Chicago"</span><span class="p">,</span>
+    <span class="s2">"CD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+5"</span><span class="p">,</span>
+    <span class="s2">"CS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+6"</span><span class="p">,</span>
+    <span class="s2">"N"</span><span class="p">:</span> <span class="s2">"Canada/Newfoundland"</span><span class="p">,</span>
+    <span class="s2">"A"</span><span class="p">:</span> <span class="s2">"Canada/Atlantic"</span><span class="p">,</span>
+    <span class="s2">"AD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+3"</span><span class="p">,</span>
+    <span class="s2">"AS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+4"</span><span class="p">,</span>
+    <span class="s2">"E"</span><span class="p">:</span> <span class="s2">"America/New_York"</span><span class="p">,</span>
+    <span class="s2">"ED"</span><span class="p">:</span> <span class="s2">"Etc/GMT+4"</span><span class="p">,</span>
+    <span class="s2">"ES"</span><span class="p">:</span> <span class="s2">"Etc/GMT+5"</span><span class="p">,</span>
+    <span class="s2">"J"</span><span class="p">:</span> <span class="s2">"Etc/GMT-8"</span><span class="p">,</span>
+    <span class="s2">"M"</span><span class="p">:</span> <span class="s2">"America/Denver"</span><span class="p">,</span>
+    <span class="s2">"MD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+6"</span><span class="p">,</span>
+    <span class="s2">"MS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+7"</span><span class="p">,</span>
+    <span class="s2">"P"</span><span class="p">:</span> <span class="s2">"America/Los_Angeles"</span><span class="p">,</span>
+    <span class="s2">"PD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+7"</span><span class="p">,</span>
+    <span class="s2">"PS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+8"</span><span class="p">,</span>
+    <span class="s2">"Y"</span><span class="p">:</span> <span class="s2">"Canada/Yukon"</span><span class="p">,</span>
+    <span class="s2">"YD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+7"</span><span class="p">,</span>
+    <span class="s2">"YS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+8"</span><span class="p">,</span>
+    <span class="s2">"H"</span><span class="p">:</span> <span class="s2">"US/Hawaii"</span><span class="p">,</span>
+    <span class="s2">"HS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+10"</span><span class="p">,</span>
+    <span class="s2">"L"</span><span class="p">:</span> <span class="s2">"US/Alaska"</span><span class="p">,</span>
+    <span class="s2">"LD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+8"</span><span class="p">,</span>
+    <span class="s2">"LS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+9"</span><span class="p">,</span>
+    <span class="s2">"B"</span><span class="p">:</span> <span class="s2">"Asia/Anadyr"</span><span class="p">,</span>
+    <span class="s2">"BD"</span><span class="p">:</span> <span class="s2">"Etc/GMT+9"</span><span class="p">,</span>
+    <span class="s2">"BS"</span><span class="p">:</span> <span class="s2">"Etc/GMT+10"</span><span class="p">,</span>
+    <span class="s2">"Z"</span><span class="p">:</span> <span class="s2">"Etc/UTC"</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">PAIRED_PHYSICAL_CODES</span> <span class="o">=</span> <span class="s2">&quot;HQ MD MN MS MV NO ST TB TE TV&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">TRACE_PHYSICAL_CODES</span> <span class="o">=</span> <span class="s2">&quot;PP PC PY SD SF SW&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">RETAINED_COMMENT_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[&#39;</span><span class="se">\&quot;</span><span class="s2">](.*)[&#39;</span><span class="se">\&quot;</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="n">NUMBER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[+-]?\d+\.?\d*$&quot;</span><span class="p">)</span>
-<span class="n">MISSING_VALUES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-9999&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;M.MM&quot;</span><span class="p">,</span> <span class="s2">&quot;MSG&quot;</span><span class="p">,</span> <span class="s2">&quot;nan&quot;</span><span class="p">]</span>
-<span class="n">MISSING_VALUES</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;NaN&quot;</span><span class="p">,</span> <span class="s2">&quot;NAN&quot;</span><span class="p">])</span>
+<span class="n">PAIRED_PHYSICAL_CODES</span> <span class="o">=</span> <span class="s2">"HQ MD MN MS MV NO ST TB TE TV"</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">TRACE_PHYSICAL_CODES</span> <span class="o">=</span> <span class="s2">"PP PC PY SD SF SW"</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">RETAINED_COMMENT_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"['</span><span class="se">\"</span><span class="s2">](.*)['</span><span class="se">\"</span><span class="s2">]"</span><span class="p">)</span>
+<span class="n">NUMBER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[+-]?\d+\.?\d*$"</span><span class="p">)</span>
+<span class="n">MISSING_VALUES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-9999"</span><span class="p">,</span> <span class="s2">"X"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"+"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"M.MM"</span><span class="p">,</span> <span class="s2">"MSG"</span><span class="p">,</span> <span class="s2">"nan"</span><span class="p">]</span>
+<span class="n">MISSING_VALUES</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">"NaN"</span><span class="p">,</span> <span class="s2">"NAN"</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="parse_d_wrapper">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_d_wrapper">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_d_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Catch exceptions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Catch exceptions."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inner.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Inner."""</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with no value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">""</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"M"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with no value"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wrapped</span></div>
@@ -557,11 +557,11 @@
 <div class="viewcode-block" id="make_date">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.make_date">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_date</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make the text date unambiguous.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make the text date unambiguous."""</span>
     <span class="k">if</span> <span class="n">now</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D* text too short &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"D* text too short '</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
     <span class="c1"># “mmdd” or “yymmdd” or “ccyymmdd”</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:]))</span>
@@ -580,26 +580,26 @@
 <div class="viewcode-block" id="parse_dc">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dc">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the DC element into a timestamp.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the DC element into a timestamp."""</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># If length is 4, only one option</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-            <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+            <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-            <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+            <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:</span><span class="o">-</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:</span><span class="o">-</span><span class="mi">6</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
-            <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">replacements</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
-            <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">replacements</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
@@ -608,23 +608,23 @@
 <div class="viewcode-block" id="parse_dy">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dy</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the DY element into a timestamp.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the DY element into a timestamp."""</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># always YY</span>
     <span class="n">yy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1900</span> <span class="k">if</span> <span class="n">yy</span> <span class="o">&gt;</span> <span class="mi">80</span> <span class="k">else</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">+</span> <span class="n">yy</span>
+    <span class="n">replacements</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1900</span> <span class="k">if</span> <span class="n">yy</span> <span class="o">&gt;</span> <span class="mi">80</span> <span class="k">else</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">+</span> <span class="n">yy</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
-            <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+            <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># default to 12z</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
 
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
@@ -633,25 +633,25 @@
 <div class="viewcode-block" id="datetime24">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.datetime24">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">datetime24</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">replacements</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle the junkiness that is a `24` hour.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle the junkiness that is a `24` hour."""</span>
     <span class="c1"># dt could be a date</span>
-    <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"date"</span><span class="p">:</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
-    <span class="n">rhour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">rhour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hour"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">rhour</span> <span class="o">&lt;=</span> <span class="mi">24</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hour&gt;24 dt: </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2"> replace: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hour&gt;24 dt: </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2"> replace: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rhour</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="p">(</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">minute</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">second</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;microsecond&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">microsecond</span><span class="p">),</span>
-        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tzinfo&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"year"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"month"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"day"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hour"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"minute"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">minute</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"second"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">second</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"microsecond"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">microsecond</span><span class="p">),</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tzinfo"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">),</span>
     <span class="p">)</span></div>
 
 
@@ -660,16 +660,16 @@
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dh">[docs]</a>
 <span class="nd">@parse_d_wrapper</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dh</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Account for the craziness of the DH value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Account for the craziness of the DH value."""</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;second&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"second"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DH with too many digits &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"DH with too many digits '</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
 
@@ -677,7 +677,7 @@
 <div class="viewcode-block" id="parse_station_valid">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_station_valid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_station_valid</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the first token found in a SHEF observation.</span>
+<span class="w">    </span><span class="sd">"""Parse the first token found in a SHEF observation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): the first part of the string</span>
@@ -686,16 +686,16 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">      str, datetime, datetime, list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Station/valid string incomplete &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Station/valid string incomplete '</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">station</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;4.1.2 Station ID len&gt;8 &#39;</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"4.1.2 Station ID len&gt;8 '</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">timestamp</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3.2 No timestamp in &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="sa">f</span><span class="s2">"3.2 No timestamp in '</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
     <span class="c1"># Ensure that the timestamp is all numbers</span>
     <span class="n">basevalid</span> <span class="o">=</span> <span class="n">make_date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">)</span>
     <span class="c1"># 4.1.4 Timezone is optional, default to Z</span>
@@ -705,11 +705,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
         <span class="n">startidx</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="n">basevalid</span> <span class="o">=</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">basevalid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">tzinfo</span><span class="p">})</span>
+    <span class="n">basevalid</span> <span class="o">=</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">basevalid</span><span class="p">,</span> <span class="p">{</span><span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">tzinfo</span><span class="p">})</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Look to see what we have here, saving off extra things we can not parse</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="n">startidx</span><span class="p">:</span>
-        <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="mi">12</span> <span class="k">if</span> <span class="n">tzinfo</span> <span class="o">==</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span> <span class="k">else</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"hour"</span><span class="p">:</span> <span class="mi">12</span> <span class="k">if</span> <span class="n">tzinfo</span> <span class="o">==</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span> <span class="k">else</span> <span class="mi">0</span><span class="p">}</span>
         <span class="n">basevalid</span> <span class="o">=</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">station</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">,</span> <span class="n">extra</span>
     <span class="n">workdone</span> <span class="o">=</span> <span class="kc">False</span>
@@ -717,18 +717,18 @@
     <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startidx</span><span class="p">:]:</span>
         <span class="n">pe</span> <span class="o">=</span> <span class="n">token</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
         <span class="c1"># Default replacement from above</span>
-        <span class="k">if</span> <span class="n">pe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DH&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DH"</span><span class="p">):</span>
             <span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dh</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">basevalid</span><span class="p">)</span>
             <span class="n">workdone</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">pe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DM&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">pe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DM"</span><span class="p">):</span>
             <span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dm</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">basevalid</span><span class="p">)</span>
             <span class="n">workdone</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">extra</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">workdone</span><span class="p">:</span>
         <span class="c1"># SHEF MANUAL SEZ</span>
-        <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">tzinfo</span><span class="p">}</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span> <span class="k">if</span> <span class="n">tzinfo</span> <span class="o">==</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">tzinfo</span><span class="p">}</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span> <span class="k">if</span> <span class="n">tzinfo</span> <span class="o">==</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="n">valid</span> <span class="o">=</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
         <span class="n">basevalid</span> <span class="o">=</span> <span class="n">valid</span>
     <span class="k">return</span> <span class="n">station</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">extra</span></div>
@@ -738,16 +738,16 @@
 <div class="viewcode-block" id="process_di">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_di">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_di</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a DI value into an interval.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert a DI value into an interval."""</span>
     <span class="n">parts</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hours&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;minutes&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"H"</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"hours"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"D"</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"days"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"N"</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"minutes"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unhandled DI of &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unhandled DI of '</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
 
 
@@ -756,16 +756,16 @@
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dm">[docs]</a>
 <span class="nd">@parse_d_wrapper</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dm</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle the DM one.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle the DM one."""</span>
     <span class="c1"># Updating the timestamp as we go here</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]),</span>
-        <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span>
+        <span class="s2">"month"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="s2">"day"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
 
@@ -774,19 +774,19 @@
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dd">[docs]</a>
 <span class="nd">@parse_d_wrapper</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dd</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle the DD one.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle the DD one."""</span>
     <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">day</span><span class="p">}</span>
+    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"day"</span><span class="p">:</span> <span class="n">day</span><span class="p">}</span>
     <span class="c1"># Handle crossing the month via arbitrary life choices</span>
     <span class="k">if</span> <span class="n">day</span> <span class="o">&gt;</span> <span class="mi">25</span> <span class="ow">and</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
         <span class="n">lastmonth</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lastmonth</span><span class="o">.</span><span class="n">month</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lastmonth</span><span class="o">.</span><span class="n">year</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lastmonth</span><span class="o">.</span><span class="n">month</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lastmonth</span><span class="o">.</span><span class="n">year</span>
     <span class="c1"># Updating the timestamp as we go here</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
 
@@ -795,19 +795,19 @@
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_dt">[docs]</a>
 <span class="nd">@parse_d_wrapper</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_dt</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle the DD one.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Handle the DD one."""</span>
     <span class="c1"># Updating the timestamp as we go here</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+        <span class="s2">"year"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">12</span><span class="p">:</span>
-        <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">datetime24</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span></div>
 
 
@@ -815,7 +815,7 @@
 <div class="viewcode-block" id="process_modifiers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_modifiers">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_modifiers</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">diction</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply modifications based on what the token is telling us.</span>
+<span class="w">    </span><span class="sd">"""Apply modifications based on what the token is telling us.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      text (str): Potential new information.</span>
@@ -825,64 +825,64 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">      bool for if this text was handled.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DI&quot;</span><span class="p">):</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DI"</span><span class="p">):</span>
         <span class="c1"># Handled by process_message_e code</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"D"</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DC&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DC"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">data_created</span> <span class="o">=</span> <span class="n">parse_dc</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DD&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DD"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dd</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">basevalid</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DY&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DY"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dy</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">basevalid</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DH&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DH"</span><span class="p">):</span>
         <span class="c1"># Careful here, want DH to modify the basevalid and not current valid</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dh</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">basevalid</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DM&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DM"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dm</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">basevalid</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DQ&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DQ"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DT&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DT"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">parse_dt</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">basevalid</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">valid</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DU&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DU"</span><span class="p">):</span>
         <span class="n">diction</span><span class="o">.</span><span class="n">unit_convention</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DV&quot;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DV"</span><span class="p">):</span>
         <span class="c1"># Table 11a</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">reps</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="s2">&quot;seconds&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;minutes&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;hours&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;days&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># timedelta does not support this, so we hack it</span>
-            <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="s2">&quot;years&quot;</span><span class="p">,</span>
+            <span class="s2">"S"</span><span class="p">:</span> <span class="s2">"seconds"</span><span class="p">,</span>
+            <span class="s2">"N"</span><span class="p">:</span> <span class="s2">"minutes"</span><span class="p">,</span>
+            <span class="s2">"H"</span><span class="p">:</span> <span class="s2">"hours"</span><span class="p">,</span>
+            <span class="s2">"D"</span><span class="p">:</span> <span class="s2">"days"</span><span class="p">,</span>
+            <span class="s2">"M"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># timedelta does not support this, so we hack it</span>
+            <span class="s2">"Y"</span><span class="p">:</span> <span class="s2">"years"</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">reps</span><span class="p">:</span>
             <span class="c1"># Ensure this is an integer</span>
             <span class="n">_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">_text</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
-                    <span class="n">replace</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">_text</span><span class="p">)</span> <span class="o">*</span> <span class="mi">30</span><span class="p">}</span>  <span class="c1"># close enough</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">:</span>
+                    <span class="n">replace</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"days"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">_text</span><span class="p">)</span> <span class="o">*</span> <span class="mi">30</span><span class="p">}</span>  <span class="c1"># close enough</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">replace</span> <span class="o">=</span> <span class="p">{</span><span class="n">reps</span><span class="p">[</span><span class="n">val</span><span class="p">]:</span> <span class="nb">int</span><span class="p">(</span><span class="n">_text</span><span class="p">)}</span>
                 <span class="n">diction</span><span class="o">.</span><span class="n">dv_interval</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">replace</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;DV with non-numeric value &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">_text</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"DV with non-numeric value '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="n">_text</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported DV code </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DR&quot;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported DV code </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DR"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"H"</span><span class="p">:</span>
             <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">basevalid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:]))</span>
-        <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"D"</span><span class="p">:</span>
             <span class="n">diction</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="n">basevalid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:]))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unhandled D variable </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unhandled D variable </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -890,7 +890,7 @@
 <div class="viewcode-block" id="process_message_e">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_message_e">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_message_e</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SHEFElement</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process a text string in E SHEF format.</span>
+<span class="w">    </span><span class="sd">"""Process a text string in E SHEF format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      prod (SHEFProduct): the product we are working on.</span>
@@ -899,8 +899,8 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">      List[SHEFElement]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
     <span class="c1"># In the first token, we should find some information about the station</span>
     <span class="c1"># and timing.  Otherstuff could be here as well</span>
     <span class="n">station</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">extra</span> <span class="o">=</span> <span class="n">parse_station_valid</span><span class="p">(</span>
@@ -921,7 +921,7 @@
         <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">process_modifiers</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">diction</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DI&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DI"</span><span class="p">):</span>
             <span class="n">interval</span> <span class="o">=</span> <span class="n">process_di</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="c1"># There can only be one physical element for E messages</span>
@@ -931,14 +931,14 @@
         <span class="c1"># We should be dealing with data now?</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">tokens2</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
             <span class="n">elem</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">model_copy</span><span class="p">()</span>
             <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">tokens2</span>
             <span class="n">elem</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">message</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">compute_num_value</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">InvalidSHEFValue</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">num_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">num_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
                 <span class="n">provisional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">provisional</span><span class="p">:</span>
@@ -953,24 +953,24 @@
 <div class="viewcode-block" id="strip_comments">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.strip_comments">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove comments.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Remove comments."""</span>
     <span class="c1"># Forgiving a headline that should have been a comment</span>
-    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"..."</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span>
     <span class="c1"># If line starts with a comment, require even number of :, GIGO otherwise</span>
-    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
     <span class="c1"># Cull inline comments using ON/OFF nomenclature</span>
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
     <span class="k">while</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">pos2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="n">pos2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pos2</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="c1"># Add space to keep things seperated</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">pos2</span> <span class="o">+</span> <span class="mi">2</span> <span class="p">:]</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">pos2</span> <span class="o">+</span> <span class="mi">2</span> <span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Unbalanced</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">line</span></div>
 
 
@@ -978,25 +978,25 @@
 <div class="viewcode-block" id="clean_b_headerline">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.clean_b_headerline">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">clean_b_headerline</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Account for invalid encoding. SIGH.&quot;&quot;&quot;</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Account for invalid encoding. SIGH."""</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
     <span class="n">firstparts</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="c1"># Inspect the last element and see if it is alpha, but not start with D</span>
-    <span class="k">if</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"D"</span><span class="p">:</span>
         <span class="c1"># Missing /</span>
-        <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">firstparts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></div>
+        <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">firstparts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">firstparts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="process_message_b">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_message_b">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_message_b</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SHEFElement</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the message into an object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the message into an object."""</span>
     <span class="c1"># line one has the magic</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">headerline</span> <span class="o">=</span> <span class="n">clean_b_headerline</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">headerline</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">headerline</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
     <span class="n">_center</span><span class="p">,</span> <span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">extra</span> <span class="o">=</span> <span class="n">parse_station_valid</span><span class="p">(</span>
         <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">utcnow</span>
     <span class="p">)</span>
@@ -1007,11 +1007,11 @@
     <span class="c1"># Keep track of our dictions.</span>
     <span class="n">dictions</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current_diction</span> <span class="o">=</span> <span class="n">SHEFElement</span><span class="p">(</span>
-        <span class="n">station</span><span class="o">=</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="n">basevalid</span><span class="o">=</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="n">valid</span>
+        <span class="n">station</span><span class="o">=</span><span class="s2">"NA"</span><span class="p">,</span> <span class="n">basevalid</span><span class="o">=</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="n">valid</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">process_modifiers</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">current_diction</span><span class="p">,</span> <span class="n">valid</span><span class="p">):</span>
             <span class="k">continue</span>
@@ -1022,32 +1022,32 @@
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.END&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".END"</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="n">provisional</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">flagged</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># packed B format, LE SIGH</span>
-        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">):</span>
             <span class="c1"># Account for // oddity</span>
             <span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="c1"># Hack around a tough edge case</span>
-            <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">):</span>
-                <span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/ &quot;</span>
-            <span class="n">tokens</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/ /&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"//"</span><span class="p">):</span>
+                <span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"/ "</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"//"</span><span class="p">,</span> <span class="s2">"/ /"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
             <span class="n">station</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">dictioni</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
                 <span class="n">dictioni</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">dictioni</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictions</span><span class="p">):</span>
                     <span class="c1"># Extra trailing garbage</span>
-                    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
                         <span class="k">continue</span>
-                    <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="s2">&quot;Found more data than dictions&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="s2">"Found more data than dictions"</span><span class="p">)</span>
                 <span class="n">diction</span> <span class="o">=</span> <span class="n">dictions</span><span class="p">[</span><span class="n">dictioni</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="c1"># 5.2.2 Observational time change via DM nomenclature</span>
-                <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"D"</span><span class="p">):</span>
                     <span class="c1"># Do we have two data parts here</span>
                     <span class="n">parts</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                     <span class="c1"># Uh oh, local diction modifier, sigh</span>
@@ -1064,11 +1064,11 @@
                 <span class="n">elem</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">model_copy</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;4.1.2 Station ID len&gt;8 &#39;</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                        <span class="sa">f</span><span class="s2">"4.1.2 Station ID len&gt;8 '</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">'"</span>
                     <span class="p">)</span>
                 <span class="n">elem</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">station</span>
                 <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="n">elem</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">headerline</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">section</span>
+                <span class="n">elem</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">headerline</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">section</span>
                 <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">valid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">compute_num_value</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
                         <span class="n">flagged</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1088,18 +1088,18 @@
 <div class="viewcode-block" id="slash_tokenize">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.slash_tokenize">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">slash_tokenize</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Carefully discover tokens.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Carefully discover tokens."""</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">accum</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">accum</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="c1"># In-line comments are already gone at this point</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
         <span class="n">char</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"/"</span><span class="p">:</span>
             <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accum</span><span class="p">)</span>
-            <span class="n">accum</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">elif</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">]:</span>
+            <span class="n">accum</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'"'</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">]:</span>
             <span class="c1"># We are in description block, find the end of this madness</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
@@ -1117,7 +1117,7 @@
 <div class="viewcode-block" id="process_message_a">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_message_a">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_message_a</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SHEFElement</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the message into an object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert the message into an object."""</span>
     <span class="c1"># Reading by char appears to be necessary pain until something better</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">slash_tokenize</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="c1"># Too short</span>
@@ -1135,10 +1135,10 @@
     <span class="n">diction</span> <span class="o">=</span> <span class="n">SHEFElement</span><span class="p">(</span><span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span> <span class="n">basevalid</span><span class="o">=</span><span class="n">basevalid</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="c1"># A dangling value on the wrong side of a slash</span>
-        <span class="k">if</span> <span class="n">elements</span> <span class="ow">and</span> <span class="n">elements</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elements</span> <span class="ow">and</span> <span class="n">elements</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">NUMBER_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
                 <span class="n">elements</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">text</span>
                 <span class="n">compute_num_value</span><span class="p">(</span><span class="n">elements</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -1150,7 +1150,7 @@
         <span class="n">parts</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">elem</span> <span class="o">=</span> <span class="n">diction</span><span class="o">.</span><span class="n">model_copy</span><span class="p">()</span>
         <span class="n">elem</span><span class="o">.</span><span class="n">consume_code</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">elem</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">message</span>
         <span class="k">if</span> <span class="n">compute_num_value</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
             <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
@@ -1167,12 +1167,12 @@
 <div class="viewcode-block" id="process_messages">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_messages">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_messages</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">prod</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe frontend to do message processing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Safe frontend to do message processing."""</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">errors</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Aborting processing with too many errors&quot;</span><span class="p">)</span>
+            <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Aborting processing with too many errors"</span><span class="p">)</span>
             <span class="k">break</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
@@ -1182,13 +1182,13 @@
         <span class="k">except</span> <span class="n">InvalidSHEFEncoding</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
             <span class="n">emsg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
             <span class="c1"># Swallow these generally, but let no station slide</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">emsg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;3.2&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">emsg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;4.1.2&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">emsg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"3.2"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">emsg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"4.1.2"</span><span class="p">):</span>
                 <span class="n">errors</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> for &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">())</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> for '</span><span class="si">%s</span><span class="s2">' </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
             <span class="n">errors</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">cstr</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-            <span class="n">cstr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing &#39;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&#39; traceback:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">cstr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Processing '</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">' traceback:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">cstr</span><span class="p">)</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
             <span class="n">cstr</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -1200,33 +1200,33 @@
 <div class="viewcode-block" id="parse_A">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_A">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_A</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse A format SHEF data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse A format SHEF data."""</span>
     <span class="c1"># Line by Line collecting up what we find!</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">narrative</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="n">narrative</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
         <span class="c1"># New Message!</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.AR &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.A &quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".AR "</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".A "</span><span class="p">):</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">messages</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.A&quot;</span><span class="p">):</span>  <span class="c1"># continuation</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".A"</span><span class="p">):</span>  <span class="c1"># continuation</span>
             <span class="c1"># Accounts for a line with no data, just comments</span>
             <span class="n">meat</span> <span class="o">=</span> <span class="n">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meat</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="c1"># Only insert a slash if we have to</span>
-                <span class="n">addslash</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;/&quot;</span>
-                <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">addslash</span><span class="si">}{</span><span class="n">meat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">addslash</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"/"</span>
+                <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">addslash</span><span class="si">}{</span><span class="n">meat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="c1"># Look for comments coming after the first message</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
-            <span class="n">narrative</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">":"</span><span class="p">):</span>
+            <span class="n">narrative</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">" "</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">process_message_a</span><span class="p">,</span> <span class="n">prod</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;END OF REPORT&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"END OF REPORT"</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="c1"># Inject the : back in to make it look like the orig SHEF message</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">narrative</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">: </span><span class="si">{</span><span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">narrative</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">: </span><span class="si">{</span><span class="n">narrative</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
 
@@ -1234,39 +1234,39 @@
 <div class="viewcode-block" id="parse_B">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_B">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_B</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse B format SHEF data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse B format SHEF data."""</span>
     <span class="c1"># Messages here are a bit special as it starts with .B and ends with .END</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">inmessage</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
         <span class="c1"># New Message!</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.BR &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.B &quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".BR "</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".B "</span><span class="p">):</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
             <span class="n">inmessage</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">inmessage</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.B&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inmessage</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".B"</span><span class="p">):</span>
             <span class="n">meat</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">meat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
-                <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot;/&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">meat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">):</span>
+                <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">"/"</span>
             <span class="c1"># We have more headers, gasp</span>
             <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">meat</span>
             <span class="k">continue</span>
         <span class="c1"># Ugly hack around Chapter 4 wanting all-non comments to be uppercase</span>
         <span class="c1"># but SHEF manual is not precise saying this needs to be in caps</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.END&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".END"</span><span class="p">):</span>
             <span class="n">inmessage</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">inmessage</span><span class="p">:</span>
-            <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line</span>
+            <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">line</span>
 
     <span class="c1"># The above should have rectified messages to be one header line and</span>
     <span class="c1"># then messages, so we can goose these to glean more data, maybe</span>
     <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
-            <span class="n">payload</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">res</span> <span class="o">+=</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">process_message_b</span><span class="p">,</span> <span class="n">prod</span><span class="p">,</span> <span class="p">[</span><span class="n">payload</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
@@ -1275,21 +1275,21 @@
 <div class="viewcode-block" id="parse_E">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parse_E">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_E</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse E format SHEF data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse E format SHEF data."""</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
         <span class="c1"># New Message!</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.ER &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.E &quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".ER "</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".E "</span><span class="p">):</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">messages</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.E&quot;</span><span class="p">):</span>  <span class="c1"># continuation</span>
+        <span class="k">if</span> <span class="n">messages</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".E"</span><span class="p">):</span>  <span class="c1"># continuation</span>
             <span class="c1"># Accounts for a line with no data, just comments</span>
             <span class="n">tokens</span> <span class="o">=</span> <span class="n">strip_comments</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="c1"># Empty line</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">addslash</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;/&quot;</span>
-            <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">addslash</span><span class="si">}{</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">addslash</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"/"</span>
+            <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">addslash</span><span class="si">}{</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="k">return</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">process_message_e</span><span class="p">,</span> <span class="n">prod</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span></div>
 
@@ -1298,7 +1298,7 @@
 <div class="viewcode-block" id="compute_num_value">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.compute_num_value">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_num_value</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to make this into a float.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Attempt to make this into a float."""</span>
     <span class="c1"># 5.1.1, period is non-standard, X is non-standard</span>
     <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="ow">in</span> <span class="n">MISSING_VALUES</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -1306,33 +1306,33 @@
     <span class="n">m</span> <span class="o">=</span> <span class="n">RETAINED_COMMENT_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
         <span class="n">meat</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">meat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">meat</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">meat</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">meat</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'"'</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="c1"># All stars/dashes appears in the wild and is supported by SHEFIT</span>
-    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"*"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="c1"># Cull out nan</span>
-    <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="c1"># Can trace</span>
-    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;0.001&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"T"</span><span class="p">,</span> <span class="s2">"0.001"</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">physical_element</span> <span class="ow">in</span> <span class="n">TRACE_PHYSICAL_CODES</span><span class="p">:</span>
             <span class="n">element</span><span class="o">.</span><span class="n">num_value</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="s2">&quot;T used with non-TRACE physical code&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">==</span> <span class="s2">"T"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span><span class="s2">"T used with non-TRACE physical code"</span><span class="p">)</span>
     <span class="c1"># 4.4.7 Data Elements</span>
     <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
         <span class="n">element</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">element</span><span class="o">.</span><span class="n">str_value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="c1"># 7.4.6 Paired Element!</span>
     <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">physical_element</span> <span class="ow">in</span> <span class="n">PAIRED_PHYSICAL_CODES</span><span class="p">:</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">depth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">depth</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidSHEFEncoding</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Negative depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">element</span><span class="o">.</span><span class="n">physical_element</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Negative depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">element</span><span class="o">.</span><span class="n">physical_element</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
             <span class="n">element</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -1342,25 +1342,25 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">3</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">depth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">depth</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
             <span class="n">depth</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">element</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
         <span class="c1"># Missing is when tokens[1] is any number of 9s</span>
-        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;9&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"9"</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">element</span><span class="o">.</span><span class="n">num_value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">element</span><span class="o">.</span><span class="n">num_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;ValueError: &#39;</span><span class="si">%s</span><span class="s2">&#39; to float failed&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"ValueError: '</span><span class="si">%s</span><span class="s2">' to float failed"</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="c1"># 5.1.2 Precip is assumed to be in 0.01 inches if an integer is provided</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">physical_element</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PC&quot;</span><span class="p">,</span> <span class="s2">&quot;PP&quot;</span><span class="p">,</span> <span class="s2">&quot;PY&quot;</span><span class="p">]</span>
-        <span class="ow">and</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">physical_element</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PC"</span><span class="p">,</span> <span class="s2">"PP"</span><span class="p">,</span> <span class="s2">"PY"</span><span class="p">]</span>
+        <span class="ow">and</span> <span class="n">element</span><span class="o">.</span><span class="n">str_value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
     <span class="p">):</span>
         <span class="n">element</span><span class="o">.</span><span class="n">num_value</span> <span class="o">/=</span> <span class="mf">100.0</span>
     <span class="k">return</span> <span class="kc">True</span></div>
@@ -1368,26 +1368,26 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse</span><span class="p">(</span><span class="n">prod</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do what is necessary to get this product parsed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Do what is necessary to get this product parsed."""</span>
     <span class="c1"># Products could have multiple types, so conditionally run each parser</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.A&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".A"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">parse_A</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.B&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".B"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">parse_B</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span>
     <span class="c1"># NOTE The .END from .B Format is a false positive here...</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.E&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".E"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">parse_E</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SHEFProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.SHEFProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SHEFProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single text product containing SHEF encoded data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A single text product containing SHEF encoded data."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Construct."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
         <span class="c1"># Storage of SHEFElements (one variable, one time, one station).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1398,7 +1398,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parser."""</span>
     <span class="k">return</span> <span class="n">SHEFProduct</span><span class="p">(</span>
         <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="n">nwsli_provider</span>
     <span class="p">)</span></div>

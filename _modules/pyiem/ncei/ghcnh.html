@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.ncei.ghcnh &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.ncei.ghcnh &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/ncei/ghcnh';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.ncei.ghcnh</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Process GHCNh data from NCEI.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Process GHCNh data from NCEI."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span>
@@ -463,75 +463,75 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRACE_VALUE</span><span class="p">,</span> <span class="n">VARIABLE_WIND_DIRECTION</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">c2f</span><span class="p">,</span> <span class="n">utc</span>
 
-<span class="n">MB</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;millibar&quot;</span><span class="p">)</span>
-<span class="n">HG</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;inch_Hg&quot;</span><span class="p">)</span>
-<span class="n">MPS</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;meters / second&quot;</span><span class="p">)</span>
-<span class="n">KTS</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;knot&quot;</span><span class="p">)</span>
-<span class="n">MM</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;millimeter&quot;</span><span class="p">)</span>
-<span class="n">INCH</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;inch&quot;</span><span class="p">)</span>
-<span class="n">KM</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;kilometer&quot;</span><span class="p">)</span>
-<span class="n">MILE</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;mile&quot;</span><span class="p">)</span>
-<span class="n">M</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span>
-<span class="n">FT</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;feet&quot;</span><span class="p">)</span>
+<span class="n">MB</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"millibar"</span><span class="p">)</span>
+<span class="n">HG</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"inch_Hg"</span><span class="p">)</span>
+<span class="n">MPS</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"meters / second"</span><span class="p">)</span>
+<span class="n">KTS</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"knot"</span><span class="p">)</span>
+<span class="n">MM</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"millimeter"</span><span class="p">)</span>
+<span class="n">INCH</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"inch"</span><span class="p">)</span>
+<span class="n">KM</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"kilometer"</span><span class="p">)</span>
+<span class="n">MILE</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"mile"</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span>
+<span class="n">FT</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s2">"feet"</span><span class="p">)</span>
 
-<span class="c1"># For those we don&#39;t take verbatim</span>
+<span class="c1"># For those we don't take verbatim</span>
 <span class="n">PRESWX_TO_METAR</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;FG:44&quot;</span><span class="p">:</span> <span class="s2">&quot;FG&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FG:45&quot;</span><span class="p">:</span> <span class="s2">&quot;FZFG&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FG:49&quot;</span><span class="p">:</span> <span class="s2">&quot;FZFG&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RA:61&quot;</span><span class="p">:</span> <span class="s2">&quot;-RA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RA:63&quot;</span><span class="p">:</span> <span class="s2">&quot;+RA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RA:65&quot;</span><span class="p">:</span> <span class="s2">&quot;+RA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SHRA:81&quot;</span><span class="p">:</span> <span class="s2">&quot;SHRA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SHRA:82&quot;</span><span class="p">:</span> <span class="s2">&quot;+SHRA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SN:71&quot;</span><span class="p">:</span> <span class="s2">&quot;-SN&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SN:75&quot;</span><span class="p">:</span> <span class="s2">&quot;+SN&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SQ&quot;</span><span class="p">:</span> <span class="s2">&quot;SQ&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TS:95&quot;</span><span class="p">:</span> <span class="s2">&quot;+TSRA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TS:97&quot;</span><span class="p">:</span> <span class="s2">&quot;+TSRA&quot;</span><span class="p">,</span>
+    <span class="s2">"FG:44"</span><span class="p">:</span> <span class="s2">"FG"</span><span class="p">,</span>
+    <span class="s2">"FG:45"</span><span class="p">:</span> <span class="s2">"FZFG"</span><span class="p">,</span>
+    <span class="s2">"FG:49"</span><span class="p">:</span> <span class="s2">"FZFG"</span><span class="p">,</span>
+    <span class="s2">"RA:61"</span><span class="p">:</span> <span class="s2">"-RA"</span><span class="p">,</span>
+    <span class="s2">"RA:63"</span><span class="p">:</span> <span class="s2">"+RA"</span><span class="p">,</span>
+    <span class="s2">"RA:65"</span><span class="p">:</span> <span class="s2">"+RA"</span><span class="p">,</span>
+    <span class="s2">"SHRA:81"</span><span class="p">:</span> <span class="s2">"SHRA"</span><span class="p">,</span>
+    <span class="s2">"SHRA:82"</span><span class="p">:</span> <span class="s2">"+SHRA"</span><span class="p">,</span>
+    <span class="s2">"SN:71"</span><span class="p">:</span> <span class="s2">"-SN"</span><span class="p">,</span>
+    <span class="s2">"SN:75"</span><span class="p">:</span> <span class="s2">"+SN"</span><span class="p">,</span>
+    <span class="s2">"SQ"</span><span class="p">:</span> <span class="s2">"SQ"</span><span class="p">,</span>
+    <span class="s2">"TS:95"</span><span class="p">:</span> <span class="s2">"+TSRA"</span><span class="p">,</span>
+    <span class="s2">"TS:97"</span><span class="p">:</span> <span class="s2">"+TSRA"</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="build_dialect">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.build_dialect">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_dialect</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out how to map colnames to token indices we need.&quot;&quot;&quot;</span>
-    <span class="n">colnames</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Figure out how to map colnames to token indices we need."""</span>
+    <span class="n">colnames</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Month&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Day&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Hour&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;minute&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Minute&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;tmpc&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;dwpc&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;dew_point_temperature&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;mslp&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sea_level_pressure&quot;</span><span class="p">),</span>  <span class="c1"># hPa</span>
-        <span class="s2">&quot;drct&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;wind_direction&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;smps&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;wind_speed&quot;</span><span class="p">),</span>  <span class="c1"># m/s</span>
-        <span class="s2">&quot;gmps&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;wind_gust&quot;</span><span class="p">),</span>  <span class="c1"># m/s</span>
-        <span class="s2">&quot;p01m&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;precipitation&quot;</span><span class="p">),</span>  <span class="c1"># mm</span>
-        <span class="s2">&quot;p03m&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;precipitation_3_hour&quot;</span><span class="p">),</span>  <span class="c1"># mm</span>
-        <span class="s2">&quot;p06m&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;precipitation_6_hour&quot;</span><span class="p">),</span>  <span class="c1"># mm</span>
-        <span class="s2">&quot;p24m&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;precipitation_24_hour&quot;</span><span class="p">),</span>  <span class="c1"># mm</span>
-        <span class="c1"># NCEI Calculated &quot;relh&quot;: colnames.index(&quot;relative_humidity&quot;),  # %</span>
-        <span class="s2">&quot;vsby_km&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;visibility&quot;</span><span class="p">),</span>  <span class="c1"># km</span>
-        <span class="s2">&quot;alti_mb&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;altimeter&quot;</span><span class="p">),</span>  <span class="c1"># hPa</span>
-        <span class="s2">&quot;pres_wx_mw1&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_MW1&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_mw2&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_MW2&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_mw3&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_MW3&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_au1&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AU1&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_au2&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AU2&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_au3&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AU3&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_aw1&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AW1&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_aw2&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AW2&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;pres_wx_aw3&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pres_wx_AW3&quot;</span><span class="p">),</span>  <span class="c1"># code</span>
-        <span class="s2">&quot;skyc1&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_1&quot;</span><span class="p">),</span>  <span class="c1"># octas</span>
-        <span class="s2">&quot;skyl1&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_baseht_1&quot;</span><span class="p">),</span>  <span class="c1"># meters</span>
-        <span class="s2">&quot;skyc2&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_2&quot;</span><span class="p">),</span>  <span class="c1"># octas</span>
-        <span class="s2">&quot;skyl2&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_baseht_2&quot;</span><span class="p">),</span>  <span class="c1"># meters</span>
-        <span class="s2">&quot;skyc3&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_3&quot;</span><span class="p">),</span>  <span class="c1"># octas</span>
-        <span class="s2">&quot;skyl3&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;sky_cover_baseht_3&quot;</span><span class="p">),</span>  <span class="c1"># meters</span>
-        <span class="s2">&quot;remarks&quot;</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;remarks&quot;</span><span class="p">),</span>
+        <span class="s2">"year"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">),</span>
+        <span class="s2">"month"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"Month"</span><span class="p">),</span>
+        <span class="s2">"day"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"Day"</span><span class="p">),</span>
+        <span class="s2">"hour"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"Hour"</span><span class="p">),</span>
+        <span class="s2">"minute"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"Minute"</span><span class="p">),</span>
+        <span class="s2">"tmpc"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">),</span>
+        <span class="s2">"dwpc"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"dew_point_temperature"</span><span class="p">),</span>
+        <span class="s2">"mslp"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sea_level_pressure"</span><span class="p">),</span>  <span class="c1"># hPa</span>
+        <span class="s2">"drct"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"wind_direction"</span><span class="p">),</span>
+        <span class="s2">"smps"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"wind_speed"</span><span class="p">),</span>  <span class="c1"># m/s</span>
+        <span class="s2">"gmps"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"wind_gust"</span><span class="p">),</span>  <span class="c1"># m/s</span>
+        <span class="s2">"p01m"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"precipitation"</span><span class="p">),</span>  <span class="c1"># mm</span>
+        <span class="s2">"p03m"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"precipitation_3_hour"</span><span class="p">),</span>  <span class="c1"># mm</span>
+        <span class="s2">"p06m"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"precipitation_6_hour"</span><span class="p">),</span>  <span class="c1"># mm</span>
+        <span class="s2">"p24m"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"precipitation_24_hour"</span><span class="p">),</span>  <span class="c1"># mm</span>
+        <span class="c1"># NCEI Calculated "relh": colnames.index("relative_humidity"),  # %</span>
+        <span class="s2">"vsby_km"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"visibility"</span><span class="p">),</span>  <span class="c1"># km</span>
+        <span class="s2">"alti_mb"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"altimeter"</span><span class="p">),</span>  <span class="c1"># hPa</span>
+        <span class="s2">"pres_wx_mw1"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_MW1"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_mw2"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_MW2"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_mw3"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_MW3"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_au1"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AU1"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_au2"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AU2"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_au3"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AU3"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_aw1"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AW1"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_aw2"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AW2"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"pres_wx_aw3"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"pres_wx_AW3"</span><span class="p">),</span>  <span class="c1"># code</span>
+        <span class="s2">"skyc1"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_1"</span><span class="p">),</span>  <span class="c1"># octas</span>
+        <span class="s2">"skyl1"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_baseht_1"</span><span class="p">),</span>  <span class="c1"># meters</span>
+        <span class="s2">"skyc2"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_2"</span><span class="p">),</span>  <span class="c1"># octas</span>
+        <span class="s2">"skyl2"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_baseht_2"</span><span class="p">),</span>  <span class="c1"># meters</span>
+        <span class="s2">"skyc3"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_3"</span><span class="p">),</span>  <span class="c1"># octas</span>
+        <span class="s2">"skyl3"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"sky_cover_baseht_3"</span><span class="p">),</span>  <span class="c1"># meters</span>
+        <span class="s2">"remarks"</span><span class="p">:</span> <span class="n">colnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"remarks"</span><span class="p">),</span>
     <span class="p">}</span></div>
 
 
@@ -539,18 +539,18 @@
 <div class="viewcode-block" id="parse_packet">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.parse_packet">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">startpos</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the packet, attempting to not consume memory.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Process the packet, attempting to not consume memory."""</span>
     <span class="c1"># The six values are value, measure, qc, report_type, source_code, station</span>
-    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"9999"</span><span class="p">]:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="c1"># Presently, code 3 and 7 are erroneous, but uffties, this may be</span>
     <span class="c1"># dropping good data on the floor as well :(</span>
-    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;7&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"3"</span><span class="p">,</span> <span class="s2">"7"</span><span class="p">]:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2-Trace&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"2-Trace"</span><span class="p">:</span>
         <span class="c1"># This is a sentinel value for trace precipitation</span>
         <span class="k">return</span> <span class="n">TRACE_VALUE</span>
-    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;VRB&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"VRB"</span><span class="p">:</span>
         <span class="c1"># This is a sentinel value for variable wind direction</span>
         <span class="k">return</span> <span class="n">VARIABLE_WIND_DIRECTION</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">startpos</span><span class="p">])</span></div>
@@ -560,12 +560,12 @@
 <div class="viewcode-block" id="clean_metar">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.clean_metar">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">clean_metar</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean up the METAR string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Clean up the METAR string."""</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">raw</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; KT &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"$"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" KT "</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
         <span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="p">)</span></div>
 
@@ -574,93 +574,93 @@
 <div class="viewcode-block" id="process_line">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.process_line">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dialect</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process a line of the file.&quot;&quot;&quot;</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Process a line of the file."""</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
     <span class="n">ob</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utc</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]]),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]]),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]]),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]]),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">]]),</span>
+    <span class="n">ob</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">utc</span><span class="p">(</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">]]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">]]),</span>
     <span class="p">)</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;tmpc&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"tmpc"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">c2f</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"tmpf"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">c2f</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
         <span class="c1"># Require a temperature to proceed</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;dwpc&quot;</span><span class="p">])</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"dwpc"</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">c2f</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"dwpf"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">(</span><span class="n">c2f</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;alti_mb&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"alti_mb"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;alti&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MB</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">HG</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"alti"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MB</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">HG</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># No unit conversion needed for these</span>
-    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mslp&quot;</span><span class="p">,</span> <span class="s2">&quot;drct&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"mslp"</span><span class="p">,</span> <span class="s2">"drct"</span><span class="p">]:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ob</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;smps&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"smps"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">((</span><span class="n">MPS</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">KTS</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;drct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"sknt"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">((</span><span class="n">MPS</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">KTS</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">"sknt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"drct"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;gmps&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"gmps"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;gust&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">((</span><span class="n">MPS</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">KTS</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"gust"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_temp</span><span class="p">((</span><span class="n">MPS</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">KTS</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;vsby_km&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"vsby_km"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">):</span>  <span class="c1"># Arbitrary limit of 100km</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;vsby&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">KM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">MILE</span><span class="p">)</span><span class="o">.</span><span class="n">m</span>
-        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;vsby&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.9</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;vsby&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ob</span><span class="p">[</span><span class="s2">&quot;vsby&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">KM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">MILE</span><span class="p">)</span><span class="o">.</span><span class="n">m</span>
+        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.9</span><span class="p">:</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ob</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;p01m&quot;</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="s2">"p01m"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Maintain the sentinel value</span>
         <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">TRACE_VALUE</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;phour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"phour"</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;phour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">INCH</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"phour"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">INCH</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">hr</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">24</span><span class="p">]:</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">m&quot;</span><span class="p">])</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">"p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">m"</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">TRACE_VALUE</span><span class="p">:</span>
-                <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
+                <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">i"</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">INCH</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"p</span><span class="si">{</span><span class="n">hr</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">i"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">MM</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">INCH</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]]</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyc</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">parse_packet</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">M</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">FT</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"skyl</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">M</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">FT</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
-    <span class="n">remark</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">&quot;remarks&quot;</span><span class="p">]]</span>
-    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;METAR&quot;</span><span class="p">,</span> <span class="s2">&quot;SPECI&quot;</span><span class="p">]:</span>
+    <span class="n">remark</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="s2">"remarks"</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"METAR"</span><span class="p">,</span> <span class="s2">"SPECI"</span><span class="p">]:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">:=</span> <span class="n">remark</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">prefix</span><span class="p">))</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_metar</span><span class="p">(</span><span class="n">remark</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">5</span> <span class="p">:])</span>
+            <span class="n">ob</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_metar</span><span class="p">(</span><span class="n">remark</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">5</span> <span class="p">:])</span>
             <span class="k">break</span>
 
     <span class="n">wxcodes</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mw&quot;</span><span class="p">,</span> <span class="s2">&quot;au&quot;</span><span class="p">,</span> <span class="s2">&quot;aw&quot;</span><span class="p">]:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;pres_wx_</span><span class="si">{</span><span class="n">src</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]]</span>
-            <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"mw"</span><span class="p">,</span> <span class="s2">"au"</span><span class="p">,</span> <span class="s2">"aw"</span><span class="p">]:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">dialect</span><span class="p">[</span><span class="sa">f</span><span class="s2">"pres_wx_</span><span class="si">{</span><span class="n">src</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"00"</span><span class="p">,</span> <span class="s2">"9999"</span><span class="p">]:</span>
                 <span class="n">code</span> <span class="o">=</span> <span class="n">PRESWX_TO_METAR</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                     <span class="n">val</span><span class="p">,</span>
-                    <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wxcodes</span><span class="p">:</span>
                     <span class="n">wxcodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">wxcodes</span><span class="p">:</span>
-        <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;wxcodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wxcodes</span>
+        <span class="n">ob</span><span class="p">[</span><span class="s2">"wxcodes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">wxcodes</span>
 
     <span class="k">return</span> <span class="n">ob</span></div>
 
@@ -669,7 +669,7 @@
 <div class="viewcode-block" id="process_file">
 <a class="viewcode-back" href="../../../api/pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.process_file">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the provided file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Process the provided file."""</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>  <span class="c1"># skipcq</span>
         <span class="k">for</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fh</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">linenum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/spcpts';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,10 +454,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.spcpts</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Storm Prediction Center PTS Product Parser.</span>
+<span></span><span class="sd">"""Storm Prediction Center PTS Product Parser.</span>
 
 <span class="sd">My life was not supposed to end like this, what a brutal format.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
@@ -485,59 +485,59 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">load_geodf</span><span class="p">,</span> <span class="n">utc</span>
 
 <span class="n">DAYRE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P&lt;day&gt;[0-9])&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
+    <span class="sa">r</span><span class="s2">"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P&lt;day&gt;[0-9])"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
 <span class="p">)</span>
-<span class="n">DMATCH</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;D(?P&lt;day1&gt;[0-9])\-?(?P&lt;day2&gt;[0-9])?&quot;</span><span class="p">)</span>
+<span class="n">DMATCH</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"D(?P&lt;day1&gt;[0-9])\-?(?P&lt;day2&gt;[0-9])?"</span><span class="p">)</span>
 <span class="n">THRESHOLD_ORDER</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 0.75 0.90 &quot;</span>
-    <span class="s2">&quot;CIG1 CIG2 CIG3 TSTM MRGL SLGT ENH MDT HIGH IDRT SDRT ELEV CRIT EXTM&quot;</span>
+    <span class="s2">"0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 0.75 0.90 "</span>
+    <span class="s2">"CIG1 CIG2 CIG3 TSTM MRGL SLGT ENH MDT HIGH IDRT SDRT ELEV CRIT EXTM"</span>
 <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="imgsrc_from_row">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.imgsrc_from_row">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">imgsrc_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the SPC image source for a given database row.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cycle&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cycle&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute the SPC image source for a given database row."""</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">ymd</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;product_issue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ymd</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"product_issue"</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
     <span class="c1"># When SPC flipped to PNGs</span>
-    <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span> <span class="k">if</span> <span class="n">ymd</span> <span class="o">&gt;=</span> <span class="s2">&quot;20260306&quot;</span> <span class="k">else</span> <span class="s2">&quot;gif&quot;</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="s2">"png"</span> <span class="k">if</span> <span class="n">ymd</span> <span class="o">&gt;=</span> <span class="s2">"20260306"</span> <span class="k">else</span> <span class="s2">"gif"</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
         <span class="c1"># Le Sigh</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="s2">&quot;https://www.spc.noaa.gov/products/exper/day4-8/archive/&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;product_issue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">prob_&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ymd</span><span class="si">}</span><span class="s2">_1200.</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="s2">"https://www.spc.noaa.gov/products/exper/day4-8/archive/"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'product_issue'</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'day'</span><span class="p">]</span><span class="si">}</span><span class="s2">prob_"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ymd</span><span class="si">}</span><span class="s2">_1200.</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://www.spc.noaa.gov/products/outlook/archive/&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
     <span class="c1"># year is based on the issue date</span>
-    <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;product_issue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CATEGORICAL&quot;</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;otlk&quot;</span>
-    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;prob&quot;</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'product_issue'</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'day'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"category"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"CATEGORICAL"</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">"otlk"</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">"prob"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;probotlk&quot;</span>
-    <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">ymd</span><span class="si">}</span><span class="s2">_&quot;</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">"probotlk"</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">ymd</span><span class="si">}</span><span class="s2">_"</span>
     <span class="n">conv</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;1200&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="s2">&quot;1630&quot;</span><span class="p">}</span>
-    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;0600&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="s2">&quot;1730&quot;</span><span class="p">}</span>
-    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;0730&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="s2">&quot;1930&quot;</span><span class="p">}</span>
-    <span class="n">url</span> <span class="o">+=</span> <span class="n">conv</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;cycle&quot;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cycle&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">00&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;TORNADO&quot;</span><span class="p">,</span> <span class="s2">&quot;HAIL&quot;</span><span class="p">,</span> <span class="s2">&quot;WIND&quot;</span><span class="p">]:</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">_&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">prt.</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="s2">"1200"</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="s2">"1630"</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">7</span><span class="p">:</span> <span class="s2">"0600"</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="s2">"1730"</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="p">{</span><span class="mi">8</span><span class="p">:</span> <span class="s2">"0730"</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="s2">"1930"</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="n">conv</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">],</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'cycle'</span><span class="p">]</span><span class="si">:</span><span class="s2">02.0f</span><span class="si">}</span><span class="s2">00"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"category"</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"TORNADO"</span><span class="p">,</span> <span class="s2">"HAIL"</span><span class="p">,</span> <span class="s2">"WIND"</span><span class="p">]:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">_"</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">prt.</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span></div>
 
 
 
 <div class="viewcode-block" id="compute_times">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.compute_times">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_times</span><span class="p">(</span><span class="n">afos</span><span class="p">,</span> <span class="n">issue</span><span class="p">,</span> <span class="n">expire</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute actual issue, expire time.</span>
+<span class="w">    </span><span class="sd">"""Compute actual issue, expire time.</span>
 
 <span class="sd">    For the multi-day products, the text product contains a range of dates</span>
 <span class="sd">    that need translated to an actual issue and expire time.</span>
@@ -546,10 +546,10 @@
 <span class="sd">    -------</span>
 <span class="sd">      issue (datetime)</span>
 <span class="sd">      expire (datetime)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">afos</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PTSD48&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWF38&quot;</span><span class="p">]:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">afos</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PTSD48"</span><span class="p">,</span> <span class="s2">"PFWF38"</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">issue</span><span class="p">,</span> <span class="n">expire</span>
-    <span class="n">baseday</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PFWF38&quot;</span> <span class="k">else</span> <span class="mi">4</span>
+    <span class="n">baseday</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWF38"</span> <span class="k">else</span> <span class="mi">4</span>
     <span class="n">issue</span> <span class="o">=</span> <span class="n">issue</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">day</span> <span class="o">-</span> <span class="n">baseday</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">issue</span><span class="p">,</span> <span class="n">issue</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span></div>
 
@@ -558,21 +558,21 @@
 <div class="viewcode-block" id="get_day">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.get_day">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_day</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out which day this is for.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PTSDY1&quot;</span><span class="p">,</span> <span class="s2">&quot;PTSDY2&quot;</span><span class="p">,</span> <span class="s2">&quot;PTSDY3&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWFD1&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWFD2&quot;</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Figure out which day this is for."""</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PTSDY1"</span><span class="p">,</span> <span class="s2">"PTSDY2"</span><span class="p">,</span> <span class="s2">"PTSDY3"</span><span class="p">,</span> <span class="s2">"PFWFD1"</span><span class="p">,</span> <span class="s2">"PFWFD2"</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="n">search</span> <span class="o">=</span> <span class="n">DAYRE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()[</span><span class="s2">&quot;day&quot;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()[</span><span class="s2">"day"</span><span class="p">])</span></div>
 
 
 
 <div class="viewcode-block" id="get_segments_from_text">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.get_segments_from_text">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_segments_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of segments for this text.&quot;&quot;&quot;</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;([0-9]</span><span class="si">{8}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="sd">"""Return list of segments for this text."""</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"([0-9]</span><span class="si">{8}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
     <span class="c1"># First we generate a list of segments, based on what we found</span>
     <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -581,7 +581,7 @@
         <span class="n">lon</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">30</span><span class="p">:</span>
             <span class="n">lon</span> <span class="o">-=</span> <span class="mf">100.0</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;99999999&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">"99999999"</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -597,7 +597,7 @@
 <div class="viewcode-block" id="str2multipolygon">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.str2multipolygon">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">str2multipolygon</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MultiPolygon</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert string PTS data into a polygon.</span>
+<span class="w">    </span><span class="sd">"""Convert string PTS data into a polygon.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      s (str): the cryptic string that we attempt to make valid polygons from</span>
@@ -605,7 +605,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        MultiPolygon: the geometry of this outlook</span>
 <span class="sd">        list[str]: any error messages encountered during processing</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># 1. Generate list of line segments, no conditioning is done.</span>
     <span class="n">segments_raw</span> <span class="o">=</span> <span class="n">get_segments_from_text</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -620,8 +620,8 @@
     <span class="c1"># Account for situation of an interior without a polygon (likely reversed)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">polygons</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">linestrings</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">interiors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">errmsg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Interior polygon without exterior, reversing. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;first_pt: </span><span class="si">{</span><span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, sampled: </span><span class="si">{</span><span class="n">s</span><span class="p">[:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">...&quot;</span>
+            <span class="s2">"Interior polygon without exterior, reversing. "</span>
+            <span class="sa">f</span><span class="s2">"first_pt: </span><span class="si">{</span><span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, sampled: </span><span class="si">{</span><span class="n">s</span><span class="p">[:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">..."</span>
         <span class="p">)</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
         <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
@@ -643,7 +643,7 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">polygons</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">polygon</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;     polygon </span><span class="si">%s</span><span class="s2"> is invalid, buffer(0)&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"     polygon </span><span class="si">%s</span><span class="s2"> is invalid, buffer(0)"</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
         <span class="n">polygons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">polygons</span><span class="p">),</span> <span class="n">errors</span></div>
 
@@ -651,28 +651,28 @@
 
 <div class="viewcode-block" id="init_days">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.init_days">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">init_days</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;SPCOutlookCollection&quot;</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out which days this product should have based on the AFOS.&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_days</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="s2">"SPCOutlookCollection"</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Figure out which days this product should have based on the AFOS."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Help.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Help."""</span>
         <span class="n">issue</span><span class="p">,</span> <span class="n">expire</span> <span class="o">=</span> <span class="n">compute_times</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">expire</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">SPCOutlookCollection</span><span class="p">(</span><span class="n">issue</span><span class="p">,</span> <span class="n">expire</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PTSD48&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSD48"</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span><span class="mi">4</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">5</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">6</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mi">7</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="mi">8</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">8</span><span class="p">)}</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PFWF38&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWF38"</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">5</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">6</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mi">7</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="mi">8</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">8</span><span class="p">)}</span>
     <span class="k">return</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">5</span><span class="p">]):</span> <span class="n">f</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">5</span><span class="p">]))}</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_compute_cycle</span><span class="p">(</span><span class="n">prod</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out an integer cycle that identifies this product.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Figure out an integer cycle that identifies this product."""</span>
     <span class="c1"># Extended ones are easy</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PTSD48&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWF38&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="mi">21</span> <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span> <span class="k">else</span> <span class="mi">10</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PTSD48"</span><span class="p">,</span> <span class="s2">"PFWF38"</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="mi">21</span> <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">"F"</span> <span class="k">else</span> <span class="mi">10</span>
     <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">day</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># has to be convective</span>
         <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span> <span class="ow">and</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">&gt;</span> <span class="n">utc</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
@@ -680,33 +680,33 @@
         <span class="k">return</span> <span class="mi">8</span>
     <span class="c1"># Day 2 are based on the product issuance time</span>
     <span class="k">if</span> <span class="n">day</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mi">8</span>
             <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">23</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mi">18</span>
-        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">"C"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mi">7</span>
             <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">23</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mi">17</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
     <span class="c1"># We are left with day 1</span>
-    <span class="n">hhmi</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">get_outlookcollection</span><span class="p">(</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H%M&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span>
-        <span class="n">lkp</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1200&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;1300&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;1630&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;2000&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;0100&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="n">hhmi</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">get_outlookcollection</span><span class="p">(</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%H%M"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">"C"</span><span class="p">:</span>
+        <span class="n">lkp</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"1200"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">"1300"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">"1630"</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">"2000"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"0100"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">lkp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hhmi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">lkp</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1200&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;1700&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">}</span>
+    <span class="n">lkp</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"1200"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">"1700"</span><span class="p">:</span> <span class="mi">17</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">lkp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hhmi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SPCOutlookCollection">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCOutlookCollection">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SPCOutlookCollection</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collection of outlooks for a single &#39;day&#39;.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A collection of outlooks for a single 'day'."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue</span><span class="p">,</span> <span class="n">expire</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Construct."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="n">issue</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expire</span> <span class="o">=</span> <span class="n">expire</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
@@ -715,7 +715,7 @@
 <div class="viewcode-block" id="SPCOutlookCollection.add_outlook">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCOutlookCollection.add_outlook">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_outlook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outlook</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;We insert an outlook in an ordered manner.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""We insert an outlook in an ordered manner."""</span>
         <span class="c1"># no choice</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlooks</span> <span class="ow">or</span> <span class="n">outlook</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outlooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outlook</span><span class="p">)</span>
@@ -740,7 +740,7 @@
 <div class="viewcode-block" id="SPCOutlookCollection.get_categories">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCOutlookCollection.get_categories">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of categories covered in this outlook.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return list of categories covered in this outlook."""</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ol</span><span class="o">.</span><span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
@@ -751,7 +751,7 @@
 <div class="viewcode-block" id="SPCOutlookCollection.difference_geometries">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCOutlookCollection.difference_geometries">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">difference_geometries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the difference work to figure out actual geometries.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Do the difference work to figure out actual geometries."""</span>
         <span class="c1"># Our outlooks are ordered, so hopefully this works</span>
         <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_categories</span><span class="p">():</span>
             <span class="n">outlooks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">cat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlooks</span><span class="p">))</span>
@@ -763,8 +763,8 @@
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">this_outlook</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="kc">None</span>
                     <span class="ow">or</span> <span class="n">next_outlook</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="kc">None</span>
-                    <span class="ow">or</span> <span class="n">this_outlook</span><span class="o">.</span><span class="n">threshold</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SDRT&quot;</span><span class="p">,</span> <span class="s2">&quot;IDRT&quot;</span><span class="p">]</span>
-                    <span class="ow">or</span> <span class="n">next_outlook</span><span class="o">.</span><span class="n">threshold</span> <span class="o">==</span> <span class="s2">&quot;CIG1&quot;</span>
+                    <span class="ow">or</span> <span class="n">this_outlook</span><span class="o">.</span><span class="n">threshold</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"SDRT"</span><span class="p">,</span> <span class="s2">"IDRT"</span><span class="p">]</span>
+                    <span class="ow">or</span> <span class="n">next_outlook</span><span class="o">.</span><span class="n">threshold</span> <span class="o">==</span> <span class="s2">"CIG1"</span>
                 <span class="p">):</span>
                     <span class="n">this_outlook</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">this_outlook</span><span class="o">.</span><span class="n">geometry_layers</span>
                     <span class="k">continue</span>
@@ -788,16 +788,16 @@
 <div class="viewcode-block" id="SPCOutlook">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCOutlook">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SPCOutlook</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class holding what we store for a single outlook.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A class holding what we store for a single outlook."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">multipoly</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new outlook.</span>
+<span class="w">        </span><span class="sd">"""Create a new outlook.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          category (str): the label of this category</span>
 <span class="sd">          threshold (str): the threshold associated with the category</span>
 <span class="sd">          multipoly (MultiPolygon): the geometry</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="p">(</span>
@@ -814,21 +814,21 @@
 <div class="viewcode-block" id="SPCPTS">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SPCPTS</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing the polygons and metadata in SPC PTS Product.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A class representing the polygons and metadata in SPC PTS Product."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new SPCPTS.</span>
+<span class="w">        </span><span class="sd">"""Create a new SPCPTS.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          text (string): the raw PTS product that is to be parsed</span>
 <span class="sd">          utcnow (datetime, optional): in case of ambuigity with time</span>
 <span class="sd">          ugc_provider (dict, optional): unused in this class</span>
 <span class="sd">          nwsli_provider (dict, optional): unused in this class</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;==== SPCPTS Processing: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">())</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"==== SPCPTS Processing: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">())</span>
         <span class="n">load_conus_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expire</span> <span class="o">=</span> <span class="kc">None</span>
@@ -845,14 +845,14 @@
 <div class="viewcode-block" id="SPCPTS.get_outlookcollection">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.get_outlookcollection">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_outlookcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SPCOutlookCollection</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the SPCOutlookCollection for a given day.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the SPCOutlookCollection for a given day."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">day</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SPCPTS.get_outlook">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.get_outlook">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_outlook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an outlook by category and threshold.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get an outlook by category and threshold."""</span>
         <span class="k">if</span> <span class="n">day</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">[</span><span class="n">day</span><span class="p">]</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
@@ -864,7 +864,7 @@
 <div class="viewcode-block" id="SPCPTS.draw_outlooks">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.draw_outlooks">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">draw_outlooks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;For debugging, draw the outlooks on a simple map for inspection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""For debugging, draw the outlooks on a simple map for inspection."""</span>
         <span class="c1"># pylint: disable=import-outside-toplevel</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.plot.use_agg</span><span class="w"> </span><span class="kn">import</span> <span class="n">figure</span>
 
@@ -874,17 +874,17 @@
                 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
                 <span class="c1"># pylint: disable=unsubscriptable-object</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span>
-                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span>
-                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
-                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Conus&quot;</span><span class="p">,</span>
+                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">"line"</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">"line"</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">"b"</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">"Conus"</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">outlook</span><span class="o">.</span><span class="n">geometry_layers</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
                     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
                         <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                         <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="s2">"r"</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">outlook</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">interior</span> <span class="ow">in</span> <span class="n">poly</span><span class="o">.</span><span class="n">interiors</span><span class="p">:</span>
@@ -892,39 +892,39 @@
                             <span class="n">interior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                             <span class="n">interior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                             <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span>
-                            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span>
+                            <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span>
+                            <span class="n">color</span><span class="o">=</span><span class="s2">"g"</span><span class="p">,</span>
                         <span class="p">)</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Day </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2"> Category </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2"> &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Threshold </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Day </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2"> Category </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2"> "</span>
+                    <span class="sa">f</span><span class="s2">"Threshold </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
                 <span class="n">fn</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">_&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">.png&quot;</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;:: creating plot </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">_"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">.png"</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">":: creating plot </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
                 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SPCPTS.set_metadata">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.set_metadata">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set some metadata about this product.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PTSDY1&quot;</span><span class="p">,</span> <span class="s2">&quot;PTSDY2&quot;</span><span class="p">,</span> <span class="s2">&quot;PTSDY3&quot;</span><span class="p">,</span> <span class="s2">&quot;PTSD48&quot;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PFWFD1&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWFD2&quot;</span><span class="p">,</span> <span class="s2">&quot;PFWF38&quot;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+<span class="w">        </span><span class="sd">"""Set some metadata about this product."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PTSDY1"</span><span class="p">,</span> <span class="s2">"PTSDY2"</span><span class="p">,</span> <span class="s2">"PTSDY3"</span><span class="p">,</span> <span class="s2">"PTSD48"</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">=</span> <span class="s2">"C"</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PFWFD1"</span><span class="p">,</span> <span class="s2">"PFWFD2"</span><span class="p">,</span> <span class="s2">"PFWF38"</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">=</span> <span class="s2">"F"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown awipsid &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">&#39; for metadata&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown awipsid '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">' for metadata"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SPCPTS.find_issue_expire">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.find_issue_expire">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_issue_expire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the period this product is valid for.&quot;&quot;&quot;</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;VALID TIME ([0-9]</span><span class="si">{6}</span><span class="s2">)Z - ([0-9]</span><span class="si">{6}</span><span class="s2">)Z&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Determine the period this product is valid for."""</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"VALID TIME ([0-9]</span><span class="si">{6}</span><span class="s2">)Z - ([0-9]</span><span class="si">{6}</span><span class="s2">)Z"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="n">day1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">hour1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
         <span class="n">min1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">:])</span>
@@ -947,27 +947,27 @@
 <div class="viewcode-block" id="SPCPTS.find_outlooks">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.find_outlooks">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_outlooks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the outlook sections within the text product.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&amp;&amp;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">... &quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&amp;&amp;</span><span class="se">\n</span><span class="s2">... &quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&amp;&amp; &quot;</span>
-        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&amp;&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Find the outlook sections within the text product."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"&amp;&amp;"</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">... "</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">&amp;&amp;</span><span class="se">\n</span><span class="s2">... "</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">&amp;&amp; "</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"&amp;&amp;"</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">day</span> <span class="o">=</span> <span class="n">get_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment</span><span class="p">)</span>
             <span class="c1"># We need to figure out the probabilistic or category</span>
-            <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.\.\.\s+(.*)\s+\.\.\.&quot;</span><span class="p">,</span> <span class="n">segment</span><span class="p">)</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\.\.\.\s+(.*)\s+\.\.\."</span><span class="p">,</span> <span class="n">segment</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">category</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="n">point_data</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="c1"># Now we loop over the lines looking for data</span>
             <span class="n">threshold</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
                         <span class="p">(</span>
-                            <span class="sa">r</span><span class="s2">&quot;^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|&quot;</span>
-                            <span class="sa">r</span><span class="s2">&quot;HIGH|CRIT|TSTM|SIGN|CIG[1-3]|&quot;</span>
-                            <span class="sa">r</span><span class="s2">&quot;IDRT|SDRT|0\.[0-9][0-9]) &quot;</span>
+                            <span class="sa">r</span><span class="s2">"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|"</span>
+                            <span class="sa">r</span><span class="s2">"HIGH|CRIT|TSTM|SIGN|CIG[1-3]|"</span>
+                            <span class="sa">r</span><span class="s2">"IDRT|SDRT|0\.[0-9][0-9]) "</span>
                         <span class="p">),</span>
                         <span class="n">line</span><span class="p">,</span>
                     <span class="p">)</span>
@@ -975,13 +975,13 @@
                 <span class="p">):</span>
                     <span class="n">newthreshold</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">threshold</span> <span class="o">==</span> <span class="n">newthreshold</span><span class="p">:</span>
-                        <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; 99999999 &quot;</span>
+                        <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">" 99999999 "</span>
                     <span class="n">threshold</span> <span class="o">=</span> <span class="n">newthreshold</span>
                 <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">threshold</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">point_data</span><span class="p">:</span>
-                    <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-                <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+                    <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+                <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">day</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">collect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_outlookcollection</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
@@ -990,20 +990,20 @@
                 <span class="n">match</span> <span class="o">=</span> <span class="n">DMATCH</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day2&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">day1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;day1&quot;</span><span class="p">])</span>
-                        <span class="n">day2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;day2&quot;</span><span class="p">])</span>
-                        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Duplicating threshold </span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">day1</span><span class="p">,</span> <span class="n">day2</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"day2"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">day1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"day1"</span><span class="p">])</span>
+                        <span class="n">day2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"day2"</span><span class="p">])</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Duplicating threshold </span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">day1</span><span class="p">,</span> <span class="n">day2</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">day1</span><span class="p">,</span> <span class="n">day2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                            <span class="n">point_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span>
+                            <span class="n">point_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"D</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span>
                         <span class="k">del</span> <span class="n">point_data</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">point_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">match</span> <span class="o">=</span> <span class="n">DMATCH</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-                    <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()[</span><span class="s2">&quot;day1&quot;</span><span class="p">])</span>
+                    <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()[</span><span class="s2">"day1"</span><span class="p">])</span>
                     <span class="n">collect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_outlookcollection</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;--&gt; Start Day: </span><span class="si">%s</span><span class="s2"> Category: &#39;</span><span class="si">%s</span><span class="s2">&#39; Threshold: &#39;</span><span class="si">%s</span><span class="s2">&#39; =====&quot;</span><span class="p">,</span>
+                    <span class="s2">"--&gt; Start Day: </span><span class="si">%s</span><span class="s2"> Category: '</span><span class="si">%s</span><span class="s2">' Threshold: '</span><span class="si">%s</span><span class="s2">' ====="</span><span class="p">,</span>
                     <span class="n">day</span><span class="p">,</span>
                     <span class="n">category</span><span class="p">,</span>
                     <span class="n">threshold</span><span class="p">,</span>
@@ -1012,38 +1012,38 @@
                 <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">DMATCH</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">threshold</span><span class="p">):</span>
-                    <span class="n">threshold</span> <span class="o">=</span> <span class="s2">&quot;0.15&quot;</span>
-                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;----&gt; End threshold is: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
+                    <span class="n">threshold</span> <span class="o">=</span> <span class="s2">"0.15"</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"----&gt; End threshold is: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
                 <span class="n">collect</span><span class="o">.</span><span class="n">add_outlook</span><span class="p">(</span><span class="n">SPCOutlook</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">mp</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="SPCPTS.compute_wfos">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.compute_wfos">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_wfos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_txn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out which WFOs are impacted by this polygon.&quot;&quot;&quot;</span>
-        <span class="n">geodf</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">&quot;cwa&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Figure out which WFOs are impacted by this polygon."""</span>
+        <span class="n">geodf</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">"cwa"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
-                <span class="n">df2</span> <span class="o">=</span> <span class="n">geodf</span><span class="p">[</span><span class="n">geodf</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">geometry_layers</span><span class="p">)]</span>
+                <span class="n">df2</span> <span class="o">=</span> <span class="n">geodf</span><span class="p">[</span><span class="n">geodf</span><span class="p">[</span><span class="s2">"geom"</span><span class="p">]</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">geometry_layers</span><span class="p">)]</span>
                 <span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Day: </span><span class="si">%s</span><span class="s2"> Category: </span><span class="si">%s</span><span class="s2"> Threshold: </span><span class="si">%s</span><span class="s2"> #WFOS: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Day: </span><span class="si">%s</span><span class="s2"> Category: </span><span class="si">%s</span><span class="s2"> Threshold: </span><span class="si">%s</span><span class="s2"> #WFOS: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                     <span class="n">day</span><span class="p">,</span>
                     <span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
                     <span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span>
                     <span class="nb">len</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">),</span>
-                    <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">),</span>
+                    <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">),</span>
                 <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SPCPTS.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do database work.</span>
+<span class="w">        </span><span class="sd">"""Do database work.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          txn (psycopg.cursor): database cursor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">sql_day_collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span><span class="p">)</span></div>
 
@@ -1051,69 +1051,69 @@
 <div class="viewcode-block" id="SPCPTS.get_descript_and_url">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.get_descript_and_url">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_descript_and_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Help to convert awips id into strings.&quot;&quot;&quot;</span>
-        <span class="n">product_descript</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">))&quot;</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://www.spc.noaa.gov&quot;</span>
+<span class="w">        </span><span class="sd">"""Help to convert awips id into strings."""</span>
+        <span class="n">product_descript</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">))"</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://www.spc.noaa.gov"</span>
         <span class="n">day</span> <span class="o">=</span> <span class="n">product_descript</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PTSDY1&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 1&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Convective&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSDY1"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 1"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Convective"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;https://www.spc.noaa.gov/products/outlook/archive/&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day1otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y%m%d_%H%M</span><span class="si">}</span><span class="s2">.html&quot;</span>
+                <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day1otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y%m%d_%H%M</span><span class="si">}</span><span class="s2">.html"</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PTSDY2&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 2&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Convective&quot;</span>
-            <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">&quot;1730&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">11</span> <span class="k">else</span> <span class="s2">&quot;0600&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSDY2"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 2"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Convective"</span>
+            <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"1730"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">11</span> <span class="k">else</span> <span class="s2">"0600"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;https://www.spc.noaa.gov/products/outlook/archive/&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day2otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.html&quot;</span>
+                <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day2otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.html"</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PTSDY3&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSDY3"</span><span class="p">:</span>
             <span class="c1"># 0730 when in CDT, 0830 when in CST</span>
-            <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">&quot;0730&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">==</span> <span class="s2">&quot;CDT&quot;</span> <span class="k">else</span> <span class="s2">&quot;0830&quot;</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 3&quot;</span>
+            <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"0730"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">==</span> <span class="s2">"CDT"</span> <span class="k">else</span> <span class="s2">"0830"</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 3"</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
-                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">&quot;1930&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Convective&quot;</span>
+                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"1930"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Convective"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;https://www.spc.noaa.gov/products/outlook/archive/&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day3otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.html&quot;</span>
+                <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day3otlk_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.html"</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PTSD48&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Days 4-8&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Convective&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSD48"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Days 4-8"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Convective"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;https://www.spc.noaa.gov/products/exper/day4-8/archive/&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day4-8_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">.html&quot;</span>
+                <span class="s2">"https://www.spc.noaa.gov/products/exper/day4-8/archive/"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day4-8_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">.html"</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PFWFD1&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 1&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Fire Weather&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWFD1"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 1"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Fire Weather"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">_%H%M&quot;</span>
-                    <span class="s2">&quot;_fwdy1_print.html&quot;</span>
+                    <span class="s2">"https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">_%H%M"</span>
+                    <span class="s2">"_fwdy1_print.html"</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PFWFD2&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 2&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Fire Weather&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWFD2"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 2"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Fire Weather"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">_%H%M&quot;</span>
-                    <span class="s2">&quot;_fwdy2_print.html&quot;</span>
+                    <span class="s2">"https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">_%H%M"</span>
+                    <span class="s2">"_fwdy2_print.html"</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;PFWF38&quot;</span><span class="p">:</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="s2">&quot;Day 3-8&quot;</span>
-            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Fire Weather&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWF38"</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 3-8"</span>
+            <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Fire Weather"</span>
             <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">&quot;</span>
-                    <span class="s2">&quot;.html&quot;</span>
+                    <span class="s2">"https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m</span><span class="si">%d</span><span class="s2">"</span>
+                    <span class="s2">".html"</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
@@ -1123,99 +1123,99 @@
 <div class="viewcode-block" id="SPCPTS.get_jabbers">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.get_jabbers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wordsmith the Jabber/Twitter Messaging.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Wordsmith the Jabber/Twitter Messaging."""</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">product_descript</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_descript_and_url</span><span class="p">()</span>
         <span class="n">jdict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;The Storm Prediction Center&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tstamp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-H:%Mz&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;outlooktype&quot;</span><span class="p">:</span> <span class="n">product_descript</span><span class="p">,</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-            <span class="s2">&quot;wfo&quot;</span><span class="p">:</span> <span class="s2">&quot;DMX&quot;</span><span class="p">,</span>  <span class="c1"># autoplot expects something valid here</span>
-            <span class="s2">&quot;cat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span><span class="p">,</span>
-            <span class="s2">&quot;t220&quot;</span><span class="p">:</span> <span class="s2">&quot;cwa&quot;</span><span class="p">,</span>
+            <span class="s2">"title"</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"The Storm Prediction Center"</span><span class="p">,</span>
+            <span class="s2">"tstamp"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%b </span><span class="si">%-d</span><span class="s2">, %-H:%Mz"</span><span class="p">),</span>
+            <span class="s2">"outlooktype"</span><span class="p">:</span> <span class="n">product_descript</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s2">"wfo"</span><span class="p">:</span> <span class="s2">"DMX"</span><span class="p">,</span>  <span class="c1"># autoplot expects something valid here</span>
+            <span class="s2">"cat"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span><span class="p">,</span>
+            <span class="s2">"t220"</span><span class="p">:</span> <span class="s2">"cwa"</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">twmedia</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/220/&quot;</span>
-            <span class="s2">&quot;cat:categorical::which:</span><span class="si">%(day)s%(cat)s</span><span class="s2">::t:</span><span class="si">%(t220)s</span><span class="s2">::network:WFO::&quot;</span>
-            <span class="s2">&quot;wfo:</span><span class="si">%(wfo)s</span><span class="s2">::_r:86::&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;csector:conus::valid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;.png&quot;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">20&quot;</span><span class="p">)</span>
+            <span class="s2">"https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"</span>
+            <span class="s2">"cat:categorical::which:</span><span class="si">%(day)s%(cat)s</span><span class="s2">::t:</span><span class="si">%(t220)s</span><span class="s2">::network:WFO::"</span>
+            <span class="s2">"wfo:</span><span class="si">%(wfo)s</span><span class="s2">::_r:86::"</span>
+            <span class="sa">f</span><span class="s2">"csector:conus::valid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H%M'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="s2">".png"</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"</span><span class="si">%%</span><span class="s2">20"</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">max_category</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">wfos</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;TSTM&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;EXTM&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;MRGL&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;SLGT&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;ENH&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;CRIT&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;MDT&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;ELEV&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;IDRT&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;SDRT&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;0.15&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;0.30&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"TSTM"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"EXTM"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"MRGL"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"SLGT"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"ENH"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"CRIT"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"MDT"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"HIGH"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"ELEV"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"IDRT"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"SDRT"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"0.15"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"0.30"</span><span class="p">:</span> <span class="p">[],</span>
             <span class="p">}</span>
 
             <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
                 <span class="n">_d</span> <span class="o">=</span> <span class="n">wfos</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="p">[])</span>
                 <span class="n">_d</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">)</span>
 
-            <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">day</span>
+            <span class="n">jdict</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="n">day</span>
             <span class="n">wfomsgs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="c1"># We order in least to greatest, so that the highest threshold</span>
             <span class="c1"># overwrites lower ones</span>
             <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">[</span>
-                <span class="s2">&quot;MRGL&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;SLGT&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;ENH&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;MDT&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;ELEV&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;CRIT&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;EXTM&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;IDRT&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;SDRT&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;0.15&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;0.30&quot;</span><span class="p">,</span>
+                <span class="s2">"MRGL"</span><span class="p">,</span>
+                <span class="s2">"SLGT"</span><span class="p">,</span>
+                <span class="s2">"ENH"</span><span class="p">,</span>
+                <span class="s2">"MDT"</span><span class="p">,</span>
+                <span class="s2">"HIGH"</span><span class="p">,</span>
+                <span class="s2">"ELEV"</span><span class="p">,</span>
+                <span class="s2">"CRIT"</span><span class="p">,</span>
+                <span class="s2">"EXTM"</span><span class="p">,</span>
+                <span class="s2">"IDRT"</span><span class="p">,</span>
+                <span class="s2">"SDRT"</span><span class="p">,</span>
+                <span class="s2">"0.15"</span><span class="p">,</span>
+                <span class="s2">"0.30"</span><span class="p">,</span>
             <span class="p">]:</span>
                 <span class="c1"># hack</span>
-                <span class="k">if</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;0.15&quot;</span><span class="p">,</span> <span class="s2">&quot;0.30&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"0.15"</span><span class="p">,</span> <span class="s2">"0.30"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">day</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;ttext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">product_descript</span><span class="si">}</span><span class="s2"> Risk&quot;</span>
+                <span class="n">jdict</span><span class="p">[</span><span class="s2">"ttext"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">product_descript</span><span class="si">}</span><span class="s2"> Risk"</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">wfo</span> <span class="ow">in</span> <span class="n">wfos</span><span class="p">[</span><span class="n">cat</span><span class="p">]:</span>
                     <span class="n">max_category</span> <span class="o">=</span> <span class="n">cat</span>
-                    <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;wfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wfo</span>
+                    <span class="n">jdict</span><span class="p">[</span><span class="s2">"wfo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">wfo</span>
                     <span class="n">wfomsgs</span><span class="p">[</span><span class="n">wfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
                         <span class="p">(</span>
-                            <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2"> issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> &quot;</span>
-                            <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                            <span class="s2">"</span><span class="si">%(name)s</span><span class="s2"> issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> "</span>
+                            <span class="s2">"at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">"</span>
                         <span class="p">)</span>
                         <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                         <span class="p">(</span>
-                            <span class="s2">&quot;&lt;p&gt;</span><span class="si">%(name)s</span><span class="s2"> issues &quot;</span>
-                            <span class="s1">&#39;&lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;Day </span><span class="si">%(day)s</span><span class="s1"> </span><span class="si">%(ttext)s</span><span class="s1">&lt;/a&gt; &#39;</span>
-                            <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2">&#39;s area&lt;/p&gt;&quot;</span>
+                            <span class="s2">"&lt;p&gt;</span><span class="si">%(name)s</span><span class="s2"> issues "</span>
+                            <span class="s1">'&lt;a href="</span><span class="si">%(url)s</span><span class="s1">"&gt;Day </span><span class="si">%(day)s</span><span class="s1"> </span><span class="si">%(ttext)s</span><span class="s1">&lt;/a&gt; '</span>
+                            <span class="s2">"at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2">'s area&lt;/p&gt;"</span>
                         <span class="p">)</span>
                         <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                         <span class="p">{</span>
-                            <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span>
+                            <span class="s2">"channels"</span><span class="p">:</span> <span class="p">[</span>
                                 <span class="n">wfo</span><span class="p">,</span>
-                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                             <span class="p">],</span>
-                            <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                            <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
-                            <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="p">(</span>
-                                <span class="s2">&quot;#SPC issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> &quot;</span>
-                                <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                            <span class="s2">"product_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                            <span class="s2">"twitter_media"</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                            <span class="s2">"twitter"</span><span class="p">:</span> <span class="p">(</span>
+                                <span class="s2">"#SPC issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> "</span>
+                                <span class="s2">"at </span><span class="si">%(tstamp)s</span><span class="s2"> for </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">"</span>
                             <span class="p">)</span>
                             <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                         <span class="p">},</span>
@@ -1226,34 +1226,34 @@
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wfomsgs</span><span class="p">[</span><span class="n">wfo</span><span class="p">])</span>
 
         <span class="c1"># Generic for SPC</span>
-        <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;t220&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
+        <span class="n">jdict</span><span class="p">[</span><span class="s2">"t220"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"conus"</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-        <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;catmsg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;&quot;</span>
+            <span class="n">jdict</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"0"</span>
+        <span class="n">jdict</span><span class="p">[</span><span class="s2">"catmsg"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">""</span>
             <span class="k">if</span> <span class="n">max_category</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot; (Max Risk: </span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">max_category</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="k">else</span> <span class="sa">f</span><span class="s2">" (Max Risk: </span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">max_category</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span>
         <span class="p">)</span>
         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2"> issues </span><span class="si">%(title)s</span><span class="s2"> </span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook&quot;</span>
-                    <span class="s2">&quot;</span><span class="si">%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                    <span class="s2">"</span><span class="si">%(name)s</span><span class="s2"> issues </span><span class="si">%(title)s</span><span class="s2"> </span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook"</span>
+                    <span class="s2">"</span><span class="si">%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                 <span class="p">(</span>
-                    <span class="s1">&#39;&lt;p&gt;</span><span class="si">%(name)s</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;</span><span class="si">%(title)s</span><span class="s1"> &#39;</span>
-                    <span class="s2">&quot;</span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook&lt;/a&gt;</span><span class="si">%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2">&lt;/p&gt;&quot;</span>
+                    <span class="s1">'&lt;p&gt;</span><span class="si">%(name)s</span><span class="s1"> issues &lt;a href="</span><span class="si">%(url)s</span><span class="s1">"&gt;</span><span class="si">%(title)s</span><span class="s1"> '</span>
+                    <span class="s2">"</span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook&lt;/a&gt;</span><span class="si">%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2">&lt;/p&gt;"</span>
                 <span class="p">)</span>
                 <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;SPC&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                    <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
-                    <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="p">(</span>
-                        <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2"> issues </span><span class="si">%(title)s</span><span class="s2"> &quot;</span>
-                        <span class="s2">&quot;</span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook</span><span class="si">%(catmsg)s</span><span class="s2"> &quot;</span>
-                        <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                    <span class="s2">"channels"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"SPC"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"SPC</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+                    <span class="s2">"product_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                    <span class="s2">"twitter_media"</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                    <span class="s2">"twitter"</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="s2">"</span><span class="si">%(name)s</span><span class="s2"> issues </span><span class="si">%(title)s</span><span class="s2"> "</span>
+                        <span class="s2">"</span><span class="si">%(outlooktype)s</span><span class="s2"> Outlook</span><span class="si">%(catmsg)s</span><span class="s2"> "</span>
+                        <span class="s2">"at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">"</span>
                     <span class="p">)</span>
                     <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
                 <span class="p">},</span>
@@ -1267,7 +1267,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse this text.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse this text."""</span>
     <span class="k">return</span> <span class="n">SPCPTS</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

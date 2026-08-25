@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.hwo &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.hwo &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/hwo';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,7 +454,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.hwo</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Hazardous Weather Outlook.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Hazardous Weather Outlook."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -465,45 +465,45 @@
 <div class="viewcode-block" id="HWOProduct">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hwo.html#pyiem.nws.products.hwo.HWOProduct">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HWOProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Represents a HWO</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="HWOProduct.get_channels">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hwo.html#pyiem.nws.products.hwo.HWOProduct.get_channels">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;overridden TextProduct#get_channels&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""overridden TextProduct#get_channels"""</span>
         <span class="n">no_storms_day1</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">no_storms_day27</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">segnum</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">day1</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.DAY ONE...&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">day1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">&quot;HWOSPN&quot;</span><span class="p">:</span>
+            <span class="n">day1</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".DAY ONE..."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">day1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">"HWOSPN"</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">HWOException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;segment </span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2"> is missing DAY ONE section&quot;</span>
+                    <span class="sa">f</span><span class="s2">"segment </span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2"> is missing DAY ONE section"</span>
                 <span class="p">)</span>
-            <span class="n">day27</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.DAYS TWO THROUGH SEVEN...&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">day27</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">&quot;HWOSPN&quot;</span><span class="p">:</span>
+            <span class="n">day27</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">".DAYS TWO THROUGH SEVEN..."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">day27</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">!=</span> <span class="s2">"HWOSPN"</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">HWOException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;segment </span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2"> is missing DAYS TWO &quot;</span>
-                    <span class="s2">&quot;THROUGH SEVEN section&quot;</span>
+                    <span class="sa">f</span><span class="s2">"segment </span><span class="si">{</span><span class="n">segnum</span><span class="si">}</span><span class="s2"> is missing DAYS TWO "</span>
+                    <span class="s2">"THROUGH SEVEN section"</span>
                 <span class="p">)</span>
 
             <span class="n">day1text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;(NO HAZARDOUS WEATHER IS EXPECTED AT &quot;</span>
-                    <span class="s2">&quot;THIS TIME|THE PROBABILITY FOR WIDESPREAD &quot;</span>
-                    <span class="s2">&quot;HAZARDOUS WEATHER IS LOW)&quot;</span>
+                    <span class="s2">"(NO HAZARDOUS WEATHER IS EXPECTED AT "</span>
+                    <span class="s2">"THIS TIME|THE PROBABILITY FOR WIDESPREAD "</span>
+                    <span class="s2">"HAZARDOUS WEATHER IS LOW)"</span>
                 <span class="p">),</span>
                 <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="p">[</span><span class="n">day1</span><span class="p">:</span><span class="n">day27</span><span class="p">],</span>
                 <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">day27text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;(NO HAZARDOUS WEATHER IS EXPECTED AT &quot;</span>
-                    <span class="s2">&quot;THIS TIME|THE PROBABILITY FOR WIDESPREAD &quot;</span>
-                    <span class="s2">&quot;HAZARDOUS WEATHER IS LOW)&quot;</span>
+                    <span class="s2">"(NO HAZARDOUS WEATHER IS EXPECTED AT "</span>
+                    <span class="s2">"THIS TIME|THE PROBABILITY FOR WIDESPREAD "</span>
+                    <span class="s2">"HAZARDOUS WEATHER IS LOW)"</span>
                 <span class="p">),</span>
                 <span class="n">segment</span><span class="o">.</span><span class="n">unixtext</span><span class="p">[</span><span class="n">day27</span><span class="p">:],</span>
                 <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
@@ -513,9 +513,9 @@
             <span class="k">if</span> <span class="n">day27text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">no_storms_day27</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">]</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">no_storms_day1</span> <span class="ow">and</span> <span class="n">no_storms_day27</span><span class="p">:</span>
-            <span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">.NONE&quot;</span>
+            <span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">.NONE"</span>
 
         <span class="k">return</span> <span class="n">channels</span></div>
 </div>
@@ -525,7 +525,7 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hwo.html#pyiem.nws.products.hwo.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper function"""</span>
     <span class="k">return</span> <span class="n">HWOProduct</span><span class="p">(</span>
         <span class="n">text</span><span class="p">,</span>
         <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>

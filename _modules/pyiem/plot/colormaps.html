@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.plot.colormaps &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.plot.colormaps &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/plot/colormaps';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.plot.colormaps</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Definition of colormaps&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Definition of colormaps"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
@@ -465,40 +465,40 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Workaround tricky matplotlib API.</span>
+<span class="w">    </span><span class="sd">"""Workaround tricky matplotlib API.</span>
 
 <span class="sd">    see matplotlib/matplotlib#19842</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">hascmap</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">hascmap</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Failed to get cmap: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Failed to get cmap: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">hascmap</span><span class="p">:</span>
         <span class="n">colormaps</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hascmap</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_local_cmap_colors</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return list of colors for this cmap from local file.&quot;&quot;&quot;</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATADIR</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;cmap&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return list of colors for this cmap from local file."""</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATADIR</span><span class="p">,</span> <span class="s2">".."</span><span class="p">,</span> <span class="s2">"cmap"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.txt"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_cmap">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.get_cmap">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_cmap</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to workaround matplotlib complexity.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper to workaround matplotlib complexity."""</span>
     <span class="k">return</span> <span class="n">colormaps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="stretch_cmap">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.stretch_cmap">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">stretch_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a cmap with appropriate over,under,bad settings.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stretch_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s2">"both"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return a cmap with appropriate over,under,bad settings.</span>
 
 <span class="sd">    The issue at hand is that default color ramps do not properly extend to</span>
 <span class="sd">    cover over and under using values from the color ramp.  That is desired</span>
@@ -508,27 +508,27 @@
 <span class="sd">    Args:</span>
 <span class="sd">      cmap (cm.ColorMap): inbound colormap</span>
 <span class="sd">      bins (list): values for binning</span>
-<span class="sd">      extend (str): either &#39;both&#39;, &#39;neither&#39;, &#39;min&#39;, &#39;max&#39; to control cbar</span>
+<span class="sd">      extend (str): either 'both', 'neither', 'min', 'max' to control cbar</span>
 
 <span class="sd">    Retuns:</span>
 <span class="sd">      cm.ColorMap</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">cmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cmap</span> <span class="o">=</span> <span class="n">maue</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">extend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;neither&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]:</span>
-        <span class="n">extend</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
+    <span class="k">if</span> <span class="n">extend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"both"</span><span class="p">,</span> <span class="s2">"neither"</span><span class="p">,</span> <span class="s2">"min"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">]:</span>
+        <span class="n">extend</span> <span class="o">=</span> <span class="s2">"both"</span>
 
     <span class="c1"># get effectively two more colors than necessary</span>
     <span class="n">colors</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)))</span>
     <span class="c1"># create a new cmap, skipping first and last</span>
-    <span class="n">cmapout</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">cmapout</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">""</span><span class="p">)</span>
     <span class="c1"># pylint: disable=W0212</span>
     <span class="n">cmapout</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_bad</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"both"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">]:</span>
         <span class="n">cmapout</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_over</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"both"</span><span class="p">,</span> <span class="s2">"min"</span><span class="p">]:</span>
         <span class="n">cmapout</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_under</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="c1"># we can now return</span>
     <span class="k">return</span> <span class="n">cmapout</span></div>
@@ -538,21 +538,21 @@
 <div class="viewcode-block" id="nwsprecip">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwsprecip">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">nwsprecip</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A color ramp used by NWS on NTP plots</span>
+<span class="w">    </span><span class="sd">"""A color ramp used by NWS on NTP plots</span>
 
 <span class="sd">    Changes</span>
 <span class="sd">     - modified the reds a bit to provide a larger gradient</span>
 <span class="sd">     - added two light brown colors at the low end to allow for more levels</span>
 <span class="sd">     - removed perhaps a bad orange color and remove top white color</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;#cbcb97 #989865 #00ebe7 #00a0f5 #000df5 #00ff00 #00c600 #008e00 &quot;</span>
-        <span class="s2">&quot;#fef700 #e5bc00 #ff8500 #ff0000 #af0000 #640000 #ff00fe #a152bc&quot;</span>
+        <span class="s2">"#cbcb97 #989865 #00ebe7 #00a0f5 #000df5 #00ff00 #00c600 #008e00 "</span>
+        <span class="s2">"#fef700 #e5bc00 #ff8500 #ff0000 #af0000 #640000 #ff00fe #a152bc"</span>
     <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">&quot;nwsprecip&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsprecip"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
@@ -561,19 +561,19 @@
 <div class="viewcode-block" id="nwsice">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwsice">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">nwsice</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Color Ramp Suggested by the NWS for Ice Accumulation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A Color Ramp Suggested by the NWS for Ice Accumulation."""</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;#f4ea3b&quot;</span><span class="p">,</span>  <span class="c1"># 0-0.1</span>
-        <span class="s2">&quot;#ffc000&quot;</span><span class="p">,</span>  <span class="c1"># 0.1-0.25</span>
-        <span class="s2">&quot;#fe0000&quot;</span><span class="p">,</span>  <span class="c1"># 0.25-0.5</span>
-        <span class="s2">&quot;#c00000&quot;</span><span class="p">,</span>  <span class="c1"># 0.5-0.75</span>
-        <span class="s2">&quot;#9966ff&quot;</span><span class="p">,</span>  <span class="c1"># 0.75-1</span>
-        <span class="s2">&quot;#730ac7&quot;</span><span class="p">,</span>  <span class="c1"># 1-2</span>
+        <span class="s2">"#f4ea3b"</span><span class="p">,</span>  <span class="c1"># 0-0.1</span>
+        <span class="s2">"#ffc000"</span><span class="p">,</span>  <span class="c1"># 0.1-0.25</span>
+        <span class="s2">"#fe0000"</span><span class="p">,</span>  <span class="c1"># 0.25-0.5</span>
+        <span class="s2">"#c00000"</span><span class="p">,</span>  <span class="c1"># 0.5-0.75</span>
+        <span class="s2">"#9966ff"</span><span class="p">,</span>  <span class="c1"># 0.75-1</span>
+        <span class="s2">"#730ac7"</span><span class="p">,</span>  <span class="c1"># 1-2</span>
     <span class="p">]</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">&quot;nwsice&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;#25045b&quot;</span><span class="p">)</span>  <span class="c1"># 2+</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsice"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#25045b"</span><span class="p">)</span>  <span class="c1"># 2+</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
@@ -582,7 +582,7 @@
 <div class="viewcode-block" id="nwssnow">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwssnow">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">nwssnow</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Color Ramp Suggested by the NWS for Snowfall&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A Color Ramp Suggested by the NWS for Snowfall"""</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">[</span><span class="mf">0.74117647</span><span class="p">,</span> <span class="mf">0.84313725</span><span class="p">,</span> <span class="mf">0.90588235</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.41960784</span><span class="p">,</span> <span class="mf">0.68235294</span><span class="p">,</span> <span class="mf">0.83921569</span><span class="p">],</span>
@@ -596,21 +596,21 @@
         <span class="p">[</span><span class="mf">0.61960784</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.41176471</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
     <span class="p">]</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">&quot;nwssnow&quot;</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwssnow"</span><span class="p">)</span>
     <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">([</span><span class="mf">0.16862745</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.18039216</span><span class="p">])</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_gen</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cpool</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator Helper.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Generator Helper."""</span>
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;#000000&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#000000"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span>
 
@@ -618,48 +618,48 @@
 <div class="viewcode-block" id="dep_erosion">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.dep_erosion">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dep_erosion</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;DEP Erosion ramp yelllow to brown (jump at 5T) `cool`&quot;&quot;&quot;</span>
-    <span class="c1"># NB: dep.RAMPS wants just 8 colors, so don&#39;t define more than that here</span>
+<span class="w">    </span><span class="sd">"""DEP Erosion ramp yelllow to brown (jump at 5T) `cool`"""</span>
+    <span class="c1"># NB: dep.RAMPS wants just 8 colors, so don't define more than that here</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;#FFFF80 #FCDD60 #E69729 #B35915 #822507 #00ffff #55aaff #d52aff&quot;</span>
+        <span class="s2">"#FFFF80 #FCDD60 #E69729 #B35915 #822507 #00ffff #55aaff #d52aff"</span>
     <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">&quot;dep_erosion&quot;</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">"dep_erosion"</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="james2">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.james2">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">james2</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;David James suggested color ramp Yellow to Brown&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""David James suggested color ramp Yellow to Brown"""</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;#FFFF80 #FFEE70 #FCDD60 #FACD52 #F7BE43 #F5AF36 #E69729 #CC781F &quot;</span>
-        <span class="s2">&quot;#B35915 #9C400E #822507 #6B0000&quot;</span>
+        <span class="s2">"#FFFF80 #FFEE70 #FCDD60 #FACD52 #F7BE43 #F5AF36 #E69729 #CC781F "</span>
+        <span class="s2">"#B35915 #9C400E #822507 #6B0000"</span>
     <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">&quot;james2&quot;</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">"james2"</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="james">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.james">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">james</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;David James suggested color ramp Yellow to Blue&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""David James suggested color ramp Yellow to Blue"""</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;#FFFF80 #CDFA64 #98F046 #61E827 #3BD923 #3FC453 #37AD7A #26989E &quot;</span>
-        <span class="s2">&quot;#217AA3 #215394 #1B3187 #0C1078&quot;</span>
+        <span class="s2">"#FFFF80 #CDFA64 #98F046 #61E827 #3BD923 #3FC453 #37AD7A #26989E "</span>
+        <span class="s2">"#217AA3 #215394 #1B3187 #0C1078"</span>
     <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">&quot;james&quot;</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_gen</span><span class="p">(</span><span class="s2">"james"</span><span class="p">,</span> <span class="n">cpool</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="whitebluegreenyellowred">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.whitebluegreenyellowred">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">whitebluegreenyellowred</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rip off NCL&#39;s WhiteBlueGreenYellowRed&quot;&quot;&quot;</span>
-    <span class="n">cpool</span> <span class="o">=</span> <span class="n">_load_local_cmap_colors</span><span class="p">(</span><span class="s2">&quot;whitebluegreenyellowred&quot;</span><span class="p">)</span>
-    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">&quot;whitebluegreenyellowred&quot;</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;#000000&quot;</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Rip off NCL's WhiteBlueGreenYellowRed"""</span>
+    <span class="n">cpool</span> <span class="o">=</span> <span class="n">_load_local_cmap_colors</span><span class="p">(</span><span class="s2">"whitebluegreenyellowred"</span><span class="p">)</span>
+    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"whitebluegreenyellowred"</span><span class="p">)</span>
+    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#000000"</span><span class="p">)</span>
+    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap3</span></div>
 
@@ -668,9 +668,9 @@
 <div class="viewcode-block" id="maue">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.maue">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">maue</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pretty color ramp Dr Ryan Maue uses&quot;&quot;&quot;</span>
-    <span class="n">cpool</span> <span class="o">=</span> <span class="n">_load_local_cmap_colors</span><span class="p">(</span><span class="s2">&quot;maue&quot;</span><span class="p">)</span>
-    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">&quot;maue&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Pretty color ramp Dr Ryan Maue uses"""</span>
+    <span class="n">cpool</span> <span class="o">=</span> <span class="n">_load_local_cmap_colors</span><span class="p">(</span><span class="s2">"maue"</span><span class="p">)</span>
+    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"maue"</span><span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap3</span></div>
 
@@ -679,33 +679,33 @@
 <div class="viewcode-block" id="radar_ptype">
 <a class="viewcode-back" href="../../../api/pyiem.plot.colormaps.html#pyiem.plot.colormaps.radar_ptype">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">radar_ptype</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a dictionary of colors for HRRR Ptype.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Generate a dictionary of colors for HRRR Ptype."""</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;rain&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"rain"</span><span class="p">:</span> <span class="p">(</span>
             <span class="c1"># 0-40 by 2.5, Green</span>
-            <span class="s2">&quot;#eef8ea #e5f5e0 #d6efd0 #c7e9c0 #b4e1ad #a0d99b #8ace88 #73c476 &quot;</span>
-            <span class="s2">&quot;#5ab769 #40aa5d #319a50 #228a44 #117b38 #006c2c #005723 #00441b &quot;</span>
+            <span class="s2">"#eef8ea #e5f5e0 #d6efd0 #c7e9c0 #b4e1ad #a0d99b #8ace88 #73c476 "</span>
+            <span class="s2">"#5ab769 #40aa5d #319a50 #228a44 #117b38 #006c2c #005723 #00441b "</span>
             <span class="c1"># 40-55 by 2.5, Wistia</span>
-            <span class="s2">&quot;#ffe81a #ffd710 #ffc505 #ffb700 #ffab00 #ffa000&quot;</span>
+            <span class="s2">"#ffe81a #ffd710 #ffc505 #ffb700 #ffab00 #ffa000"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-        <span class="s2">&quot;snow&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"snow"</span><span class="p">:</span> <span class="p">(</span>
             <span class="c1"># 0-40 by 2.5, 16 colors from ocean_r</span>
-            <span class="s2">&quot;#b4dae6 #99ccdd #81c0d5 #66b3cc #4ea6c4 #3399bb #1b8db3 #0080aa &quot;</span>
-            <span class="s2">&quot;#0073a2 #006699 #005a91 #004d88 #003f7f #003377 #00266e #001a66 &quot;</span>
+            <span class="s2">"#b4dae6 #99ccdd #81c0d5 #66b3cc #4ea6c4 #3399bb #1b8db3 #0080aa "</span>
+            <span class="s2">"#0073a2 #006699 #005a91 #004d88 #003f7f #003377 #00266e #001a66 "</span>
             <span class="c1"># 40-55 by 2.5, 6 colors from PuRd_r</span>
-            <span class="s2">&quot;#8d003b #b80b4e #d81b6a #e53592 #df66b0 #cd8bc2&quot;</span>
+            <span class="s2">"#8d003b #b80b4e #d81b6a #e53592 #df66b0 #cd8bc2"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-        <span class="s2">&quot;frzr&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"frzr"</span><span class="p">:</span> <span class="p">(</span>
             <span class="c1"># 0-55 by 2.5, 22 colors Reds</span>
-            <span class="s2">&quot;#ffeee6 #fee6da #fedecf #fdd0bc #fcc2aa #fcb499 #fca588 #fc9576 &quot;</span>
-            <span class="s2">&quot;#fc8767 #fb7858 #fb694a #f7593f #f24734 #ec382b #de2b25 #d11e1f &quot;</span>
-            <span class="s2">&quot;#c4161c #b61319 #a81016 #940b13 #7c0510 #67000d&quot;</span>
+            <span class="s2">"#ffeee6 #fee6da #fedecf #fdd0bc #fcc2aa #fcb499 #fca588 #fc9576 "</span>
+            <span class="s2">"#fc8767 #fb7858 #fb694a #f7593f #f24734 #ec382b #de2b25 #d11e1f "</span>
+            <span class="s2">"#c4161c #b61319 #a81016 #940b13 #7c0510 #67000d"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-        <span class="s2">&quot;icep&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"icep"</span><span class="p">:</span> <span class="p">(</span>
             <span class="c1"># 0-55 by 2.5, 22 colors Purples</span>
-            <span class="s2">&quot;#f8f6fa #f3f1f7 #eeecf4 #e6e5f1 #dedded #d5d5e9 #cacae3 #bebfdd &quot;</span>
-            <span class="s2">&quot;#b4b4d7 #a9a7cf #9e9ac8 #9390c3 #8885be #7e79b8 #7669af #6e58a7 &quot;</span>
-            <span class="s2">&quot;#66499f #5e3a98 #552a90 #4e1c8a #460d83 #3f007d&quot;</span>
+            <span class="s2">"#f8f6fa #f3f1f7 #eeecf4 #e6e5f1 #dedded #d5d5e9 #cacae3 #bebfdd "</span>
+            <span class="s2">"#b4b4d7 #a9a7cf #9e9ac8 #9390c3 #8885be #7e79b8 #7669af #6e58a7 "</span>
+            <span class="s2">"#66499f #5e3a98 #552a90 #4e1c8a #460d83 #3f007d"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
     <span class="p">}</span></div>
 

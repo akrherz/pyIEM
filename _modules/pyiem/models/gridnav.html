@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.models.gridnav &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.models.gridnav &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/models/gridnav';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.models.gridnav</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Grid Navigation Metadata.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Grid Navigation Metadata."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
@@ -464,71 +464,71 @@
 <div class="viewcode-block" id="CartesianGridNavigation">
 <a class="viewcode-back" href="../../../api/pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CartesianGridNavigation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Navigation for cartesian grid with (0,0) in lower left.</span>
+<span class="w">    </span><span class="sd">"""Navigation for cartesian grid with (0,0) in lower left.</span>
 
 <span class="sd">    The `left_edge` and `bottom_edge` are the only required fields. The</span>
 <span class="sd">    rest are optional, but you need to have enough information to define</span>
 <span class="sd">    the grid, ie provide `dx` and `dy` or `nx` and `ny`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">crs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CRS</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The coordinate reference system of the grid&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">"EPSG:4326"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The coordinate reference system of the grid"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">left_edge</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The left edge of the grid in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The left edge of the grid in projection units"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">bottom_edge</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The bottom edge of the grid in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The bottom edge of the grid in projection units"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">top_edge</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The top edge of the grid in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The top edge of the grid in projection units"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">right_edge</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The right edge of the grid in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The right edge of the grid in projection units"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">dx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The grid cell width in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The grid cell width in projection units"</span><span class="p">,</span>
         <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">dy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The grid cell height in projection units&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The grid cell height in projection units"</span><span class="p">,</span>
         <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">nx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of grid cells in the x direction&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The number of grid cells in the x direction"</span><span class="p">,</span>
         <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ny</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of grid cells in the y direction&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The number of grid cells in the y direction"</span><span class="p">,</span>
         <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">x_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;These are the centers of the cells in the x direction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""These are the centers of the cells in the x direction."""</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span> <span class="o">*</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">y_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;These are the centers of the cells in the y direction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""These are the centers of the cells in the y direction."""</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">))</span> <span class="o">*</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">x_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;These are the edges of the x cells (n=NX + 1).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""These are the edges of the x cells (n=NX + 1)."""</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_edge</span>
@@ -536,7 +536,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">y_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;These are the edges of the y cells (n=NY + 1).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""These are the edges of the y cells (n=NY + 1)."""</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_edge</span>
@@ -544,27 +544,27 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The centroid of the left most grid cell.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The centroid of the left most grid cell."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_edge</span> <span class="o">+</span> <span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The centroid of the right most grid cell.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The centroid of the right most grid cell."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_edge</span> <span class="o">-</span> <span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The centroid of the bottom most grid cell.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The centroid of the bottom most grid cell."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_edge</span> <span class="o">+</span> <span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The centroid of the top most grid cell.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The centroid of the top most grid cell."""</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_edge</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">affine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the affine transformation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the affine transformation."""</span>
         <span class="k">return</span> <span class="n">Affine</span><span class="p">(</span>
             <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">),</span>
             <span class="mi">0</span><span class="p">,</span>
@@ -576,7 +576,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">affine_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the transformation associated with upper left origin.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the transformation associated with upper left origin."""</span>
         <span class="k">return</span> <span class="n">Affine</span><span class="p">(</span>
             <span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">),</span>
             <span class="mi">0</span><span class="p">,</span>
@@ -588,38 +588,38 @@
 
 <div class="viewcode-block" id="CartesianGridNavigation.complete_definition">
 <a class="viewcode-back" href="../../../api/pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.complete_definition">[docs]</a>
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">complete_definition</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use information that was provided to compute other fields.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Use information that was provided to compute other fields."""</span>
         <span class="c1"># We have required fields left_edge, bottom_edge</span>
         <span class="c1"># Require that either dx/dy is provided or nx/ny is provided</span>
-        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;top_edge&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;top_edge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;bottom_edge&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"top_edge"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"top_edge"</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"bottom_edge"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">]</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="s2">"dy"</span><span class="p">]</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;right_edge&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;right_edge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;left_edge&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"right_edge"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"right_edge"</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"left_edge"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="s2">"dx"</span><span class="p">]</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;right_edge&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;left_edge&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dx"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"dx"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"right_edge"</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="s2">"left_edge"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dy&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;top_edge&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;bottom_edge&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dy"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"dy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"top_edge"</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="s2">"bottom_edge"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">]</span>
             <span class="p">)</span>
         <span class="c1"># Be a bit more careful here that our grid generates a near integer</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">edges</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;nx&quot;</span><span class="p">,</span> <span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;left_edge&quot;</span><span class="p">,</span> <span class="s2">&quot;right_edge&quot;</span><span class="p">]),</span>
-            <span class="p">(</span><span class="s2">&quot;ny&quot;</span><span class="p">,</span> <span class="s2">&quot;dy&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;bottom_edge&quot;</span><span class="p">,</span> <span class="s2">&quot;top_edge&quot;</span><span class="p">]),</span>
+            <span class="p">(</span><span class="s2">"nx"</span><span class="p">,</span> <span class="s2">"dx"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"left_edge"</span><span class="p">,</span> <span class="s2">"right_edge"</span><span class="p">]),</span>
+            <span class="p">(</span><span class="s2">"ny"</span><span class="p">,</span> <span class="s2">"dy"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"bottom_edge"</span><span class="p">,</span> <span class="s2">"top_edge"</span><span class="p">]),</span>
         <span class="p">]:</span>
             <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">nn</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">/</span> <span class="n">values</span><span class="p">[</span><span class="n">spacing</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">nn</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">nn</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Computed </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is not approximately an integer&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Computed </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is not approximately an integer"</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nn</span><span class="p">)</span>
 
@@ -631,7 +631,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the grid cell that contains the given lon/lat (EPSG: 4326).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Find the grid cell that contains the given lon/lat (EPSG: 4326)."""</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="p">)(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>  <span class="c1"># skipcq</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_edge</span>

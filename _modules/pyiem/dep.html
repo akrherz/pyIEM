@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.dep &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.dep &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/dep';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.dep</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Utilities for the Daily Erosion Project&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Utilities for the Daily Erosion Project"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -465,23 +465,23 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sqlalchemy_conn</span><span class="p">,</span> <span class="n">sql_helper</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.iemre</span><span class="w"> </span><span class="kn">import</span> <span class="n">EAST</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">,</span> <span class="n">SOUTH</span><span class="p">,</span> <span class="n">WEST</span>
 
-<span class="n">YLD_CROPTYPE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Crop Type #\s+(?P&lt;num&gt;\d+)\s+is (?P&lt;name&gt;[^\s]+)&quot;</span><span class="p">)</span>
+<span class="n">YLD_CROPTYPE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Crop Type #\s+(?P&lt;num&gt;\d+)\s+is (?P&lt;name&gt;[^\s]+)"</span><span class="p">)</span>
 <span class="n">YLD_DATA</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;Crop Type #\s+(?P&lt;num&gt;\d+)\s+Date = (?P&lt;doy&gt;\d+)&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot; OFE #\s+(?P&lt;ofe&gt;\d+)\s+yield=\s+(?P&lt;yield&gt;[0-9\.]+)&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot; \(kg/m\*\*2\) year= (?P&lt;year&gt;\d+)&quot;</span>
+        <span class="sa">r</span><span class="s2">"Crop Type #\s+(?P&lt;num&gt;\d+)\s+Date = (?P&lt;doy&gt;\d+)"</span>
+        <span class="sa">r</span><span class="s2">" OFE #\s+(?P&lt;ofe&gt;\d+)\s+yield=\s+(?P&lt;yield&gt;[0-9\.]+)"</span>
+        <span class="sa">r</span><span class="s2">" \(kg/m\*\*2\) year= (?P&lt;year&gt;\d+)"</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="c1"># 9 values for 8 colors on the website</span>
 <span class="c1"># NB: Keep the lowest value just above zero so that plots always show data</span>
 <span class="n">RAMPS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;english&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"english"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">],</span>
     <span class="p">],</span>
-    <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"metric"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">35.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">70.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">125.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">,</span> <span class="mf">750.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">],</span>
@@ -492,12 +492,12 @@
 <div class="viewcode-block" id="load_scenarios">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.load_scenarios">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_scenarios</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a dataframe of DEP scenarios.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;dep&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Build a dataframe of DEP scenarios."""</span>
+    <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">"dep"</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
-            <span class="n">sql_helper</span><span class="p">(</span><span class="s2">&quot;SELECT * from scenario ORDER by scenario_id ASC&quot;</span><span class="p">),</span>
+            <span class="n">sql_helper</span><span class="p">(</span><span class="s2">"SELECT * from scenario ORDER by scenario_id ASC"</span><span class="p">),</span>
             <span class="n">conn</span><span class="p">,</span>
-            <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;scenario_id&quot;</span><span class="p">,</span>
+            <span class="n">index_col</span><span class="o">=</span><span class="s2">"scenario_id"</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -505,18 +505,18 @@
 <div class="viewcode-block" id="get_cli_fname">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.get_cli_fname">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_cli_fname</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">scenario</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the climate file name for the given lon, lat, and scenario&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get the climate file name for the given lon, lat, and scenario"""</span>
     <span class="c1"># The trouble here is relying on rounding is problematic, so we just</span>
     <span class="c1"># truncate</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">SOUTH</span> <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;</span> <span class="n">NORTH</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lat: </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2"> outside of bounds: </span><span class="si">{</span><span class="n">SOUTH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">NORTH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lat: </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2"> outside of bounds: </span><span class="si">{</span><span class="n">SOUTH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">NORTH</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">WEST</span> <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="n">EAST</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lon: </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2"> outside of bounds: </span><span class="si">{</span><span class="n">WEST</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">EAST</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lon: </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2"> outside of bounds: </span><span class="si">{</span><span class="n">WEST</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">EAST</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;/i/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/cli/</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lon</span><span class="p">)</span><span class="si">:</span><span class="s2">03.0f</span><span class="si">}</span><span class="s2">x&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="si">:</span><span class="s2">03.0f</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lon</span><span class="p">)</span><span class="si">:</span><span class="s2">06.2f</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">06.2f</span><span class="si">}</span><span class="s2">.cli&quot;</span>
+        <span class="sa">f</span><span class="s2">"/i/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/cli/</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lon</span><span class="p">)</span><span class="si">:</span><span class="s2">03.0f</span><span class="si">}</span><span class="s2">x"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="si">:</span><span class="s2">03.0f</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lon</span><span class="p">)</span><span class="si">:</span><span class="s2">06.2f</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">06.2f</span><span class="si">}</span><span class="s2">.cli"</span>
     <span class="p">)</span></div>
 
 
@@ -524,15 +524,15 @@
 <div class="viewcode-block" id="read_yld">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_yld">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_yld</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;read WEPP yld file with some local mods to include a year</span>
+<span class="w">    </span><span class="sd">"""read WEPP yld file with some local mods to include a year</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pandas.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="n">xref</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">cropcode</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">YLD_CROPTYPE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -556,16 +556,16 @@
 <div class="viewcode-block" id="read_slp">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_slp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_slp</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;read WEPP slp file.</span>
+<span class="w">    </span><span class="sd">"""read WEPP slp file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      list of slope profiles</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[:</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[:</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">]</span>
     <span class="n">segments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">segments</span>
     <span class="n">xpos</span> <span class="o">=</span> <span class="mi">0</span>
@@ -574,7 +574,7 @@
         <span class="c1"># first line is pts and x-length</span>
         <span class="p">(</span><span class="n">_pts</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span> <span class="o">+</span> <span class="n">seg</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
         <span class="c1"># next line is the combo of x-position along length and slope at pt</span>
-        <span class="n">line2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">8</span> <span class="o">+</span> <span class="n">seg</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">line2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">8</span> <span class="o">+</span> <span class="n">seg</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
         <span class="c1"># first value in each pair is the x-pos relative to the length</span>
         <span class="n">xs</span> <span class="o">=</span> <span class="n">xpos</span> <span class="o">+</span> <span class="n">tokens</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">length</span>
@@ -586,7 +586,7 @@
             <span class="c1"># dx * slope</span>
             <span class="n">elev</span> <span class="o">-=</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">slopes</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
             <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elev</span><span class="p">)</span>
-        <span class="n">res</span><span class="p">[</span><span class="n">seg</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">xs</span><span class="p">,</span> <span class="s2">&quot;slopes&quot;</span><span class="p">:</span> <span class="n">slopes</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ys</span><span class="p">)}</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">seg</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">xs</span><span class="p">,</span> <span class="s2">"slopes"</span><span class="p">:</span> <span class="n">slopes</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ys</span><span class="p">)}</span>
         <span class="n">xpos</span> <span class="o">+=</span> <span class="n">length</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
@@ -595,7 +595,7 @@
 <div class="viewcode-block" id="man2df">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.man2df">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">man2df</span><span class="p">(</span><span class="n">mandict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">year1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert nasty dictionary returned from `read_man` into `pd.DataFrame`.</span>
+<span class="w">    </span><span class="sd">"""Convert nasty dictionary returned from `read_man` into `pd.DataFrame`.</span>
 
 <span class="sd">    The DataFrame is oriented with OFE, year.</span>
 
@@ -606,30 +606,30 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pd.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">baseyear</span> <span class="o">=</span> <span class="n">year1</span>  <span class="c1"># roundabout</span>
-    <span class="k">for</span> <span class="n">iofe</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;iofe&quot;</span><span class="p">]):</span>
-        <span class="k">for</span> <span class="n">iyear</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;inyr&quot;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">iofe</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mandict</span><span class="p">[</span><span class="s2">"iofe"</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">iyear</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mandict</span><span class="p">[</span><span class="s2">"inyr"</span><span class="p">]):</span>
             <span class="n">year</span> <span class="o">=</span> <span class="n">iyear</span> <span class="o">+</span> <span class="n">baseyear</span>
-            <span class="n">scenyr</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;rotations&quot;</span><span class="p">][</span><span class="n">iyear</span><span class="p">][</span><span class="n">iofe</span><span class="p">][</span><span class="s2">&quot;yearindex&quot;</span><span class="p">]</span>
-            <span class="n">ncrop</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scenyr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;ntype&quot;</span><span class="p">]</span>
-            <span class="n">tilseq</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scenyr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;tilseq&quot;</span><span class="p">]</span>
+            <span class="n">scenyr</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">"rotations"</span><span class="p">][</span><span class="n">iyear</span><span class="p">][</span><span class="n">iofe</span><span class="p">][</span><span class="s2">"yearindex"</span><span class="p">]</span>
+            <span class="n">ncrop</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scenyr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"ntype"</span><span class="p">]</span>
+            <span class="n">tilseq</span> <span class="o">=</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scenyr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"tilseq"</span><span class="p">]</span>
             <span class="n">plant_date</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">for</span> <span class="n">surfeff</span> <span class="ow">in</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">tilseq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;tills&quot;</span><span class="p">]:</span>
-                <span class="n">op</span> <span class="o">=</span> <span class="n">surfeff</span><span class="p">[</span><span class="s2">&quot;op&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">surfeff</span> <span class="ow">in</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">tilseq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"tills"</span><span class="p">]:</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="n">surfeff</span><span class="p">[</span><span class="s2">"op"</span><span class="p">]</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">][</span><span class="n">op</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;scecomment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Planter&quot;</span><span class="p">)</span>
+                    <span class="n">mandict</span><span class="p">[</span><span class="s2">"operations"</span><span class="p">][</span><span class="n">op</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"scecomment"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"Planter"</span><span class="p">)</span>
                     <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
                 <span class="p">):</span>
-                    <span class="n">doy</span> <span class="o">=</span> <span class="n">surfeff</span><span class="p">[</span><span class="s2">&quot;mdate&quot;</span><span class="p">]</span>
+                    <span class="n">doy</span> <span class="o">=</span> <span class="n">surfeff</span><span class="p">[</span><span class="s2">"mdate"</span><span class="p">]</span>
                     <span class="n">plant_date</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">doy</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
-                    <span class="s2">&quot;ofe&quot;</span><span class="p">:</span> <span class="n">iofe</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                    <span class="s2">&quot;plant_date&quot;</span><span class="p">:</span> <span class="n">plant_date</span><span class="p">,</span>
-                    <span class="s2">&quot;crop_name&quot;</span><span class="p">:</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">&quot;crops&quot;</span><span class="p">][</span><span class="n">ncrop</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;crpnam&quot;</span><span class="p">],</span>
+                    <span class="s2">"year"</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+                    <span class="s2">"ofe"</span><span class="p">:</span> <span class="n">iofe</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s2">"plant_date"</span><span class="p">:</span> <span class="n">plant_date</span><span class="p">,</span>
+                    <span class="s2">"crop_name"</span><span class="p">:</span> <span class="n">mandict</span><span class="p">[</span><span class="s2">"crops"</span><span class="p">][</span><span class="n">ncrop</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"crpnam"</span><span class="p">],</span>
                 <span class="p">}</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
@@ -639,192 +639,192 @@
 <div class="viewcode-block" id="read_man">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_man">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_man</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements WEPP&#39;s INFILE.for for reading management file</span>
+<span class="w">    </span><span class="sd">"""Implements WEPP's INFILE.for for reading management file</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      dict of management info</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># Step one make a array of any data</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[:</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">]</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;manver&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;iofe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;inyr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ncrop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">13</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;crops&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ncrop&quot;</span><span class="p">]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"ascii"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[:</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"manver"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"iofe"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"inyr"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"ncrop"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">13</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"crops"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"ncrop"</span><span class="p">]</span>
     <span class="n">linenum</span> <span class="o">=</span> <span class="mi">16</span>
-    <span class="k">for</span> <span class="n">ncrop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;ncrop&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;crops&quot;</span><span class="p">][</span><span class="n">ncrop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;crpnam&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-            <span class="s2">&quot;crpcomment&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;iplant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+    <span class="k">for</span> <span class="n">ncrop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"ncrop"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"crops"</span><span class="p">][</span><span class="n">ncrop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"crpnam"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+            <span class="s2">"crpcomment"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"iplant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
         <span class="p">}</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">5</span>
-        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;crops&quot;</span><span class="p">][</span><span class="n">ncrop</span><span class="p">][</span><span class="s2">&quot;iplant&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"crops"</span><span class="p">][</span><span class="n">ncrop</span><span class="p">][</span><span class="s2">"iplant"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># TODO</span>
             <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">7</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">4</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nop"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">3</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nop&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">nop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nop&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">][</span><span class="n">nop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;scenam&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-            <span class="s2">&quot;scecomment&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;iplant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"operations"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nop"</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">nop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nop"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"operations"</span><span class="p">][</span><span class="n">nop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"scenam"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+            <span class="s2">"scecomment"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"iplant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
         <span class="p">}</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">9</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">6</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nini&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ini&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nini&quot;</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nini"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"ini"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nini"</span><span class="p">]</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">3</span>
-    <span class="k">for</span> <span class="n">ini</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nini&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ini&quot;</span><span class="p">][</span><span class="n">ini</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;scenam&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-            <span class="s2">&quot;scecomment&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;iplant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+    <span class="k">for</span> <span class="n">ini</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nini"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"ini"</span><span class="p">][</span><span class="n">ini</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"scenam"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+            <span class="s2">"scecomment"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"iplant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
         <span class="p">}</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">14</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">6</span>
 
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nsurf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nsurf&quot;</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nsurf"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nsurf"</span><span class="p">]</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">6</span>
-    <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nsurf&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">surf</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;scenam&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-            <span class="s2">&quot;scecomment&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;iplant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;ntill&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]),</span>
+    <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nsurf"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">surf</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"scenam"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+            <span class="s2">"scecomment"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"iplant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"ntill"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]),</span>
         <span class="p">}</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">&quot;tills&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span>
-            <span class="s2">&quot;ntill&quot;</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">"tills"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span>
+            <span class="s2">"ntill"</span>
         <span class="p">]</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">6</span>
-        <span class="k">for</span> <span class="n">till</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">&quot;ntill&quot;</span><span class="p">]):</span>
-            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;surfeffects&quot;</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">&quot;tills&quot;</span><span class="p">][</span><span class="n">till</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;mdate&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]),</span>
-                <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
-                <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]),</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]),</span>
+        <span class="k">for</span> <span class="n">till</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">"ntill"</span><span class="p">]):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">"surfeffects"</span><span class="p">][</span><span class="n">surf</span><span class="p">][</span><span class="s2">"tills"</span><span class="p">][</span><span class="n">till</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"mdate"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]),</span>
+                <span class="s2">"op"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="s2">"depth"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]),</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]),</span>
             <span class="p">}</span>
             <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">4</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">4</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">2</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ncnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"ncnt"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">7</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ndrain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"ndrain"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">7</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nmscen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nmscen"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">4</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nmscen&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nmscen&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;scenam&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-            <span class="s2">&quot;scecomment&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;iplant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
-            <span class="s2">&quot;ntype&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]),</span>
-            <span class="s2">&quot;tilseq&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]),</span>
-            <span class="s2">&quot;conseq&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">7</span><span class="p">]),</span>
-            <span class="s2">&quot;drseq&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]),</span>
-            <span class="s2">&quot;imngmt&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]),</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nmscen"</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nmscen"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"scenam"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+            <span class="s2">"scecomment"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"iplant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="s2">"ntype"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]),</span>
+            <span class="s2">"tilseq"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]),</span>
+            <span class="s2">"conseq"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">7</span><span class="p">]),</span>
+            <span class="s2">"drseq"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]),</span>
+            <span class="s2">"imngmt"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]),</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;iplant&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;imngmt&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"iplant"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"imngmt"</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
                 <span class="c1"># Annual/Fallow Cropping system</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdharv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">10</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdplt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">12</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">13</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdherb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdharv"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">10</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdplt"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"r1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">12</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">13</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdherb"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">15</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdburn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;fbrna1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdburn"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"fbrna1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
                         <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="p">)</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;fbrno1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"fbrno1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
                         <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">)</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">16</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdslge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdslge"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">15</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdcut&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;frcu1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdcut"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"frcu1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">16</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdmove&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;frmov1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdmove"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"frmov1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">16</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;resmgt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"resmgt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">14</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Perrenial Cropland</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdharv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">10</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdplt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;jdstop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">12</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">13</span><span class="p">])</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;mgtopt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;mgtopt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdharv"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">10</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdplt"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"jdstop"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">12</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"r1"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">13</span><span class="p">])</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"mgtopt"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">14</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"mgtopt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="c1"># Cutting</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;ncut&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;cuts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span>
-                        <span class="s2">&quot;ncut&quot;</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"ncut"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"cuts"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span>
+                        <span class="s2">"ncut"</span>
                     <span class="p">]</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">16</span>
-                    <span class="k">for</span> <span class="n">cut</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;ncut&quot;</span><span class="p">]):</span>
-                        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;cuts&quot;</span><span class="p">][</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">cut</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"ncut"</span><span class="p">]):</span>
+                        <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"cuts"</span><span class="p">][</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
                         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;mgtopt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"mgtopt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="c1"># Grazing</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;ncycle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
-                    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;cycles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span>
-                        <span class="s2">&quot;ncycle&quot;</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"ncycle"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">15</span><span class="p">])</span>
+                    <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"cycles"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span>
+                        <span class="s2">"ncycle"</span>
                     <span class="p">]</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">16</span>
-                    <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;ncycle&quot;</span><span class="p">]):</span>
-                        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;cycles&quot;</span><span class="p">][</span><span class="n">cycle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;arr&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
-                            <span class="s2">&quot;gday&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
-                            <span class="s2">&quot;gend&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]),</span>
+                    <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"ncycle"</span><span class="p">]):</span>
+                        <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"cycles"</span><span class="p">][</span><span class="n">cycle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">"arr"</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">],</span>
+                            <span class="s2">"gday"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+                            <span class="s2">"gend"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]),</span>
                         <span class="p">}</span>
                         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;mgtopt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"mgtopt"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">15</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;scens&quot;</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">&quot;iplant&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s2">"scens"</span><span class="p">][</span><span class="n">scen</span><span class="p">][</span><span class="s2">"iplant"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">3</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">3</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mantitle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mandesc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"mantitle"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"mandesc"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">4</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nwsofe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;inindx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nwsofe&quot;</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nwsofe"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"inindx"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nwsofe"</span><span class="p">]</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nwsofe&quot;</span><span class="p">]):</span>
-        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;inindx&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nwsofe"</span><span class="p">]):</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"inindx"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
         <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nrots&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nrots"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nyears&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
-    <span class="n">sz</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nyears&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nrots&quot;</span><span class="p">]</span>
-    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rotations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">sz</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"nyears"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">])</span>
+    <span class="n">sz</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nyears"</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nrots"</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">"rotations"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">sz</span>
     <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">6</span>
     <span class="n">yidx</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">_rot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nrots&quot;</span><span class="p">]):</span>
-        <span class="k">for</span> <span class="n">_year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nyears&quot;</span><span class="p">]):</span>
-            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rotations&quot;</span><span class="p">][</span><span class="n">yidx</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nwsofe&quot;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">ofe</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nwsofe&quot;</span><span class="p">]):</span>
-                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rotations&quot;</span><span class="p">][</span><span class="n">yidx</span><span class="p">][</span><span class="n">ofe</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;plant&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]),</span>
-                    <span class="s2">&quot;yearindex&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+    <span class="k">for</span> <span class="n">_rot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nrots"</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">_year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nyears"</span><span class="p">]):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">"rotations"</span><span class="p">][</span><span class="n">yidx</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="s2">"nwsofe"</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">ofe</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"nwsofe"</span><span class="p">]):</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">"rotations"</span><span class="p">][</span><span class="n">yidx</span><span class="p">][</span><span class="n">ofe</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"plant"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span><span class="p">]),</span>
+                    <span class="s2">"yearindex"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
                 <span class="p">}</span>
                 <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">3</span>
             <span class="n">yidx</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -837,7 +837,7 @@
 <div class="viewcode-block" id="rfactor">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.rfactor">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rfactor</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">return_rfactor_metric</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the R-factor.</span>
+<span class="w">    </span><span class="sd">"""Compute the R-factor.</span>
 
 <span class="sd">    https://www.hydrol-earth-syst-sci.net/19/4113/2015/hess-19-4113-2015.pdf</span>
 <span class="sd">    It would appear that a strict implementation would need to have a six</span>
@@ -851,7 +851,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      rfactor (float): Units of MJ mm ha-1 h-1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># No precip!</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">times</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
@@ -859,7 +859,7 @@
     <span class="n">func</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span>
         <span class="n">times</span><span class="p">,</span>
         <span class="n">points</span><span class="p">,</span>
-        <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">kind</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
         <span class="n">fill_value</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
         <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
@@ -881,7 +881,7 @@
 <div class="viewcode-block" id="read_cli">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_cli">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_cli</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">compute_rfactor</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_rfactor_metric</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read WEPP CLI File, Return DataFrame</span>
+<span class="w">    </span><span class="sd">"""Read WEPP CLI File, Return DataFrame</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
@@ -892,10 +892,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pandas.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">dates</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"ascii"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="n">linenum</span> <span class="o">=</span> <span class="mi">15</span>
     <span class="k">while</span> <span class="n">linenum</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
@@ -919,16 +919,16 @@
         <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">mo</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">da</span><span class="p">)))</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;tmax&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tmax</span><span class="p">),</span>
-                <span class="s2">&quot;tmin&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tmin</span><span class="p">),</span>
-                <span class="s2">&quot;rad&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">rad</span><span class="p">),</span>
-                <span class="s2">&quot;wvl&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">wvl</span><span class="p">),</span>
-                <span class="s2">&quot;wdir&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">wdir</span><span class="p">),</span>
-                <span class="s2">&quot;tdew&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tdew</span><span class="p">),</span>
-                <span class="s2">&quot;maxr&quot;</span><span class="p">:</span> <span class="n">maxr</span><span class="p">,</span>
-                <span class="s2">&quot;bpcount&quot;</span><span class="p">:</span> <span class="n">breakpoints</span><span class="p">,</span>
-                <span class="s2">&quot;pcpn&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">accum</span><span class="p">),</span>
-                <span class="s2">&quot;rfactor&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"tmax"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tmax</span><span class="p">),</span>
+                <span class="s2">"tmin"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tmin</span><span class="p">),</span>
+                <span class="s2">"rad"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">rad</span><span class="p">),</span>
+                <span class="s2">"wvl"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">wvl</span><span class="p">),</span>
+                <span class="s2">"wdir"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">wdir</span><span class="p">),</span>
+                <span class="s2">"tdew"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tdew</span><span class="p">),</span>
+                <span class="s2">"maxr"</span><span class="p">:</span> <span class="n">maxr</span><span class="p">,</span>
+                <span class="s2">"bpcount"</span><span class="p">:</span> <span class="n">breakpoints</span><span class="p">,</span>
+                <span class="s2">"pcpn"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">accum</span><span class="p">),</span>
+                <span class="s2">"rfactor"</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">compute_rfactor</span>
                     <span class="k">else</span> <span class="n">rfactor</span><span class="p">(</span>
@@ -947,7 +947,7 @@
 <div class="viewcode-block" id="read_env">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_env">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_env</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">year0</span><span class="o">=</span><span class="mi">2006</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read WEPP .env file, return a dataframe</span>
+<span class="w">    </span><span class="sd">"""Read WEPP .env file, return a dataframe</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
@@ -955,39 +955,39 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pd.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">skiprows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span>
         <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*******&quot;</span><span class="p">,</span> <span class="s2">&quot;******&quot;</span><span class="p">,</span> <span class="s2">&quot;*****&quot;</span><span class="p">],</span>
+        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"*******"</span><span class="p">,</span> <span class="s2">"******"</span><span class="p">,</span> <span class="s2">"*****"</span><span class="p">],</span>
         <span class="n">names</span><span class="o">=</span><span class="p">[</span>
-            <span class="s2">&quot;day&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;month&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;precip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;runoff&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ir_det&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;av_det&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;mx_det&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;point&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;av_dep&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;max_dep&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;point2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;sed_del&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;er&quot;</span><span class="p">,</span>
+            <span class="s2">"day"</span><span class="p">,</span>
+            <span class="s2">"month"</span><span class="p">,</span>
+            <span class="s2">"year"</span><span class="p">,</span>
+            <span class="s2">"precip"</span><span class="p">,</span>
+            <span class="s2">"runoff"</span><span class="p">,</span>
+            <span class="s2">"ir_det"</span><span class="p">,</span>
+            <span class="s2">"av_det"</span><span class="p">,</span>
+            <span class="s2">"mx_det"</span><span class="p">,</span>
+            <span class="s2">"point"</span><span class="p">,</span>
+            <span class="s2">"av_dep"</span><span class="p">,</span>
+            <span class="s2">"max_dep"</span><span class="p">,</span>
+            <span class="s2">"point2"</span><span class="p">,</span>
+            <span class="s2">"sed_del"</span><span class="p">,</span>
+            <span class="s2">"er"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Faster than +=</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">year0</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">+</span> <span class="n">year0</span>
         <span class="c1"># Considerably faster than df.apply</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"month"</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"day"</span><span class="p">])</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
 
@@ -996,7 +996,7 @@
 <div class="viewcode-block" id="read_ofe">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_ofe">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_ofe</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">year0</span><span class="o">=</span><span class="mi">2006</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read OFE .ofe file, return a dataframe</span>
+<span class="w">    </span><span class="sd">"""Read OFE .ofe file, return a dataframe</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): Filename to read</span>
@@ -1004,66 +1004,66 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pd.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span>
         <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*******&quot;</span><span class="p">,</span> <span class="s2">&quot;******&quot;</span><span class="p">,</span> <span class="s2">&quot;********&quot;</span><span class="p">],</span>
+        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"*******"</span><span class="p">,</span> <span class="s2">"******"</span><span class="p">,</span> <span class="s2">"********"</span><span class="p">],</span>
         <span class="n">names</span><span class="o">=</span><span class="p">[</span>
-            <span class="s2">&quot;ofe&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;day&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;month&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;precip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;runoff&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effint&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;peakro&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;effdur&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;enrich_ratio&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;keff&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;sm&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;leafarea&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;canhght&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cancov&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;intcov&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;rilcov&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;livbio&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadbio&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ki&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;kr&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tcrit&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;rilwid&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;sedleave&quot;</span><span class="p">,</span>
+            <span class="s2">"ofe"</span><span class="p">,</span>
+            <span class="s2">"day"</span><span class="p">,</span>
+            <span class="s2">"month"</span><span class="p">,</span>
+            <span class="s2">"year"</span><span class="p">,</span>
+            <span class="s2">"precip"</span><span class="p">,</span>
+            <span class="s2">"runoff"</span><span class="p">,</span>
+            <span class="s2">"effint"</span><span class="p">,</span>
+            <span class="s2">"peakro"</span><span class="p">,</span>
+            <span class="s2">"effdur"</span><span class="p">,</span>
+            <span class="s2">"enrich_ratio"</span><span class="p">,</span>
+            <span class="s2">"keff"</span><span class="p">,</span>
+            <span class="s2">"sm"</span><span class="p">,</span>
+            <span class="s2">"leafarea"</span><span class="p">,</span>
+            <span class="s2">"canhght"</span><span class="p">,</span>
+            <span class="s2">"cancov"</span><span class="p">,</span>
+            <span class="s2">"intcov"</span><span class="p">,</span>
+            <span class="s2">"rilcov"</span><span class="p">,</span>
+            <span class="s2">"livbio"</span><span class="p">,</span>
+            <span class="s2">"deadbio"</span><span class="p">,</span>
+            <span class="s2">"ki"</span><span class="p">,</span>
+            <span class="s2">"kr"</span><span class="p">,</span>
+            <span class="s2">"tcrit"</span><span class="p">,</span>
+            <span class="s2">"rilwid"</span><span class="p">,</span>
+            <span class="s2">"sedleave"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Faster than +=</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">year0</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">+</span> <span class="n">year0</span>
         <span class="c1"># Considerably faster than df.apply</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"month"</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"day"</span><span class="p">])</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_date_from_year_jday</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a date column based on year and jday columns.&quot;&quot;&quot;</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;jday&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y %j&quot;</span>
+<span class="w">    </span><span class="sd">"""Create a date column based on year and jday columns."""</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"jday"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"%Y %j"</span>
     <span class="p">)</span>
 
 
 <div class="viewcode-block" id="read_wb">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_wb">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_wb</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a *custom* WEPP .wb file into Pandas Data Table&quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*******&quot;</span><span class="p">,</span> <span class="s2">&quot;******&quot;</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">"""Read a *custom* WEPP .wb file into Pandas Data Table"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"*******"</span><span class="p">,</span> <span class="s2">"******"</span><span class="p">])</span>
     <span class="c1"># Considerably faster than df.apply</span>
     <span class="n">_date_from_year_jday</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
@@ -1073,49 +1073,49 @@
 <div class="viewcode-block" id="read_crop">
 <a class="viewcode-back" href="../../api/pyiem.dep.html#pyiem.dep.read_crop">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_crop</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read WEPP&#39;s plant and residue output file.</span>
+<span class="w">    </span><span class="sd">"""Read WEPP's plant and residue output file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): The file to read in.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      pandas.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">skiprows</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
         <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span>
         <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*******&quot;</span><span class="p">,</span> <span class="s2">&quot;******&quot;</span><span class="p">,</span> <span class="s2">&quot;********&quot;</span><span class="p">],</span>
+        <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">"*******"</span><span class="p">,</span> <span class="s2">"******"</span><span class="p">,</span> <span class="s2">"********"</span><span class="p">],</span>
         <span class="n">names</span><span class="o">=</span><span class="p">[</span>
-            <span class="s2">&quot;ofe&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;jday&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;canopy_height_m&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;canopy_percent&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;lai&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cover_rill_percent&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cover_inter_percent&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cover_inter_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;live_biomass_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;standing_residue_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_last_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_last_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_prev_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_prev_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_all_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;flat_residue_all_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;buried_residue_last_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;buried_residue_prev_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;buried_residue_all_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_last_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_last_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_prev_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_prev_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_all_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;deadroot_residue_all_kgm2&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;avg_temp_c&quot;</span><span class="p">,</span>
+            <span class="s2">"ofe"</span><span class="p">,</span>
+            <span class="s2">"jday"</span><span class="p">,</span>
+            <span class="s2">"year"</span><span class="p">,</span>
+            <span class="s2">"canopy_height_m"</span><span class="p">,</span>
+            <span class="s2">"canopy_percent"</span><span class="p">,</span>
+            <span class="s2">"lai"</span><span class="p">,</span>
+            <span class="s2">"cover_rill_percent"</span><span class="p">,</span>
+            <span class="s2">"cover_inter_percent"</span><span class="p">,</span>
+            <span class="s2">"cover_inter_type"</span><span class="p">,</span>
+            <span class="s2">"live_biomass_kgm2"</span><span class="p">,</span>
+            <span class="s2">"standing_residue_kgm2"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_last_type"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_last_kgm2"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_prev_type"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_prev_kgm2"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_all_type"</span><span class="p">,</span>
+            <span class="s2">"flat_residue_all_kgm2"</span><span class="p">,</span>
+            <span class="s2">"buried_residue_last_kgm2"</span><span class="p">,</span>
+            <span class="s2">"buried_residue_prev_kgm2"</span><span class="p">,</span>
+            <span class="s2">"buried_residue_all_kgm2"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_last_type"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_last_kgm2"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_prev_type"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_prev_kgm2"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_all_type"</span><span class="p">,</span>
+            <span class="s2">"deadroot_residue_all_kgm2"</span><span class="p">,</span>
+            <span class="s2">"avg_temp_c"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">)</span>
     <span class="c1"># Convert jday into dates</span>

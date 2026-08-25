@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.iemre &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.iemre &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/iemre';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.iemre</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Support library for the IEM Reanalysis code.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Support library for the IEM Reanalysis code."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -490,65 +490,65 @@
 
 <span class="c1"># Definition of analysis domains for IEMRE</span>
 <span class="n">DOMAINS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;conus&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="n">WEST</span><span class="p">,</span>
-        <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="n">EAST</span><span class="p">,</span>
-        <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="n">SOUTH</span><span class="p">,</span>
-        <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="n">NORTH</span><span class="p">,</span>
-        <span class="s2">&quot;south_edge&quot;</span><span class="p">:</span> <span class="n">SOUTH</span> <span class="o">-</span> <span class="n">DY</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;north_edge&quot;</span><span class="p">:</span> <span class="n">NORTH</span> <span class="o">+</span> <span class="n">DY</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;west_edge&quot;</span><span class="p">:</span> <span class="n">WEST</span> <span class="o">-</span> <span class="n">DX</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;east_edge&quot;</span><span class="p">:</span> <span class="n">EAST</span> <span class="o">+</span> <span class="n">DX</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="n">NX</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="n">NY</span><span class="p">,</span>
-        <span class="s2">&quot;affine&quot;</span><span class="p">:</span> <span class="n">AFFINE</span><span class="p">,</span>
-        <span class="s2">&quot;affine_native&quot;</span><span class="p">:</span> <span class="n">AFFINE_NATIVE</span><span class="p">,</span>
-        <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/Chicago&quot;</span><span class="p">),</span>
+    <span class="s2">"conus"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="n">WEST</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="n">EAST</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="n">SOUTH</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="n">NORTH</span><span class="p">,</span>
+        <span class="s2">"south_edge"</span><span class="p">:</span> <span class="n">SOUTH</span> <span class="o">-</span> <span class="n">DY</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"north_edge"</span><span class="p">:</span> <span class="n">NORTH</span> <span class="o">+</span> <span class="n">DY</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"west_edge"</span><span class="p">:</span> <span class="n">WEST</span> <span class="o">-</span> <span class="n">DX</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"east_edge"</span><span class="p">:</span> <span class="n">EAST</span> <span class="o">+</span> <span class="n">DX</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="n">NX</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="n">NY</span><span class="p">,</span>
+        <span class="s2">"affine"</span><span class="p">:</span> <span class="n">AFFINE</span><span class="p">,</span>
+        <span class="s2">"affine_native"</span><span class="p">:</span> <span class="n">AFFINE_NATIVE</span><span class="p">,</span>
+        <span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"America/Chicago"</span><span class="p">),</span>
     <span class="p">},</span>
-    <span class="s2">&quot;china&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
-        <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="mf">139.875</span><span class="p">,</span>
-        <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-        <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="mf">54.875</span><span class="p">,</span>
-        <span class="s2">&quot;west_edge&quot;</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
-        <span class="s2">&quot;east_edge&quot;</span><span class="p">:</span> <span class="mf">139.9375</span><span class="p">,</span>
-        <span class="s2">&quot;south_edge&quot;</span><span class="p">:</span> <span class="mf">14.9375</span><span class="p">,</span>
-        <span class="s2">&quot;north_edge&quot;</span><span class="p">:</span> <span class="mf">54.9375</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">560</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
-        <span class="s2">&quot;affine&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">54.9375</span><span class="p">),</span>
-        <span class="s2">&quot;affine_native&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">14.9375</span><span class="p">),</span>
-        <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Asia/Shanghai&quot;</span><span class="p">),</span>
+    <span class="s2">"china"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">139.875</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="mf">54.875</span><span class="p">,</span>
+        <span class="s2">"west_edge"</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
+        <span class="s2">"east_edge"</span><span class="p">:</span> <span class="mf">139.9375</span><span class="p">,</span>
+        <span class="s2">"south_edge"</span><span class="p">:</span> <span class="mf">14.9375</span><span class="p">,</span>
+        <span class="s2">"north_edge"</span><span class="p">:</span> <span class="mf">54.9375</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">560</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
+        <span class="s2">"affine"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">54.9375</span><span class="p">),</span>
+        <span class="s2">"affine_native"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">14.9375</span><span class="p">),</span>
+        <span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"Asia/Shanghai"</span><span class="p">),</span>
     <span class="p">},</span>
-    <span class="s2">&quot;europe&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span>
-        <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="mf">39.875</span><span class="p">,</span>
-        <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
-        <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="mf">69.875</span><span class="p">,</span>
-        <span class="s2">&quot;west_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span>
-        <span class="s2">&quot;east_edge&quot;</span><span class="p">:</span> <span class="mf">39.9375</span><span class="p">,</span>
-        <span class="s2">&quot;south_edge&quot;</span><span class="p">:</span> <span class="mf">34.9375</span><span class="p">,</span>
-        <span class="s2">&quot;north_edge&quot;</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
-        <span class="s2">&quot;affine&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">),</span>
-        <span class="s2">&quot;affine_native&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">34.9375</span><span class="p">),</span>
-        <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Paris&quot;</span><span class="p">),</span>
+    <span class="s2">"europe"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">39.875</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="mf">69.875</span><span class="p">,</span>
+        <span class="s2">"west_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span>
+        <span class="s2">"east_edge"</span><span class="p">:</span> <span class="mf">39.9375</span><span class="p">,</span>
+        <span class="s2">"south_edge"</span><span class="p">:</span> <span class="mf">34.9375</span><span class="p">,</span>
+        <span class="s2">"north_edge"</span><span class="p">:</span> <span class="mf">69.9375</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
+        <span class="s2">"affine"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">69.9375</span><span class="p">),</span>
+        <span class="s2">"affine_native"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">34.9375</span><span class="p">),</span>
+        <span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"Europe/Paris"</span><span class="p">),</span>
     <span class="p">},</span>
-    <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5</span><span class="p">,</span>
-        <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.125</span><span class="p">,</span>
-        <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.875</span><span class="p">,</span>
-        <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="mf">12.5</span><span class="p">,</span>
-        <span class="s2">&quot;west_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span>
-        <span class="s2">&quot;east_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.0625</span><span class="p">,</span>
-        <span class="s2">&quot;south_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">,</span>
-        <span class="s2">&quot;north_edge&quot;</span><span class="p">:</span> <span class="mf">12.5625</span><span class="p">,</span>
-        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="mi">380</span><span class="p">,</span>
-        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span>
-        <span class="s2">&quot;affine&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">12.5625</span><span class="p">),</span>
-        <span class="s2">&quot;affine_native&quot;</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">),</span>
-        <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/Sao_Paulo&quot;</span><span class="p">),</span>
+    <span class="s2">"sa"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.125</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.875</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="mf">12.5</span><span class="p">,</span>
+        <span class="s2">"west_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span>
+        <span class="s2">"east_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.0625</span><span class="p">,</span>
+        <span class="s2">"south_edge"</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">,</span>
+        <span class="s2">"north_edge"</span><span class="p">:</span> <span class="mf">12.5625</span><span class="p">,</span>
+        <span class="s2">"nx"</span><span class="p">:</span> <span class="mi">380</span><span class="p">,</span>
+        <span class="s2">"ny"</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span>
+        <span class="s2">"affine"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">DY</span><span class="p">,</span> <span class="mf">12.5625</span><span class="p">),</span>
+        <span class="s2">"affine_native"</span><span class="p">:</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">81.5625</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="o">-</span><span class="mf">55.9375</span><span class="p">),</span>
+        <span class="s2">"tzinfo"</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"America/Sao_Paulo"</span><span class="p">),</span>
     <span class="p">},</span>
 <span class="p">}</span>
 
@@ -556,37 +556,37 @@
 <div class="viewcode-block" id="d2l">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.d2l">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">d2l</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a domain label to a string used within filenames.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;conus&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="s2">&quot;iemre&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;iemre_</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Convert a domain label to a string used within filenames."""</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"conus"</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">"iemre"</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"iemre_</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">"</span></div>
 
 
 
 <div class="viewcode-block" id="get_table">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_table">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_table</span><span class="p">(</span><span class="n">valid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out which table should be used for given valid.</span>
+<span class="w">    </span><span class="sd">"""Figure out which table should be used for given valid.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      valid (datetime or date):  which time is of interest</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      str tablename</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># careful here, a datetime is not an instance of date</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;iemre_hourly_</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="si">:</span><span class="s2">%Y%m</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"iemre_hourly_</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="si">:</span><span class="s2">%Y%m</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;iemre_daily_</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"iemre_daily_</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">table</span></div>
 
 
 
 <div class="viewcode-block" id="set_grids">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.set_grids">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the database with a given ``xarray.Dataset``.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Update the database with a given ``xarray.Dataset``.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      valid (datetime or date): If datetime, save hourly, if date, save daily</span>
@@ -594,21 +594,21 @@
 <span class="sd">      table (str,optional): hard coded database table to use to set the data</span>
 <span class="sd">        on.  Usually dynamically computed.</span>
 <span class="sd">      domain (str,optional): IEMRE domain to save data to</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">Identifier</span><span class="p">(</span><span class="n">table</span> <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">get_table</span><span class="p">(</span><span class="n">valid</span><span class="p">))</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
     <span class="n">pgconn</span> <span class="o">=</span> <span class="n">get_dbconn</span><span class="p">(</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">))</span>
     <span class="n">cursor</span> <span class="o">=</span> <span class="n">pgconn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
     <span class="c1"># Do we currently have database entries?</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-        <span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;SELECT valid from </span><span class="si">{}</span><span class="s2"> WHERE valid = </span><span class="si">%s</span><span class="s2"> LIMIT 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">),</span>
+        <span class="n">SQL</span><span class="p">(</span><span class="s2">"SELECT valid from </span><span class="si">{}</span><span class="s2"> WHERE valid = </span><span class="si">%s</span><span class="s2"> LIMIT 1"</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">),</span>
         <span class="p">(</span><span class="n">valid</span><span class="p">,),</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># Create entries</span>
         <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
             <span class="n">SQL</span><span class="p">(</span>
-                <span class="s2">&quot;insert into </span><span class="si">{}</span><span class="s2">(gid, valid) select gid, </span><span class="si">%s</span><span class="s2"> from iemre_grid&quot;</span>
+                <span class="s2">"insert into </span><span class="si">{}</span><span class="s2">(gid, valid) select gid, </span><span class="si">%s</span><span class="s2"> from iemre_grid"</span>
             <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">),</span>
             <span class="p">(</span><span class="n">valid</span><span class="p">,),</span>
         <span class="p">)</span>
@@ -617,27 +617,27 @@
         <span class="c1"># NB: whatever reason, postgresql is having a hard time with the query</span>
         <span class="c1"># plan on these newly inserted rows, so we force a vacuum analyze</span>
         <span class="n">pgconn</span><span class="o">.</span><span class="n">autocommit</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">pgconn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;VACUUM ANALYZE </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
+        <span class="n">pgconn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">SQL</span><span class="p">(</span><span class="s2">"VACUUM ANALYZE </span><span class="si">{}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
         <span class="n">pgconn</span><span class="o">.</span><span class="n">autocommit</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">cursor</span> <span class="o">=</span> <span class="n">pgconn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 
     <span class="c1"># Now we do our update.</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;update </span><span class="si">{}</span><span class="s2"> set </span><span class="si">{}</span><span class="s2"> where valid = </span><span class="si">%s</span><span class="s2"> and gid = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">SQL</span><span class="p">(</span><span class="s2">"update </span><span class="si">{}</span><span class="s2"> set </span><span class="si">{}</span><span class="s2"> where valid = </span><span class="si">%s</span><span class="s2"> and gid = </span><span class="si">%s</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">table</span><span class="p">,</span>
-        <span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> = %s&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">)),</span>
+        <span class="n">SQL</span><span class="p">(</span><span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> = %s"</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">)),</span>
     <span class="p">)</span>
 
     <span class="c1"># Implementation notes: seems quite fast</span>
     <span class="n">pig</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">ds</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">}</span>
-    <span class="n">pig</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">])</span>
-    <span class="n">pig</span><span class="p">[</span><span class="s2">&quot;gid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]))</span>
+    <span class="n">pig</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">])</span>
+    <span class="n">pig</span><span class="p">[</span><span class="s2">"gid"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">]))</span>
 
     <span class="n">sts</span> <span class="o">=</span> <span class="n">utc</span><span class="p">()</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">pig</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">pgconn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="s2">&quot;timing </span><span class="si">%.2f</span><span class="s2">/s&quot;</span><span class="p">,</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">utc</span><span class="p">()</span> <span class="o">-</span> <span class="n">sts</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="s2">"timing </span><span class="si">%.2f</span><span class="s2">/s"</span><span class="p">,</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]</span> <span class="o">*</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">utc</span><span class="p">()</span> <span class="o">-</span> <span class="n">sts</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
     <span class="p">)</span></div>
 
 
@@ -645,9 +645,9 @@
 <div class="viewcode-block" id="get_grids">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_grids">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_grids</span><span class="p">(</span>
-    <span class="n">valid</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
+    <span class="n">valid</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch grid(s) from the database, returning xarray.</span>
+<span class="w">    </span><span class="sd">"""Fetch grid(s) from the database, returning xarray.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      valid (datetime or date): If datetime, load hourly, if date, load daily</span>
@@ -659,7 +659,7 @@
 <span class="sd">      domain (str,optional): IEMRE domain to fetch data from</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      ``xarray.Dataset``&quot;&quot;&quot;</span>
+<span class="sd">      ``xarray.Dataset``"""</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">table</span> <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">get_table</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -670,32 +670,32 @@
         <span class="n">varnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">varnames</span><span class="p">]</span>
     <span class="c1"># Compute variable names</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-        <span class="s2">&quot;SELECT column_name FROM information_schema.columns &quot;</span>
-        <span class="s2">&quot;WHERE table_schema = &#39;public&#39; AND table_name = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
-        <span class="s2">&quot;column_name not in (&#39;gid&#39;, &#39;valid&#39;)&quot;</span><span class="p">,</span>
+        <span class="s2">"SELECT column_name FROM information_schema.columns "</span>
+        <span class="s2">"WHERE table_schema = 'public' AND table_name = </span><span class="si">%s</span><span class="s2"> and "</span>
+        <span class="s2">"column_name not in ('gid', 'valid')"</span><span class="p">,</span>
         <span class="p">(</span><span class="n">table</span><span class="p">,),</span>
     <span class="p">)</span>
     <span class="n">use_columns</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">varnames</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">varnames</span><span class="p">:</span>
             <span class="n">use_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># noqa</span>
-    <span class="n">colsql</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">use_columns</span><span class="p">)</span>
+    <span class="n">colsql</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">use_columns</span><span class="p">)</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;SELECT (gid / %s)::int as y, gid %% %s as x, </span><span class="si">{</span><span class="n">colsql</span><span class="si">}</span><span class="s2"> &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE valid = %s&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">],</span> <span class="n">valid</span><span class="p">),</span>
+        <span class="sa">f</span><span class="s2">"SELECT (gid / %s)::int as y, gid %% %s as x, </span><span class="si">{</span><span class="n">colsql</span><span class="si">}</span><span class="s2"> "</span>
+        <span class="sa">f</span><span class="s2">"from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE valid = %s"</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">],</span> <span class="n">valid</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">key</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">use_columns</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">dom</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">use_columns</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">use_columns</span><span class="p">):</span>
             <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">),</span>
+        <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="p">([</span><span class="s2">"y"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">),</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;west&quot;</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;east&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">DX</span><span class="p">)),</span>
-            <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;south&quot;</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;north&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">DY</span><span class="p">)),</span>
+            <span class="s2">"lon"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"x"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">"west"</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"east"</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">DX</span><span class="p">)),</span>
+            <span class="s2">"lat"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"y"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dom</span><span class="p">[</span><span class="s2">"south"</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"north"</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">DY</span><span class="p">)),</span>
         <span class="p">},</span>
     <span class="p">)</span></div>
 
@@ -703,48 +703,48 @@
 
 <div class="viewcode-block" id="get_dailyc_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_dailyc_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_dailyc_ncname</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the filename of the daily climatology netcdf file&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_dailyc.nc&quot;</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dailyc_ncname</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the filename of the daily climatology netcdf file"""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_dailyc.nc"</span></div>
 
 
 
 <div class="viewcode-block" id="get_daily_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_daily_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_daily_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the daily netcdf filename for the given year&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_daily.nc&quot;</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_daily_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Get the daily netcdf filename for the given year"""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_daily.nc"</span></div>
 
 
 
 <div class="viewcode-block" id="get_dailyc_mrms_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_dailyc_mrms_ncname">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_dailyc_mrms_ncname</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the MRMS daily climatology filename&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;/mesonet/data/mrms/mrms_dailyc.nc&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Get the MRMS daily climatology filename"""</span>
+    <span class="k">return</span> <span class="s2">"/mesonet/data/mrms/mrms_dailyc.nc"</span></div>
 
 
 
 <div class="viewcode-block" id="get_daily_mrms_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_daily_mrms_ncname">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_daily_mrms_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the daily netcdf MRMS filename for the given year&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/mrms/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_mrms_daily.nc&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Get the daily netcdf MRMS filename for the given year"""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"/mesonet/data/mrms/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_mrms_daily.nc"</span></div>
 
 
 
 <div class="viewcode-block" id="get_hourly_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_hourly_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_hourly_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the daily netcdf filename for the given year&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_hourly.nc&quot;</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_hourly_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Get the daily netcdf filename for the given year"""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_hourly.nc"</span></div>
 
 
 
 <div class="viewcode-block" id="daily_offset">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.daily_offset">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">daily_offset</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the timestamp index in the netcdf file&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute the timestamp index in the netcdf file"""</span>
     <span class="c1"># In case ts is passed here as a datetime.date object</span>
     <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
     <span class="n">base</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
@@ -758,14 +758,14 @@
 <div class="viewcode-block" id="hourly_offset">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.hourly_offset">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hourly_offset</span><span class="p">(</span><span class="n">dtobj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return time index for given timestamp</span>
+<span class="w">    </span><span class="sd">"""Return time index for given timestamp</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      dtobj (datetime): datetime, if no tzinfo, we assume it is UTC</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      int time index in the netcdf file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">dtobj</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">and</span> <span class="n">dtobj</span><span class="o">.</span><span class="n">tzinfo</span> <span class="o">!=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">:</span>
         <span class="n">dtobj</span> <span class="o">=</span> <span class="n">dtobj</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
     <span class="n">base</span> <span class="o">=</span> <span class="n">dtobj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
@@ -779,20 +779,20 @@
 <div class="viewcode-block" id="find_ij">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.find_ij">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span>
-    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the i, j grid indices (based 0) for given lat/lon.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Return the i, j grid indices (based 0) for given lat/lon."""</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;west_edge&quot;</span><span class="p">]</span>
-        <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;=</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;east_edge&quot;</span><span class="p">]</span>
-        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;south_edge&quot;</span><span class="p">]</span>
-        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;=</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;north_edge&quot;</span><span class="p">]</span>
+        <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"west_edge"</span><span class="p">]</span>
+        <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;=</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"east_edge"</span><span class="p">]</span>
+        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"south_edge"</span><span class="p">]</span>
+        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;=</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"north_edge"</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lon</span> <span class="o">-</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;west_edge&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">DX</span><span class="p">)</span>
-    <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lat</span> <span class="o">-</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;south_edge&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">DY</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lon</span> <span class="o">-</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"west_edge"</span><span class="p">])</span> <span class="o">/</span> <span class="n">DX</span><span class="p">)</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lat</span> <span class="o">-</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"south_edge"</span><span class="p">])</span> <span class="o">/</span> <span class="n">DY</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span></div>
 
@@ -801,11 +801,11 @@
 <div class="viewcode-block" id="get_domain">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_domain">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_domain</span><span class="p">(</span><span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the domain that contains the given point.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute the domain that contains the given point."""</span>
     <span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">dom</span> <span class="ow">in</span> <span class="n">DOMAINS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;west_edge&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;east_edge&quot;</span><span class="p">]</span>
-            <span class="ow">and</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;south_edge&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;north_edge&quot;</span><span class="p">]</span>
+            <span class="n">dom</span><span class="p">[</span><span class="s2">"west_edge"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"east_edge"</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"south_edge"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"north_edge"</span><span class="p">]</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="n">domain</span>
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -814,19 +814,19 @@
 
 <div class="viewcode-block" id="get_gid">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_gid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_gid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the grid id for the given location.&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Compute the grid id for the given location."""</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">find_ij</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">j</span> <span class="o">*</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">][</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span></div>
+    <span class="k">return</span> <span class="n">j</span> <span class="o">*</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">][</span><span class="s2">"nx"</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span></div>
 
 
 
 <div class="viewcode-block" id="grb2iemre">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.grb2iemre">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">grb2iemre</span><span class="p">(</span><span class="n">grb</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject a grib message onto the IEMRE grid.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grb2iemre</span><span class="p">(</span><span class="n">grb</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reproject a grib message onto the IEMRE grid.</span>
 
 <span class="sd">    A helper frontend to ``reproject2iemre``.</span>
 
@@ -837,16 +837,16 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ma.array of reprojected grid oriented S to N like IEMRE</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">pparams</span> <span class="o">=</span> <span class="n">grb</span><span class="o">.</span><span class="n">projparams</span>
-    <span class="n">lat1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;latitudeOfFirstGridPointInDegrees&quot;</span><span class="p">]</span>
-    <span class="n">lon1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;longitudeOfFirstGridPointInDegrees&quot;</span><span class="p">]</span>
+    <span class="n">lat1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"latitudeOfFirstGridPointInDegrees"</span><span class="p">]</span>
+    <span class="n">lon1</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"longitudeOfFirstGridPointInDegrees"</span><span class="p">]</span>
     <span class="c1"># The reprojected first grid cell is the centroid, not the outer edge</span>
     <span class="n">llx</span><span class="p">,</span> <span class="n">lly</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">pparams</span><span class="p">)(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">pparams</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;longlat&quot;</span><span class="p">:</span>
-        <span class="n">dx</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;iDirectionIncrementInDegrees&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pparams</span><span class="p">[</span><span class="s2">"proj"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"longlat"</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"iDirectionIncrementInDegrees"</span><span class="p">]</span>
         <span class="n">dy</span> <span class="o">=</span> <span class="n">dx</span>
-        <span class="k">if</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;jScansNegatively&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"jScansNegatively"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">dy</span> <span class="o">=</span> <span class="o">-</span><span class="n">dy</span>
         <span class="c1"># Ugly situation here for data that starts at 0° and goes to 360°</span>
         <span class="n">vals</span> <span class="o">=</span> <span class="n">grb</span><span class="o">.</span><span class="n">values</span>
@@ -865,12 +865,12 @@
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">aff</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
-            <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">],</span>
+            <span class="n">grb</span><span class="p">[</span><span class="s2">"DxInMetres"</span><span class="p">],</span>
             <span class="mf">0.0</span><span class="p">,</span>
-            <span class="n">llx</span> <span class="o">-</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DxInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">llx</span> <span class="o">-</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"DxInMetres"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
             <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">],</span>
-            <span class="n">lly</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;Ny&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">&quot;DyInMetres&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">grb</span><span class="p">[</span><span class="s2">"DyInMetres"</span><span class="p">],</span>
+            <span class="n">lly</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"DyInMetres"</span><span class="p">]</span> <span class="o">*</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"Ny"</span><span class="p">]</span> <span class="o">+</span> <span class="n">grb</span><span class="p">[</span><span class="s2">"DyInMetres"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">grb</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">reproject2iemre</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">aff</span><span class="p">,</span> <span class="n">pparams</span><span class="p">,</span> <span class="n">resampling</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span></div>
@@ -880,9 +880,9 @@
 <div class="viewcode-block" id="reproject2iemre">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.reproject2iemre">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reproject2iemre</span><span class="p">(</span>
-    <span class="n">grid</span><span class="p">,</span> <span class="n">affine_in</span><span class="p">,</span> <span class="n">crs_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">affine_in</span><span class="p">,</span> <span class="n">crs_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"conus"</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject the given grid to IEMRE grid, returning S to N oriented grid.</span>
+<span class="w">    </span><span class="sd">"""Reproject the given grid to IEMRE grid, returning S to N oriented grid.</span>
 
 <span class="sd">    Note: If the affine_in is dy &gt; 0 then the grid is assumed to be S to N.</span>
 
@@ -895,11 +895,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ma.array of reprojected grid oriented S to N like IEMRE</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dom</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]),</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dom</span><span class="p">[</span><span class="s2">"ny"</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"nx"</span><span class="p">]),</span> <span class="nb">float</span><span class="p">)</span>
     <span class="c1"># If source is a masked array, we need to fill it</span>
-    <span class="n">src_is_masked</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;mask&quot;</span><span class="p">)</span>
+    <span class="n">src_is_masked</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">"mask"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">src_is_masked</span><span class="p">:</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
     <span class="n">reproject</span><span class="p">(</span>
@@ -908,9 +908,9 @@
         <span class="n">src_transform</span><span class="o">=</span><span class="n">affine_in</span><span class="p">,</span>
         <span class="n">src_crs</span><span class="o">=</span><span class="n">crs_in</span><span class="p">,</span>
         <span class="n">dst_transform</span><span class="o">=</span><span class="p">(</span>
-            <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;affine&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">affine_in</span><span class="o">.</span><span class="n">e</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;affine_native&quot;</span><span class="p">]</span>
+            <span class="n">dom</span><span class="p">[</span><span class="s2">"affine"</span><span class="p">]</span> <span class="k">if</span> <span class="n">affine_in</span><span class="o">.</span><span class="n">e</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dom</span><span class="p">[</span><span class="s2">"affine_native"</span><span class="p">]</span>
         <span class="p">),</span>
-        <span class="n">dst_crs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;init&quot;</span><span class="p">:</span> <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">},</span>
+        <span class="n">dst_crs</span><span class="o">=</span><span class="p">{</span><span class="s2">"init"</span><span class="p">:</span> <span class="s2">"EPSG:4326"</span><span class="p">},</span>
         <span class="n">dst_nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
         <span class="n">resampling</span><span class="o">=</span><span class="p">(</span>
             <span class="n">resampling</span> <span class="k">if</span> <span class="n">resampling</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Resampling</span><span class="o">.</span><span class="n">nearest</span>

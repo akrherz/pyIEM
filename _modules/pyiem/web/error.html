@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.web.error &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.web.error &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/web/error';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.web.error</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Handle various errors coming from the IEM webfarm hosts.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Handle various errors coming from the IEM webfarm hosts."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -464,18 +464,18 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.webutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">error_log</span>
 
 <span class="n">IEM_VHOSTS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;mesonet.agron.iastate.edu&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iem.local&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;www.mesonet.agron.iastate.edu&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mesonet1.agron.iastate.edu&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mesonet2.agron.iastate.edu&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mesonet3.agron.iastate.edu&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mesonet4.agron.iastate.edu&quot;</span><span class="p">,</span>
+    <span class="s2">"mesonet.agron.iastate.edu"</span><span class="p">,</span>
+    <span class="s2">"iem.local"</span><span class="p">,</span>
+    <span class="s2">"www.mesonet.agron.iastate.edu"</span><span class="p">,</span>
+    <span class="s2">"mesonet1.agron.iastate.edu"</span><span class="p">,</span>
+    <span class="s2">"mesonet2.agron.iastate.edu"</span><span class="p">,</span>
+    <span class="s2">"mesonet3.agron.iastate.edu"</span><span class="p">,</span>
+    <span class="s2">"mesonet4.agron.iastate.edu"</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">COWIMG</span> <span class="o">=</span> <span class="s2">&quot;https://mesonet.agron.iastate.edu/images/cow404.jpg&quot;</span>
-<span class="n">ARCHIVE_BASE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/archive/data/(\d</span><span class="si">{4}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/&quot;</span><span class="p">)</span>
+<span class="n">COWIMG</span> <span class="o">=</span> <span class="s2">"https://mesonet.agron.iastate.edu/images/cow404.jpg"</span>
+<span class="n">ARCHIVE_BASE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^/archive/data/(\d</span><span class="si">{4}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/"</span><span class="p">)</span>
 <span class="n">ARCHIVE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;^/archive/data/(\d</span><span class="si">{4}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(.*)_(\d</span><span class="si">{8}</span><span class="s2">)_?(\d{2,4})&quot;</span>
+    <span class="sa">r</span><span class="s2">"^/archive/data/(\d</span><span class="si">{4}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(\d</span><span class="si">{2}</span><span class="s2">)/(.*)_(\d</span><span class="si">{8}</span><span class="s2">)_?(\d{2,4})"</span>
 <span class="p">)</span>
 
 
@@ -487,27 +487,27 @@
     <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">redirect_status</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do some logging work.&quot;&quot;&quot;</span>
-    <span class="n">snipped</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">...snipped&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">uri</span>
+<span class="w">    </span><span class="sd">"""Do some logging work."""</span>
+    <span class="n">snipped</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">...snipped"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">uri</span>
     <span class="c1"># See mod_wsgi discussion on this</span>
-    <span class="n">remoteip</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span>
+    <span class="n">remoteip</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REMOTE_ADDR"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">redirect_status</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
         <span class="n">error_log</span><span class="p">(</span>
-            <span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;404 </span><span class="si">{</span><span class="n">snipped</span><span class="si">}</span><span class="s2"> referer: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"404 </span><span class="si">{</span><span class="n">snipped</span><span class="si">}</span><span class="s2"> referer: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'HTTP_REFERER'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
         <span class="n">sql_helper</span><span class="p">(</span>
-            <span class="s2">&quot;INSERT into weblog(client_addr, uri, referer, http_status, &quot;</span>
-            <span class="s2">&quot;x_forwarded_for, domain) VALUES (:addr, :url, :ref, :status, &quot;</span>
-            <span class="s2">&quot;:xf, :domain)&quot;</span>
+            <span class="s2">"INSERT into weblog(client_addr, uri, referer, http_status, "</span>
+            <span class="s2">"x_forwarded_for, domain) VALUES (:addr, :url, :ref, :status, "</span>
+            <span class="s2">":xf, :domain)"</span>
         <span class="p">),</span>
         <span class="p">{</span>
-            <span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="n">remoteip</span><span class="p">,</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">uri</span><span class="p">,</span>
-            <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_REFERER&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">redirect_status</span><span class="p">,</span>
-            <span class="s2">&quot;xf&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+            <span class="s2">"addr"</span><span class="p">:</span> <span class="n">remoteip</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">uri</span><span class="p">,</span>
+            <span class="s2">"ref"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_REFERER"</span><span class="p">),</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="n">redirect_status</span><span class="p">,</span>
+            <span class="s2">"xf"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_X_FORWARDED_FOR"</span><span class="p">),</span>
+            <span class="s2">"domain"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_HOST"</span><span class="p">),</span>
         <span class="p">},</span>
     <span class="p">)</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
@@ -517,21 +517,21 @@
 <div class="viewcode-block" id="application">
 <a class="viewcode-back" href="../../../api/pyiem.web.error.html#pyiem.web.error.application">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">start_response</span><span class="p">:</span> <span class="nb">callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;mod-wsgi handler.&quot;&quot;&quot;</span>
-    <span class="n">redirect_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REDIRECT_STATUS&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">))</span>
-    <span class="n">http_host</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""mod-wsgi handler."""</span>
+    <span class="n">redirect_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REDIRECT_STATUS"</span><span class="p">,</span> <span class="mi">404</span><span class="p">))</span>
+    <span class="n">http_host</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_HOST"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="n">is_iem</span> <span class="o">=</span> <span class="n">http_host</span> <span class="ow">in</span> <span class="n">IEM_VHOSTS</span>
-    <span class="n">uri</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REQUEST_URI"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
     <span class="c1"># Some Web Map Service request landed here, so we attempt to help the</span>
     <span class="c1"># user out.</span>
-    <span class="k">if</span> <span class="s2">&quot;=WMS&quot;</span> <span class="ow">in</span> <span class="n">uri</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">"=WMS"</span> <span class="ow">in</span> <span class="n">uri</span><span class="p">:</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;This URL appears to be a Web Map Service request, which errored &quot;</span>
-            <span class="s2">&quot;out.  Please review the documentation at &quot;</span>
-            <span class="s2">&quot;https://mesonet.agron.iastate.edu/ogc/&quot;</span>
+            <span class="s2">"This URL appears to be a Web Map Service request, which errored "</span>
+            <span class="s2">"out.  Please review the documentation at "</span>
+            <span class="s2">"https://mesonet.agron.iastate.edu/ogc/"</span>
         <span class="p">)</span>
-        <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;400 Bad Request&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)])</span>
+        <span class="n">start_response</span><span class="p">(</span><span class="s2">"400 Bad Request"</span><span class="p">,</span> <span class="p">[(</span><span class="s2">"Content-type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">)])</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">()]</span>
 
     <span class="c1"># A specialized check for archive requests and attempt to help the</span>
@@ -541,53 +541,53 @@
         <span class="n">m</span> <span class="o">=</span> <span class="n">ARCHIVE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
             <span class="n">tstr</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tstr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span> <span class="k">else</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H&quot;</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H%M"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tstr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span> <span class="k">else</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H"</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">tstr</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-                <span class="n">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error parsing timestamp: </span><span class="si">{</span><span class="n">tstr</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Error parsing timestamp: </span><span class="si">{</span><span class="n">tstr</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts</span> <span class="o">&gt;</span> <span class="n">utc</span><span class="p">():</span>
                 <span class="n">start_response</span><span class="p">(</span>
-                    <span class="s2">&quot;422 Unprocessable entity&quot;</span><span class="p">,</span>
-                    <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+                    <span class="s2">"422 Unprocessable entity"</span><span class="p">,</span>
+                    <span class="p">[(</span><span class="s2">"Content-type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">)],</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="p">[</span>
-                    <span class="sa">b</span><span class="s2">&quot;Please adjust your script to not request files &quot;</span>
-                    <span class="sa">b</span><span class="s2">&quot;from the future.&quot;</span>
+                    <span class="sa">b</span><span class="s2">"Please adjust your script to not request files "</span>
+                    <span class="sa">b</span><span class="s2">"from the future."</span>
                 <span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">"mesosite"</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
                 <span class="n">log_request</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">redirect_status</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="n">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;log_request failed: </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"log_request failed: </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># 405s are naughty requests, which we punt them away</span>
     <span class="k">if</span> <span class="n">redirect_status</span> <span class="o">==</span> <span class="mi">405</span><span class="p">:</span>
         <span class="n">start_response</span><span class="p">(</span>
-            <span class="s2">&quot;301 Moved Permanently&quot;</span><span class="p">,</span>
+            <span class="s2">"301 Moved Permanently"</span><span class="p">,</span>
             <span class="p">[</span>
                 <span class="p">(</span>
-                    <span class="s2">&quot;Location&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;https://iowamesonet.github.io/sorry/?mode=blocked&quot;</span><span class="p">,</span>
+                    <span class="s2">"Location"</span><span class="p">,</span>
+                    <span class="s2">"https://iowamesonet.github.io/sorry/?mode=blocked"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">],</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;Moved Permanently&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">b</span><span class="s2">"Moved Permanently"</span><span class="p">]</span>
 
     <span class="c1"># We should re-assert the HTTP status code that brought us here :/</span>
     <span class="n">content</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;&lt;h3&gt;Requested file was not found&lt;/h3&gt;&quot;</span>
-        <span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;</span><span class="si">{</span><span class="n">COWIMG</span><span class="si">}</span><span class="s1">&quot; class=&quot;img img-responsive&quot; alt=&quot;404 Cow&quot; /&gt;&#39;</span>
+        <span class="s2">"&lt;h3&gt;Requested file was not found&lt;/h3&gt;"</span>
+        <span class="sa">f</span><span class="s1">'&lt;img src="</span><span class="si">{</span><span class="n">COWIMG</span><span class="si">}</span><span class="s1">" class="img img-responsive" alt="404 Cow" /&gt;'</span>
     <span class="p">)</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;File Not Found (404)&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">}</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="s2">"File Not Found (404)"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">content</span><span class="p">}</span>
 
     <span class="k">if</span> <span class="n">is_iem</span><span class="p">:</span>
-        <span class="n">payload</span> <span class="o">=</span> <span class="n">TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">payload</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-    <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;404 Not Found&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/html&quot;</span><span class="p">)])</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="s2">"404 Not Found"</span><span class="p">,</span> <span class="p">[(</span><span class="s2">"Content-type"</span><span class="p">,</span> <span class="s2">"text/html"</span><span class="p">)])</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">payload</span><span class="p">]</span></div>
 
 </pre></div>

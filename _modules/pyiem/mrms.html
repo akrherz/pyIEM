@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.mrms &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.mrms &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/mrms';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,10 +451,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.mrms</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Multi-RADAR Multi-Sensor (MRMS) Helper Functions.</span>
+<span></span><span class="sd">"""Multi-RADAR Multi-Sensor (MRMS) Helper Functions.</span>
 
 <span class="sd">Hopefully useful functions to help with the processing of MRMS data</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -462,8 +462,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">affine</span><span class="w"> </span><span class="kn">import</span> <span class="n">Affine</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
@@ -517,7 +517,7 @@
 <div class="viewcode-block" id="find_ij">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.find_ij">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span><span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;CAUTION: This is for the netcdf files, not grib2 files.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""CAUTION: This is for the netcdf files, not grib2 files."""</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">MRMS4IEMRE_WEST_EDGE</span>
         <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;=</span> <span class="n">MRMS4IEMRE_EAST_EDGE</span>
@@ -534,36 +534,36 @@
 <div class="viewcode-block" id="is_gzipped">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.is_gzipped">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_gzipped</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that we have gzipped content.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x1f\x8b</span><span class="s2">&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Check that we have gzipped content."""</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">"</span><span class="se">\x1f\x8b</span><span class="s2">"</span></div>
 
 
 
 <div class="viewcode-block" id="get_url">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.get_url">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the URL given the provided options.&quot;&quot;&quot;</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz&quot;</span>
-    <span class="k">if</span> <span class="n">center</span> <span class="o">==</span> <span class="s2">&quot;mtarchive&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the URL given the provided options."""</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz"</span>
+    <span class="k">if</span> <span class="n">center</span> <span class="o">==</span> <span class="s2">"mtarchive"</span><span class="p">:</span>
         <span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;/mrms/ncep/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"/mrms/ncep/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="mi">2000</span> <span class="o">&lt;</span> <span class="n">valid</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2012</span> <span class="ow">and</span> <span class="n">product</span> <span class="o">==</span> <span class="s2">&quot;PrecipRate&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="mi">2000</span> <span class="o">&lt;</span> <span class="n">valid</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2012</span> <span class="ow">and</span> <span class="n">product</span> <span class="o">==</span> <span class="s2">"PrecipRate"</span><span class="p">:</span>
             <span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;/mrms/reanalysis/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"/mrms/reanalysis/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://mrms</span><span class="si">{</span><span class="n">center</span><span class="si">}</span><span class="s2">.ncep.noaa.gov/2D/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/MRMS_</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://mrms</span><span class="si">{</span><span class="n">center</span><span class="si">}</span><span class="s2">.ncep.noaa.gov/2D/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/MRMS_</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">uri</span></div>
 
 
 
 <div class="viewcode-block" id="fetch">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.fetch">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tmpdir</span><span class="o">=</span><span class="s2">&quot;/mesonet/tmp&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a desired MRMS product.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tmpdir</span><span class="o">=</span><span class="s2">"/mesonet/tmp"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a desired MRMS product.</span>
 
 <span class="sd">    Applies the following logic:</span>
 <span class="sd">        - does the file exist in `tmpdir`?</span>
@@ -574,23 +574,23 @@
 <span class="sd">      product(str): MRMS product type</span>
 <span class="sd">      valid(datetime): Datetime object for desired timestamp</span>
 <span class="sd">      tmpdir(str,optional): location to check/place the downloaded file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz"</span>
     <span class="n">tmpfn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
     <span class="c1"># Option 1, we have this file already in cache!</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">):</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%s</span><span class="s2"> in tmpdir cache&quot;</span><span class="p">,</span> <span class="n">tmpfn</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Found </span><span class="si">%s</span><span class="s2"> in tmpdir cache"</span><span class="p">,</span> <span class="n">tmpfn</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tmpfn</span>
     <span class="c1"># Option 2, go fetch it from mtarchive</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">get_url</span><span class="p">(</span><span class="s2">&quot;mtarchive&quot;</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">get_url</span><span class="p">(</span><span class="s2">"mtarchive"</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Failed to fetch </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Failed to fetch </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">is_gzipped</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tmpfn</span>
     <span class="c1"># Option 3, we go look at MRMS website, if timestamp is recent</span>
@@ -598,19 +598,19 @@
     <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">utcnow</span> <span class="o">=</span> <span class="n">utcnow</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">utcnow</span> <span class="o">-</span> <span class="n">valid</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">86400</span><span class="p">:</span>
-        <span class="c1"># Can&#39;t do option 3!</span>
+        <span class="c1"># Can't do option 3!</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="c1"># Loop over all IDP data centers</span>
-    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;-bldr&quot;</span><span class="p">,</span> <span class="s2">&quot;-cprk&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"-bldr"</span><span class="p">,</span> <span class="s2">"-cprk"</span><span class="p">]:</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">get_url</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
             <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Failed to fetch </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Failed to fetch </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">is_gzipped</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
                 <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">tmpfn</span>
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -620,7 +620,7 @@
 <div class="viewcode-block" id="make_colorramp">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.make_colorramp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_colorramp</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make me a crude color ramp.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make me a crude color ramp."""</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># Ramp blue</span>
@@ -658,8 +658,8 @@
 <div class="viewcode-block" id="reader">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.reader">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reader</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return metadata and the data.&quot;&quot;&quot;</span>
-    <span class="n">fp</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return metadata and the data."""</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="p">(</span>
         <span class="n">year</span><span class="p">,</span>
@@ -685,41 +685,41 @@
         <span class="n">scale_lon</span><span class="p">,</span>
         <span class="n">scale_lat</span><span class="p">,</span>
         <span class="n">grid_scale</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;9i4c10i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">80</span><span class="p">))</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"9i4c10i"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">80</span><span class="p">))</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lon_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lon</span><span class="p">)</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lat_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lat</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lon_cc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lon_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lon</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lat_cc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lat_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lat</span><span class="p">)</span>
     <span class="c1"># Calculate</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lon_cc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lon_cc"</span><span class="p">]</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lat_cc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lat_cc"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
         <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">ny</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lat"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lat_cc"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
     <span class="p">)</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lat"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lat_cc"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
     <span class="p">)</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lon"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"ll_lon_cc"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
     <span class="p">)</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lon"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"ul_lon_cc"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
     <span class="p">)</span>
 
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span>
         <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span>
     <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 
-    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nz</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># levels</span>
-    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>  <span class="c1"># z_scale</span>
-    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;10i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span>  <span class="c1"># bogus</span>
-    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;20c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>  <span class="c1"># varname</span>
-    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;6c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
-    <span class="n">var_scale</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">num_radars</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;3i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
-    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_radars</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="si">}</span><span class="s2">c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">num_radars</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># rad_list</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">i"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nz</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># levels</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"i"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>  <span class="c1"># z_scale</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"10i"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span>  <span class="c1"># bogus</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"20c"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>  <span class="c1"># varname</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"6c"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">var_scale</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">num_radars</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"3i"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">num_radars</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="si">}</span><span class="s2">c"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">num_radars</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># rad_list</span>
     <span class="n">sz</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sz</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sz</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sz</span><span class="si">}</span><span class="s2">h"</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sz</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="p">(</span><span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_scale</span><span class="p">)</span>
 
     <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -730,14 +730,14 @@
 <div class="viewcode-block" id="write_worldfile">
 <a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.write_worldfile">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">write_worldfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a worldfile to the given filename.</span>
+<span class="w">    </span><span class="sd">"""Write a worldfile to the given filename.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      filename (str): filename to write the world file information to</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># World file defines the center of the upper left pixel</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;0.01</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">-0.01</span><span class="se">\n</span><span class="si">{</span><span class="n">WEST</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">NORTH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"0.01</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">-0.01</span><span class="se">\n</span><span class="si">{</span><span class="n">WEST</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">NORTH</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
 </pre></div>
 

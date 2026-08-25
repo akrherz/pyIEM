@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.datatypes &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.datatypes &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/datatypes';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,9 +451,9 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.datatypes</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Classes Representing various variables</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="c1"># pylint: disable=no-member</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -464,14 +464,14 @@
 <div class="viewcode-block" id="basetype">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.basetype">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">basetype</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Object for all our vars&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Base Object for all our vars"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor with value and units required&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constructor with value and units required"""</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized temperature unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized temperature unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -482,11 +482,11 @@
 <div class="viewcode-block" id="basetype.get_units">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.basetype.get_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the units for this current datatype</span>
+<span class="w">        </span><span class="sd">"""Returns the units for this current datatype</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          (str): the unit of this datatype</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span></div>
 </div>
 
@@ -495,18 +495,18 @@
 <div class="viewcode-block" id="mixingratio">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.mixingratio">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">mixingratio</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixing Ratio.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mixing Ratio."""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;KG/KG&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"KG/KG"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="mixingratio.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.mixingratio.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the value into the provided units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the value into the provided units"""</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mixingratio</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized mixingratio unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">mixingratio</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized mixingratio unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">mixingratio</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span></div>
 </div>
@@ -516,50 +516,50 @@
 <div class="viewcode-block" id="distance">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.distance">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">distance</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Distance&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Distance"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="s2">&quot;MI&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;KM&quot;</span><span class="p">,</span> <span class="s2">&quot;FT&quot;</span><span class="p">,</span> <span class="s2">&quot;MM&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="s2">&quot;CM&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"SM"</span><span class="p">,</span> <span class="s2">"MI"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"KM"</span><span class="p">,</span> <span class="s2">"FT"</span><span class="p">,</span> <span class="s2">"MM"</span><span class="p">,</span> <span class="s2">"IN"</span><span class="p">,</span> <span class="s2">"CM"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="distance.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.distance.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">distance</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized distance unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">distance</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized distance unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">distance</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
         <span class="c1"># MKS</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="s2">&quot;MI&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"SM"</span><span class="p">,</span> <span class="s2">"MI"</span><span class="p">]:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">1609.344</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;FT&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"FT"</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">/</span> <span class="mf">3.28084</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;KM&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"KM"</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">1000.0</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;MM&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"MM"</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">/</span> <span class="mf">1000.0</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;CM&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"CM"</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">/</span> <span class="mf">100.0</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;IN&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"IN"</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">0.0254</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">meters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
         <span class="c1"># Output</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="s2">&quot;MI&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"SM"</span><span class="p">,</span> <span class="s2">"MI"</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">/</span> <span class="mf">1609.344</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;FT&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"FT"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">*</span> <span class="mf">3.28084</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;KM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"KM"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">/</span> <span class="mf">1000.0</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;MM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"MM"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">*</span> <span class="mf">1000.0</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;CM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"CM"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">*</span> <span class="mf">100.0</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;IN&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"IN"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">meters</span> <span class="o">/</span> <span class="mf">0.0254</span>
         <span class="k">return</span> <span class="n">meters</span></div>
 </div>
@@ -569,35 +569,35 @@
 <div class="viewcode-block" id="precipitation">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.precipitation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">precipitation</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Precipitation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Precipitation"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="s2">&quot;CM&quot;</span><span class="p">,</span> <span class="s2">&quot;MM&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"IN"</span><span class="p">,</span> <span class="s2">"CM"</span><span class="p">,</span> <span class="s2">"MM"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="precipitation.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.precipitation.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">precipitation</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized precipitation unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;known: </span><span class="si">{precipitation.known_units}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized precipitation unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="s2">"known: </span><span class="si">{precipitation.known_units}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
         <span class="c1"># MKS</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;IN&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"IN"</span><span class="p">:</span>
             <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">25.4</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;CM&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"CM"</span><span class="p">:</span>
             <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">10.0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
         <span class="c1"># Convert</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;MM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"MM"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mm</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;CM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"CM"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mm</span> <span class="o">*</span> <span class="mf">10.0</span>
         <span class="k">return</span> <span class="n">mm</span> <span class="o">/</span> <span class="mf">25.4</span></div>
 </div>
@@ -607,37 +607,37 @@
 <div class="viewcode-block" id="speed">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.speed">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">speed</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Speed&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Speed"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">,</span> <span class="s2">&quot;MPH&quot;</span><span class="p">,</span> <span class="s2">&quot;MPS&quot;</span><span class="p">,</span> <span class="s2">&quot;KMH&quot;</span><span class="p">,</span> <span class="s2">&quot;KTS&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"KT"</span><span class="p">,</span> <span class="s2">"MPH"</span><span class="p">,</span> <span class="s2">"MPS"</span><span class="p">,</span> <span class="s2">"KMH"</span><span class="p">,</span> <span class="s2">"KTS"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="speed.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.speed.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">speed</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized speed unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> known: </span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized speed unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> known: </span><span class="si">{</span><span class="n">speed</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
         <span class="c1"># MKS</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;KMH&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"KMH"</span><span class="p">:</span>
             <span class="n">mps_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">/</span> <span class="mf">3.6</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">,</span> <span class="s2">&quot;KTS&quot;</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"KT"</span><span class="p">,</span> <span class="s2">"KTS"</span><span class="p">]:</span>
             <span class="n">mps_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">0.514444</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;MPH&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"MPH"</span><span class="p">:</span>
             <span class="n">mps_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">0.447000</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mps_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;KMH&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"KMH"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mps_value</span> <span class="o">*</span> <span class="mf">3.6</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">,</span> <span class="s2">&quot;KTS&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"KT"</span><span class="p">,</span> <span class="s2">"KTS"</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">mps_value</span> <span class="o">/</span> <span class="mf">0.514444</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;MPH&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"MPH"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mps_value</span> <span class="o">/</span> <span class="mf">0.447000</span>
         <span class="k">return</span> <span class="n">mps_value</span></div>
 </div>
@@ -647,18 +647,18 @@
 <div class="viewcode-block" id="humidity">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.humidity">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">humidity</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Humidity, this is not as straight forward as the others&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Humidity, this is not as straight forward as the others"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;%&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"%"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="humidity.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.humidity.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">humidity</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized humidity unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">humidity</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized humidity unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">humidity</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span></div>
 </div>
@@ -668,23 +668,23 @@
 <div class="viewcode-block" id="direction">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.direction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">direction</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Direction from North&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Direction from North"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DEG&quot;</span><span class="p">,</span> <span class="s2">&quot;RAD&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DEG"</span><span class="p">,</span> <span class="s2">"RAD"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="direction.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.direction.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">direction</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized direction unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">direction</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized direction unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">direction</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;DEG&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;RAD&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"DEG"</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"RAD"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">3.1415926535897931</span> <span class="o">/</span> <span class="mf">180.0</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="mf">3.1415926535897931</span></div>
 </div>
@@ -694,33 +694,33 @@
 <div class="viewcode-block" id="pressure">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.pressure">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">pressure</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pressure&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Pressure"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MB&quot;</span><span class="p">,</span> <span class="s2">&quot;HPA&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="s2">&quot;PA&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MB"</span><span class="p">,</span> <span class="s2">"HPA"</span><span class="p">,</span> <span class="s2">"IN"</span><span class="p">,</span> <span class="s2">"PA"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="pressure.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.pressure.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pressure</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized pressure unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">pressure</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized pressure unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">pressure</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
         <span class="c1"># MKS</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;IN&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"IN"</span><span class="p">:</span>
             <span class="n">mb_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mf">33.86398</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"PA"</span><span class="p">:</span>
             <span class="n">mb_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">/</span> <span class="mf">100.0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mb_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
         <span class="c1"># Now convert</span>
-        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MB&quot;</span><span class="p">,</span> <span class="s2">&quot;HPA&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"MB"</span><span class="p">,</span> <span class="s2">"HPA"</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">mb_value</span>
-        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;PA&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"PA"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mb_value</span> <span class="o">*</span> <span class="mf">100.0</span>
         <span class="k">return</span> <span class="n">mb_value</span> <span class="o">/</span> <span class="mf">33.86398</span></div>
 </div>
@@ -730,33 +730,33 @@
 <div class="viewcode-block" id="temperature">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.temperature">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">temperature</span><span class="p">(</span><span class="n">basetype</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Temperature&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Temperature"""</span>
 
-    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+    <span class="n">known_units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"F"</span><span class="p">,</span> <span class="s2">"K"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">]</span>
 
 <div class="viewcode-block" id="temperature.value">
 <a class="viewcode-back" href="../../api/pyiem.datatypes.html#pyiem.datatypes.temperature.value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a value in the given units&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert to a value in the given units"""</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">temperature</span><span class="o">.</span><span class="n">known_units</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnitsError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;unrecognized temperature unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;known: </span><span class="si">{</span><span class="n">temperature</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"unrecognized temperature unit: </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"known: </span><span class="si">{</span><span class="n">temperature</span><span class="o">.</span><span class="n">known_units</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
         <span class="c1"># Convert to Celsius first</span>
         <span class="n">celsius_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">:</span>
             <span class="n">celsius_value</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">-</span> <span class="mf">32.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.8</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">==</span> <span class="s2">"K"</span><span class="p">:</span>
             <span class="n">celsius_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">-</span> <span class="mf">273.15</span>
         <span class="c1"># Dump back</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"C"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">celsius_value</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"K"</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">273.15</span> <span class="o">+</span> <span class="n">celsius_value</span>
         <span class="k">return</span> <span class="mf">32.0</span> <span class="o">+</span> <span class="n">celsius_value</span> <span class="o">*</span> <span class="mf">1.8</span></div>
 </div>

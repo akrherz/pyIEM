@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.hml &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.nws.products.hml &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/hml';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -454,11 +454,11 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.nws.products.hml</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;NWS Hydrological Markup Language</span>
+<span></span><span class="sd">"""NWS Hydrological Markup Language</span>
 
 <span class="sd">Attempt to break up the HML product into atomic data</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -469,14 +469,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
 
-<span class="n">DELIMITER</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;\&lt;\?xml version=&quot;1.0&quot; standalone=&quot;yes&quot;\?\&gt;&quot;&quot;&quot;</span>
+<span class="n">DELIMITER</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"""\&lt;\?xml version="1.0" standalone="yes"\?\&gt;"""</span>
 
 
 <div class="viewcode-block" id="no999">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.no999">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">no999</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;No negative -999 or -9999 please.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;-999&quot;</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;-9999&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""No negative -999 or -9999 please."""</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"-999"</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">"-9999"</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">val</span></div>
 
@@ -485,10 +485,10 @@
 <div class="viewcode-block" id="parseUTC">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.parseUTC">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parseUTC</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an ISO-ish string into UTC timestamp&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse an ISO-ish string into UTC timestamp"""</span>
     <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="mi">19</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="mi">19</span><span class="p">],</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
         <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
     <span class="p">)</span></div>
 
@@ -497,24 +497,24 @@
 <div class="viewcode-block" id="parse_xml">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.parse_xml">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_xml</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to parse the XML into something useful&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Attempt to parse the XML into something useful"""</span>
     <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
     <span class="n">hml</span> <span class="o">=</span> <span class="n">HMLData</span><span class="p">()</span>
-    <span class="n">hml</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-    <span class="n">hml</span><span class="o">.</span><span class="n">stationname</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
-    <span class="n">hml</span><span class="o">.</span><span class="n">originator</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;originator&quot;</span><span class="p">)</span>
-    <span class="n">hml</span><span class="o">.</span><span class="n">generationtime</span> <span class="o">=</span> <span class="n">parseUTC</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;generationtime&quot;</span><span class="p">])</span>
+    <span class="n">hml</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+    <span class="n">hml</span><span class="o">.</span><span class="n">stationname</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+    <span class="n">hml</span><span class="o">.</span><span class="n">originator</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"originator"</span><span class="p">)</span>
+    <span class="n">hml</span><span class="o">.</span><span class="n">generationtime</span> <span class="o">=</span> <span class="n">parseUTC</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"generationtime"</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;observed&quot;</span><span class="p">,</span> <span class="s2">&quot;forecast&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"observed"</span><span class="p">,</span> <span class="s2">"forecast"</span><span class="p">]:</span>
             <span class="k">continue</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">datum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;datum&quot;</span><span class="p">):</span>
-            <span class="n">secondary</span> <span class="o">=</span> <span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;secondary&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">datum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"datum"</span><span class="p">):</span>
+            <span class="n">secondary</span> <span class="o">=</span> <span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"secondary"</span><span class="p">)</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="nb">dict</span><span class="p">(</span>
                     <span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span>
-                    <span class="n">valid</span><span class="o">=</span><span class="n">parseUTC</span><span class="p">(</span><span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
-                    <span class="n">primary</span><span class="o">=</span><span class="n">no999</span><span class="p">(</span><span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;primary&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
+                    <span class="n">valid</span><span class="o">=</span><span class="n">parseUTC</span><span class="p">(</span><span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"valid"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
+                    <span class="n">primary</span><span class="o">=</span><span class="n">no999</span><span class="p">(</span><span class="n">datum</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"primary"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
                     <span class="n">secondary</span><span class="o">=</span><span class="p">(</span>
                         <span class="n">no999</span><span class="p">(</span><span class="n">secondary</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">secondary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -524,15 +524,15 @@
             <span class="p">)</span>
         <span class="n">mydict</span> <span class="o">=</span> <span class="n">hml</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;primary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;primary&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;secondary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;secondary&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
-        <span class="n">mydict</span><span class="p">[</span><span class="s2">&quot;dataframe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
-        <span class="n">mydict</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parseUTC</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;issued&quot;</span><span class="p">))</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"primary"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"primary"</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"secondary"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"secondary"</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span>
+        <span class="n">mydict</span><span class="p">[</span><span class="s2">"dataframe"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="n">mydict</span><span class="p">[</span><span class="s2">"issued"</span><span class="p">]</span> <span class="o">=</span> <span class="n">parseUTC</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"issued"</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;primaryName&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;secondaryName&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;primaryUnits&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;secondaryUnits&quot;</span><span class="p">,</span>
+            <span class="s2">"primaryName"</span><span class="p">,</span>
+            <span class="s2">"secondaryName"</span><span class="p">,</span>
+            <span class="s2">"primaryUnits"</span><span class="p">,</span>
+            <span class="s2">"secondaryUnits"</span><span class="p">,</span>
         <span class="p">]:</span>
             <span class="n">mydict</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hml</span></div>
@@ -542,16 +542,16 @@
 <div class="viewcode-block" id="HMLData">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HMLData">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HMLData</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Our data object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Our data object."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Constructor."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">station</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stationname</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">originator</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generationtime</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;observed&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="s2">"observed"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">dataframe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">primaryUnits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">issued</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -559,7 +559,7 @@
                 <span class="n">primaryName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">secondaryName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="s2">&quot;forecast&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="s2">"forecast"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">dataframe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">primaryUnits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">issued</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -574,12 +574,12 @@
 <div class="viewcode-block" id="HML">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HML</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for parsing and representing Space Wx Products&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Class for parsing and representing Space Wx Products"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constructor"""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>
@@ -592,29 +592,29 @@
 <div class="viewcode-block" id="HML.do_sql_observed">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML.do_sql_observed">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">do_sql_observed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">_hml</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the observed portion of the dataset&quot;&quot;&quot;</span>
-        <span class="n">ob</span> <span class="o">=</span> <span class="n">_hml</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;observed&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;dataframe&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Process the observed portion of the dataset"""</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">_hml</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"observed"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="s2">"dataframe"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">ob</span><span class="p">[</span><span class="s2">&quot;dataframe&quot;</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">ob</span><span class="p">[</span><span class="s2">"dataframe"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span> <span class="s2">&quot;secondary&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="n">col</span> <span class="o">+</span> <span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"primary"</span><span class="p">,</span> <span class="s2">"secondary"</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">ob</span><span class="p">[</span><span class="n">col</span> <span class="o">+</span> <span class="s2">"Name"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">Name&quot;</span><span class="p">],</span> <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">Units&quot;</span><span class="p">])</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">Name"</span><span class="p">],</span> <span class="n">ob</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">Units"</span><span class="p">])</span>
             <span class="c1"># Check that we have some non-null data</span>
             <span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])]</span>
             <span class="k">if</span> <span class="n">df2</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">minvalid</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-            <span class="n">maxvalid</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">minvalid</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">maxvalid</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">                </span><span class="sd">"""</span>
 <span class="sd">                DELETE from hml_observed_data WHERE</span>
 <span class="sd">                station = %s and valid &gt;= %s and valid &lt;= %s and</span>
 <span class="sd">                key = get_hml_observed_key(%s)</span>
-<span class="sd">            &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">            """</span><span class="p">,</span>
                 <span class="p">(</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">minvalid</span><span class="p">,</span> <span class="n">maxvalid</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df2</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -622,79 +622,79 @@
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;INSERT into hml_observed_data (station, valid, key, &quot;</span>
-                    <span class="s2">&quot;value) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, get_hml_observed_key(</span><span class="si">%s</span><span class="s2">), </span><span class="si">%s</span><span class="s2">) &quot;</span>
-                    <span class="s2">&quot;RETURNING key&quot;</span><span class="p">,</span>
-                    <span class="p">(</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">),</span>
+                    <span class="s2">"INSERT into hml_observed_data (station, valid, key, "</span>
+                    <span class="s2">"value) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, get_hml_observed_key(</span><span class="si">%s</span><span class="s2">), </span><span class="si">%s</span><span class="s2">) "</span>
+                    <span class="s2">"RETURNING key"</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">),</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">"key"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="c1"># Delete the bad row</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;DELETE from hml_observed_data WHERE station = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
-                    <span class="s2">&quot;valid = </span><span class="si">%s</span><span class="s2"> and key is null&quot;</span><span class="p">,</span>
-                    <span class="p">(</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]),</span>
+                    <span class="s2">"DELETE from hml_observed_data WHERE station = </span><span class="si">%s</span><span class="s2"> and "</span>
+                    <span class="s2">"valid = </span><span class="si">%s</span><span class="s2"> and key is null"</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]),</span>
                 <span class="p">)</span>
                 <span class="c1"># Need to create a new unit!</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="s2">&quot;INSERT into hml_observed_keys(id, label) VALUES (&quot;</span>
-                    <span class="s2">&quot;(SELECT coalesce(max(id) + 1, 0) from hml_observed_keys),&quot;</span>
-                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
+                    <span class="s2">"INSERT into hml_observed_keys(id, label) VALUES ("</span>
+                    <span class="s2">"(SELECT coalesce(max(id) + 1, 0) from hml_observed_keys),"</span>
+                    <span class="s2">"</span><span class="si">%s</span><span class="s2">) RETURNING id"</span><span class="p">,</span>
                     <span class="p">(</span><span class="n">key</span><span class="p">,),</span>
                 <span class="p">)</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Created key </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">key</span>
+                    <span class="s2">"Created key </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">key</span>
                 <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HML.do_sql_forecast">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML.do_sql_forecast">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">do_sql_forecast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">_hml</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the forecast portion of the dataset&quot;&quot;&quot;</span>
-        <span class="n">fx</span> <span class="o">=</span> <span class="n">_hml</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;forecast&quot;</span><span class="p">]</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;dataframe&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Process the forecast portion of the dataset"""</span>
+        <span class="n">fx</span> <span class="o">=</span> <span class="n">_hml</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"forecast"</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">fx</span><span class="p">[</span><span class="s2">"dataframe"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="c1"># Get an id</span>
         <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""</span>
 <span class="sd">        INSERT into hml_forecast(station, generationtime, originator,</span>
 <span class="sd">        product_id, primaryname, secondaryname, primaryunits,</span>
 <span class="sd">        secondaryunits, issued, forecast_sts, forecast_ets)</span>
 <span class="sd">        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)</span>
 <span class="sd">        RETURNING id</span>
-<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">        """</span><span class="p">,</span>
             <span class="p">(</span>
                 <span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
                 <span class="n">_hml</span><span class="o">.</span><span class="n">generationtime</span><span class="p">,</span>
                 <span class="n">_hml</span><span class="o">.</span><span class="n">originator</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
-                <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;primaryName&quot;</span><span class="p">],</span>
-                <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;secondaryName&quot;</span><span class="p">],</span>
-                <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;primaryUnits&quot;</span><span class="p">],</span>
-                <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;secondaryUnits&quot;</span><span class="p">],</span>
-                <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;issued&quot;</span><span class="p">],</span>
-                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
-                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+                <span class="n">fx</span><span class="p">[</span><span class="s2">"primaryName"</span><span class="p">],</span>
+                <span class="n">fx</span><span class="p">[</span><span class="s2">"secondaryName"</span><span class="p">],</span>
+                <span class="n">fx</span><span class="p">[</span><span class="s2">"primaryUnits"</span><span class="p">],</span>
+                <span class="n">fx</span><span class="p">[</span><span class="s2">"secondaryUnits"</span><span class="p">],</span>
+                <span class="n">fx</span><span class="p">[</span><span class="s2">"issued"</span><span class="p">],</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
             <span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">fid</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="n">fid</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">"id"</span><span class="p">]</span>
         <span class="c1"># Table partitioning is done by issued time</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;hml_forecast_data_</span><span class="si">{</span><span class="n">fx</span><span class="p">[</span><span class="s1">&#39;issued&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fx</span><span class="p">[</span><span class="s2">&quot;dataframe&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"hml_forecast_data_</span><span class="si">{</span><span class="n">fx</span><span class="p">[</span><span class="s1">'issued'</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fx</span><span class="p">[</span><span class="s2">"dataframe"</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (hml_forecast_id, valid, primary_value, &quot;</span>
-                <span class="s2">&quot;secondary_value) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
-                <span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;primary&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;secondary&quot;</span><span class="p">]),</span>
+                <span class="sa">f</span><span class="s2">"INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (hml_forecast_id, valid, primary_value, "</span>
+                <span class="s2">"secondary_value) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">"primary"</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">"secondary"</span><span class="p">]),</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HML.sql">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML.sql">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist this information to the database&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Persist this information to the database"""</span>
         <span class="k">for</span> <span class="n">_hml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">do_sql_forecast</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">_hml</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">do_sql_observed</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">_hml</span><span class="p">)</span></div>
@@ -703,30 +703,30 @@
 <div class="viewcode-block" id="HML.parsing">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML.parsing">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to parse out what we have found&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Attempt to parse out what we have found"""</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">DELIMITER</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;/site&gt;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"&lt;/site&gt;"</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_xml</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Parsing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> resulted in </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Parsing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> resulted in </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HML.__str__">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.HML.__str__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;string representation&quot;&quot;&quot;</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;HML </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="sd">"""string representation"""</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"HML </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="k">for</span> <span class="n">_hml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;  + SID: </span><span class="si">{</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;generationTime: </span><span class="si">{</span><span class="n">_hml</span><span class="o">.</span><span class="n">generationtime</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"  + SID: </span><span class="si">{</span><span class="n">_hml</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"generationTime: </span><span class="si">{</span><span class="n">_hml</span><span class="o">.</span><span class="n">generationtime</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span></div>
 </div>
@@ -736,13 +736,13 @@
 <div class="viewcode-block" id="parser">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.hml.html#pyiem.nws.products.hml.parser">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a HML NOAAPort product</span>
+<span class="w">    </span><span class="sd">"""Parse a HML NOAAPort product</span>
 
 <span class="sd">    This may have multiple xml documents inside.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      buf (str): What we want to parse</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">HML</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
 
 </pre></div>

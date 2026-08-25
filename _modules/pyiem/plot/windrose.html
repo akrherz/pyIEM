@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.plot.windrose &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.plot.windrose &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/plot/windrose';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.plot.windrose</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A WindrosePlot.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A WindrosePlot."""</span>
 
 <span class="c1"># pylint: disable=not-callable</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
@@ -468,20 +468,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.layouts</span><span class="w"> </span><span class="kn">import</span> <span class="n">figure</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">update_kwargs_apctx</span>
 
-<span class="n">LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;NE&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;SE&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;SW&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;NW&quot;</span><span class="p">]</span>
-<span class="n">COLORS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#012cff&quot;</span><span class="p">,</span> <span class="s2">&quot;#00d5f7&quot;</span><span class="p">,</span> <span class="s2">&quot;#7cfd7f&quot;</span><span class="p">,</span> <span class="s2">&quot;#fde801&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff4503&quot;</span><span class="p">,</span> <span class="s2">&quot;#7e0100&quot;</span><span class="p">]</span>
-<span class="n">PLOT_CONVENTION_FROM</span> <span class="o">=</span> <span class="s2">&quot;from&quot;</span>
-<span class="n">PLOT_CONVENTION_TO</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
+<span class="n">LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"N"</span><span class="p">,</span> <span class="s2">"NE"</span><span class="p">,</span> <span class="s2">"E"</span><span class="p">,</span> <span class="s2">"SE"</span><span class="p">,</span> <span class="s2">"S"</span><span class="p">,</span> <span class="s2">"SW"</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"NW"</span><span class="p">]</span>
+<span class="n">COLORS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#012cff"</span><span class="p">,</span> <span class="s2">"#00d5f7"</span><span class="p">,</span> <span class="s2">"#7cfd7f"</span><span class="p">,</span> <span class="s2">"#fde801"</span><span class="p">,</span> <span class="s2">"#ff4503"</span><span class="p">,</span> <span class="s2">"#7e0100"</span><span class="p">]</span>
+<span class="n">PLOT_CONVENTION_FROM</span> <span class="o">=</span> <span class="s2">"from"</span>
+<span class="n">PLOT_CONVENTION_TO</span> <span class="o">=</span> <span class="s2">"to"</span>
 
 
 <div class="viewcode-block" id="WindrosePlot">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WindrosePlot</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A plot that has a single windrose on it.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A plot that has a single windrose on it."""</span>
 
     <span class="nd">@update_kwargs_apctx</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a WindrosePlot.</span>
+<span class="w">        </span><span class="sd">"""Construct a WindrosePlot.</span>
 
 <span class="sd">        Note that `matplotlib` hard codes a `C` anchor for the axes, so the</span>
 <span class="sd">        axes needs to be moved later, if necessary.  If you pass a `figsize`</span>
@@ -493,28 +493,28 @@
 <span class="sd">            rect ([x,y,width,height]): NDC axes rectangle.</span>
 <span class="sd">            rmax (float): Maximum radius of the windrose.</span>
 <span class="sd">            plot_convention (str): Either `from` (default) or `to`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">rect</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rect&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">figsize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;figsize&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">figsize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"figsize"</span><span class="p">,</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_convention</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>
-            <span class="s2">&quot;plot_convention&quot;</span><span class="p">,</span>
+            <span class="s2">"plot_convention"</span><span class="p">,</span>
             <span class="n">PLOT_CONVENTION_FROM</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">=</span> <span class="s2">"S"</span>
         <span class="k">if</span> <span class="n">figsize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">figsize</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">rect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">rect</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">]</span>  <span class="c1"># slide to the left</span>
             <span class="c1"># Non-square, place legend in top right</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">=</span> <span class="s2">&quot;NW&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">=</span> <span class="s2">"NW"</span>
         <span class="k">if</span> <span class="n">rect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rect</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rmax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"rmax"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># The vertical is the limiting factor here, since we need room for</span>
         <span class="c1"># the title and legend at the bottom.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span>
             <span class="n">rect</span><span class="p">,</span>
-            <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;polar&quot;</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="s2">"polar"</span><span class="p">,</span>
             <span class="n">theta_offset</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
             <span class="n">theta_direction</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
@@ -526,36 +526,36 @@
 <div class="viewcode-block" id="WindrosePlot.barplot">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.barplot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">barplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">nsector</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the bar plotting work.</span>
+<span class="w">        </span><span class="sd">"""Do the bar plotting work.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">          cmap (colormap,optional): Use matplotlib cmap for bars.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># compute histogram</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calm_percent</span><span class="p">,</span> <span class="n">dir_centers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">(</span>
             <span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">nsector</span>
         <span class="p">)</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">dir_centers</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">dir_centers</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_convention</span> <span class="o">==</span> <span class="n">PLOT_CONVENTION_TO</span><span class="p">:</span>
             <span class="c1"># Invert theta</span>
             <span class="n">theta</span> <span class="o">-=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dir_centers</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.8</span>
-        <span class="n">cmap</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cmap&quot;</span><span class="p">)</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cmap"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">COLORS</span><span class="p">,</span> <span class="s2">&quot;wrplot&quot;</span><span class="p">)</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">COLORS</span><span class="p">,</span> <span class="s2">"wrplot"</span><span class="p">)</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.1</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.1</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">+&quot;</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">+"</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
                 <span class="n">theta</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
                 <span class="n">bottom</span><span class="o">=</span><span class="n">base</span><span class="p">,</span>
                 <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
-                <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
                 <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">col</span><span class="p">)),</span>
             <span class="p">)</span>
@@ -565,23 +565,23 @@
         <span class="c1"># Place axis label in least congested spot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_rlabel_position</span><span class="p">(</span><span class="n">dir_centers</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">base</span><span class="p">)])</span>
         <span class="c1"># Append a % on the label</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f%%</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s2">"</span><span class="si">%.1f%%</span><span class="s2">"</span><span class="p">))</span>
         <span class="c1"># Draw Legend</span>
         <span class="n">anchor</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.10</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">==</span> <span class="s2">&quot;NW&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">==</span> <span class="s2">"NW"</span><span class="p">:</span>
             <span class="n">anchor</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
             <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">,</span>
-            <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-            <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">==</span> <span class="s2">&quot;NW&quot;</span> <span class="k">else</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="n">loc</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+            <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span> <span class="o">==</span> <span class="s2">"NW"</span> <span class="k">else</span> <span class="mi">6</span><span class="p">,</span>
             <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">columnspacing</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
             <span class="n">handletextpad</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span>
             <span class="c1"># Ugly hack here due to aliasing in pint for mph</span>
             <span class="n">title</span><span class="o">=</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;NW&#39;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Wind &#39;</span><span class="si">}</span><span class="s2">Speed &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="s1">&#39;mph&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">bins</span><span class="o">.</span><span class="n">units</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">units</span><span class="p">(</span><span class="s1">&#39;mph&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">bins</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">]&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">legend_anchor</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'NW'</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Wind '</span><span class="si">}</span><span class="s2">Speed "</span>
+                <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="s1">'mph'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">bins</span><span class="o">.</span><span class="n">units</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">units</span><span class="p">(</span><span class="s1">'mph'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">bins</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">]"</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
 
@@ -589,7 +589,7 @@
 <div class="viewcode-block" id="WindrosePlot.plot_calm">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.plot_calm">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_calm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear out the center and plot the calm value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Clear out the center and plot the calm value."""</span>
         <span class="n">maxval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">maxval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span>
@@ -599,9 +599,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
             <span class="mf">0.5</span><span class="p">,</span>
             <span class="mf">0.5</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;Calm</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">calm_percent</span><span class="o">.</span><span class="n">m</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span>
-            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Calm</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">calm_percent</span><span class="o">.</span><span class="n">m</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
             <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -609,17 +609,17 @@
 <div class="viewcode-block" id="WindrosePlot.draw_logo">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.draw_logo">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">draw_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Brand the plot.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Brand the plot."""</span>
         <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span>
-            <span class="s2">&quot;This API is no longer used, pass logo={iem,dep,None} to the &quot;</span>
-            <span class="s2">&quot;constructor instead.&quot;</span>
+            <span class="s2">"This API is no longer used, pass logo={iem,dep,None} to the "</span>
+            <span class="s2">"constructor instead."</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="WindrosePlot.draw_arrows">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.draw_arrows">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">draw_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Place arrows on the border.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Place arrows on the border."""</span>
         <span class="n">rmin</span><span class="p">,</span> <span class="n">rmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">():</span>
             <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">rmax</span> <span class="o">-</span> <span class="p">(</span><span class="n">rmax</span> <span class="o">-</span> <span class="n">rmin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.12</span><span class="p">)</span>
@@ -628,18 +628,18 @@
                 <span class="n">xy</span><span class="p">,</span> <span class="n">xytext</span> <span class="o">=</span> <span class="n">xytext</span><span class="p">,</span> <span class="n">xy</span>
             <span class="c1"># https://github.com/matplotlib/matplotlib/issues/5344</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">""</span><span class="p">,</span>
                 <span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span>
                 <span class="n">xytext</span><span class="o">=</span><span class="n">xytext</span><span class="p">,</span>
                 <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span>
-                    <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+                    <span class="n">facecolor</span><span class="o">=</span><span class="s2">"None"</span><span class="p">,</span>
+                    <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"k"</span><span class="p">,</span>
                     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
                     <span class="n">shrink</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
                     <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                 <span class="p">),</span>
-                <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-                <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+                <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
                 <span class="n">zorder</span><span class="o">=</span><span class="n">Z_OVERLAY2</span><span class="p">,</span>
                 <span class="n">annotation_clip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span></div>
@@ -650,7 +650,7 @@
 <div class="viewcode-block" id="histogram">
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.histogram">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">histogram</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">nsector</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the histogram on the given data.</span>
+<span class="w">    </span><span class="sd">"""Create the histogram on the given data.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      speed (pint.Quantity): wind speed with units attached.</span>
@@ -663,13 +663,13 @@
 <span class="sd">      calm_percent (float): the percentage of reports below first bin value.</span>
 <span class="sd">      dir_centers (list): the center of the direction bins.</span>
 <span class="sd">      table (np.ndarray): The &lt;direction&gt;, &lt;speed&gt; histogram in percent.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Figure out the partition size</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="mf">360.0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">nsector</span><span class="p">)</span>
     <span class="c1"># Create bins based on centered around 0 degree angle_slices</span>
     <span class="n">dir_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">angle</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">360</span> <span class="o">+</span> <span class="n">angle</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">dir_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">dirvals</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degree&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">dirvals</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">"degree"</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
     <span class="n">speedvals</span> <span class="o">=</span> <span class="n">speed</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">m</span>
     <span class="c1"># compute speed bins</span>
     <span class="n">speed_bins</span> <span class="o">=</span> <span class="n">bins</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -687,10 +687,10 @@
     <span class="c1"># now drop the last row as unused</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
     <span class="c1"># now total up the calm percentage, first col</span>
-    <span class="n">calm_percent</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">table</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;percent&quot;</span><span class="p">)</span>
+    <span class="n">calm_percent</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">table</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">"percent"</span><span class="p">)</span>
     <span class="c1"># drop the first column as unused</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;percent&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">calm_percent</span><span class="p">,</span> <span class="n">dir_centers</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;degree&quot;</span><span class="p">),</span> <span class="n">table</span></div>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">"percent"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">calm_percent</span><span class="p">,</span> <span class="n">dir_centers</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">"degree"</span><span class="p">),</span> <span class="n">table</span></div>
 
 
 
@@ -698,7 +698,7 @@
 <a class="viewcode-back" href="../../../api/pyiem.plot.windrose.html#pyiem.plot.windrose.plot">[docs]</a>
 <span class="nd">@update_kwargs_apctx</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a WindrosePlot, add bars and other standard things.</span>
+<span class="w">    </span><span class="sd">"""Create a WindrosePlot, add bars and other standard things.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        direction (pint.Quantity): wind direction from North.</span>
@@ -712,12 +712,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        WindrosePlot</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">bins</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;bins&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"bins"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">bins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">&quot;mph&quot;</span><span class="p">)</span>
-    <span class="n">nsector</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;nsector&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;cmap&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s2">"mph"</span><span class="p">)</span>
+    <span class="n">nsector</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"nsector"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"cmap"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="c1"># kwargs gets passed verbatim to `pyiem.plot.layouts.figure`</span>
     <span class="n">wp</span> <span class="o">=</span> <span class="n">WindrosePlot</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">wp</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>

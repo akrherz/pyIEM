@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.stage4 &#8212; pyIEM 1.27.0.post153+ge36415e1a</title>
+    <title>pyiem.stage4 &#8212; pyIEM 1.27.0.post155+g83d7f5d92</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=0bd903b4"></script>
+    <script src="../../_static/documentation_options.js?v=2a9046fa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/stage4';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post153+ge36415e1a" />
-    <meta name="docbuild:last-update" content="Aug 24, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post155+g83d7f5d92" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post153+ge36415e1a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post155+g83d7f5d92</p>
   
 </a></div>
     
@@ -451,7 +451,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyiem.stage4</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Grid definitions for Stage IV data.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Grid definitions for Stage IV data."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -471,12 +471,12 @@
 <span class="n">AFFINE</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1_904_912.924</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">DY</span><span class="p">,</span> <span class="o">-</span><span class="mf">3_424_223.680</span><span class="p">)</span>
 <span class="c1"># This is the projection of the native Grib</span>
 <span class="n">PROJPARMS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">6_371_200.0</span><span class="p">,</span>  <span class="c1"># GDAL and pygrib disagree on this value</span>
-    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mf">6_371_200.0</span><span class="p">,</span>  <span class="c1"># using what pygrib says for 2024 file</span>
-    <span class="s2">&quot;proj&quot;</span><span class="p">:</span> <span class="s2">&quot;stere&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;lat_ts&quot;</span><span class="p">:</span> <span class="mf">60.0</span><span class="p">,</span>
-    <span class="s2">&quot;lat_0&quot;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
-    <span class="s2">&quot;lon_0&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">105.0</span><span class="p">,</span>
+    <span class="s2">"a"</span><span class="p">:</span> <span class="mf">6_371_200.0</span><span class="p">,</span>  <span class="c1"># GDAL and pygrib disagree on this value</span>
+    <span class="s2">"b"</span><span class="p">:</span> <span class="mf">6_371_200.0</span><span class="p">,</span>  <span class="c1"># using what pygrib says for 2024 file</span>
+    <span class="s2">"proj"</span><span class="p">:</span> <span class="s2">"stere"</span><span class="p">,</span>
+    <span class="s2">"lat_ts"</span><span class="p">:</span> <span class="mf">60.0</span><span class="p">,</span>
+    <span class="s2">"lat_0"</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+    <span class="s2">"lon_0"</span><span class="p">:</span> <span class="o">-</span><span class="mf">105.0</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">PROJ</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">PROJPARMS</span><span class="p">)</span>
 
@@ -506,7 +506,7 @@
 <div class="viewcode-block" id="find_ij">
 <a class="viewcode-back" href="../../api/pyiem.stage4.html#pyiem.stage4.find_ij">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span><span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the grid cell index for a given lon/lat (assuming modern grid).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Find the grid cell index for a given lon/lat (assuming modern grid)."""</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">PROJ</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>  <span class="c1"># skipcq</span>
     <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">AFFINE_NATIVE</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="n">AFFINE_NATIVE</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
     <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">AFFINE_NATIVE</span><span class="o">.</span><span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">AFFINE_NATIVE</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
