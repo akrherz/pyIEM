@@ -66,7 +66,10 @@ def stretch_cmap(cmap, bins, extend="both"):
     colors = cmap(np.arange(len(bins) + 1) / float(len(bins)))
     # create a new cmap, skipping first and last
     # pylint: disable=W0212
-    cmapout = mpcolors.ListedColormap(colors[1:-1], "", bad=cmap._rgba_bad)
+    cmapout = mpcolors.ListedColormap(colors[1:-1], "").with_extremes(
+        bad=cmap._rgba_bad
+    )
+
     if extend in ["both", "max"]:
         cmapout = cmapout.with_extremes(over=cmap._rgba_over or colors[-1])
     if extend in ["both", "min"]:
@@ -87,8 +90,8 @@ def nwsprecip():
         "#cbcb97 #989865 #00ebe7 #00a0f5 #000df5 #00ff00 #00c600 #008e00 "
         "#fef700 #e5bc00 #ff8500 #ff0000 #af0000 #640000 #ff00fe #a152bc"
     ).split()
-    cmap = mpcolors.ListedColormap(
-        cpool, "nwsprecip", bad="#FFFFFF", over="#FFFFFF", under="#FFFFFF"
+    cmap = mpcolors.ListedColormap(cpool, "nwsprecip").with_extremes(
+        bad="#FFFFFF", over="#FFFFFF", under="#FFFFFF"
     )
     _register_cmap(cmap)
     return cmap
@@ -104,8 +107,8 @@ def nwsice():
         "#9966ff",  # 0.75-1
         "#730ac7",  # 1-2
     ]
-    cmap = mpcolors.ListedColormap(
-        cpool, "nwsice", bad="#FFFFFF", over="#25045b", under="#FFFFFF"
+    cmap = mpcolors.ListedColormap(cpool, "nwsice").with_extremes(
+        bad="#FFFFFF", over="#25045b", under="#FFFFFF"
     )
     _register_cmap(cmap)
     return cmap
@@ -126,9 +129,7 @@ def nwssnow():
         [0.61960784, 0.0, 0.0],
         [0.41176471, 0.0, 0.0],
     ]
-    cmap = mpcolors.ListedColormap(
-        cpool,
-        "nwssnow",
+    cmap = mpcolors.ListedColormap(cpool, "nwssnow").with_extremes(
         over=[0.16862745, 0.0, 0.18039216],
         under="#FFFFFF",
         bad="#FFFFFF",
@@ -139,8 +140,8 @@ def nwssnow():
 
 def _gen(name, cpool):
     """Generator Helper."""
-    cmap = mpcolors.ListedColormap(
-        cpool, name, over="#000000", under="#FFFFFF", bad="#FFFFFF"
+    cmap = mpcolors.ListedColormap(cpool, name).with_extremes(
+        over="#000000", under="#FFFFFF", bad="#FFFFFF"
     )
     _register_cmap(cmap)
     return cmap
@@ -177,8 +178,8 @@ def whitebluegreenyellowred():
     """Rip off NCL's WhiteBlueGreenYellowRed"""
     cpool = _load_local_cmap_colors("whitebluegreenyellowred")
     cmap3 = mpcolors.ListedColormap(
-        cpool,
-        "whitebluegreenyellowred",
+        cpool, "whitebluegreenyellowred"
+    ).with_extremes(
         over="#000000",
         under="#FFFFFF",
         bad="#FFFFFF",
