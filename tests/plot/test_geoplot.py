@@ -550,9 +550,7 @@ def test_issue98_labelbar():
         sector="iowa",
         nocaption=True,
     )
-    cmap = copy.copy(maue())
-    cmap.set_under("white")
-    cmap.set_over("black")
+    cmap = copy.copy(maue()).with_extremes(under="white", over="black")
     clevs = np.arange(0, 1.0, 0.1)
     clevs[-1] = 3.987654
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -854,8 +852,7 @@ def test_climdiv():
 def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = copy.copy(maue())
-    cmap.set_under("white")
+    cmap = copy.copy(maue()).with_extremes(under="white")
     clevs = list(range(0, 101, 10))
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
     mp.drawcities()
@@ -893,8 +890,7 @@ def test_colorbar2():
 def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = copy.copy(maue())
-    cmap.set_over("black")
+    cmap = copy.copy(maue()).with_extremes(over="black")
     clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
     mp.draw_colorbar(

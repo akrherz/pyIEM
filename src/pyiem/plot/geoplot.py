@@ -1586,8 +1586,9 @@ class MapPlot:
             im = np.asarray(pilimg) if pilimg.size != (100, 100) else _zeros
 
         ramp = ramp2df(f"composite_{product.lower()}")
-        cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
-        cmap.set_under((0, 0, 0, 0))
+        cmap = mpcolors.ListedColormap(
+            ramp[["r", "g", "b"]].to_numpy() / 256
+        ).with_extremes(under=(0, 0, 0, 0))
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
         self.imshow(
             im,
