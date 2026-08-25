@@ -176,10 +176,10 @@ def test_ncopen_conflict():
         nc.close()
 
 
-def test_ncopen():
+def test_ncopen(tmpdir):
     """Does ncopen at least somewhat work."""
     with pytest.raises(IOError):
-        util.ncopen("/tmp/bogus.nc")
+        util.ncopen(tmpdir / "bogus.nc")
 
 
 def test_logger(caplog):
