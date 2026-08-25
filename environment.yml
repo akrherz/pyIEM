@@ -14,8 +14,6 @@ dependencies:
   - gdal
   - geopandas
   - geos
-  # downloading stuff
-  - httpx
   # templating
   - jinja2
   # Need for stable tests
@@ -45,13 +43,16 @@ dependencies:
   - pyproj
   - pytest
   - pytest-cov
-  - pytest-httpx
   - pytest-mpl
   - pytest-runner
   - pytest-xdist
   - rasterstats
   # grid reprojection
   - rasterio
+  # Download stuff
+  - requests
+  # Test requests
+  - responses
   # interpolation
   - scipy
   - setuptools_scm

@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 - Raise minimum pydantic requirement to `2.11`.
 - Require `matplotlib>=3.11` due to test stability needs with changes to
   font rendering.
+- Replace `httpx` usage with `requests` as what is old is new again.
 - Return signature of `str2multipolygon` changed to include a list of errors.
 - Return value from `comprehensive_climate_index` fixed to have units of degC.
 - `webutil.write_telemetry` now writes to dedicated socket

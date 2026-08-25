@@ -28,13 +28,13 @@ from io import BytesIO
 from typing import Optional
 
 import geopandas as gpd
-import httpx
 import matplotlib.cm as mpcm
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 import numpy as np
 import pandas as pd
 import rasterio
+import requests
 from affine import Affine
 from matplotlib.patches import Rectangle, Wedge
 from metpy.calc import wind_components
@@ -292,7 +292,7 @@ class MapPlot:
             params["date"] = valid
         url = "http://mesonet.agron.iastate.edu/geojson/usdm.py"
         try:
-            resp = httpx.get(url, params=params, timeout=30)
+            resp = requests.get(url, params=params, timeout=30)
             resp.raise_for_status()
             df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
@@ -1495,7 +1495,7 @@ class MapPlot:
         )
         tstamp = valid.strftime("%Y-%m-%d %H:%M")
         try:
-            resp = httpx.get(url, params={"valid": tstamp}, timeout=30)
+            resp = requests.get(url, params={"valid": tstamp}, timeout=30)
             resp.raise_for_status()
             df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
@@ -1564,11 +1564,11 @@ class MapPlot:
             f"GIS/{compsector}comp/{product.lower()}_%Y%m%d%H%M."
         )
         try:
-            resp_png = httpx.get(f"{baseurl}png", timeout=10)
+            resp_png = requests.get(f"{baseurl}png", timeout=10)
             resp_png.raise_for_status()
-            resp_wld = httpx.get(f"{baseurl}wld", timeout=10)
+            resp_wld = requests.get(f"{baseurl}wld", timeout=10)
             resp_wld.raise_for_status()
-        except Exception as exp:
+        except requests.exceptions.RequestException as exp:
             LOG.warning(exp)
             return None
         # World file defines the center of the upper left pixel
