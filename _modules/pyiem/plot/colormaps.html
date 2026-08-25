@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.plot.colormaps &#8212; pyIEM 1.27.0.post157+g9eb13673a</title>
+    <title>pyiem.plot.colormaps &#8212; pyIEM 1.27.0.post160+gbc8c03917</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=880ca6ae"></script>
+    <script src="../../../_static/documentation_options.js?v=29884a1e"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/plot/colormaps';</script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post157+g9eb13673a" />
+  <meta name="docsearch:version" content="1.27.0.post160+gbc8c03917" />
     <meta name="docbuild:last-update" content="Aug 25, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post157+g9eb13673a</p>
+    <p class="title logo__title">pyIEM 1.27.0.post160+gbc8c03917</p>
   
 </a></div>
     
@@ -523,13 +523,15 @@
     <span class="c1"># get effectively two more colors than necessary</span>
     <span class="n">colors</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)))</span>
     <span class="c1"># create a new cmap, skipping first and last</span>
-    <span class="n">cmapout</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">""</span><span class="p">)</span>
     <span class="c1"># pylint: disable=W0212</span>
-    <span class="n">cmapout</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_bad</span><span class="p">)</span>
+    <span class="n">cmapout</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">bad</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_bad</span>
+    <span class="p">)</span>
+
     <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"both"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">]:</span>
-        <span class="n">cmapout</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_over</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cmapout</span> <span class="o">=</span> <span class="n">cmapout</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_over</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"both"</span><span class="p">,</span> <span class="s2">"min"</span><span class="p">]:</span>
-        <span class="n">cmapout</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_under</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cmapout</span> <span class="o">=</span> <span class="n">cmapout</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span><span class="n">under</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">_rgba_under</span> <span class="ow">or</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="c1"># we can now return</span>
     <span class="k">return</span> <span class="n">cmapout</span></div>
 
@@ -549,10 +551,9 @@
         <span class="s2">"#cbcb97 #989865 #00ebe7 #00a0f5 #000df5 #00ff00 #00c600 #008e00 "</span>
         <span class="s2">"#fef700 #e5bc00 #ff8500 #ff0000 #af0000 #640000 #ff00fe #a152bc"</span>
     <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsprecip"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsprecip"</span><span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">bad</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span> <span class="n">over</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span> <span class="n">under</span><span class="o">=</span><span class="s2">"#FFFFFF"</span>
+    <span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
@@ -570,10 +571,9 @@
         <span class="s2">"#9966ff"</span><span class="p">,</span>  <span class="c1"># 0.75-1</span>
         <span class="s2">"#730ac7"</span><span class="p">,</span>  <span class="c1"># 1-2</span>
     <span class="p">]</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsice"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#25045b"</span><span class="p">)</span>  <span class="c1"># 2+</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwsice"</span><span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">bad</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span> <span class="n">over</span><span class="o">=</span><span class="s2">"#25045b"</span><span class="p">,</span> <span class="n">under</span><span class="o">=</span><span class="s2">"#FFFFFF"</span>
+    <span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
@@ -596,10 +596,11 @@
         <span class="p">[</span><span class="mf">0.61960784</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
         <span class="p">[</span><span class="mf">0.41176471</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
     <span class="p">]</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwssnow"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">([</span><span class="mf">0.16862745</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.18039216</span><span class="p">])</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"nwssnow"</span><span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">over</span><span class="o">=</span><span class="p">[</span><span class="mf">0.16862745</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.18039216</span><span class="p">],</span>
+        <span class="n">under</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span>
+        <span class="n">bad</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span></div>
 
@@ -607,10 +608,9 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_gen</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cpool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Generator Helper."""</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#000000"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">over</span><span class="o">=</span><span class="s2">"#000000"</span><span class="p">,</span> <span class="n">under</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="s2">"#FFFFFF"</span>
+    <span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap</span>
 
@@ -656,10 +656,13 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">whitebluegreenyellowred</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">"""Rip off NCL's WhiteBlueGreenYellowRed"""</span>
     <span class="n">cpool</span> <span class="o">=</span> <span class="n">_load_local_cmap_colors</span><span class="p">(</span><span class="s2">"whitebluegreenyellowred"</span><span class="p">)</span>
-    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cpool</span><span class="p">,</span> <span class="s2">"whitebluegreenyellowred"</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">"#000000"</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
-    <span class="n">cmap3</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">"#FFFFFF"</span><span class="p">)</span>
+    <span class="n">cmap3</span> <span class="o">=</span> <span class="n">mpcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span>
+        <span class="n">cpool</span><span class="p">,</span> <span class="s2">"whitebluegreenyellowred"</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">with_extremes</span><span class="p">(</span>
+        <span class="n">over</span><span class="o">=</span><span class="s2">"#000000"</span><span class="p">,</span>
+        <span class="n">under</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span>
+        <span class="n">bad</span><span class="o">=</span><span class="s2">"#FFFFFF"</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">_register_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cmap3</span></div>
 
