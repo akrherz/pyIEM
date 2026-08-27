@@ -113,7 +113,7 @@ class Pirep(TextProduct):
         super().__init__(
             text,
             utcnow=utcnow,
-            ugc_provider=ugc_provider,
+            ugc_provider={} if ugc_provider is None else ugc_provider,  # perf
             nwsli_provider=nwsli_provider,
         )
         if self.afos is None:
