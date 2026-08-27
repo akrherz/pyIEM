@@ -46,7 +46,8 @@ The general entry point for a text product is the `parser` method of `pyiem.nws.
 
 ```python
 from pyiem.nws.products import parser
-text = open('MYFILE.txt').read()
+
+text = open("MYFILE.txt").read()
 prod = parser(text)
 print(prod.get_product_id())
 ```
