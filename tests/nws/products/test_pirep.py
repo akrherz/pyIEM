@@ -1,35 +1,52 @@
 """PIREP."""
 
+from datetime import datetime
+
 import pytest
 
+from pyiem.nws.products.pirep import Pirep
 from pyiem.nws.products.pirep import parser as pirepparser
 from pyiem.util import get_test_file, utc
 
 
+def helper(filepath: str, valid: datetime) -> Pirep:
+    """Help things out."""
+    return pirepparser(get_test_file(filepath), utcnow=valid, ugc_provider={})
+
+
+def test_gh1246_double_encoding():
+    """Test that our generated jabber message is not double encoded."""
+    prod = helper("PIREPS/gt.txt", utc(2026, 8, 27, 18))
+    jmsgs = prod.get_jabbers("")
+    ans = (
+        "Routine pilot report at 1725Z: LNY UA "
+        "/OV LNY/TM 1725/FLC208/TP SKC/SK V&gt;10"
+    )
+    assert jmsgs[0][0] == ans
+    assert jmsgs[0][2]["twitter"] == ans
+    htmlans = (
+        "<span style='color:#00ff00;'>Routine pilot report</span> at 1725Z: "
+        "LNY UA /OV LNY/TM 1725/FLC208/TP SKC/SK V&gt;10"
+    )
+    assert jmsgs[0][1] == htmlans
+
+
 def test_fake_afos():
     """Test assignment of the fake AFOS identifier."""
-    prod = pirepparser(
-        get_test_file("PIREPS/PRCUS.txt"),
-        utcnow=utc(2016, 10, 1, 1, 35),
-    )
+    prod = helper("PIREPS/PRCUS.txt", utc(2016, 10, 1, 1, 35))
     assert prod.afos == "PRCUS"
 
 
 def test_fake_afos_pirep():
     """Test assignment of the fake AFOS identifier."""
-    prod = pirepparser(
-        get_test_file("PIREPS/PIREP.txt"),
-        utcnow=utc(2015, 1, 9, 0, 0),
-    )
+    prod = helper("PIREPS/PIREP.txt", utc(2015, 1, 9, 0, 0))
     assert prod.afos == "PIREP"
 
 
 def test_250515_no_newline_space():
     """Test that a space is inserted properly."""
     utcnow = utc(2005, 1, 4, 0, 12)
-    prod = pirepparser(
-        get_test_file("PIREPS/no_newline_space.txt"), utcnow=utcnow
-    )
+    prod = helper("PIREPS/no_newline_space.txt", utcnow)
     ans = (
         "PMD UA /OV PMD36010 /TM 0002 /FL 170 /TP UNK /TA M18 /WV 16345 /TB "
         "NEG /IC NEC /RM PMD-PSP"
@@ -40,7 +57,7 @@ def test_250515_no_newline_space():
 def test_210121_int_latlon():
     """Test successful parsing of an integer lat lon value, tricky."""
     utcnow = utc(2020, 1, 21, 10, 22)
-    prod = pirepparser(get_test_file("PIREPS/latlonint.txt"), utcnow=utcnow)
+    prod = helper("PIREPS/latlonint.txt", utcnow)
     assert prod.reports[0].latitude == 47
     assert prod.reports[0].longitude == -51
     assert prod.reports[0].flight_level == 35_000
@@ -49,7 +66,7 @@ def test_210121_int_latlon():
 def test_210110_canada():
     """Test that generated error is for canada site id."""
     utcnow = utc(2020, 1, 11, 3, 47)
-    prod = pirepparser(get_test_file("PIREPS/canada.txt"), utcnow=utcnow)
+    prod = helper("PIREPS/canada.txt", utcnow)
     assert "CYAT" in prod.warnings[0]
 
 
@@ -57,7 +74,7 @@ def test_210110_canada():
 def test_210108_emptygeom(dbcursor):
     """Test that we insert empty geometries."""
     utcnow = utc(2020, 1, 1, 21, 34)
-    prod = pirepparser(get_test_file("PIREPS/badgeom.txt"), utcnow=utcnow)
+    prod = helper("PIREPS/badgeom.txt", utcnow)
     prod.reports[3].is_duplicate = True
     prod.assign_cwsu(dbcursor)
     prod.sql(dbcursor)
@@ -76,7 +93,9 @@ def test_180307_aviation_controlchar(dbcursor):
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {"BWI": {"lat": 44.26, "lon": -88.52}}
     prod = pirepparser(
-        get_test_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider
+        get_test_file("PIREPS/ubmd90.txt"),
+        ugc_provider={},
+        nwsli_provider=nwsli_provider,
     )
     assert len(prod.reports) == 1
     prod.assign_cwsu(dbcursor)
@@ -87,7 +106,9 @@ def test_170324_ampersand():
     """Do we properly escape the ampersand"""
     nwsli_provider = {"DUG": {"lat": 44.26, "lon": -88.52}}
     prod = pirepparser(
-        get_test_file("PIREPS/ampersand.txt"), nwsli_provider=nwsli_provider
+        get_test_file("PIREPS/ampersand.txt"),
+        ugc_provider={},
+        nwsli_provider=nwsli_provider,
     )
     j = prod.get_jabbers("unused")
     ans = (
@@ -135,7 +156,7 @@ def test_150202_groupdict():
 
 def test_150202_airmet():
     """airmet.txt has no valid data, so don't error out"""
-    prod = pirepparser(get_test_file("PIREPS/airmet.txt"))
+    prod = helper("PIREPS/airmet.txt", utc())
     assert not prod.reports
 
 
