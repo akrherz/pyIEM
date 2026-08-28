@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post165+g9c75ed888</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.27.0.post170+g7fca993f0</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=5c732fce"></script>
+    <script src="../../_static/documentation_options.js?v=743ebd18"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post165+g9c75ed888" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post170+g7fca993f0" />
+    <meta name="docbuild:last-update" content="Aug 28, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post165+g9c75ed888</p>
+    <p class="title logo__title">pyIEM 1.27.0.post170+g7fca993f0</p>
   
 </a></div>
     
@@ -822,10 +822,10 @@
 
 <div class="viewcode-block" id="compute_ts_from_string">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.compute_ts_from_string">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Convert a string to a timestamp."""</span>
     <span class="c1"># Support various ISO8601 formats</span>
-    <span class="n">tstr</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"T"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="n">tstr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"T"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
     <span class="n">tz</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tz"</span><span class="p">,</span> <span class="s2">"America/Chicago"</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">tstr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">):</span>
         <span class="n">tz</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"UTC"</span><span class="p">)</span>
@@ -841,7 +841,7 @@
 
 <div class="viewcode-block" id="compute_ts">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.compute_ts">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Figure out the timestamp."""</span>
     <span class="c1"># NB: form["tz"] should always be set by this point, but alas</span>
     <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"month</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"month"</span><span class="p">)))</span>
@@ -898,10 +898,16 @@
         <span class="c1"># private / computed attributes that are needed</span>
         <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">](</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s2">"tz"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">"tz"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">form</span> <span class="ow">or</span> <span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default_tz"</span><span class="p">,</span> <span class="s2">"America/Chicago"</span><span class="p">)</span>
     <span class="c1"># Important this is set before calling add_to_environ</span>
     <span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">]</span> <span class="o">=</span> <span class="n">TZ_TYPOS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">],</span> <span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">])</span>
+
+    <span class="c1"># Pre-flight check for a valid timezone</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">"Invalid tz specified"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">:</span>
@@ -914,6 +920,16 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">_is_xss_payload</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">"XSS Key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> Value: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default_tz"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">]))</span>
+                <span class="c1"># Set this value back into the schema reference (le sigh)</span>
+                <span class="n">schema</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_cgimodel_schema"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
             <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -952,9 +968,7 @@
                 <span class="p">):</span>
                     <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span><span class="o">.</span><span class="n">ets</span> <span class="o">=</span> <span class="n">ets</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">"Invalid timestamp specified"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">"Invalid timezone specified"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span></div>
+            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">"Invalid timestamp specified"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span></div>
 
 
 
@@ -1276,7 +1290,9 @@
 <div class="viewcode-block" id="iemapp">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.iemapp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">iemapp</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Attempt to do all kinds of nice things for the user and the developer.</span>
+<span class="w">    </span><span class="sd">"""Opinionated processing of CGI GET variables for mod_wsgi apps.</span>
+
+<span class="sd">    - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.</span>
 
 <span class="sd">    kwargs:</span>
 <span class="sd">        - default_tz: The default timezone to use for timestamps, the default</span>
