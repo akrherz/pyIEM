@@ -103,13 +103,13 @@ def test_gh1248_default_tz_invalid_tz_provided():
         tz: Annotated[str | None, Field(description="Timezone")] = None
 
     @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
-    def application(environ, start_response):
+    def application(_environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
     c = Client(application)
-    resp = c.get("/?sts=2022-01-01T00:00&tz=Invalid/Timezone")
+    resp = c.get("/?sts=2022-01-01T00:00&tz=America/")
     assert resp.status_code == 422
 
 

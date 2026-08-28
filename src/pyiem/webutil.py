@@ -412,7 +412,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
     # Pre-flight check for a valid timezone
     try:
         ZoneInfo(form["tz"])
-    except ZoneInfoNotFoundError as exp:
+    except (IsADirectoryError, ValueError, ZoneInfoNotFoundError) as exp:
         raise IncompleteWebRequest("Invalid tz specified") from exp
 
     for key, val in form.items():
@@ -475,8 +475,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                     environ["_cgimodel_schema"].ets = ets
         except (TypeError, ValueError) as exp:
             raise IncompleteWebRequest("Invalid timestamp specified") from exp
-        except (IsADirectoryError, ZoneInfoNotFoundError) as exp:
-            raise IncompleteWebRequest("Invalid timezone specified") from exp
 
 
 def _handle_help(httphost: str, **kwargs):
