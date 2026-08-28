@@ -113,6 +113,27 @@ def test_gh1248_default_tz_invalid_tz_provided():
     assert resp.status_code == 422
 
 
+def test_gh1248_default_tz_invalid_tz_optional():
+    """Test that this situation errors 422."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+        tz: Annotated[str | None, Field(description="Timezone")] = None
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK" if environ["sts"].tzinfo.key == "America/New_York" else "FAIL"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
 def test_iemapp_help_with_linereturns():
     """Test that we properly convert descriptions with newlines."""
 

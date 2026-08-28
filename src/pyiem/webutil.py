@@ -404,7 +404,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         # private / computed attributes that are needed
         environ["_cgimodel_schema"] = kwargs["schema"](**form)
         form = environ["_cgimodel_schema"].model_dump()
-    if "tz" not in form:
+    if "tz" not in form or form["tz"] is None:
         form["tz"] = kwargs.get("default_tz", "America/Chicago")
     # Important this is set before calling add_to_environ
     form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
