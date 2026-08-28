@@ -49,6 +49,52 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
+def test_gh1248_default_tz():
+    """Test that default_tz is used for sts and ets generation."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+        ets: Annotated[datetime, Field(description="End Time")] = None
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK"
+            if (
+                environ["sts"].tzinfo is not None
+                and environ["ets"].tzinfo is not None
+                and environ["sts"].tzinfo.key == "America/New_York"
+                and environ["ets"].tzinfo.key == "America/New_York"
+            )
+            else "FAIL"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_gh1248_default_tz_not_set():
+    """Test for naive sts when default_tz is not set.."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+
+    @iemapp(help="FINDME", schema=Schema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if environ["sts"].tzinfo is None else "FAIL"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
 def test_iemapp_help_with_linereturns():
     """Test that we properly convert descriptions with newlines."""
 

@@ -334,10 +334,10 @@ def log_request(environ: dict, multiplier: int = 1):
         conn.commit()
 
 
-def compute_ts_from_string(form, key):
+def compute_ts_from_string(form: dict, key: str) -> datetime:
     """Convert a string to a timestamp."""
     # Support various ISO8601 formats
-    tstr = form[key].replace("T", " ")
+    tstr: str = form[key].replace("T", " ")
     tz = ZoneInfo(form.get("tz", "America/Chicago"))
     if tstr.endswith("Z"):
         tz = ZoneInfo("UTC")
@@ -350,7 +350,7 @@ def compute_ts_from_string(form, key):
     return datetime.strptime(tstr, fmt).replace(tzinfo=tz)
 
 
-def compute_ts(form, suffix):
+def compute_ts(form: dict, suffix: str) -> datetime:
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
     month = int(form.get(f"month{suffix}", form.get("month")))
@@ -420,6 +420,12 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             elif isinstance(val, str):
                 if _is_xss_payload(val):
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
+            if (
+                isinstance(val, datetime)
+                and val.tzinfo is None
+                and kwargs.get("default_tz") is not None
+            ):
+                form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
             environ[key] = form[key]
         else:
             warnings.warn(

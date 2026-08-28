@@ -49,6 +49,7 @@ All notable changes to this library are documented in this file.
 
 - Account for `CNCL` as a cancellation string in `CWA` products.
 - Add preflight check of MOS database write for known column storage.
+- Apply iemapp provided `default_tz` when sts/ets is naive (#1248).
 - Correct exception catching scope of `util.archive_fetch`.
 - Handle `M` in CLI parsing as missing, improve log message.
 - Improve enforcement of str types into autoplot context parsing.
