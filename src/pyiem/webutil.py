@@ -409,6 +409,12 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
     # Important this is set before calling add_to_environ
     form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
 
+    # Pre-flight check for a valid timezone
+    try:
+        ZoneInfo(form["tz"])
+    except ZoneInfoNotFoundError as exp:
+        raise IncompleteWebRequest("Invalid tz specified") from exp
+
     for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
@@ -426,6 +432,10 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 and kwargs.get("default_tz") is not None
             ):
                 form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
+                # Set this value back into the schema reference (le sigh)
+                schema = environ.get("_cgimodel_schema")
+                if schema is not None and key in type(schema).model_fields:
+                    setattr(schema, key, form[key])
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -782,7 +792,9 @@ def _iemapp_handle_exception(
 
 
 def iemapp(**kwargs):
-    """Attempt to do all kinds of nice things for the user and the developer.
+    """Opinionated processing of CGI GET variables for mod_wsgi apps.
+
+    - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.
 
     kwargs:
         - default_tz: The default timezone to use for timestamps, the default

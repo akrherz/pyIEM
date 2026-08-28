@@ -95,6 +95,24 @@ def test_gh1248_default_tz_not_set():
     assert resp.text == "OK"
 
 
+def test_gh1248_default_tz_invalid_tz_provided():
+    """Test that this situation errors 422."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+        tz: Annotated[str | None, Field(description="Timezone")] = None
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&tz=Invalid/Timezone")
+    assert resp.status_code == 422
+
+
 def test_iemapp_help_with_linereturns():
     """Test that we properly convert descriptions with newlines."""
 
@@ -271,15 +289,19 @@ def test_iemapp_decorator():
 def test_typoed_tz():
     """Test that we handle when a tz gets commonly typoed."""
 
-    @iemapp()
+    class Schema(CGIModel):
+        tz: Annotated[str, Field(description="tz")]
+
+    @iemapp(schema=Schema)
     def application(environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
-        return [b"Hello!"]
+        return environ["tz"]
 
     c = Client(application)
-    resp = c.get("/?tz=America/Chicage")
+    resp = c.get("/?tz=central")
     assert resp.status_code == 200
+    assert resp.text == "America/Chicago"
 
 
 def test_iemapp_raises_newdatabaseconnectionfailure():
