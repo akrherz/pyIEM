@@ -334,10 +334,10 @@ def log_request(environ: dict, multiplier: int = 1):
         conn.commit()
 
 
-def compute_ts_from_string(form, key):
+def compute_ts_from_string(form: dict, key: str) -> datetime:
     """Convert a string to a timestamp."""
     # Support various ISO8601 formats
-    tstr = form[key].replace("T", " ")
+    tstr: str = form[key].replace("T", " ")
     tz = ZoneInfo(form.get("tz", "America/Chicago"))
     if tstr.endswith("Z"):
         tz = ZoneInfo("UTC")
@@ -350,7 +350,7 @@ def compute_ts_from_string(form, key):
     return datetime.strptime(tstr, fmt).replace(tzinfo=tz)
 
 
-def compute_ts(form, suffix):
+def compute_ts(form: dict, suffix: str) -> datetime:
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
     month = int(form.get(f"month{suffix}", form.get("month")))
@@ -404,10 +404,16 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         # private / computed attributes that are needed
         environ["_cgimodel_schema"] = kwargs["schema"](**form)
         form = environ["_cgimodel_schema"].model_dump()
-    if "tz" not in form:
+    if "tz" not in form or form["tz"] is None:
         form["tz"] = kwargs.get("default_tz", "America/Chicago")
     # Important this is set before calling add_to_environ
     form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
+
+    # Pre-flight check for a valid timezone
+    try:
+        ZoneInfo(form["tz"])
+    except (IsADirectoryError, ValueError, ZoneInfoNotFoundError) as exp:
+        raise IncompleteWebRequest("Invalid tz specified") from exp
 
     for key, val in form.items():
         if key not in environ:
@@ -420,6 +426,16 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             elif isinstance(val, str):
                 if _is_xss_payload(val):
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
+            if (
+                isinstance(val, datetime)
+                and val.tzinfo is None
+                and kwargs.get("default_tz") is not None
+            ):
+                form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
+                # Set this value back into the schema reference (le sigh)
+                schema = environ.get("_cgimodel_schema")
+                if schema is not None and key in type(schema).model_fields:
+                    setattr(schema, key, form[key])
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -459,8 +475,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                     environ["_cgimodel_schema"].ets = ets
         except (TypeError, ValueError) as exp:
             raise IncompleteWebRequest("Invalid timestamp specified") from exp
-        except (IsADirectoryError, ZoneInfoNotFoundError) as exp:
-            raise IncompleteWebRequest("Invalid timezone specified") from exp
 
 
 def _handle_help(httphost: str, **kwargs):
@@ -776,7 +790,9 @@ def _iemapp_handle_exception(
 
 
 def iemapp(**kwargs):
-    """Attempt to do all kinds of nice things for the user and the developer.
+    """Opinionated processing of CGI GET variables for mod_wsgi apps.
+
+    - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.
 
     kwargs:
         - default_tz: The default timezone to use for timestamps, the default
