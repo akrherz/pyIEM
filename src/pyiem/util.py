@@ -17,10 +17,12 @@ import warnings
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from html import escape
+from pathlib import Path
 
 # !important
 # Lazy import everything possible here, since this module is imported by
 # most everything.
+import netCDF4
 import numpy as np  # used too many places
 import requests
 
@@ -244,8 +246,10 @@ def ssw(mixedobj):
         stdout.write(mixedobj)
 
 
-def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
-    """Safely open netcdf files
+def ncopen(
+    ncfn: str | Path, mode: str = "r", timeout: int = 60, _sleep: int = 5
+) -> netCDF4.Dataset:
+    """Safely open netcdf files.
 
     The issue here is that we can only have the following situation for a
     given NetCDF file.
@@ -256,28 +260,36 @@ def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
     lock files is problematic.
 
     Args:
-      ncfn (str): The netCDF filename
-      mode (str,optional): The netCDF4.Dataset open mode, default 'r'
-      timeout (int): The total time in seconds to attempt a read, default 60
+      ncfn: The netCDF filename
+      mode: The netCDF4.Dataset open mode, default 'r'
+      timeout: The total time in seconds to attempt a read, default 60.
+      _sleep: The time in seconds to sleep between attempts, default 5.
 
     Returns:
-      `netCDF4.Dataset` or `None`
-    """
-    import netCDF4
+      `netCDF4.Dataset`
 
-    if mode != "w" and not os.path.isfile(ncfn):
-        raise IOError(f"No such file {ncfn}")
+    Raises:
+        FileNotFoundError: When opening a non-existent file in a
+            non-create mode.
+        TimeoutError: When a transient open conflict does not clear before
+            timeout.
+    """
+    if mode.startswith(("r", "a", "x")) and not Path(ncfn).exists():
+        raise FileNotFoundError(f"No such file {ncfn}")
     sts = datetime.now(timezone.utc)
-    nc = None
+    exp = None
     while (datetime.now(timezone.utc) - sts).total_seconds() < timeout:
         try:
             nc = netCDF4.Dataset(ncfn, mode)
-            nc.set_auto_scale(True)
-            break
-        except (OSError, IOError) as exp:
-            LOG.debug(exp)
-        time.sleep(_sleep)
-    return nc
+        except PermissionError as err:
+            exp = err
+            LOG.debug("open of %s failed", ncfn, stack_info=True)
+            time.sleep(_sleep)
+            continue
+        return nc
+    raise TimeoutError(
+        f"Failed to open {ncfn} after {timeout} seconds"
+    ) from exp
 
 
 def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
