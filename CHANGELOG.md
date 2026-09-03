@@ -10,6 +10,8 @@ All notable changes to this library are documented in this file.
 - [SHEF] Tweak narrative storage to re-include the `:` delimiter.
 - Disable IEMAccess write of wind information from the DSM due to inprecision
   of reported units in MPH.
+- `util.ncopen` no longer will return None, but raise exceptions if opening
+  netcdf files raises.
 - Permit non-standard `in` as LSR unit.
 - Raise minimum pydantic requirement to `2.11`.
 - Require `matplotlib>=3.11` due to test stability needs with changes to

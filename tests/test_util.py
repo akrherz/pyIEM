@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from io import BytesIO
 
 import mock
+import netCDF4
 import numpy as np
 
 # third party
@@ -171,15 +172,25 @@ def test_ncopen_conflict():
         nc.close()
         nc = util.ncopen(tmp.name, "r")
         assert nc is not None
-        nc2 = util.ncopen(tmp.name, "w", timeout=0.1, _sleep=0.11)
-        assert nc2 is None
+        with pytest.raises(TimeoutError) as exp:
+            util.ncopen(tmp.name, "w", timeout=0.1, _sleep=0.11)
+        assert isinstance(exp.value.__cause__, PermissionError)
         nc.close()
 
 
 def test_ncopen(tmpdir):
     """Does ncopen at least somewhat work."""
-    with pytest.raises(IOError):
+    with pytest.raises(FileNotFoundError):
         util.ncopen(tmpdir / "bogus.nc")
+
+
+def test_ncopen_invalid_mode(tmpdir):
+    """Invalid modes should not be converted into TimeoutError."""
+    fn = tmpdir / "valid.nc"
+    with netCDF4.Dataset(fn, "w"):
+        pass
+    with pytest.raises(ValueError):
+        util.ncopen(fn, "not-a-netcdf-mode")
 
 
 def test_logger(caplog):
