@@ -281,7 +281,7 @@ def ncopen(
     while (datetime.now(timezone.utc) - sts).total_seconds() < timeout:
         try:
             nc = netCDF4.Dataset(ncfn, mode)
-        except PermissionError as err:
+        except Exception as err:
             exp = err
             LOG.debug("open of %s failed", ncfn, stack_info=True)
             time.sleep(_sleep)
