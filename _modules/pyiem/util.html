@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.util &#8212; pyIEM 1.27.0.post172+gb46b29699</title>
+    <title>pyiem.util &#8212; pyIEM 1.27.0.post176+gd91ba94f9</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=c0f0df3c"></script>
+    <script src="../../_static/documentation_options.js?v=1289abdd"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/util';</script>
@@ -47,8 +47,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post172+gb46b29699" />
-    <meta name="docbuild:last-update" content="Sep 01, 2026"/>
+  <meta name="docsearch:version" content="1.27.0.post176+gd91ba94f9" />
+    <meta name="docbuild:last-update" content="Sep 03, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post172+gb46b29699</p>
+    <p class="title logo__title">pyIEM 1.27.0.post176+gd91ba94f9</p>
   
 </a></div>
     
@@ -470,10 +470,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">html</span><span class="w"> </span><span class="kn">import</span> <span class="n">escape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="c1"># !important</span>
 <span class="c1"># Lazy import everything possible here, since this module is imported by</span>
 <span class="c1"># most everything.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>  <span class="c1"># used too many places</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
@@ -744,8 +746,10 @@
 
 <div class="viewcode-block" id="ncopen">
 <a class="viewcode-back" href="../../api/pyiem.util.html#pyiem.util.ncopen">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ncopen</span><span class="p">(</span><span class="n">ncfn</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">_sleep</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Safely open netcdf files</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ncopen</span><span class="p">(</span>
+    <span class="n">ncfn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">_sleep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Safely open netcdf files.</span>
 
 <span class="sd">    The issue here is that we can only have the following situation for a</span>
 <span class="sd">    given NetCDF file.</span>
@@ -756,28 +760,36 @@
 <span class="sd">    lock files is problematic.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">      ncfn (str): The netCDF filename</span>
-<span class="sd">      mode (str,optional): The netCDF4.Dataset open mode, default 'r'</span>
-<span class="sd">      timeout (int): The total time in seconds to attempt a read, default 60</span>
+<span class="sd">      ncfn: The netCDF filename</span>
+<span class="sd">      mode: The netCDF4.Dataset open mode, default 'r'</span>
+<span class="sd">      timeout: The total time in seconds to attempt a read, default 60.</span>
+<span class="sd">      _sleep: The time in seconds to sleep between attempts, default 5.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      `netCDF4.Dataset` or `None`</span>
-<span class="sd">    """</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
+<span class="sd">      `netCDF4.Dataset`</span>
 
-    <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">"w"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ncfn</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No such file </span><span class="si">{</span><span class="n">ncfn</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: When opening a non-existent file in a</span>
+<span class="sd">            non-create mode.</span>
+<span class="sd">        TimeoutError: When a transient open conflict does not clear before</span>
+<span class="sd">            timeout.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">"r"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">ncfn</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No such file </span><span class="si">{</span><span class="n">ncfn</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">sts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-    <span class="n">nc</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">-</span> <span class="n">sts</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">nc</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">ncfn</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
-            <span class="n">nc</span><span class="o">.</span><span class="n">set_auto_scale</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">break</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">_sleep</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nc</span></div>
+        <span class="k">except</span> <span class="ne">PermissionError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">exp</span> <span class="o">=</span> <span class="n">err</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"open of </span><span class="si">%s</span><span class="s2"> failed"</span><span class="p">,</span> <span class="n">ncfn</span><span class="p">,</span> <span class="n">stack_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">_sleep</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">nc</span>
+    <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Failed to open </span><span class="si">{</span><span class="n">ncfn</span><span class="si">}</span><span class="s2"> after </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2"> seconds"</span>
+    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span></div>
 
 
 
