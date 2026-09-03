@@ -274,7 +274,7 @@ def ncopen(
         TimeoutError: When a transient open conflict does not clear before
             timeout.
     """
-    if mode != "w" and not Path(ncfn).exists():
+    if mode.startswith(("r", "a", "x")) and not Path(ncfn).exists():
         raise FileNotFoundError(f"No such file {ncfn}")
     sts = datetime.now(timezone.utc)
     exp = None
