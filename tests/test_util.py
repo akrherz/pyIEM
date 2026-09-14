@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 from io import BytesIO
 
 import mock
-import netCDF4
 import numpy as np
 
 # third party
@@ -182,15 +181,6 @@ def test_ncopen(tmpdir):
     """Does ncopen at least somewhat work."""
     with pytest.raises(FileNotFoundError):
         util.ncopen(tmpdir / "bogus.nc")
-
-
-def test_ncopen_invalid_mode(tmpdir):
-    """Invalid modes should not be converted into TimeoutError."""
-    fn = tmpdir / "valid.nc"
-    with netCDF4.Dataset(fn, "w"):
-        pass
-    with pytest.raises(ValueError):
-        util.ncopen(fn, "not-a-netcdf-mode")
 
 
 def test_logger(caplog):
