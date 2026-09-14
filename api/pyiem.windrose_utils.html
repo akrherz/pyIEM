@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.windrose_utils module &#8212; pyIEM 1.27.0.post176+gd91ba94f9</title>
+    <title>pyiem.windrose_utils module &#8212; pyIEM 1.28.0.post4+gaef7ede51</title>
   
   
   
@@ -27,19 +27,19 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=1289abdd"></script>
+    <script src="../_static/documentation_options.js?v=56ff9c42"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.windrose_utils';</script>
@@ -50,8 +50,8 @@
     <link rel="prev" title="pyiem.wellknowntext module" href="pyiem.wellknowntext.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.27.0.post176+gd91ba94f9" />
-    <meta name="docbuild:last-update" content="Sep 03, 2026"/>
+  <meta name="docsearch:version" content="1.28.0.post4+gaef7ede51" />
+    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.27.0.post176+gd91ba94f9</p>
+    <p class="title logo__title">pyIEM 1.28.0.post4+gaef7ede51</p>
   
 </a></div>
     
@@ -595,28 +595,28 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>station</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – station identifier to search database for</p></li>
-<li><p><strong>database</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – database name to look for data within</p></li>
-<li><p><strong>months</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – optional list of months to limit plot to</p></li>
-<li><p><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – optional list of hours to limit plot to</p></li>
+<li><p><strong>station</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – station identifier to search database for</p></li>
+<li><p><strong>database</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – database name to look for data within</p></li>
+<li><p><strong>months</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – optional list of months to limit plot to</p></li>
+<li><p><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – optional list of hours to limit plot to</p></li>
 <li><p><strong>sts</strong> (<em>datetime</em><em>,</em><em>optional</em>) – start datetime</p></li>
 <li><p><strong>ets</strong> (<em>datetime</em><em>,</em><em>optional</em>) – end datetime</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – units to plot values as, default to <cite>mph</cite>.</p></li>
-<li><p><strong>nsector</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>,</em><em>optional</em>) – number of bins to devide the windrose into</p></li>
+<li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – units to plot values as, default to <cite>mph</cite>.</p></li>
+<li><p><strong>nsector</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>,</em><em>optional</em>) – number of bins to devide the windrose into</p></li>
 <li><p><strong>justdata</strong> (<em>boolean</em><em>,</em><em>optional</em>) – if True, write out the data only</p></li>
-<li><p><strong>sname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – The name of this station, if not specified it will
+<li><p><strong>sname</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – The name of this station, if not specified it will
 default to the ((<cite>station</cite>)) identifier</p></li>
-<li><p><strong>sknt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of wind speeds in knots already generated</p></li>
-<li><p><strong>drct</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of wind directions (deg N) already generated</p></li>
-<li><p><strong>valid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of valid datetimes (with tzinfo set), used
+<li><p><strong>sknt</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of wind speeds in knots already generated</p></li>
+<li><p><strong>drct</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of wind directions (deg N) already generated</p></li>
+<li><p><strong>valid</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – A list of valid datetimes (with tzinfo set), used
 in the case of providing sknt and drct.</p></li>
-<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>,</em><em>optional</em>) – In case of RAOB, which level interests us (hPa)</p></li>
-<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – bins to use for the wind speed</p></li>
-<li><p><strong>tzname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – Time zone to use for the plot.</p></li>
+<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>,</em><em>optional</em>) – In case of RAOB, which level interests us (hPa)</p></li>
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>,</em><em>optional</em>) – bins to use for the wind speed</p></li>
+<li><p><strong>tzname</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – Time zone to use for the plot.</p></li>
 <li><p><strong>cmap</strong> (<em>cmap</em><em>,</em><em>optional</em>) – Matplotlib colormap to pass to barplot.</p></li>
-<li><p><strong>limit_by_doy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>,</em><em>optional</em>) – Use the <cite>sts</cite> and <cite>ets</cite> to define a period
+<li><p><strong>limit_by_doy</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>,</em><em>optional</em>) – Use the <cite>sts</cite> and <cite>ets</cite> to define a period
 of days each year to limit the data by. Default <cite>false</cite>.</p></li>
-<li><p><strong>plot_convention</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – How to orient the bars. The default is the
+<li><p><strong>plot_convention</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – How to orient the bars. The default is the
 meteorological convention of <cite>from</cite>, the other option is <cite>to</cite>. This
 only impacts the plot, the provided data should still follow <cite>from</cite>.</p></li>
 </ul>
@@ -693,8 +693,8 @@ only impacts the plot, the provided data should still follow <cite>from</cite>.<
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -728,7 +728,7 @@ only impacts the plot, the provided data should still follow <cite>from</cite>.<
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>
