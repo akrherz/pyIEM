@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Tweak pyiem web error handler to only log requests starting with /.
+
 ### Bug Fixes
 
 ## **1.28.0** (14 Sep 2026)

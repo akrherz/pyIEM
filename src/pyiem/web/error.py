@@ -34,9 +34,8 @@ def log_request(
 ):
     """Do some logging work."""
     snipped = f"{uri[:100]}...snipped" if len(uri) > 100 else uri
-    # See mod_wsgi discussion on this
     remoteip = environ.get("REMOTE_ADDR")
-    if redirect_status == 404:
+    if redirect_status == 404 and uri.startswith("/"):
         error_log(
             environ, f"404 {snipped} referer: {environ.get('HTTP_REFERER')}"
         )
