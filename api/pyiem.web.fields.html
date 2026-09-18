@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.network module &#8212; pyIEM 1.28.0.post9+g584c1cf13</title>
+    <title>pyiem.web.fields module &#8212; pyIEM 1.28.0.post9+g584c1cf13</title>
   
   
   
@@ -42,12 +42,12 @@
     <script src="../_static/documentation_options.js?v=5c55f9b7"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.network';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.web.fields';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyiem.observation module" href="pyiem.observation.html" />
-    <link rel="prev" title="pyiem.mrms module" href="pyiem.mrms.html" />
+    <link rel="next" title="pyiem.autoplot module" href="pyiem.autoplot.html" />
+    <link rel="prev" title="pyiem.web.error module" href="pyiem.web.error.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.28.0.post9+g584c1cf13" />
@@ -267,10 +267,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -413,7 +409,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.grid.html">pyiem.grid package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.grid.nav.html">pyiem.grid.nav module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.grid.util.html">pyiem.grid.util module</a></li>
@@ -498,13 +494,13 @@
 <li class="toctree-l2"><a class="reference internal" href="pyiem.templates.iem.html">pyiem.templates.iem package</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.web.html">pyiem.web package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyiem.web.html">pyiem.web package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pyiem.web.error.html">pyiem.web.error module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.web.fields.html">pyiem.web.fields module</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">pyiem.web.fields module</a></li>
 </ul>
 </details></li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyiem.autoplot.html">pyiem.autoplot module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.database.html">pyiem.database module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.datatypes.html">pyiem.datatypes module</a></li>
@@ -516,7 +512,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pyiem.iemre.html">pyiem.iemre module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.meteorology.html">pyiem.meteorology module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.mrms.html">pyiem.mrms module</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyiem.network module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.network.html">pyiem.network module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.observation.html">pyiem.observation module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.reference.html">pyiem.reference module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.stage4.html">pyiem.stage4 module</a></li>
@@ -569,7 +565,10 @@
     
     <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.network module</span></li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.web.html" class="nav-link">pyiem.web package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.web.fields module</span></li>
   </ul>
 </nav>
 </div>
@@ -586,55 +585,20 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pyiem.network">
-<span id="pyiem-network-module"></span><h1>pyiem.network module<a class="headerlink" href="#module-pyiem.network" title="Link to this heading">#</a></h1>
-<p>Network Table.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.network.Table">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.network.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/network.html#Table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.network.Table" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Our class</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.network.Table.get_threading_id">
-<span class="sig-name descname"><span class="pre">get_threading_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/network.html#Table.get_threading_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.network.Table.get_threading_id" title="Link to this definition">#</a></dt>
-<dd><p>Return a station identifier (not iemid) based on threading.</p>
-<p>Lookup what the threaded station identifier is based on this given
-timestamp/date.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sid</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – station identifier to check threading for.</p></li>
-<li><p><strong>valid</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.14)"><em>datetime.date</em></a>) – lookup for comparison.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.network.Table.get_id_by_key">
-<span class="sig-name descname"><span class="pre">get_id_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/network.html#Table.get_id_by_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.network.Table.get_id_by_key" title="Link to this definition">#</a></dt>
-<dd><p>Find a station id by a given attribute = value.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – attribute to lookup.</p></li>
-<li><p><strong>value</strong> (<em>mixed</em>) – value to compare against</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>station_id</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="module-pyiem.web.fields">
+<span id="pyiem-web-fields-module"></span><h1>pyiem.web.fields module<a class="headerlink" href="#module-pyiem.web.fields" title="Link to this heading">#</a></h1>
+<p>Stanardized fields used as parameters in Models.</p>
+<p>So we have a convoluted set of things to support here, depending on if the
+field has a None default or not.  So we have three scenarios supported by
+the two field combinations, i.e. FIELD and FIELD_OPTIONAL.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Parameter is always required -&gt; <cite>name: FIELD</cite></p></li>
+<li><p>Parameter has a default of proper type -&gt; <cite>name: FIELD = “good”</cite></p></li>
+<li><p>Parameter is not required and None by default
+-&gt; <cite>name: FIELD_OPTIONAL = None</cite></p></li>
+</ol>
+</div></blockquote>
 </section>
 
 
@@ -648,20 +612,20 @@ timestamp/date.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pyiem.mrms.html"
+       href="pyiem.web.error.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pyiem.mrms module</p>
+        <p class="prev-next-title">pyiem.web.error module</p>
       </div>
     </a>
     <a class="right-next"
-       href="pyiem.observation.html"
+       href="pyiem.autoplot.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pyiem.observation module</p>
+        <p class="prev-next-title">pyiem.autoplot module</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -671,28 +635,6 @@ timestamp/date.</p>
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.network.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.network.Table.get_threading_id"><code class="docutils literal notranslate"><span class="pre">Table.get_threading_id()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.network.Table.get_id_by_key"><code class="docutils literal notranslate"><span class="pre">Table.get_id_by_key()</span></code></a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

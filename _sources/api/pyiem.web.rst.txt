@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pyiem.web.error
+   pyiem.web.fields
 
 Module contents
 ---------------
