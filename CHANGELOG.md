@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Introduce ``pyiem.web.fields`` for common pydantic backed fields used by
+  various IEM web apps. Initially, a verbatim copy from `iemweb`.
 - Tweak pyiem web error handler to only log requests starting with /.
 
 ### Bug Fixes
