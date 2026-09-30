@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Create a process lock on ``netCDF4.Dataset`` usage attempting to allow
+  ``pyiem.util.ncopen`` to behave well in threaded contexts.
 - Introduce ``pyiem.web.fields`` for common pydantic backed fields used by
   various IEM web apps. Initially, a verbatim copy from `iemweb`.
 - Tweak pyiem web error handler to only log requests starting with /.
