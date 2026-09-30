@@ -299,6 +299,63 @@ def test_locked_dataset_enter_error_releases_lock(monkeypatch):
     lock.release()
 
 
+def test_locked_dataset_close_without_dataset_skips_lock(monkeypatch):
+    """Do not acquire the netCDF lock when there is no Dataset to close."""
+    lock = mock.Mock()
+    monkeypatch.setattr(util, "_NETCDF_LOCK", lock)
+    manager = util._LockedDataset(None, "unused.nc", time.monotonic(), 1)
+
+    assert manager.close() is None
+    lock.acquire.assert_not_called()
+
+
+def test_locked_dataset_delegated_attributes_use_lock(monkeypatch):
+    """Guard delegated Dataset attribute reads and writes."""
+    events = []
+
+    class RecordingLock:
+        def __init__(self):
+            self.held = False
+
+        def __enter__(self):
+            self.held = True
+            events.append("lock-enter")
+
+        def __exit__(self, *_args):
+            self.held = False
+            events.append("lock-exit")
+
+    lock = RecordingLock()
+    monkeypatch.setattr(util, "_NETCDF_LOCK", lock)
+
+    class Dataset:
+        @property
+        def title(self):
+            assert lock.held
+            events.append("get-title")
+            return "dataset title"
+
+        @title.setter
+        def title(self, value):
+            assert lock.held
+            events.append(("set-title", value))
+
+    manager = util._LockedDataset(Dataset(), "unused.nc", time.monotonic(), 1)
+    assert manager.title == "dataset title"
+    manager.title = "updated title"
+    manager._timeout = 2
+
+    assert manager._timeout == 2
+    assert events == [
+        "lock-enter",
+        "get-title",
+        "lock-exit",
+        "lock-enter",
+        ("set-title", "updated title"),
+        "lock-exit",
+    ]
+
+
 def test_logger(caplog):
     """Can we emit logs."""
     log = util.logger()

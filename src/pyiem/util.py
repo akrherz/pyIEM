@@ -296,15 +296,19 @@ class _LockedDataset:
             _NETCDF_LOCK.release()
 
     def __getattr__(self, name):
-        return getattr(self._dataset, name)
+        with _NETCDF_LOCK:
+            return getattr(self._dataset, name)
 
     def __setattr__(self, name, value):
         if name in {"_dataset", "_filename", "_deadline", "_timeout"}:
             object.__setattr__(self, name, value)
             return
-        setattr(self._dataset, name, value)
+        with _NETCDF_LOCK:
+            setattr(self._dataset, name, value)
 
     def close(self):
+        if self._dataset is None:
+            return None
         if not _NETCDF_LOCK.acquire(timeout=max(0, self._timeout)):
             _PENDING_NETCDF_CLOSES.put(self._dataset)
             self._dataset = None
