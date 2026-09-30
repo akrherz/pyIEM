@@ -127,6 +127,7 @@ def draw_wmts(panel, background):
             aspect=None,
             color="#f4f2db",
             zorder=Z_FILL,
+            add_labels=False,
         )
     )
 
@@ -297,7 +298,7 @@ class GeoPanel:
         Add a feature to the axes.
         """
         df = gpd.GeoDataFrame({"geometry": features}, crs=crs).to_crs(self.crs)
-        df.plot(*args, ax=self.ax, aspect=None, **kwargs)
+        df.plot(*args, ax=self.ax, aspect=None, add_labels=False, **kwargs)
 
     def plot(self, x, y, **kwargs):
         """Proxy"""

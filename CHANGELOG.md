@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Require geopandas 1.2.0 due to `add_labels` keyword usage to ``plot()`` (#1257).
+
 ### New Features
 
 - Create a process lock on ``netCDF4.Dataset`` usage attempting to allow
