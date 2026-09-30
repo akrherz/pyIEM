@@ -107,13 +107,10 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
-            rw (bool | None): Require that the connected cluster can accept
-                write requests. `False` accepts any server. With `None`,
-                a read-write server is required unless `user`
-                is omitted or `None` and maps to
-                `nobody`, in which case any server is accepted.
-                Explicitly passing
-                `user="nobody"` still requires a read-write server.
+      rw (bool | None): True requires a read-write server; false accepts any
+        server. With `rw=None`, any server is accepted only when
+        `user` is omitted or `None` and maps to `nobody`; explicitly
+        passing `user="nobody"` still requires a read-write server.
 
     Returns:
       psycopg database connection
