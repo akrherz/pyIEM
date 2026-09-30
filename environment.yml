@@ -58,8 +58,7 @@ dependencies:
   - scipy
   - setuptools_scm
   - shapely
-  # prevent bad conda solve
-  - sphinx>=8
+  - sphinx>=8.2
   - sqlalchemy
   # testing
   - werkzeug

@@ -18,7 +18,7 @@ release = version
 # -- General configuration ---------------------------------------------------
 
 # Minimum Sphinx version
-needs_sphinx = "8.0"
+needs_sphinx = "8.2"
 
 # Extensions
 extensions = [
