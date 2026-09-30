@@ -7,6 +7,8 @@ import random
 import string
 import sys
 import tempfile
+import threading
+import time
 from datetime import datetime, timezone
 from io import BytesIO
 
@@ -168,6 +170,7 @@ def test_ncopen_conflict():
     with tempfile.NamedTemporaryFile() as tmp:
         nc = util.ncopen(tmp.name, mode="w")
         nc.title = "hello"
+        assert nc.title == "hello"
         nc.close()
         nc = util.ncopen(tmp.name, "r")
         assert nc is not None
@@ -181,6 +184,176 @@ def test_ncopen(tmpdir):
     """Does ncopen at least somewhat work."""
     with pytest.raises(FileNotFoundError):
         util.ncopen(tmpdir / "bogus.nc")
+
+
+def test_ncopen_thread_lock(tmp_path):
+    """Serialize netCDF access across nested contexts and threads."""
+    first = tmp_path / "first.nc"
+    second = tmp_path / "second.nc"
+    with util.ncopen(first, "w") as nc:
+        nc.title = "first"
+    with util.ncopen(second, "w") as nc:
+        nc.title = "second"
+
+    started = threading.Event()
+    entered = threading.Event()
+
+    def read_second():
+        started.set()
+        with util.ncopen(second) as nc:
+            assert nc.title == "second"
+            entered.set()
+
+    worker = threading.Thread(target=read_second)
+    with util.ncopen(first) as nc1, util.ncopen(second) as nc2:
+        assert nc1.title == "first"
+        assert nc2.title == "second"
+        worker.start()
+        assert started.wait(2)
+        assert not entered.wait(0.1)
+
+    assert entered.wait(2)
+    worker.join(timeout=2)
+    assert not worker.is_alive()
+
+
+def test_ncopen_lock_timeout(tmp_path):
+    """Bound waits for both opening and entering a Dataset context."""
+    first = tmp_path / "first.nc"
+    second = tmp_path / "second.nc"
+    with util.ncopen(first, "w") as nc:
+        nc.title = "first"
+    with util.ncopen(second, "w") as nc:
+        nc.title = "second"
+
+    open_started = threading.Event()
+    open_timed_out = threading.Event()
+
+    def open_second():
+        open_started.set()
+        try:
+            util.ncopen(second, timeout=0.1)
+        except TimeoutError:
+            open_timed_out.set()
+
+    with util.ncopen(first) as nc:
+        worker = threading.Thread(target=open_second)
+        worker.start()
+        assert open_started.wait(2)
+        assert open_timed_out.wait(2)
+        worker.join(timeout=2)
+        assert not worker.is_alive()
+
+        close_manager = util.ncopen(second, timeout=0.1)
+        close_started = threading.Event()
+        close_timed_out = threading.Event()
+
+        def close_second():
+            close_started.set()
+            try:
+                close_manager.close()
+            except TimeoutError:
+                close_timed_out.set()
+
+        worker = threading.Thread(target=close_second)
+        worker.start()
+        assert close_started.wait(2)
+        assert close_timed_out.wait(2)
+        worker.join(timeout=2)
+        assert not worker.is_alive()
+
+        manager = util.ncopen(second, timeout=0.1)
+        enter_started = threading.Event()
+        enter_timed_out = threading.Event()
+
+        def enter_second():
+            enter_started.set()
+            try:
+                with manager:
+                    pass
+            except TimeoutError:
+                enter_timed_out.set()
+
+        worker = threading.Thread(target=enter_second)
+        worker.start()
+        assert enter_started.wait(2)
+        assert enter_timed_out.wait(2)
+        worker.join(timeout=2)
+        assert not worker.is_alive()
+
+
+def test_locked_dataset_enter_error_releases_lock(monkeypatch):
+    """Release the lock if the wrapped Dataset fails to enter."""
+    lock = threading.Lock()
+    monkeypatch.setattr(util, "_NETCDF_LOCK", lock)
+    dataset = mock.MagicMock()
+    dataset.__enter__.side_effect = RuntimeError("enter failed")
+    manager = util._LockedDataset(
+        dataset, "unused.nc", time.monotonic() + 1, 1
+    )
+
+    with pytest.raises(RuntimeError, match="enter failed"):
+        manager.__enter__()
+
+    assert lock.acquire(blocking=False)
+    lock.release()
+
+
+def test_locked_dataset_close_without_dataset_skips_lock(monkeypatch):
+    """Do not acquire the netCDF lock when there is no Dataset to close."""
+    lock = mock.Mock()
+    monkeypatch.setattr(util, "_NETCDF_LOCK", lock)
+    manager = util._LockedDataset(None, "unused.nc", time.monotonic(), 1)
+
+    assert manager.close() is None
+    lock.acquire.assert_not_called()
+
+
+def test_locked_dataset_delegated_attributes_use_lock(monkeypatch):
+    """Guard delegated Dataset attribute reads and writes."""
+    events = []
+
+    class RecordingLock:
+        def __init__(self):
+            self.held = False
+
+        def __enter__(self):
+            self.held = True
+            events.append("lock-enter")
+
+        def __exit__(self, *_args):
+            self.held = False
+            events.append("lock-exit")
+
+    lock = RecordingLock()
+    monkeypatch.setattr(util, "_NETCDF_LOCK", lock)
+
+    class Dataset:
+        @property
+        def title(self):
+            assert lock.held
+            events.append("get-title")
+            return "dataset title"
+
+        @title.setter
+        def title(self, value):
+            assert lock.held
+            events.append(("set-title", value))
+
+    manager = util._LockedDataset(Dataset(), "unused.nc", time.monotonic(), 1)
+    assert manager.title == "dataset title"
+    manager.title = "updated title"
+    manager._timeout = 2
+
+    assert manager._timeout == 2
+    assert events == [
+        "lock-enter",
+        "get-title",
+        "lock-exit",
+        "lock-enter",
+        ("set-title", "updated title"),
+        "lock-exit",
+    ]
 
 
 def test_logger(caplog):

@@ -7,11 +7,13 @@ This module contains utility functions used by various parts of the codebase.
 
 import logging
 import os
+import queue
 import random
 import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import warnings
 from contextlib import contextmanager
@@ -34,6 +36,21 @@ SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 LOG = logging.getLogger("pyiem")
 LOG.addHandler(logging.NullHandler())
 WFO_FOURCHAR = ["AFG", "GUM", "AFG", "HFO", "AFC", "AJK"]
+_NETCDF_LOCK = threading.RLock()
+_PENDING_NETCDF_CLOSES = queue.SimpleQueue()
+
+
+def _close_pending_netcdf_datasets():
+    """Close Datasets deferred after a context-entry timeout."""
+    while True:
+        try:
+            dataset = _PENDING_NETCDF_CLOSES.get_nowait()
+        except queue.Empty:
+            return
+        try:
+            dataset.close()
+        except Exception:
+            LOG.exception("Failed to close a deferred netCDF Dataset")
 
 
 class CustomFormatter(logging.Formatter):
@@ -246,6 +263,66 @@ def ssw(mixedobj):
         stdout.write(mixedobj)
 
 
+class _LockedDataset:
+    """Context manager that serializes access to a netCDF Dataset."""
+
+    def __init__(self, dataset, filename, deadline, timeout):
+        self._dataset = dataset
+        self._filename = filename
+        self._deadline = deadline
+        self._timeout = timeout
+
+    def __enter__(self):
+        remaining = max(0, self._deadline - time.monotonic())
+        if not _NETCDF_LOCK.acquire(timeout=remaining):
+            _PENDING_NETCDF_CLOSES.put(self._dataset)
+            self._dataset = None
+            raise TimeoutError(
+                f"Failed to acquire netCDF lock for {self._filename} "
+                f"within {self._timeout} seconds"
+            )
+        try:
+            _close_pending_netcdf_datasets()
+            return self._dataset.__enter__()
+        except Exception:
+            _NETCDF_LOCK.release()
+            raise
+
+    def __exit__(self, *args):
+        try:
+            return self._dataset.__exit__(*args)
+        finally:
+            _close_pending_netcdf_datasets()
+            _NETCDF_LOCK.release()
+
+    def __getattr__(self, name):
+        with _NETCDF_LOCK:
+            return getattr(self._dataset, name)
+
+    def __setattr__(self, name, value):
+        if name in {"_dataset", "_filename", "_deadline", "_timeout"}:
+            object.__setattr__(self, name, value)
+            return
+        with _NETCDF_LOCK:
+            setattr(self._dataset, name, value)
+
+    def close(self):
+        if self._dataset is None:
+            return None
+        if not _NETCDF_LOCK.acquire(timeout=max(0, self._timeout)):
+            _PENDING_NETCDF_CLOSES.put(self._dataset)
+            self._dataset = None
+            raise TimeoutError(
+                f"Failed to acquire netCDF lock for {self._filename} "
+                f"within {self._timeout} seconds"
+            )
+        try:
+            _close_pending_netcdf_datasets()
+            return self._dataset.close()
+        finally:
+            _NETCDF_LOCK.release()
+
+
 def ncopen(
     ncfn: str | Path, mode: str = "r", timeout: int = 60, _sleep: int = 5
 ) -> netCDF4.Dataset:
@@ -262,7 +339,8 @@ def ncopen(
     Args:
       ncfn: The netCDF filename
       mode: The netCDF4.Dataset open mode, default 'r'
-      timeout: The total time in seconds to attempt a read, default 60.
+      timeout: Seconds allowed to open the file and acquire the context lock,
+        default 60. The context body itself is not timed.
       _sleep: The time in seconds to sleep between attempts, default 5.
 
     Returns:
@@ -276,17 +354,28 @@ def ncopen(
     """
     if mode.startswith(("r", "a", "x")) and not Path(ncfn).exists():
         raise FileNotFoundError(f"No such file {ncfn}")
-    sts = datetime.now(timezone.utc)
+    deadline = time.monotonic() + timeout
     exp = None
-    while (datetime.now(timezone.utc) - sts).total_seconds() < timeout:
+    while time.monotonic() < deadline:
+        remaining = max(0, deadline - time.monotonic())
+        if not _NETCDF_LOCK.acquire(timeout=remaining):
+            raise TimeoutError(
+                f"Failed to acquire netCDF lock for {ncfn} "
+                f"within {timeout} seconds"
+            ) from exp
         try:
+            _close_pending_netcdf_datasets()
             nc = netCDF4.Dataset(ncfn, mode)
         except Exception as err:
             exp = err
             LOG.debug("open of %s failed", ncfn, stack_info=True)
-            time.sleep(_sleep)
-            continue
-        return nc
+        else:
+            return _LockedDataset(nc, ncfn, deadline, timeout)
+        finally:
+            _NETCDF_LOCK.release()
+        remaining = deadline - time.monotonic()
+        if remaining > 0:
+            time.sleep(min(_sleep, remaining))
     raise TimeoutError(
         f"Failed to open {ncfn} after {timeout} seconds"
     ) from exp

@@ -12,7 +12,8 @@ dependencies:
   - defusedxml
   - docutils
   - gdal
-  - geopandas
+  # awaiting fix for labels
+  - geopandas<1.2.0
   - geos
   # templating
   - jinja2
