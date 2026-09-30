@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.database &#8212; pyIEM 1.28.0.post16+ga2689fc61</title>
+    <title>pyiem.database &#8212; pyIEM 1.28.0.post20+g7b1d3d430</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../../_static/documentation_options.js?v=d1936ad7"></script>
+    <script src="../../_static/documentation_options.js?v=2546ac95"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/database';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.0.post16+ga2689fc61" />
+  <meta name="docsearch:version" content="1.28.0.post20+g7b1d3d430" />
     <meta name="docbuild:last-update" content="Sep 30, 2026"/>
   
     
@@ -115,7 +115,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.0.post16+ga2689fc61</p>
+    <p class="title logo__title">pyIEM 1.28.0.post20+g7b1d3d430</p>
   
 </a></div>
     
@@ -504,14 +504,17 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">      name (str): the database name to connect to.</span>
-<span class="sd">      **kwargs: any additional arguments to pass to psycopg.connect</span>
-<span class="sd">        user (str): the database user to connect as</span>
-<span class="sd">        host (str): the database host to connect to</span>
-<span class="sd">        port (int): the database port to connect to</span>
-<span class="sd">        connect_timeout (int): Connection timeout in seconds, default 30.</span>
-<span class="sd">        rw (bool | None): Require that the connected cluster can accept</span>
-<span class="sd">          write requests.  The default is `None`, which some opinionated</span>
-<span class="sd">          logic happens.  If `nobody` is computed, then read-only is assumed.</span>
+<span class="sd">      **kwargs: optional keyword arguments: `user`, `host`, `port`,</span>
+<span class="sd">        `connect_timeout`, `gssencmode`, and `rw`. Missing `user`, `host`,</span>
+<span class="sd">        and `port` values default to the current mapped user,</span>
+<span class="sd">        `iemdb-{name}.local`, and 5432, respectively. `connect_timeout`</span>
+<span class="sd">        defaults to 30 and `gssencmode` defaults to `disable`. `rw` controls</span>
+<span class="sd">        `target_session_attrs`: true requires a read-write server and false</span>
+<span class="sd">        accepts any server. With `rw=None`, a read-write server is required</span>
+<span class="sd">        unless `user` is omitted or `None` and maps to `nobody`, in which case</span>
+<span class="sd">        any server is accepted. Explicitly passing `user="nobody"` still</span>
+<span class="sd">        requires a read-write server.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      str</span>
 <span class="sd">    """</span>
@@ -561,9 +564,10 @@
 <span class="sd">      port (int,optional): the TCP port that PostgreSQL is listening</span>
 <span class="sd">        defaults to 5432</span>
 <span class="sd">      password (str,optional): the password to use.</span>
-<span class="sd">      rw (bool | None): Require that the connected cluster can accept</span>
-<span class="sd">        write requests.  The default is `None`, which some opinionated</span>
-<span class="sd">        logic happens.  If `nobody` is computed, then read-only is assumed.</span>
+<span class="sd">      rw (bool | None): True requires a read-write server; false accepts any</span>
+<span class="sd">        server. With `rw=None`, any server is accepted only when</span>
+<span class="sd">        `user` is omitted or `None` and maps to `nobody`; explicitly</span>
+<span class="sd">        passing `user="nobody"` still requires a read-write server.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      psycopg database connection</span>
