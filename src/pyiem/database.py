@@ -50,14 +50,17 @@ def get_dbconnstr(name, **kwargs) -> str:
 
     Args:
       name (str): the database name to connect to.
-      **kwargs: any additional arguments to pass to psycopg.connect
-        user (str): the database user to connect as
-        host (str): the database host to connect to
-        port (int): the database port to connect to
-        connect_timeout (int): Connection timeout in seconds, default 30.
-        rw (bool | None): Require that the connected cluster can accept
-          write requests.  The default is `None`, which some opinionated
-          logic happens.  If `nobody` is computed, then read-only is assumed.
+      **kwargs: optional keyword arguments: `user`, `host`, `port`,
+        `connect_timeout`, `gssencmode`, and `rw`. Missing `user`, `host`,
+        and `port` values default to the current mapped user,
+        `iemdb-{name}.local`, and 5432, respectively. `connect_timeout`
+        defaults to 30 and `gssencmode` defaults to `disable`. `rw` controls
+        `target_session_attrs`: true requires a read-write server and false
+        accepts any server. With `rw=None`, a read-write server is required
+        unless `user` is omitted or `None` and maps to `nobody`, in which case
+        any server is accepted. Explicitly passing `user="nobody"` still
+        requires a read-write server.
+
     Returns:
       str
     """
@@ -104,9 +107,10 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
-      rw (bool | None): Require that the connected cluster can accept
-        write requests.  The default is `None`, which some opinionated
-        logic happens.  If `nobody` is computed, then read-only is assumed.
+      rw (bool | None): True requires a read-write server; false accepts any
+        server. With `rw=None`, any server is accepted only when
+        `user` is omitted or `None` and maps to `nobody`; explicitly
+        passing `user="nobody"` still requires a read-write server.
 
     Returns:
       psycopg database connection
