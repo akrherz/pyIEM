@@ -22,7 +22,7 @@ dependencies = [
   "affine",
   "defusedxml",
   "docutils",
-  "geopandas",
+  "geopandas>=1.2",
   "jinja2",
   "matplotlib>=3.5",
   "metar",

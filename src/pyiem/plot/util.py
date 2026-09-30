@@ -95,7 +95,7 @@ def draw_features_from_shapefile(gp, name: str, **kwargs):
             .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
         )
     if not df.empty:
-        df.plot(ax=gp.ax, aspect=None, **kwargs)
+        df.plot(ax=gp.ax, aspect=None, add_labels=False, **kwargs)
 
 
 def ramp2df(name) -> pd.DataFrame:
@@ -716,6 +716,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
             aspect=None,
             zorder=zorder,
             lw=kwargs.get("lw", 0.1),
+            add_labels=False,
         )
     if to_label:
         mymap.plot_values(

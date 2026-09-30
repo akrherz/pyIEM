@@ -225,6 +225,7 @@ class MapPlot:
                         edgecolor=kwargs.get("statebordercolor", "k"),
                         facecolor="None",
                         zorder=Z_OVERLAY + 2,
+                        add_labels=False,
                     )
                 gp.ax.set_xlim(xlim)
                 gp.ax.set_ylim(ylim)
@@ -1315,6 +1316,7 @@ class MapPlot:
                 aspect=None,
                 zorder=Z_POLITICAL,
                 facecolor="None",
+                add_labels=False,
                 **kwargs,
             )
 
@@ -1343,6 +1345,7 @@ class MapPlot:
                 aspect=None,
                 zorder=Z_POLITICAL,
                 facecolor="None",
+                add_labels=False,
                 **kwargs,
             )
 
@@ -1444,6 +1447,7 @@ class MapPlot:
                     edgecolor=color,
                     lw=0.4,
                     zorder=Z_OVERLAY2 + 2,
+                    add_labels=False,
                 )
 
     def postprocess(self, **kwargs):
