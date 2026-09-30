@@ -18,7 +18,7 @@ release = version
 # -- General configuration ---------------------------------------------------
 
 # Minimum Sphinx version
-needs_sphinx = "7.0"
+needs_sphinx = "8.0"
 
 # Extensions
 extensions = [
@@ -144,8 +144,3 @@ texinfo_documents = [
         "Miscellaneous",
     )
 ]
-
-# -- Suppress warnings for optional packages ---------------------------------
-
-# Don't fail on missing optional modules
-autodoc_mock_imports = []

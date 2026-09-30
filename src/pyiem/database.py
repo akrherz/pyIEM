@@ -50,14 +50,14 @@ def get_dbconnstr(name, **kwargs) -> str:
 
     Args:
       name (str): the database name to connect to.
-      **kwargs: any additional arguments to pass to psycopg.connect
-        user (str): the database user to connect as
-        host (str): the database host to connect to
-        port (int): the database port to connect to
-        connect_timeout (int): Connection timeout in seconds, default 30.
-        rw (bool | None): Require that the connected cluster can accept
-          write requests.  The default is `None`, which some opinionated
-          logic happens.  If `nobody` is computed, then read-only is assumed.
+      **kwargs: optional keyword arguments: `user`, `host`, `port`,
+        `connect_timeout`, `gssencmode`, and `rw`. Missing `user`, `host`,
+        and `port` values default to the current mapped user,
+        `iemdb-{name}.local`, and 5432, respectively. `connect_timeout`
+        defaults to 30 and `gssencmode` defaults to `disable`. `rw` controls
+        `target_session_attrs`: true requires a read-write server, false
+        accepts any server, and `None` uses the default behavior.
+
     Returns:
       str
     """

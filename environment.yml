@@ -60,7 +60,6 @@ dependencies:
   - shapely
   # prevent bad conda solve
   - sphinx>=8
-  - sphinxcontrib-napoleon
   - sqlalchemy
   # testing
   - werkzeug
