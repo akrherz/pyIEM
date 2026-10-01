@@ -14,8 +14,6 @@ from io import BytesIO
 
 import mock
 import numpy as np
-
-# third party
 import pytest
 
 from pyiem import util
@@ -512,12 +510,15 @@ def test_set_property(dbcursor):
 def test_property_datetime_roundtrip():
     """Test that we can roundtrip a datetime."""
     value = util.utc()
-    util.set_property("test", value)
+    ranstr = "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
+    )
+    util.set_property(ranstr, value)
     props = util.get_properties()
-    assert props["test"] == value.strftime(ISO8601)
-    util.delete_property("test")
+    assert props[ranstr] == value.strftime(ISO8601)
+    util.delete_property(ranstr)
     props = util.get_properties()
-    assert "test" not in props
+    assert ranstr not in props
 
 
 def test_property_lifecycle():
