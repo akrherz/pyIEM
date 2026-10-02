@@ -51,8 +51,7 @@ def test_261002_rr1orn():
 
 def test_gh1163_shef_var_wrong():
     """Test that we can create SHEF variables correctly."""
-    utcnow = utc(2026, 2, 22, 18, 5)
-    prod = parser(get_test_file("SHEF/RR2LOT.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR2LOT.txt", utc(2026, 2, 22, 18, 5))
     assert not prod.warnings
     assert len(prod.data) == 8
     assert prod.data[3].varname() == "SFQRZZZ"
@@ -60,30 +59,26 @@ def test_gh1163_shef_var_wrong():
 
 def test_251110_rr1lch_no_station():
     """Test how some GIGO is handled."""
-    utcnow = utc(2025, 11, 10, 18)
-    prod = parser(get_test_file("SHEF/RR1LCH.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR1LCH.txt", utc(2025, 11, 10, 18))
     assert not prod.warnings
     assert len(prod.data) == 32
 
 
 def test_250716_demote_warning():
     """Test that we get no warning from this."""
-    utcnow = utc(2025, 7, 16, 12)
-    prod = parser(get_test_file("SHEF/RR3ACR.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR3ACR.txt", utc(2025, 7, 16, 12))
     assert not prod.warnings
 
 
 def test_231220_random_nan():
     """Test that a random nan can be handled."""
-    utcnow = utc(2023, 12, 20, 12)
-    prod = parser(get_test_file("SHEF/RRSRAH.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RRSRAH.txt", utc(2023, 12, 20, 12))
     assert len(prod.data) == 1
 
 
 def test_231129_rr3dmx_twoslash():
     """Test that we can rectify this without two slashes."""
-    utcnow = utc(2023, 11, 13, 16, 41)
-    prod = parser(get_test_file("SHEF/RR3DMX_twoslash.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR3DMX_twoslash.txt", utc(2023, 11, 13, 16, 41))
     assert prod.data[0].raw.find("//") == -1
 
 
@@ -96,8 +91,7 @@ def test_231109_bad_dh(prod):
 
 def test_231107_rr8arx():
     """Test that we get valid station IDs from this product."""
-    utcnow = utc(2023, 11, 7, 15, 50)
-    prod = parser(get_test_file("SHEF/RR8ARX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR8ARX.txt", utc(2023, 11, 7, 15, 50))
     for data in prod.data:
         assert len(data.station) == 5
     assert prod.data[2].physical_element == "QT"
@@ -106,15 +100,13 @@ def test_231107_rr8arx():
 
 def test_231102_hydmsr_trace():
     """Test that SHEF encoded trace of 0.001 translates back to IEM trace."""
-    utcnow = utc(2023, 11, 2, 15, 50)
-    prod = parser(get_test_file("SHEF/HYDMSR.txt"), utcnow=utcnow)
+    prod = helper("SHEF/HYDMSR.txt", utc(2023, 11, 2, 15, 50))
     assert prod.data[0].num_value == TRACE_VALUE
 
 
 def test_231101_rtpmpx_oct31():
     """Test that we get this previous month date correct."""
-    utcnow = utc(2023, 11, 1, 13)
-    prod = parser(get_test_file("SHEF/RTPMPX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RTPMPX.txt", utc(2023, 11, 1, 13))
     assert prod.data[0].valid == utc(2023, 10, 31, 13)
 
 
@@ -148,7 +140,7 @@ def test_231006_paired_value_invalid(prod):
 def test_231002_dhmmmm():
     """Test the handling of DHMMMM ."""
     payload = get_test_file("SHEF/RTPGRB.txt")
-    prod = parser(payload.replace("DHM   ", "DHMMMM"))
+    prod = parser(payload.replace("DHM   ", "DHMMMM"), ugc_provider={})
     assert not prod.warnings
 
 
@@ -168,70 +160,64 @@ def test_230926_invalid_depth(prod):
 def test_231114_rr6bcr_2():
     """Test that we don't squawk about this valid, cough, product."""
     # This is actually specified as valid RR6 data in the ASOS manual.
-    utcnow = utc(2023, 11, 14, 13)
-    prod = parser(get_test_file("SHEF/RR6BCR_2.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR6BCR_2.txt", utc(2023, 11, 14, 13))
     assert not prod.warnings
     assert len(prod.data) == 4
 
 
 def test_230817_rr6bcr():
     """Test that we can quell a GIGO traceback."""
-    prod = parser(get_test_file("SHEF/RR6BCR.txt"))
+    prod = helper("SHEF/RR6BCR.txt", utc(2023, 8, 17))
     assert not prod.warnings
 
 
 def test_230425_hydva_months():
     """Test that month's replacement does not error :/"""
-    prod = parser(get_test_file("SHEF/HYDVA.txt"))
+    prod = helper("SHEF/HYDVA.txt", utc(2023, 4, 25))
     assert not prod.warnings
 
 
 def test_230120_rtpgrb():
     """Test that MSG is handled in RTPGRB."""
-    prod = parser(get_test_file("SHEF/RTPGRB.txt"))
+    prod = helper("SHEF/RTPGRB.txt", utc(2023, 1, 20))
     assert not prod.warnings
 
 
 def test_221101_too_many_failures():
     """Test that this product does not eventually make an email."""
-    utcnow = utc(2022, 11, 1, 12)
-    prod = parser(get_test_file("SHEF/RR9GYX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR9GYX.txt", utc(2022, 11, 1, 12))
     assert len(prod.data) == 216
 
 
 def test_221031_bad_hour():
     """Test the handling of this product that yielded a hour range error."""
-    utcnow = utc(2022, 10, 31, 12)
-    prod = parser(get_test_file("SHEF/RTPBOU.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RTPBOU.txt", utc(2022, 10, 31, 12))
     assert len(prod.data) == 20
 
 
 def test_220610_nan():
     """Test handling of nan value."""
-    utcnow = utc(2022, 6, 10)
-    prod = parser(get_test_file("SHEF/RRSCHS.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RRSCHS.txt", utc(2022, 6, 10))
     assert len(prod.data) == 14
 
 
 def test_220401_rr1tar():
     """Test handling invalid A message that SHEFIT handles somehow."""
-    utcnow = utc(2022, 4, 1)
-    prod = parser(get_test_file("SHEF/RR1TAR.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR1TAR.txt", utc(2022, 4, 1))
     assert len(prod.data) == 10
     assert abs(prod.data[0].num_value - 529.52) < 0.01
 
 
 def test_220401_onechar_skip():
     """Test that we consume 1 char SHEF codes."""
-    utcnow = utc(2022, 4, 1)
-    prod = parser(get_test_file("SHEF/RR3OKX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR3OKX.txt", utc(2022, 4, 1))
     assert not prod.warnings
     assert len(prod.data) == 12
 
 
 def test_220224_redundant_dh():
     """Test that a product with redundant DH values does not fool us."""
-    prod = parser(get_test_file("SHEF/RR3GJT.txt"), utcnow=utc(2022, 2, 25))
+    prod = helper("SHEF/RR3GJT.txt", utc(2022, 2, 25))
     assert prod.data[4].valid == utc(2022, 2, 24, 7)
 
 
@@ -250,7 +236,7 @@ def test_dy(prod):
 
 def test_220125_dv():
     """Test various combinations of DV that DTX came up with."""
-    prod = parser(get_test_file("SHEF/DV.txt"), utcnow=utc(2022, 1, 25, 18))
+    prod = helper("SHEF/DV.txt", utc(2022, 1, 25, 18))
     assert prod.data[0].dv_interval == timedelta(hours=24)
     assert prod.data[1].dv_interval is None
     assert prod.data[2].dv_interval is None
@@ -258,22 +244,20 @@ def test_220125_dv():
 
 def test_211230_rrmsgx():
     """Test that no exception happens with a non SHEF containing RRM."""
-    prod = parser(get_test_file("SHEF/RRMSGX.txt"), utcnow=utc(2021, 12, 30))
+    prod = helper("SHEF/RRMSGX.txt", utc(2021, 12, 30))
     assert not prod.data
 
 
 def test_211025_rr3mkx():
     """Test that we do not take some of the bad data here."""
-    utcnow = utc(2021, 10, 25)
-    prod = parser(get_test_file("SHEF/RR3MKX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR3MKX.txt", utc(2021, 10, 25))
     assert not prod.warnings
     assert len(prod.data) == 6
 
 
 def test_a_format():
     """Test the parsing of A format SHEF."""
-    utcnow = utc(2021, 9, 17, 12)
-    prod = parser(get_test_file("SHEF/A.txt"), utcnow=utcnow)
+    prod = helper("SHEF/A.txt", utc(2021, 9, 17, 12))
     assert len(prod.data) == 5
     assert prod.data[0].valid == utc(2021, 9, 10, 11)
     assert prod.data[0].data_created == utc(2021, 9, 17, 16, 40)
@@ -281,8 +265,7 @@ def test_a_format():
 
 def test_b_format():
     """Test the parsing of B format SHEF."""
-    utcnow = utc(2021, 9, 17, 0)
-    prod = parser(get_test_file("SHEF/B.txt"), utcnow=utcnow)
+    prod = helper("SHEF/B.txt", utc(2021, 9, 17, 0))
     assert len(prod.data) == 16
     assert prod.data[0].valid == utc(2021, 9, 16, 21, 45)
     assert prod.data[0].physical_element == "QT"
@@ -290,8 +273,7 @@ def test_b_format():
 
 def test_e_format():
     """Test the parsing of E format SHEF."""
-    utcnow = utc(2021, 9, 17, 0)
-    prod = parser(get_test_file("SHEF/E.txt"), utcnow=utcnow)
+    prod = helper("SHEF/E.txt", utc(2021, 9, 17, 0))
     assert len(prod.data) == 194
     assert prod.data[0].valid == utc(2021, 9, 17)
     assert prod.data[0].data_created == utc(2021, 9, 17)
@@ -299,22 +281,19 @@ def test_e_format():
 
 def test_rtpdtx():
     """Test that we handle the complexity with RTPs."""
-    utcnow = utc(2021, 9, 20, 0, 3)
-    prod = parser(get_test_file("SHEF/RTPDTX.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RTPDTX.txt", utc(2021, 9, 20, 0, 3))
     assert len(prod.data) == 4 * 22
 
 
 def test_mixed_AE():
     """Test that we can parse a product with both A and E format included."""
-    utcnow = utc(2021, 9, 20, 0, 2)
-    prod = parser(get_test_file("SHEF/mixed_AE.txt"), utcnow=utcnow)
+    prod = helper("SHEF/mixed_AE.txt", utc(2021, 9, 20, 0, 2))
     assert len(prod.data) == 79  # unsure this is right, going for now
 
 
 def test_seconds():
     """Test that we handle DH with seconds provided."""
-    utcnow = utc(2021, 9, 20, 0, 3)
-    prod = parser(get_test_file("SHEF/RR2LAC.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR2LAC.txt", utc(2021, 9, 20, 0, 3))
     assert len(prod.data) == 8
     assert prod.data[0].valid == utc(2021, 9, 19, 23, 51, 59)
     assert prod.data[0].str_value == "73"
@@ -463,7 +442,7 @@ def test_empty_a(prod):
 def test_e_comment_in_header():
     """Test that we handle a comment found in the header."""
     utcnow = utc(2021, 9, 20, 5, 5)
-    prod = parser(get_test_file("SHEF/RR2GSP.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR2GSP.txt", utcnow)
     # Has 24 'obs', but we trim obs from the future and trailing empty for E
     assert len(prod.data) == 16
     assert prod.data[15].valid == utc(2021, 9, 20, 4)
@@ -472,7 +451,7 @@ def test_e_comment_in_header():
 def test_rr2phi():
     """Test that we can handle this RR2."""
     utcnow = utc(2021, 9, 20, 5, 10)
-    prod = parser(get_test_file("SHEF/RR2PHI.txt"), utcnow=utcnow)
+    prod = helper("SHEF/RR2PHI.txt", utcnow)
     assert len(prod.data) == 560  # assumed correct for now
 
 
@@ -570,7 +549,7 @@ def test_b_dm(prod):
 def test_multiline_b_header():
     """Test that we can deal with a multi-line B header."""
     utcnow = utc(2021, 9, 20, 12)
-    prod = parser(get_test_file("SHEF/B_multi.txt"), utcnow=utcnow)
+    prod = helper("SHEF/B_multi.txt", utcnow)
     assert len(prod.data) == 42
 
 
@@ -761,7 +740,7 @@ def test_make_date():
 
 def test_210922_rtpeax():
     """Test that we do not raise an exception for parsing this."""
-    prod = parser(get_test_file("SHEF/RTPEAX.txt"))
+    prod = helper("SHEF/RTPEAX.txt", utc(2021, 9, 22))
     assert not prod.warnings
     assert len(prod.data) == (51 * 5)  # verified 51 lines of data x 5 cols
 
@@ -779,7 +758,7 @@ def test_retained_comment_field(prod):
 
 def test_210922_rr3fgf():
     """Test successful parsing of RR3FGF."""
-    prod = parser(get_test_file("SHEF/RR3FGF.txt"))
+    prod = helper("SHEF/RR3FGF.txt", utc(2021, 9, 22))
     assert prod.data[0].station == "GRFN8"
 
 
@@ -796,7 +775,7 @@ def test_b_missing(prod):
 
 def test_210923_rr2aly():
     """Test that we can parse RR2ALY."""
-    prod = parser(get_test_file("SHEF/RR2ALY.txt"))
+    prod = helper("SHEF/RR2ALY.txt", utc(2021, 9, 23))
     assert not prod.data
 
 
@@ -819,13 +798,13 @@ def test_a_comment_with_slash(prod):
 
 def test_a_dc_on_own_line():
     """Test that we can handle this fun."""
-    prod = parser(get_test_file("SHEF/RR3RAH.txt"))
+    prod = helper("SHEF/RR3RAH.txt", utc(2023, 9, 24))
     assert prod.data[0].str_value == "78"
 
 
 def test_rr3_comment():
     """Test that we can store the free text comments in WxCoder."""
-    prod = parser(get_test_file("SHEF/RR3DMX.txt"))
+    prod = helper("SHEF/RR3DMX.txt", utc(2023, 9, 24))
     assert prod.data[0].narrative.find(" safe.") > -1
 
 
@@ -916,7 +895,7 @@ def test_uh_ur_handling(prod):
 
 def test_211020_locationid():
     """Test that a location identifier longer than 8 characters is not ok."""
-    prod = parser(get_test_file("SHEF/RR3GUM.txt"))
+    prod = helper("SHEF/RR3GUM.txt", utc(2021, 10, 20))
     assert not prod.data
 
 
