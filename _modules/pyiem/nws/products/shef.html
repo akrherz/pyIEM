@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.shef &#8212; pyIEM 1.28.0.post23+g769d1d18d</title>
+    <title>pyiem.nws.products.shef &#8212; pyIEM 1.28.0.post27+g7b02d6446</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../../../../_static/documentation_options.js?v=5ab5b99d"></script>
+    <script src="../../../../_static/documentation_options.js?v=c2f4f675"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/shef';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.0.post23+g769d1d18d" />
-    <meta name="docbuild:last-update" content="Oct 01, 2026"/>
+  <meta name="docsearch:version" content="1.28.0.post27+g7b02d6446" />
+    <meta name="docbuild:last-update" content="Oct 02, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.0.post23+g769d1d18d</p>
+    <p class="title logo__title">pyIEM 1.28.0.post27+g7b02d6446</p>
   
 </a></div>
     
@@ -990,7 +990,7 @@
 
 <div class="viewcode-block" id="process_message_b">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.shef.html#pyiem.nws.products.shef.process_message_b">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">process_message_b</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SHEFElement</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_message_b</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SHEFElement</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Convert the message into an object."""</span>
     <span class="c1"># line one has the magic</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
@@ -1239,6 +1239,9 @@
 
     <span class="n">inmessage</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
+        <span class="c1"># Skip empty lines</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">continue</span>
         <span class="c1"># New Message!</span>
         <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".BR "</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">".B "</span><span class="p">):</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
