@@ -19,6 +19,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Forgive empty lines in SHEF .B message parsing.
+
 ## **1.28.0** (14 Sep 2026)
 
 ### API Changes

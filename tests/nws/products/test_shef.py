@@ -37,6 +37,18 @@ def prod():
     return res
 
 
+def helper(filename, utcnow):
+    """Helper function to parse a SHEF product and return the parsed object."""
+    return parser(get_test_file(filename), utcnow=utcnow, ugc_provider={})
+
+
+def test_261002_rr1orn():
+    """Test we can handle this example which errored in prod."""
+    prod = helper("SHEF/RR1ORN.txt", utc(2026, 10, 2, 16))
+    assert not prod.warnings
+    assert len(prod.data) == 77
+
+
 def test_gh1163_shef_var_wrong():
     """Test that we can create SHEF variables correctly."""
     utcnow = utc(2026, 2, 22, 18, 5)

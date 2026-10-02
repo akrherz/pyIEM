@@ -488,7 +488,7 @@ def clean_b_headerline(text):
     return "/".join(tokens)
 
 
-def process_message_b(prod, message) -> List[SHEFElement]:
+def process_message_b(prod, message: str) -> List[SHEFElement]:
     """Convert the message into an object."""
     # line one has the magic
     lines = message.split("\n")
@@ -722,6 +722,9 @@ def parse_B(prod) -> int:
 
     inmessage = False
     for line in prod.unixtext.split("\n"):
+        # Skip empty lines
+        if not line.strip():
+            continue
         # New Message!
         if line.startswith(".BR ") or line.startswith(".B "):
             messages.append(line.strip())
