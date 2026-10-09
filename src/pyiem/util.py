@@ -482,7 +482,7 @@ def get_properties(cursor=None):
       dict: a dictionary of property names and values (both str)
     """
     if cursor is None:
-        pgconn, _cursor = database.get_dbconnc("mesosite")
+        pgconn, _cursor = database.get_dbconnc("mesosite", rw=False)
     else:
         _cursor = cursor
     _cursor.execute("SELECT propname, propvalue from properties")
