@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.meteorology module &#8212; pyIEM 1.28.0.post31+g516a49588</title>
+    <title>pyiem.meteorology module &#8212; pyIEM 1.28.1.post2+g9797ad3a2</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../_static/documentation_options.js?v=24e57272"></script>
+    <script src="../_static/documentation_options.js?v=8f1bd56b"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.meteorology';</script>
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.iemre module" href="pyiem.iemre.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.0.post31+g516a49588" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post2+g9797ad3a2" />
+    <meta name="docbuild:last-update" content="Oct 09, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -118,7 +118,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.0.post31+g516a49588</p>
+    <p class="title logo__title">pyIEM 1.28.1.post2+g9797ad3a2</p>
   
 </a></div>
     
@@ -622,7 +622,7 @@ Volume 89: page 2955.
 <p>Note: shade_effect multiplies the <code class="docutils literal notranslate"><span class="pre">solarrad</span></code> value by 0.2 (80% reduction)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>shade_effect</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p>
+<dd class="field-odd"><p><strong>shade_effect</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -634,8 +634,8 @@ Volume 89: page 2955.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>lat</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – latitude</p></li>
-<li><p><strong>elevation</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – location elevation in meters</p></li>
+<li><p><strong>lat</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – latitude</p></li>
+<li><p><strong>elevation</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – location elevation in meters</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -680,7 +680,7 @@ Volume 89: page 2955.
 <li><p><strong>temperature</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dry bulb temperature</p></li>
 <li><p><strong>dewpoint</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dew point temperature</p></li>
 <li><p><strong>speed</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.speed" title="pyiem.datatypes.speed"><em>speed</em></a>) – the wind speed</p></li>
-<li><p><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, mask values where feels like is undef.</p></li>
+<li><p><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a>) – If True, mask values where feels like is undef.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -765,8 +765,8 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>high</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em>, or </em><em>metpy.units</em>) – High Temperature</p></li>
 <li><p><strong>low</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em> or </em><em>metpy.units</em>) – Low Temperature</p></li>
-<li><p><strong>base</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Base to use in GDD Computation (F)</p></li>
-<li><p><strong>ceiling</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Ceiling to use in GDD Computation (F)</p></li>
+<li><p><strong>base</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Base to use in GDD Computation (F)</p></li>
+<li><p><strong>ceiling</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Ceiling to use in GDD Computation (F)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

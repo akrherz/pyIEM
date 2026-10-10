@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.nws.products.spcpts module &#8212; pyIEM 1.28.0.post31+g516a49588</title>
+    <title>pyiem.nws.products.spcpts module &#8212; pyIEM 1.28.1.post2+g9797ad3a2</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../_static/documentation_options.js?v=24e57272"></script>
+    <script src="../_static/documentation_options.js?v=8f1bd56b"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.nws.products.spcpts';</script>
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.nws.products.spacewx module" href="pyiem.nws.products.spacewx.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.0.post31+g516a49588" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post2+g9797ad3a2" />
+    <meta name="docbuild:last-update" content="Oct 09, 2026"/>
   
     
     <script src="../_static/searchtools.js"></script>
@@ -118,7 +118,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.0.post31+g516a49588</p>
+    <p class="title logo__title">pyIEM 1.28.1.post2+g9797ad3a2</p>
   
 </a></div>
     
@@ -532,10 +532,10 @@
 <dd><p>Compute the SPC image source for a given database row.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>)</p>
+<dd class="field-odd"><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -575,7 +575,7 @@ that need translated to an actual issue and expire time.</p>
 <dd><p>Convert string PTS data into a polygon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – the cryptic string that we attempt to make valid polygons from</p>
+<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – the cryptic string that we attempt to make valid polygons from</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the geometry of this outlook
@@ -593,7 +593,7 @@ list[str]: any error messages encountered during processing</p>
 <dd><p>Figure out which days this product should have based on the AFOS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a>, <a class="reference internal" href="#pyiem.nws.products.spcpts.SPCOutlookCollection" title="pyiem.nws.products.spcpts.SPCOutlookCollection"><em>SPCOutlookCollection</em></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)">int</a>, <a class="reference internal" href="#pyiem.nws.products.spcpts.SPCOutlookCollection" title="pyiem.nws.products.spcpts.SPCOutlookCollection"><em>SPCOutlookCollection</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -601,7 +601,7 @@ list[str]: any error messages encountered during processing</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.products.spcpts.SPCOutlookCollection">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.nws.products.spcpts.</span></span><span class="sig-name descname"><span class="pre">SPCOutlookCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">issue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/spcpts.html#SPCOutlookCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.spcpts.SPCOutlookCollection" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A collection of outlooks for a single ‘day’.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.products.spcpts.SPCOutlookCollection.add_outlook">
@@ -626,7 +626,7 @@ list[str]: any error messages encountered during processing</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.products.spcpts.SPCOutlook">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.nws.products.spcpts.</span></span><span class="sig-name descname"><span class="pre">SPCOutlook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multipoly</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/spcpts.html#SPCOutlook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.spcpts.SPCOutlook" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A class holding what we store for a single outlook.</p>
 </dd></dl>
 
@@ -641,7 +641,7 @@ list[str]: any error messages encountered during processing</p>
 <dd><p>Return the SPCOutlookCollection for a given day.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>day</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p>
+<dd class="field-odd"><p><strong>day</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#pyiem.nws.products.spcpts.SPCOutlookCollection" title="pyiem.nws.products.spcpts.SPCOutlookCollection"><em>SPCOutlookCollection</em></a> | None</p>
