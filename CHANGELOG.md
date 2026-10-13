@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Update CI to test on python 3.15.
+
 ### Bug Fixes
 
 ## **1.28.1** (7 Oct 2026)
