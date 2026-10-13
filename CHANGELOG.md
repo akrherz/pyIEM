@@ -7,6 +7,10 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Demote warnings emitted from LSR parsing when encountering empty strings
+  for either state, source, or county.  These are allowed to the database, so
+  there is nothing for a monitoring dev to do here.
+
 ### New Features
 
 ### Bug Fixes

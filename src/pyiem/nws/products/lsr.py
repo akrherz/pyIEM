@@ -9,7 +9,7 @@ from shapely.geometry import Point as ShapelyPoint
 from pyiem import reference
 from pyiem.nws.lsr import LSR, _icestorm_remark
 from pyiem.nws.product import TextProduct, TextProductException
-from pyiem.util import utc
+from pyiem.util import LOG, utc
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
@@ -129,7 +129,7 @@ def _mylowercase(text):
     return " ".join(tokens)
 
 
-def parse_lsr(prod, text):
+def parse_lsr(prod: TextProduct, text):
     """Emit a LSR object based on this text!
     0914 PM     HAIL             SHAW                    33.60N 90.77W
     04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR
@@ -195,13 +195,25 @@ def parse_lsr(prod, text):
         lines[1] = lines[1][:47] + " " + lines[1][47:]
     lsr.county = lines[1][29:48].strip()
     if lsr.county == "":
-        prod.warnings.append(f"LSR has empty county\n{text}")
+        LOG.warning(
+            "LSR county is empty string %s %s",
+            prod.get_product_id(),
+            text.replace("\n", " "),
+        )
     lsr.state = lines[1][48:50].strip()
     if lsr.state == "":
-        prod.warnings.append(f"LSR has empty state\n{text}")
+        LOG.warning(
+            "LSR state is empty string %s %s",
+            prod.get_product_id(),
+            text.replace("\n", " "),
+        )
     lsr.source = lines[1][53:].strip()
     if lsr.source == "":
-        prod.warnings.append(f"LSR has empty source\n{text}")
+        LOG.warning(
+            "LSR source is empty string %s %s",
+            prod.get_product_id(),
+            text.replace("\n", " "),
+        )
     if len(lines) > 2:
         meat = " ".join(lines[2:]).strip()
         if meat.strip() != "":
