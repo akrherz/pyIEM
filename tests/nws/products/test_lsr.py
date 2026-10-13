@@ -200,13 +200,23 @@ def test_220204_bad_ice_totals():
     assert prod.lsrs[0].magnitude_f is None
 
 
-def test_issue406_empty():
-    """Test that we emit warnings for missing counties/states."""
+def test_issue406_empty(caplog):
+    """Test that we log warnings for missing counties/states."""
     text = get_test_file("LSR/LSRAJK.txt")
-    prod = parser(text)
-    assert len(prod.warnings) == 3
-    prod = parser(text.replace("TRAINED SPOTTER", "               "))
-    assert len(prod.warnings) == 4
+    parser(text)
+    assert any(
+        "county is empty string" in msg.message for msg in caplog.records
+    )
+    assert len(caplog.records) == 3
+
+
+def test_missing_source(caplog):
+    """Test that a warning is logged for a missing source."""
+    text = get_test_file("LSR/LSRAJK.txt")
+    parser(text.replace("TRAINED SPOTTER", "               "))
+    assert any(
+        "source is empty string" in msg.message for msg in caplog.records
+    )
 
 
 def test_tweetlen():
