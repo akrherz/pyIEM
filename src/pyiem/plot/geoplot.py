@@ -37,6 +37,7 @@ import rasterio
 import requests
 from affine import Affine
 from matplotlib.patches import Rectangle, Wedge
+from matplotlib.transforms import Bbox
 from metpy.calc import wind_components
 from metpy.units import units
 from PIL import Image
@@ -46,6 +47,7 @@ from scipy.signal import convolve2d
 from shapely.geometry import shape
 
 from pyiem.plot.colormaps import radar_ptype, stretch_cmap
+from pyiem.plot.textcollider import TextCollider
 from pyiem.plot.use_agg import figure
 from pyiem.plot.util import (
     draw_features_from_shapefile,
@@ -161,7 +163,7 @@ class MapPlot:
         self.state = None
         self.cwa = None
         self.fema_region = None
-        self.textmask = None  # For our plot_values magic, to prevent overlap
+        self.textcollider = None  # plot_values label collision tracking
         self.sector = sector
         self.cax = self.fig.add_axes(
             CAX_BOUNDS, frameon=False, yticks=[], xticks=[]
@@ -559,23 +561,36 @@ class MapPlot:
             9: [4, -4, "left", "top"],
         }
 
-        mask = np.zeros(self.fig.canvas.get_width_height(), bool)
+        ax = self.panels[0].ax
+        fontsize = kwargs.get("fontsize", 8)
+        # Each station claims a square of this half-width in pixels
+        collider = TextCollider()
+        half = 15
+
+        def _annotate(text, xy, offset_key, color):
+            offx, offy, ha, va = offsets[offset_key]
+            ax.annotate(
+                text,
+                xy=xy,
+                ha=ha,
+                va=va,
+                xytext=(offx, offy),
+                color=color,
+                textcoords="offset points",
+                zorder=Z_OVERLAY + 2,
+                clip_on=True,
+                fontsize=fontsize,
+            )
+
         for stdata in data:
             (x, y) = self.panels[0].transform_lonlat(
                 stdata["lon"], stdata["lat"]
             )
-            (imgx, imgy) = self.panels[0].ax.transData.transform([x, y])
-            imgx = int(imgx)
-            imgy = int(imgy)
-            # Check to see if this overlaps
-            _cnt = np.sum(
-                np.where(
-                    mask[imgx - 15 : imgx + 15, imgy - 15 : imgy + 15], 1, 0
-                )
-            )
-            if _cnt > 5:
+            (imgx, imgy) = ax.transData.transform([x, y])
+            if not collider.try_claim(
+                (imgx - half, imgy - half, imgx + half, imgy + half), 0
+            ):
                 continue
-            mask[imgx - 15 : imgx + 15, imgy - 15 : imgy + 15] = True
             # Plot bars
             if stdata.get("sknt") is not None and stdata["sknt"] > 1:
                 (u, v) = wind_components(
@@ -583,79 +598,51 @@ class MapPlot:
                     units("degree") * stdata["drct"],
                 )
                 if u is not None and v is not None:
-                    self.panels[0].ax.barbs(x, y, u.m, v.m, zorder=Z_OVERLAY)
+                    ax.barbs(x, y, u.m, v.m, zorder=Z_OVERLAY)
 
             # Sky Coverage
             skycoverage = stdata.get("coverage")
-            if (
-                skycoverage is not None
-                and skycoverage >= 0
-                and skycoverage <= 100
-            ):
-                w = Wedge(
-                    (x, y), circlesz, 0, 360, ec="k", fc="white", zorder=2
+            if skycoverage is not None and 0 <= skycoverage <= 100:
+                ax.add_artist(
+                    Wedge(
+                        (x, y), circlesz, 0, 360, ec="k", fc="white", zorder=2
+                    )
                 )
-                self.panels[0].ax.add_artist(w)
-                w = Wedge(
-                    (x, y),
-                    circlesz,
-                    0,
-                    360.0 * skycoverage / 100.0,
-                    ec="k",
-                    fc="k",
-                    zorder=3,
+                ax.add_artist(
+                    Wedge(
+                        (x, y),
+                        circlesz,
+                        0,
+                        360.0 * skycoverage / 100.0,
+                        ec="k",
+                        fc="k",
+                        zorder=3,
+                    )
                 )
-                self.panels[0].ax.add_artist(w)
 
-            # Temperature
             val = stdata.get("tmpf")
             if val is not None:
-                (offx, offy, ha, va) = offsets[1]
-                self.panels[0].ax.annotate(
+                _annotate(
                     stdata.get("tmpf_format", "%.0f") % (val,),
-                    xy=(x, y),
-                    ha=ha,
-                    va=va,
-                    xytext=(offx, offy),
-                    color=stdata.get("tmpf_color", "r"),
-                    textcoords="offset points",
-                    zorder=Z_OVERLAY + 2,
-                    clip_on=True,
-                    fontsize=kwargs.get("fontsize", 8),
+                    (x, y),
+                    1,
+                    stdata.get("tmpf_color", "r"),
                 )
-            # Dew Point
             val = stdata.get("dwpf")
             if val is not None:
-                (offx, offy, ha, va) = offsets[7]
-                self.panels[0].ax.annotate(
+                _annotate(
                     stdata.get("dwpf_format", "%.0f") % (val,),
-                    xy=(x, y),
-                    ha=ha,
-                    va=va,
-                    xytext=(offx, offy),
-                    color=stdata.get("dwpf_color", "b"),
-                    textcoords="offset points",
-                    zorder=Z_OVERLAY + 2,
-                    clip_on=True,
-                    fontsize=kwargs.get("fontsize", 8),
+                    (x, y),
+                    7,
+                    stdata.get("dwpf_color", "b"),
                 )
-            # Plot identifier
             val = stdata.get("id")
             if val is not None:
-                (offx, offy, ha, va) = (
-                    offsets[6] if skycoverage is not None else offsets[5]
-                )
-                self.panels[0].ax.annotate(
+                _annotate(
                     f"{val}",
-                    xy=(x, y),
-                    ha=ha,
-                    va=va,
-                    xytext=(offx, offy),
-                    color=stdata.get("id_color", "tan"),
-                    textcoords="offset points",
-                    zorder=Z_OVERLAY + 2,
-                    clip_on=True,
-                    fontsize=kwargs.get("fontsize", 8),
+                    (x, y),
+                    6 if skycoverage is not None else 5,
+                    stdata.get("id_color", "tan"),
                 )
 
     def plot_values(
@@ -674,7 +661,9 @@ class MapPlot:
         labelbuffer=25,
         outlinecolor="#FFFFFF",
         zorder=None,
-        **kwargs,
+        textoutlinewidth=3,
+        isolated=False,
+        backgroundcolor=None,
     ):
         """Plot values onto the map
 
@@ -689,7 +678,7 @@ class MapPlot:
           color (str, list, optional): Color to use while plotting the `vals`.
             This can be a list to specify each color to use with each value.
           textsize (str, optional): Font size to draw text.
-            labels (list, optional): Optional list of labels to place below the
+          labels (list, optional): Optional list of labels to place below the
             plotting of `vals`
           labeltextsize (int, optional): Size of the label text
           labelcolor (str, optional): Color to use for drawing labels
@@ -705,216 +694,156 @@ class MapPlot:
           backgroundcolor (color): color to use for the background of the label
             text, default is None.
         """
-        if valmask is None:
-            valmask = [True] * len(lons)
-        if labels is None:
-            labels = [""] * len(lons)
+        n = len(lons)
+        valmask = np.ones(n, bool) if valmask is None else np.asarray(valmask)
+        labels = [""] * n if labels is None else labels
         if zorder is None:
-            zorder = [Z_OVERLAY + 2] * len(lons)
+            zorder = Z_OVERLAY + 2
+        if np.isscalar(zorder):
+            zorder = [zorder] * n
         if isinstance(color, str):
-            color = [color] * len(lons)
-        bbox = self.fig.get_window_extent().transformed(
-            self.fig.dpi_scale_trans.inverted()
-        )
-        axbbox = (
-            self.panels[0]
-            .ax.get_window_extent()
-            .transformed(self.fig.dpi_scale_trans.inverted())
-        )
-        axx0 = axbbox.x0 * self.fig.dpi
-        axx1 = (axbbox.x0 + axbbox.width) * self.fig.dpi
-        axy0 = axbbox.y0 * self.fig.dpi
-        axy1 = (axbbox.y0 + axbbox.height) * self.fig.dpi
-        figwidth = bbox.width * self.fig.dpi
-        figheight = bbox.height * self.fig.dpi
-        if self.textmask is None:
-            # zorder is used to track plotting priorities
-            self.textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
-        # Either use ongoing textmask or a local one
-        _textmask = self.textmask
-        if kwargs.get("isolated", False):
-            _textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
+            color = [color] * n
+        if isolated:
+            collider = TextCollider()
+        else:
+            if self.textcollider is None:
+                self.textcollider = TextCollider()
+            collider = self.textcollider
         # Create a geodataframe to use for clipping
         gdf = gpd.GeoDataFrame(
-            {"geometry": gpd.points_from_xy(lons, lats, crs=LATLON)}
+            {
+                "geometry": gpd.points_from_xy(lons, lats, crs=LATLON),
+                "val": vals,
+                "color": color,
+                "backgroundcolor": backgroundcolor,
+                "label": labels,
+                "zorder": zorder,
+            }
         )
-        gdf["val"] = vals
-        gdf["valmask"] = valmask
-        gdf["color"] = color
-        gdf["backgroundcolor"] = kwargs.get("backgroundcolor")
-        gdf["label"] = labels
-        gdf["zorder"] = zorder
-        # Create a fake label, to test out our scaling
-        t0 = self.fig.text(
-            0.5,
-            0.5,
-            "ABCDEFGHIJ",
-            transform=self.panels[0].ax.transAxes,
-            color="None",
-            size=textsize,
-        )
-        bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
-        xpixels_per_char = bbox.width / 10.0
-        ypixels = bbox.height
-        text_outline_width = kwargs.get("textoutlinewidth", 3)
+        gdf = gdf[valmask.astype(bool)]
+        style = {
+            "fmt": fmt,
+            "textsize": textsize,
+            "labeltextsize": labeltextsize,
+            "labelcolor": labelcolor,
+            "showmarker": showmarker,
+            "labelbuffer": labelbuffer,
+            "outlinecolor": outlinecolor,
+            "textoutlinewidth": textoutlinewidth,
+        }
         for gp in self.panels:
             # See if we have any data to plot, clip is trouble
             df = gdf.to_crs(gp.crs).cx[
                 slice(*gp.get_xlim()), slice(*gp.get_ylim())
             ]
-            if df.empty:
-                continue
-            for _idx, row in df.iterrows():
-                ha = "center"
-                mystr = fmt % (row["val"],)
-                max_mystr_len = max(len(s) for s in mystr.split("\n"))
-                mystr_lines = len(mystr.split("\n"))
-                (x, y) = row["geometry"].x, row["geometry"].y
-                (imgx, imgy) = gp.ax.transData.transform([x, y])
-                imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
-                if imgx0 < axx0:
-                    ha = "left"
-                    imgx0 = imgx
-                imgx1 = imgx0 + max_mystr_len * xpixels_per_char
-                if imgx1 > axx1:
-                    imgx1 = imgx
-                    imgx0 = imgx1 - max_mystr_len * xpixels_per_char
-                    ha = "right"
-                # Now we buffer
-                imgx0 = max([0, imgx0 - labelbuffer])
-                imgx1 = min(
-                    [
-                        figwidth,
-                        (
-                            imgx0
-                            + 2 * labelbuffer
-                            + max_mystr_len * xpixels_per_char
-                        ),
-                    ]
-                )
-                imgy0 = max([0, int(imgy) - labelbuffer * 0.75])
-                imgy1 = min(
-                    [
-                        figheight,
-                        (
-                            imgy0
-                            + mystr_lines * ypixels
-                            + 2 * labelbuffer * 0.75
-                        ),
-                    ]
-                )
-                overlap = (
-                    _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
-                    >= row["zorder"]
-                )
-                _cnt = np.sum(overlap)
-                # If we have more than 15 pixels of overlap, don't plot this!
-                if _cnt > 15 and labelbuffer > 0:
-                    if self.debug:
-                        LOG.warning(
-                            "culling |%s| due to overlap, %s",
-                            repr(mystr),
-                            _cnt,
-                        )
-                    continue
-                if self.debug:
-                    rec = Rectangle(
-                        [imgx0, imgy0],
-                        (imgx1 - imgx0),
-                        (imgy1 - imgy0),
-                        facecolor="None",
-                        edgecolor="r",
-                    )
-                    self.fig.patches.append(rec)
-                # Useful for debugging this algo
-                if self.debug:
-                    LOG.warning(
-                        (
-                            "label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
-                            "x:%s-%s y:%s-%s _cnt:%s"
-                        ),
-                        repr(mystr),
-                        imgx,
-                        axx0,
-                        axx1,
-                        imgy,
-                        axy0,
-                        axy1,
-                        imgx0,
-                        imgx1,
-                        imgy0,
-                        imgy1,
-                        _cnt,
-                    )
-                _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)] = (
-                    np.where(
-                        _textmask[
-                            int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                        ]
-                        < row["zorder"],
-                        row["zorder"],
-                        _textmask[
-                            int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                        ],
-                    )
-                )
-                t0 = gp.text(
-                    x,
-                    y,
-                    mystr,
-                    color=row["color"],
-                    size=textsize,
-                    zorder=row["zorder"],
-                    va="center" if not showmarker else "bottom",
-                    ha=ha,
-                    crs=gp.crs,
-                )
-                if row["backgroundcolor"] is not None:
-                    t0.set_backgroundcolor(row["backgroundcolor"])
-                bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
-                if self.debug:
-                    rec = Rectangle(
-                        [bbox.x0, bbox.y0],
-                        bbox.width,
-                        bbox.height,
-                        facecolor="None",
-                        edgecolor="k",
-                    )
-                    self.fig.patches.append(rec)
-                if showmarker:
-                    gp.scatter(
-                        x,
-                        y,
-                        marker="+",
-                        zorder=row["zorder"],
-                        color="k",
-                        crs=gp.crs,
-                    )
-                t0.set_clip_on(True)
-                if text_outline_width > 0:
-                    t0.set_path_effects(
-                        [
-                            PathEffects.Stroke(
-                                linewidth=text_outline_width,
-                                foreground=outlinecolor,
-                            ),
-                            PathEffects.Normal(),
-                        ]
-                    )
+            for row in df.itertuples():
+                self._place_value(gp, collider, row, **style)
 
-                if row["label"] and row["label"] != "":
-                    gp.ax.annotate(
-                        f"{row['label']}",
-                        xy=(x, y),
-                        ha="center",
-                        va="top",
-                        xytext=(0, 0 - textsize / 2),
-                        color=labelcolor,
-                        textcoords="offset points",
-                        zorder=row["zorder"] - 1,
-                        clip_on=True,
-                        fontsize=labeltextsize,
+    def _place_value(
+        self,
+        gp,
+        collider,
+        row,
+        fmt,
+        textsize,
+        labeltextsize,
+        labelcolor,
+        showmarker,
+        labelbuffer,
+        outlinecolor,
+        textoutlinewidth,
+    ):
+        """Draw one value (and label), unless it collides with prior text.
+
+        The text is drawn first so its true rendered extent can be measured,
+        then removed again if it collides with previously accepted text.
+        """
+        renderer = self.fig.canvas.get_renderer()
+        x, y = row.geometry.x, row.geometry.y
+        text = gp.text(
+            x,
+            y,
+            fmt % (row.val,),
+            color=row.color,
+            size=textsize,
+            zorder=row.zorder,
+            va="bottom" if showmarker else "center",
+            ha="center",
+            crs=gp.crs,
+        )
+        text.set_clip_on(True)
+        if row.backgroundcolor is not None:
+            text.set_backgroundcolor(row.backgroundcolor)
+        if textoutlinewidth > 0:
+            text.set_path_effects(
+                [
+                    PathEffects.Stroke(
+                        linewidth=textoutlinewidth, foreground=outlinecolor
+                    ),
+                    PathEffects.Normal(),
+                ]
+            )
+        # Keep the text inside the axes by anchoring it to the point
+        axbox = gp.ax.get_window_extent(renderer)
+        extent = text.get_window_extent(renderer)
+        if extent.x0 < axbox.x0:
+            text.set_ha("left")
+        elif extent.x1 > axbox.x1:
+            text.set_ha("right")
+        extent = text.get_window_extent(renderer)
+        label = None
+        if row.label:
+            label = gp.ax.annotate(
+                f"{row.label}",
+                xy=(x, y),
+                ha="center",
+                va="top",
+                xytext=(0, 0 - textsize / 2),
+                color=labelcolor,
+                textcoords="offset points",
+                zorder=row.zorder - 1,
+                clip_on=True,
+                fontsize=labeltextsize,
+            )
+            extent = Bbox.union([extent, label.get_window_extent(renderer)])
+        box = (extent.x0, extent.y0, extent.x1, extent.y1)
+        if labelbuffer > 0 and not collider.try_claim(
+            box, row.zorder, labelbuffer, labelbuffer * 0.75
+        ):
+            if self.debug:
+                LOG.warning("culling |%s| due to overlap", text.get_text())
+            text.remove()
+            if label is not None:
+                label.remove()
+            return
+        if self.debug:
+            # Red is the buffered collision box, black the rendered text
+            xpad, ypad = labelbuffer, labelbuffer * 0.75
+            for (bx0, by0, bx1, by1), edge in (
+                (
+                    (
+                        box[0] - xpad,
+                        box[1] - ypad,
+                        box[2] + xpad,
+                        box[3] + ypad,
+                    ),
+                    "r",
+                ),
+                (box, "k"),
+            ):
+                self.fig.patches.append(
+                    Rectangle(
+                        (bx0, by0),
+                        bx1 - bx0,
+                        by1 - by0,
+                        facecolor="None",
+                        edgecolor=edge,
                     )
+                )
+        if showmarker:
+            gp.scatter(
+                x, y, marker="+", zorder=row.zorder, color="k", crs=gp.crs
+            )
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
         """Draw points on the map
@@ -1413,7 +1342,7 @@ class MapPlot:
         """
         gdf = load_geodf("cities")
         (west, east, south, north) = self.panels[0].get_extent(crs=LATLON)
-        minpop = kwargs.get(
+        minpop = kwargs.pop(
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
         df2 = gdf.cx[west:east, south:north].query(f"pop_2010 > {minpop}")

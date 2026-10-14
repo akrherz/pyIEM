@@ -726,7 +726,6 @@ def polygon_fill(mymap, geodf, data, **kwargs):
             labelbuffer=kwargs.get("labelbuffer", 1),
             textsize=12,
             textoutlinewidth=2,
-            clip_on=True,
         )
     kwargs.pop("cmap", None)
     kwargs.pop("bins", None)

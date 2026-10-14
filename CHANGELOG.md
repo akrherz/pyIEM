@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
+
 ### Bug Fixes
 
 ## **1.28.1** (7 Oct 2026)
