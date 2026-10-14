@@ -664,6 +664,7 @@ class MapPlot:
         textoutlinewidth=3,
         isolated=False,
         backgroundcolor=None,
+        **kwargs,
     ):
         """Plot values onto the map
 
@@ -694,6 +695,12 @@ class MapPlot:
           backgroundcolor (color): color to use for the background of the label
             text, default is None.
         """
+        if kwargs:
+            warnings.warn(
+                "plot_values ignoring unsupported keyword(s): "
+                + ", ".join(sorted(kwargs)),
+                stacklevel=2,
+            )
         n = len(lons)
         valmask = np.ones(n, bool) if valmask is None else np.asarray(valmask)
         labels = [""] * n if labels is None else labels
@@ -807,15 +814,19 @@ class MapPlot:
             )
             extent = Bbox.union([extent, label.get_window_extent(renderer)])
         box = (extent.x0, extent.y0, extent.x1, extent.y1)
-        if labelbuffer > 0 and not collider.try_claim(
-            box, row.zorder, labelbuffer, labelbuffer * 0.75
-        ):
-            if self.debug:
-                LOG.warning("culling |%s| due to overlap", text.get_text())
-            text.remove()
-            if label is not None:
-                label.remove()
-            return
+        if labelbuffer > 0:
+            if not collider.try_claim(
+                box, row.zorder, labelbuffer, labelbuffer * 0.75
+            ):
+                if self.debug:
+                    LOG.warning("culling |%s| due to overlap", text.get_text())
+                text.remove()
+                if label is not None:
+                    label.remove()
+                return
+        else:
+            # Never culled, but still recorded for later labels to avoid
+            collider.claim(box, row.zorder)
         if self.debug:
             # Red is the buffered collision box, black the rendered text
             xpad, ypad = labelbuffer, labelbuffer * 0.75
