@@ -1,0 +1,7 @@
+pyiem.plot.textcollider module
+==============================
+
+.. automodule:: pyiem.plot.textcollider
+   :members:
+   :show-inheritance:
+   :undoc-members:

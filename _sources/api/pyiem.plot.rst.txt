@@ -11,6 +11,7 @@ Submodules
    pyiem.plot.colormaps
    pyiem.plot.geoplot
    pyiem.plot.layouts
+   pyiem.plot.textcollider
    pyiem.plot.use_agg
    pyiem.plot.util
    pyiem.plot.windrose
