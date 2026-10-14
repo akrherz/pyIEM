@@ -597,7 +597,7 @@ def test_iemapp_memcache_keychanged():
 def test_iemapp_memcache():
     """Test the memcache option."""
 
-    @iemapp(memcachekey="iem")
+    @iemapp(memcachekey="iem_iemapp_memcache")
     def application(environ, _start_response):
         """Test."""
         return f"{random.random()}"
@@ -642,7 +642,7 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         def close(cls):
             """."""
 
-    @iemapp(memcachekey="iem")
+    @iemapp(memcachekey="iem_iemapp_telemetry_skipped_on_memcache_hit")
     def application(_environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
