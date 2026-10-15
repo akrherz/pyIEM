@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.web.error &#8212; pyIEM 1.28.1.post10+g390af6813</title>
+    <title>pyiem.web.error &#8212; pyIEM 1.28.1.post12+g6fc573691</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
 
-    <script src="../../../_static/documentation_options.js?v=2f093ea9"></script>
+    <script src="../../../_static/documentation_options.js?v=0bdca5cb"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/web/error';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post10+g390af6813" />
-    <meta name="docbuild:last-update" content="Oct 14, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post12+g6fc573691" />
+    <meta name="docbuild:last-update" content="Oct 15, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post10+g390af6813</p>
+    <p class="title logo__title">pyIEM 1.28.1.post12+g6fc573691</p>
   
 </a></div>
     
@@ -489,10 +489,11 @@
 <span class="w">    </span><span class="sd">"""Do some logging work."""</span>
     <span class="n">snipped</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uri</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">...snipped"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">uri</span>
     <span class="n">remoteip</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REMOTE_ADDR"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">redirect_status</span> <span class="o">==</span> <span class="mi">404</span> <span class="ow">and</span> <span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">):</span>
-        <span class="n">error_log</span><span class="p">(</span>
-            <span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"404 </span><span class="si">{</span><span class="n">snipped</span><span class="si">}</span><span class="s2"> referer: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'HTTP_REFERER'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span>
+    <span class="n">referrer</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_REFERER"</span><span class="p">)</span>
+    <span class="c1"># Life choice here as AI bots continue to send garbage traffic and</span>
+    <span class="c1"># requiring a HTTP referer will increase signal to noise</span>
+    <span class="k">if</span> <span class="n">redirect_status</span> <span class="o">==</span> <span class="mi">404</span> <span class="ow">and</span> <span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">referrer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_log</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"404 </span><span class="si">{</span><span class="n">snipped</span><span class="si">}</span><span class="s2"> referer: </span><span class="si">{</span><span class="n">referrer</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
         <span class="n">sql_helper</span><span class="p">(</span>
             <span class="s2">"INSERT into weblog(client_addr, uri, referer, http_status, "</span>
@@ -502,7 +503,7 @@
         <span class="p">{</span>
             <span class="s2">"addr"</span><span class="p">:</span> <span class="n">remoteip</span><span class="p">,</span>
             <span class="s2">"url"</span><span class="p">:</span> <span class="n">uri</span><span class="p">,</span>
-            <span class="s2">"ref"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_REFERER"</span><span class="p">),</span>
+            <span class="s2">"ref"</span><span class="p">:</span> <span class="n">referrer</span><span class="p">,</span>
             <span class="s2">"status"</span><span class="p">:</span> <span class="n">redirect_status</span><span class="p">,</span>
             <span class="s2">"xf"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_X_FORWARDED_FOR"</span><span class="p">),</span>
             <span class="s2">"domain"</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HTTP_HOST"</span><span class="p">),</span>
