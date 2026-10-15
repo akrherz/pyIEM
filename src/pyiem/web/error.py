@@ -35,10 +35,11 @@ def log_request(
     """Do some logging work."""
     snipped = f"{uri[:100]}...snipped" if len(uri) > 100 else uri
     remoteip = environ.get("REMOTE_ADDR")
-    if redirect_status == 404 and uri.startswith("/"):
-        error_log(
-            environ, f"404 {snipped} referer: {environ.get('HTTP_REFERER')}"
-        )
+    referrer = environ.get("HTTP_REFERER")
+    # Life choice here as AI bots continue to send garbage traffic and
+    # requiring a HTTP referer will increase signal to noise
+    if redirect_status == 404 and uri.startswith("/") and referrer is not None:
+        error_log(environ, f"404 {snipped} referer: {referrer}")
     conn.execute(
         sql_helper(
             "INSERT into weblog(client_addr, uri, referer, http_status, "
@@ -48,7 +49,7 @@ def log_request(
         {
             "addr": remoteip,
             "url": uri,
-            "ref": environ.get("HTTP_REFERER"),
+            "ref": referrer,
             "status": redirect_status,
             "xf": environ.get("HTTP_X_FORWARDED_FOR"),
             "domain": environ.get("HTTP_HOST"),
