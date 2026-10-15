@@ -5,6 +5,7 @@ import random
 import pytest
 from werkzeug.test import Client
 
+from pyiem import webutil
 from pyiem.web.error import application
 
 
@@ -16,6 +17,43 @@ def random_ipv4():
         f"100.{random.randint(1, 255)}."
         f"{random.randint(1, 255)}.{random.randint(1, 255)}"
     )
+
+
+def test_error404_without_referer_no_errorlog(monkeypatch):
+    """Test that this request generates no logging."""
+    watcher = {}
+
+    def fake_emit_to_sidedoor(payload):
+        watcher["called"] = payload
+
+    # Need to patch emit_to_sidedoor to capture any error log attempts
+    monkeypatch.setattr(webutil, "emit_to_sidedoor", fake_emit_to_sidedoor)
+    eo = {"REMOTE_ADDR": "100.1.1.1", "HTTP_HOST": "mesonet.agron.iastate.edu"}
+    c = Client(application)
+    resp = c.get("/?q=1", environ_overrides=eo)
+    assert resp.status_code == 404
+    assert "called" not in watcher
+    monkeypatch.undo()
+
+
+def test_error404_with_referer(monkeypatch):
+    """Test that we get an error_log entry for this request."""
+    watcher = {}
+
+    def fake_emit_to_sidedoor(payload):
+        watcher["called"] = payload
+
+    # Need to patch emit_to_sidedoor to capture any error log attempts
+    monkeypatch.setattr(webutil, "emit_to_sidedoor", fake_emit_to_sidedoor)
+    eo = {
+        "REMOTE_ADDR": "100.1.1.1",
+        "HTTP_HOST": "mesonet.agron.iastate.edu",
+        "HTTP_REFERER": "http://example.com/",
+    }
+    c = Client(application)
+    resp = c.get("/?q=1", environ_overrides=eo)
+    assert resp.status_code == 404
+    assert b"http://example.com/" in watcher["called"]
 
 
 def test_error404(random_ipv4: str):
