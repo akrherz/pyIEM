@@ -42,6 +42,14 @@ def helper(filename, utcnow):
     return parser(get_test_file(filename), utcnow=utcnow, ugc_provider={})
 
 
+def test_261020_rrsrah_double(caplog):
+    """Test that we correct this persistent error."""
+    prod = helper("SHEF/RRSRAH_double.txt", utc(2026, 10, 21, 4))
+    assert not prod.warnings
+    assert "Found /.E splitting..." in caplog.text
+    assert len(prod.data) == 4
+
+
 def test_261002_rr1orn():
     """Test we can handle this example which errored in prod."""
     prod = helper("SHEF/RR1ORN.txt", utc(2026, 10, 2, 16))
