@@ -395,11 +395,11 @@ def process_modifiers(text, diction, basevalid):
     return True
 
 
-def process_message_e(prod, message) -> List[SHEFElement]:
+def process_message_e(prod: TextProduct, message: str) -> List[SHEFElement]:
     """Process a text string in E SHEF format.
 
     Args:
-      prod (SHEFProduct): the product we are working on.
+      prod (TextProduct): the product we are working on.
       message (str): The string to parse.
 
     Returns
@@ -762,6 +762,11 @@ def parse_E(prod) -> int:
     for line in prod.unixtext.split("\n"):
         # New Message!
         if line.startswith(".ER ") or line.startswith(".E "):
+            # Lame, fix a persistent SHEF product error
+            if (pos := line.find("/.E")) != -1:
+                LOG.warning("Found /.E splitting... %s", line)
+                messages.append(strip_comments(line[:pos]))
+                line = line[pos + 1 :]
             messages.append(strip_comments(line))
             continue
         if messages and line.startswith(".E"):  # continuation
