@@ -19,6 +19,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Correct some `iemapp` validation edge cases and cleanup parse_time behaviour.
+
 ## **1.28.1** (7 Oct 2026)
 
 ### API Changes
