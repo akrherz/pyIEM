@@ -439,7 +439,9 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
                 # Set this value back into the schema reference (le sigh)
                 if schema is not None and key in type(schema).model_fields:
-                    setattr(schema, key, form[key])
+                    # Use object.__setattr__ to bypass Pydantic's immutability
+                    # checks
+                    object.__setattr__(schema, key, form[key])
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -459,9 +461,9 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 ets = compute_ts_from_string(form, "ets")
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
-            if form.get("year1") is not None and form.get("sts") is None:
+            if form.get("day1") is not None and form.get("sts") is None:
                 sts = compute_ts(form, "1")
-            if form.get("year2") is not None and form.get("ets") is None:
+            if form.get("day2") is not None and form.get("ets") is None:
                 ets = compute_ts(form, "2")
             # Assign back into environ and schema (with validation)
             if sts:

@@ -83,6 +83,32 @@ def test_gh1248_default_tz():
     assert resp.text == "OK"
 
 
+def test_default_tz_does_not_rerun_string_validators():
+    """Test timezone normalization does not rerun string-only validators."""
+
+    class Schema(CGIModel):
+        sts: datetime | None = None
+
+        @field_validator("sts", mode="before")
+        @classmethod
+        def parse_valid(cls, value):
+            if value is None:
+                return value
+            date, time = value.split("T")
+            return datetime.fromisoformat(f"{date}T{time}")
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-05:00"
+
+
 def test_gh1248_default_tz_not_set():
     """Test for naive sts when default_tz is not set.."""
 
