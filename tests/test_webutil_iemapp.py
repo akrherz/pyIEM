@@ -16,6 +16,12 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.util import utc
+from pyiem.web.fields import (
+    DAY_OF_MONTH_FIELD_OPTIONAL,
+    MONTH_FIELD_OPTIONAL,
+    YEAR_FIELD_OPTIONAL,
+)
 from pyiem.webutil import CGIModel, ListOrCSVType, iemapp, ip_is_throttled
 
 
@@ -203,7 +209,7 @@ def test_duplicated_year_in_form():
 
     env = {
         "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
+        "QUERY_STRING": "year1=2021&year1=2021&month1=2&day1=3",
     }
     sr = mock.MagicMock()
     list(application(env, sr))
@@ -757,6 +763,34 @@ def test_iemapp_year_year1():
     resp = client.get("/?year=2022&month1=2&day1=3")
     assert resp.status_code == 200
     assert resp.text.find("Hello") > -1
+
+
+def test_iemapp_schema_validation_from_ymd():
+    """Test that this doesn't subvert schema validation."""
+
+    class MyModel(CGIModel):
+        """Test"""
+
+        sts: Annotated[
+            AwareDatetime | None,
+            Field(
+                gt=utc(1900, 1, 1),
+            ),
+        ] = None
+        year1: YEAR_FIELD_OPTIONAL = None
+        month1: MONTH_FIELD_OPTIONAL = None
+        day1: DAY_OF_MONTH_FIELD_OPTIONAL = None
+
+    @iemapp(schema=MyModel)
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    c = Client(application)
+    resp = c.get("/?year1=1889&month1=1&day1=1")
+    assert resp.status_code == 422
+    assert "1900" in resp.text
 
 
 def test_iemapp_times_notime():

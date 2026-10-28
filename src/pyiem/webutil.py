@@ -151,7 +151,10 @@ def _is_xss_payload(val: str) -> bool:
 class CGIModel(BaseModel):
     """A Pydantic model that parses CGI arguments."""
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(
+        validate_assignment=True,
+        arbitrary_types_allowed=True,
+    )
 
     def __init__(self, **kwargs):
         try:
@@ -392,6 +395,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if key not in allowed:
                 raise BadWebRequest(f"Key {key} is a list, but not allowed")
 
+    schema = None
     if "schema" in kwargs:
         # Remove any form keys that are not contained in the
         # schema, but first we debracket keys with []
@@ -400,10 +404,11 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             for k, v in _debracket(form).items()
             if k in kwargs["schema"].model_fields and v != ""
         }
+        schema = kwargs["schema"](**form)
         # Retain a reference to the Schema instance as it may have
         # private / computed attributes that are needed
-        environ["_cgimodel_schema"] = kwargs["schema"](**form)
-        form = environ["_cgimodel_schema"].model_dump()
+        environ["_cgimodel_schema"] = schema
+        form = schema.model_dump()
     if "tz" not in form or form["tz"] is None:
         form["tz"] = kwargs.get("default_tz", "America/Chicago")
     # Important this is set before calling add_to_environ
@@ -433,7 +438,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             ):
                 form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
                 # Set this value back into the schema reference (le sigh)
-                schema = environ.get("_cgimodel_schema")
                 if schema is not None and key in type(schema).model_fields:
                     setattr(schema, key, form[key])
             environ[key] = form[key]
@@ -444,9 +448,9 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 stacklevel=1,
             )
     if kwargs.get("parse_times", True):
+        sts = None
+        ets = None
         try:
-            sts = None
-            ets = None
             # Le Sigh, darly used sts for stations in the past, so ensure
             # that sts starts with something that looks like a year
             if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
@@ -455,26 +459,24 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 ets = compute_ts_from_string(form, "ets")
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
-            if form.get("day1") is not None and form.get("sts") is None:
+            if form.get("year1") is not None and form.get("sts") is None:
                 sts = compute_ts(form, "1")
-            if form.get("day2") is not None and form.get("ets") is None:
+            if form.get("year2") is not None and form.get("ets") is None:
                 ets = compute_ts(form, "2")
+            # Assign back into environ and schema (with validation)
             if sts:
                 environ["sts"] = sts
-                if (
-                    "_cgimodel_schema" in environ
-                    and "sts" in type(environ["_cgimodel_schema"]).model_fields
-                ):
-                    environ["_cgimodel_schema"].sts = sts
+                if schema is not None and "sts" in type(schema).model_fields:
+                    schema.sts = sts
             if ets:
                 environ["ets"] = ets
-                if (
-                    "_cgimodel_schema" in environ
-                    and "ets" in type(environ["_cgimodel_schema"]).model_fields
-                ):
-                    environ["_cgimodel_schema"].ets = ets
+                if schema is not None and "ets" in type(schema).model_fields:
+                    schema.ets = ets
         except (TypeError, ValueError) as exp:
-            raise IncompleteWebRequest("Invalid timestamp specified") from exp
+            msg = "" if not isinstance(exp, ValidationError) else f" {exp}"
+            raise IncompleteWebRequest(
+                f"Invalid timestamp specified{msg}"
+            ) from exp
 
 
 def _handle_help(httphost: str, **kwargs):
