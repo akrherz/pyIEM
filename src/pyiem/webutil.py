@@ -439,9 +439,8 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
                 # Set this value back into the schema reference (le sigh)
                 if schema is not None and key in type(schema).model_fields:
-                    # Use object.__setattr__ to bypass Pydantic's immutability
-                    # checks
-                    object.__setattr__(schema, key, form[key])
+                    # Send back through the frontdoor as downstream may check
+                    setattr(schema, key, form[key].isoformat())
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -469,11 +468,13 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if sts:
                 environ["sts"] = sts
                 if schema is not None and "sts" in type(schema).model_fields:
-                    schema.sts = sts
+                    # Send back as str to get downstream schema validation
+                    schema.sts = sts.isoformat()
             if ets:
                 environ["ets"] = ets
                 if schema is not None and "ets" in type(schema).model_fields:
-                    schema.ets = ets
+                    # Send back as str to get downstream schema validation
+                    schema.ets = ets.isoformat()
         except (TypeError, ValueError) as exp:
             msg = "" if not isinstance(exp, ValidationError) else f" {exp}"
             raise IncompleteWebRequest(
