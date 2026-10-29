@@ -738,16 +738,38 @@ def _parse_status_code(status: str) -> int | None:
     return int(status.split()[0])
 
 
+def _cache_control_header(
+    environ: dict, cache_control: int | Callable | None
+) -> tuple[str, str] | None:
+    """Build a Cache-Control header, or None when caching is not wanted."""
+    secs = cache_control(environ) if callable(cache_control) else cache_control
+    if secs is None or secs <= 0:
+        return None
+    return ("Cache-Control", f"public, max-age={int(secs)}")
+
+
 def _capture_start_response(start_response: Callable) -> tuple[Callable, dict]:
-    """Wrap start_response and capture if it was called and status code."""
+    """Wrap start_response and capture if it was called and status code.
+
+    When ``state["cache_control"]`` holds a header tuple, it is added to a
+    ``200`` response that does not already set Cache-Control.
+    """
     state = {
         "started": False,
         "status_code": None,
+        "cache_control": None,
     }
 
     def _wrapped_start_response(status, headers, exc_info=None):
         state["started"] = True
         state["status_code"] = _parse_status_code(status)
+        header = state["cache_control"]
+        if (
+            header is not None
+            and state["status_code"] == 200
+            and not any(k.lower() == "cache-control" for k, _ in headers)
+        ):
+            headers = [*headers, header]
         if exc_info is None:
             return start_response(status, headers)
         return start_response(status, headers, exc_info)
@@ -817,6 +839,12 @@ def iemapp(**kwargs):
         - ip_throttle_secs (float or callable): Number of seconds between
           requests from the same REMOTE_ADDR, 0 to disable,
           which is the default.
+        - cache_control (int or callable): Seconds that clients and proxies
+          may cache a ``200`` response, sent as
+          ``Cache-Control: public, max-age=N``.  A callable gets the
+          ``environ`` after schema parsing and may return ``None`` or ``0``
+          to send no header for that request.  A ``Cache-Control`` header
+          set by the application wins.  The default ``None`` sends nothing.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -840,6 +868,7 @@ def iemapp(**kwargs):
     memcachekey = kwargs.get("memcachekey")
     memcacheexpire = kwargs.get("memcacheexpire", 3600)
     content_type = kwargs.get("content_type", "application/json")
+    cache_control = kwargs.get("cache_control")
 
     def _decorator(func):
         """Decorate a function to catch exceptions and do nice things."""
@@ -862,6 +891,10 @@ def iemapp(**kwargs):
                 if short_circuit:
                     yield payload
                     return
+                # Decided after preflight, so help and 429 replies get none
+                response_state["cache_control"] = _cache_control_header(
+                    environ, cache_control
+                )
                 res = _mcall(
                     func,
                     environ,
