@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.plot.util &#8212; pyIEM 1.28.1.post20+g135e9ba14</title>
+    <title>pyiem.plot.util &#8212; pyIEM 1.28.1.post22+ga895af96c</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=e2150e76"></script>
+    <script src="../../../_static/documentation_options.js?v=e52607f8"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/plot/util';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post20+g135e9ba14" />
-    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post22+ga895af96c" />
+    <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post20+g135e9ba14</p>
+    <p class="title logo__title">pyIEM 1.28.1.post22+ga895af96c</p>
   
 </a></div>
     
@@ -992,6 +992,45 @@
             <span class="n">fitbox</span><span class="p">(</span>
                 <span class="n">mp</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span>
                 <span class="s2">"Guam"</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="n">height</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"k"</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="c1"># American Samoa</span>
+            <span class="n">ln</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">panels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">104.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">98.5</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">22.7</span><span class="p">,</span> <span class="mf">24.50</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"None"</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">bbox</span> <span class="o">=</span> <span class="n">ln</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_renderer</span><span class="p">())</span>
+            <span class="n">mp</span><span class="o">.</span><span class="n">panels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">make_panel</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">bbox</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+                        <span class="n">bbox</span><span class="o">.</span><span class="n">y0</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">bbox</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">bbox</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+                    <span class="p">],</span>
+                    <span class="n">mp</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span>
+                    <span class="p">[</span>
+                        <span class="n">reference</span><span class="o">.</span><span class="n">state_bounds</span><span class="p">[</span><span class="s2">"AS"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">reference</span><span class="o">.</span><span class="n">state_bounds</span><span class="p">[</span><span class="s2">"AS"</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">reference</span><span class="o">.</span><span class="n">state_bounds</span><span class="p">[</span><span class="s2">"AS"</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">reference</span><span class="o">.</span><span class="n">state_bounds</span><span class="p">[</span><span class="s2">"AS"</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span>
+                    <span class="p">],</span>
+                    <span class="n">reference</span><span class="o">.</span><span class="n">LATLON</span><span class="p">,</span>
+                    <span class="n">aspect</span><span class="p">,</span>
+                    <span class="n">is_geoextent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">sector_label</span><span class="o">=</span><span class="s2">"state_AS"</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">fitbox</span><span class="p">(</span>
+                <span class="n">mp</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span>
+                <span class="s2">"American Samoa"</span><span class="p">,</span>
                 <span class="n">bbox</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
                 <span class="n">bbox</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
                 <span class="n">bbox</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
