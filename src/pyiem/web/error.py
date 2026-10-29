@@ -38,7 +38,11 @@ def log_request(
     referrer = environ.get("HTTP_REFERER")
     # Life choice here as AI bots continue to send garbage traffic and
     # requiring a HTTP referer will increase signal to noise
-    if redirect_status == 404 and uri.startswith("/") and referrer is not None:
+    if (
+        redirect_status == 404
+        and uri.startswith("/")
+        and (referrer is not None and "google" not in referrer)
+    ):
         error_log(environ, f"404 {snipped} referer: {referrer}")
     conn.execute(
         sql_helper(
