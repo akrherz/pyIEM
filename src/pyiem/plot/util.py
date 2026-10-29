@@ -517,6 +517,45 @@ def sector_setter(mp, axbounds, **kwargs):
                 color="white",
                 bbox=dict(boxstyle="round,pad=0", color="k"),
             )
+            # American Samoa
+            ln = mp.panels[0].plot(
+                [-104.2, -98.5],
+                [22.7, 24.50],
+                color="None",
+            )[0]
+            bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
+            mp.panels.append(
+                make_panel(
+                    [
+                        bbox.x0 / width,
+                        bbox.y0 / height,
+                        (bbox.x1 - bbox.x0) / width,
+                        (bbox.y1 - bbox.y0) / height,
+                    ],
+                    mp.fig,
+                    [
+                        reference.state_bounds["AS"][0],
+                        reference.state_bounds["AS"][2],
+                        reference.state_bounds["AS"][1],
+                        reference.state_bounds["AS"][3],
+                    ],
+                    reference.LATLON,
+                    aspect,
+                    is_geoextent=True,
+                    sector_label="state_AS",
+                    **kwargs,
+                )
+            )
+            fitbox(
+                mp.fig,
+                "American Samoa",
+                bbox.x0 / width,
+                bbox.x1 / width,
+                bbox.y1 / height,
+                bbox.y1 / height + 0.1,
+                color="white",
+                bbox=dict(boxstyle="round,pad=0", color="k"),
+            )
             # Hawaii
             ln = mp.panels[0].plot(
                 [-95.8, -85.24],

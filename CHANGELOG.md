@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Added American Samoa subplot to `MapPlot(sector="nws")`.
 - Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
 - Workaround a persistent and annoying SHEF encoding issue with RRSRAH.
 
