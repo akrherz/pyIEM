@@ -732,6 +732,134 @@ def test_iemapp_telemetry_uses_captured_start_response_status():
     assert write_mock.call_args[0][0].status_code == 404
 
 
+def test_iemapp_cache_control():
+    """Test that cache_control adds a header to a 200 response."""
+
+    @iemapp(cache_control=86400)
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return b"Hello!"
+
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 200
+    assert resp.headers["Cache-Control"] == "public, max-age=86400"
+
+
+def test_iemapp_cache_control_default_is_off():
+    """Test that no header is sent unless asked for."""
+
+    @iemapp()
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return b"Hello!"
+
+    c = Client(application)
+    assert "Cache-Control" not in c.get("/").headers
+
+
+def test_iemapp_cache_control_callable():
+    """Test that a callable sees the parsed schema and can opt out."""
+
+    class Schema(CGIModel):
+        """Test."""
+
+        year: Annotated[int, Field(description="Year")] = 2000
+
+    @iemapp(
+        schema=Schema,
+        cache_control=lambda e: None if e["year"] >= 2026 else 3600,
+    )
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return b"Hello!"
+
+    c = Client(application)
+    resp = c.get("/?year=2011")
+    assert resp.headers["Cache-Control"] == "public, max-age=3600"
+    assert "Cache-Control" not in c.get("/?year=2026").headers
+
+
+def test_iemapp_cache_control_application_wins():
+    """Test that an application's own Cache-Control header is kept."""
+
+    @iemapp(cache_control=86400)
+    def application(_environ, start_response):
+        """Test."""
+        start_response(
+            "200 OK",
+            [("Content-type", "text/plain"), ("Cache-Control", "no-cache")],
+        )
+        return b"Hello!"
+
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.headers.getlist("Cache-Control") == ["no-cache"]
+
+
+def test_iemapp_cache_control_skips_errors_and_help():
+    """Test that error and help replies get no header."""
+
+    @iemapp(help="FINDME", cache_control=86400)
+    def application(environ, start_response):
+        """Test."""
+        if environ.get("q") == "missing":
+            raise NoDataFound("Nothing")
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return b"Hello!"
+
+    c = Client(application)
+    resp = c.get("/?help")
+    assert resp.status_code == 200
+    assert "Cache-Control" not in resp.headers
+    resp = c.get("/?q=missing")
+    assert resp.status_code == 422
+    assert "Cache-Control" not in resp.headers
+
+
+def test_iemapp_cache_control_on_memcache_hit():
+    """Test that a memcache-backed response gets the header too."""
+
+    cache = {}
+
+    class DummyMemcacheClient:
+        """Simple in-memory memcache stand-in for deterministic testing."""
+
+        def __init__(self, _server):
+            """."""
+
+        @staticmethod
+        def get(key):
+            """."""
+            return cache.get(key)
+
+        @staticmethod
+        def set(key, value, expire=None):
+            """."""
+            cache[key] = value
+
+        @classmethod
+        def close(cls):
+            """."""
+
+    @iemapp(memcachekey="iem_iemapp_cache_control", cache_control=600)
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return b"Hello!"
+
+    with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
+        c = Client(application)
+        first = c.get("/")
+        second = c.get("/")
+    assert "iem_iemapp_cache_control" in cache
+    assert first.headers["Cache-Control"] == "public, max-age=600"
+    assert second.headers["Cache-Control"] == "public, max-age=600"
+
+
 def test_iemapp_generator_exception_after_start_response(random_ipv4: str):
     """Test post-start generator exceptions are logged without restart."""
 

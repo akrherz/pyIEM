@@ -15,6 +15,8 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Added American Samoa subplot to `MapPlot(sector="nws")`.
+- Added an opt-in `cache_control` option to `iemapp`, which sends
+  `Cache-Control: public, max-age=N` on `200` responses.
 - Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
 - Workaround a persistent and annoying SHEF encoding issue with RRSRAH.
 
