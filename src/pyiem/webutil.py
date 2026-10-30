@@ -30,7 +30,6 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
-from pydantic_core import PydanticUndefined
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
@@ -338,22 +337,6 @@ def log_request(environ: dict, multiplier: int = 1):
         conn.commit()
 
 
-def compute_ts_from_string(form: dict, key: str) -> datetime:
-    """Convert a string to a timestamp."""
-    # Support various ISO8601 formats
-    tstr: str = form[key].replace("T", " ")
-    tz = ZoneInfo(form.get("tz", "America/Chicago"))
-    if tstr.endswith("Z"):
-        tz = ZoneInfo("UTC")
-        tstr = tstr[:-1]
-    fmt = "%Y-%m-%d %H:%M:%S"
-    if "." in tstr:
-        fmt += ".%f"
-    if len(tstr.split(":")) == 2:
-        fmt = "%Y-%m-%d %H:%M"
-    return datetime.strptime(tstr, fmt).replace(tzinfo=tz)
-
-
 def compute_ts(form: dict, suffix: str) -> datetime:
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
@@ -395,9 +378,7 @@ def condition_form_for_datetimes(
         return
     if tzfield and str(tzfield.annotation) == "str | None":
         raise NotImplementedError("CGIModel tz field cannot be optional")
-    tzinfo = form.get("tz") or default_tz or schema.model_fields["tz"].default
-    if tzinfo is PydanticUndefined:
-        return
+    tzinfo = form.get("tz") or default_tz or tzfield.default
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
@@ -468,7 +449,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         environ["_cgimodel_schema"] = schema
         form = schema.model_dump()
 
-    tz_updates = {}
     for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
@@ -480,14 +460,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             elif isinstance(val, str):
                 if _is_xss_payload(val):
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
-            if (
-                isinstance(val, datetime)
-                and val.tzinfo is None
-                and kwargs.get("default_tz") is not None
-            ):
-                form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
-                if schema is not None and key in type(schema).model_fields:
-                    tz_updates[key] = form[key].isoformat()
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -495,24 +467,10 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 UserWarning,
                 stacklevel=1,
             )
-    if tz_updates:
-        # Revalidate once with all fields tz-aware, so that model validators
-        # never see a mix of naive and aware values.
-        try:
-            schema = type(schema)(**{**raw_form, **tz_updates})
-        except ValidationError as exp:
-            raise IncompleteWebRequest(exp.errors()) from exp
-        environ["_cgimodel_schema"] = schema
     if kwargs.get("parse_times", True):
         sts = None
         ets = None
         try:
-            # Le Sigh, darly used sts for stations in the past, so ensure
-            # that sts starts with something that looks like a year
-            if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
-                sts = compute_ts_from_string(form, "sts")
-            if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
-                ets = compute_ts_from_string(form, "ets")
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
             if form.get("day1") is not None and form.get("sts") is None:
