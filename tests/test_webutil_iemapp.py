@@ -412,6 +412,24 @@ def test_iemapp_decorator():
     assert resp.text == "Hello!"
 
 
+def test_invalid_user_timestamp_without_tzinfo():
+    """Test that the conditioning of this string fails."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field()]
+
+    @iemapp(schema=Schema, default_tz="America/Denver")
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2002-BOGUS")
+    assert resp.status_code == 422
+    assert "invalid character in month" in resp.text
+
+
 def test_typoed_tz():
     """Test that we handle when a tz gets commonly typoed."""
 

@@ -388,18 +388,19 @@ def condition_form_for_datetimes(
     schema: BaseModel, form: dict, default_tz: str | None
 ):
     """Modify the form to account for ambiguous things in the schema."""
+    tzfield = schema.model_fields.get("tz")
     # Logic short-circuit here requiring either default_tz or schema.tz
     # to be set
-    if default_tz is None and schema.model_fields.get("tz") is None:
+    if default_tz is None and tzfield is None:
         return
+    if tzfield and str(tzfield.annotation) == "str | None":
+        raise NotImplementedError("CGIModel tz field cannot be optional")
     tzinfo = default_tz or schema.model_fields["tz"].default
     if tzinfo is PydanticUndefined:
         return
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
-        if field_name == "tz" and str(field.annotation) == "str | None":
-            raise NotImplementedError("CGIModel tz field cannot be optional")
         if field.annotation is datetime and field_name in form:
             user_value = form[field_name]
             # This should have some timezone information in the string
