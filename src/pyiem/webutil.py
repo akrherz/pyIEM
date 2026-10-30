@@ -30,7 +30,6 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
-from pydantic_core import PydanticUndefined
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
@@ -391,8 +390,6 @@ def condition_form_for_datetimes(
     if tzfield and str(tzfield.annotation) == "str | None":
         raise NotImplementedError("CGIModel tz field cannot be optional")
     tzinfo = form.get("tz") or default_tz or schema.model_fields["tz"].default
-    if tzinfo is PydanticUndefined:
-        return
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
