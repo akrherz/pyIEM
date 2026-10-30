@@ -348,9 +348,8 @@ def compute_ts_from_string(
     return val
 
 
-def compute_ts(form: dict, suffix: str) -> datetime:
+def compute_ts(form: dict, suffix: str, default_tz: str | None) -> datetime:
     """Figure out the timestamp."""
-    # NB: form["tz"] should always be set by this point, but alas
     month = int(form.get(f"month{suffix}", form.get("month")))
     day = min(int(form.get(f"day{suffix}", form.get("day"))), 31)
     # Forgive bad day of the month combinations
@@ -374,7 +373,7 @@ def compute_ts(form: dict, suffix: str) -> datetime:
         day,
         int(form.get(f"hour{suffix}", 0)),
         int(form.get(f"minute{suffix}", 0)),
-        tzinfo=ZoneInfo(form.get("tz", "America/Chicago")),
+        tzinfo=ZoneInfo(form.get("tz", default_tz or "America/Chicago")),
     )
 
 
@@ -389,10 +388,19 @@ def condition_form_for_datetimes(
         return
     if tzfield and str(tzfield.annotation) == "str | None":
         raise NotImplementedError("CGIModel tz field cannot be optional")
-    tzinfo = form.get("tz") or default_tz or schema.model_fields["tz"].default
+    tzinfo = form.get("tz") or default_tz or tzfield.default
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
+        if "datetime" in str(field.annotation) and field_name not in form:
+            default = field.default
+            if field.default_factory:
+                default = field.default_factory()
+            if isinstance(default, datetime) and default.tzinfo is None:
+                default = default.replace(tzinfo=tz_to_use)
+            if default:
+                form[field_name] = default.isoformat()
+            continue
         if "datetime" in str(field.annotation) and field_name in form:
             user_value = form[field_name]
             if isinstance(user_value, str):
@@ -490,9 +498,9 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
             if form.get("day1") is not None and form.get("sts") is None:
-                sts = compute_ts(form, "1")
+                sts = compute_ts(form, "1", kwargs_default_tz)
             if form.get("day2") is not None and form.get("ets") is None:
-                ets = compute_ts(form, "2")
+                ets = compute_ts(form, "2", kwargs_default_tz)
             # Assign back into environ and schema (with validation)
             if sts:
                 environ["sts"] = sts

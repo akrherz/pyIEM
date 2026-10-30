@@ -271,6 +271,29 @@ def test_parse_legacy_sts_without_schema_with_default_tz():
     assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
 
 
+def test_datetime_default_has_tzinfo_with_no_form():
+    """Test edge case with schema having a default, but no value in form."""
+
+    class Schema(CGIModel):
+        sts: Annotated[
+            datetime,
+            Field(
+                default_factory=lambda: datetime(2026, 10, 10),
+                description="Start Time",
+            ),
+        ]
+
+    @iemapp(default_tz="America/Denver", schema=Schema)
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 200
+    assert "-06:00" in resp.text
+
+
 def test_parse_legacy_assume_midnight():
     """Test that parsing legacy sts will assume midnight."""
 
