@@ -118,8 +118,8 @@ def test_gh1248_default_tz():
             if (
                 environ["sts"].tzinfo is not None
                 and environ["ets"].tzinfo is not None
-                and str(environ["sts"].tzinfo) == "America/New_York"
-                and str(environ["ets"].tzinfo) == "America/New_York"
+                and str(environ["sts"].tzinfo) == "-05:00"
+                and str(environ["ets"].tzinfo) == "-05:00"
             )
             else "FAIL"
         )

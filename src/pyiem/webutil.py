@@ -401,18 +401,19 @@ def condition_form_for_datetimes(
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
-        if field.annotation is datetime and field_name in form:
+        if "datetime" in str(field.annotation) and field_name in form:
             user_value = form[field_name]
-            # This should have some timezone information in the string
-            # This exercises pydantic's value import logic ahead of time
-            try:
-                val = datetime.fromisoformat(user_value)
-                if val.tzinfo is None:
-                    val = val.replace(tzinfo=tz_to_use)
-                    form[field_name] = val.isoformat()
-            except ValueError:
-                # Do nothing and allow it to fail later...
-                pass
+            if isinstance(user_value, str):
+                # This should have some timezone information in the string
+                # This exercises pydantic's value import logic ahead of time
+                try:
+                    val = datetime.fromisoformat(user_value)
+                    if val.tzinfo is None:
+                        val = val.replace(tzinfo=tz_to_use)
+                        form[field_name] = val.isoformat()
+                except ValueError:
+                    # Do nothing and allow it to fail later...
+                    pass
 
 
 def add_to_environ(environ: dict, form: dict, **kwargs):
