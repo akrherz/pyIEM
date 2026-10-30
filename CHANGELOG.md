@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 - Demote warnings emitted from LSR parsing when encountering empty strings
   for either state, source, or county.  These are allowed to the database, so
   there is nothing for a monitoring dev to do here.
+- Field of type `TZ_FIELD_OPTIONAL` removed as this is not supported.
 - Stop emitting syslog entries for web 404s that have no ``HTTP_REFERER``.
 
 ### New Features

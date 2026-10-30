@@ -14,7 +14,6 @@ def station_model():
         wfo: fields.WFO3_FIELD = "DMX"
         station: fields.STATION_LIST_FIELD
         tz: fields.TZ_FIELD = "UTC"
-        tznone: fields.TZ_FIELD_OPTIONAL = None
 
     return Model
 
@@ -36,11 +35,6 @@ def station_model():
 def test_unrectify_wfo(station_model, wfo_input, wfo_expected):
     """Test how WFO3_FIELD unrectifies four character WFOs."""
     assert station_model(wfo=wfo_input, station="A").wfo == wfo_expected
-
-
-def test_none_tz(station_model):
-    """Test that a None timezone works."""
-    assert station_model(station="A", tznone=None).tznone is None
 
 
 def test_valid_tz(station_model):
