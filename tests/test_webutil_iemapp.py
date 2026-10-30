@@ -55,12 +55,59 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
+def test_awaredatetime_with_default_tz_set():
+    """Test that we have pre-conditioning that accounts for this case."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")]
+        ets: Annotated[datetime, Field(description="End Time")]
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK"
+            if (
+                environ["sts"].tzinfo is not None
+                and environ["ets"].tzinfo is not None
+                and str(environ["sts"].tzinfo) == "UTC"
+                and str(environ["ets"].tzinfo) == "UTC"
+            )
+            else "BAD"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_awaredatetime_without_default_tz_set():
+    """Test that this case fails."""
+
+    class Schema(CGIModel):
+        sts: Annotated[AwareDatetime, Field(description="Start Time")]
+        ets: Annotated[AwareDatetime, Field(description="End Time")]
+
+    @iemapp(help="FINDME", schema=Schema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 422
+    assert "should have timezone info" in resp.text
+
+
 def test_gh1248_default_tz():
     """Test that default_tz is used for sts and ets generation."""
 
     class Schema(CGIModel):
-        sts: Annotated[datetime, Field(description="Start Time")] = None
-        ets: Annotated[datetime, Field(description="End Time")] = None
+        sts: Annotated[datetime | None, Field(description="Start Time")] = None
+        ets: Annotated[datetime | None, Field(description="End Time")] = None
 
     @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
     def application(environ, start_response):
@@ -71,14 +118,40 @@ def test_gh1248_default_tz():
             if (
                 environ["sts"].tzinfo is not None
                 and environ["ets"].tzinfo is not None
-                and environ["sts"].tzinfo.key == "America/New_York"
-                and environ["ets"].tzinfo.key == "America/New_York"
+                and str(environ["sts"].tzinfo) == "-05:00"
+                and str(environ["ets"].tzinfo) == "-05:00"
             )
             else "FAIL"
         )
 
     c = Client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_default_tz_ordering():
+    """Test that user provided tz rules the coup."""
+
+    class Schema(CGIModel):
+        tz: Annotated[str, Field("User provided tz")] = "UTC"
+        sts: Annotated[datetime | None, Field(description="Start Time")] = None
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK"
+            if (
+                environ["sts"].tzinfo is not None
+                and str(environ["sts"].tzinfo) == "-07:00"
+            )
+            else "FAIL"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&tz=America/Denver")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
@@ -157,7 +230,7 @@ def test_gh1248_default_tz_invalid_tz_provided():
 
     class Schema(CGIModel):
         sts: Annotated[datetime, Field(description="Start Time")] = None
-        tz: Annotated[str | None, Field(description="Timezone")] = None
+        tz: Annotated[str, Field(description="Timezone")]
 
     @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
     def application(_environ, start_response):
@@ -170,8 +243,176 @@ def test_gh1248_default_tz_invalid_tz_provided():
     assert resp.status_code == 422
 
 
-def test_gh1248_default_tz_invalid_tz_optional():
+def test_missing_required_datetime_with_default_tz():
+    """Missing required datetime fields should fail schema validation."""
+
+    class Schema(CGIModel):
+        sts: datetime
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    resp = Client(application).get("/")
+    assert resp.status_code == 422
+
+
+def test_missing_optional_datetime_with_default_tz():
+    """Missing optional datetimes with a None default should remain None."""
+
+    class Schema(CGIModel):
+        sts: datetime | None = None
+        ets: Annotated[datetime | None, Field(description="None")] = None
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "None"
+            if all(environ[k] is None for k in ["ets", "sts"])
+            else "Unexpected value"
+        )
+
+    resp = Client(application).get("/")
+    assert resp.status_code == 200
+    assert resp.text == "None"
+
+
+def test_missing_required_tz():
+    """Test that special `tz` field can not have None default."""
+
+    class Schema(CGIModel):
+        tz: str
+
+    @iemapp(schema=Schema)
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    with pytest.raises(NotImplementedError):
+        Client(application).get("/")
+
+
+def test_tz_field_none_default_not_supported():
+    """Test that special `tz` fields cannot have a None default."""
+
+    class Schema(CGIModel):
+        tz: str = None
+
+    @iemapp(schema=Schema)
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    with pytest.raises(NotImplementedError):
+        Client(application).get("/")
+
+
+def test_parse_legacy_sts_without_schema():
+    """Ensure that sts gets parsed even without a schema."""
+
+    @iemapp()
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-06:00 2026-01-01T00:00:00-06:00"
+
+
+def test_parse_legacy_sts_without_schema_with_default_tz():
+    """Ensure that sts gets parsed even without schema and using default_tz."""
+
+    @iemapp(default_tz="America/Denver")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
+
+
+def test_datetime_default_has_tzinfo_with_no_form():
+    """Test edge case with schema having a default, but no value in form."""
+
+    class Schema(CGIModel):
+        sts: Annotated[
+            datetime,
+            Field(
+                default_factory=lambda: datetime(2026, 10, 10),
+                description="Start Time",
+            ),
+        ]
+
+    @iemapp(default_tz="America/Denver", schema=Schema)
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 200
+    assert "-06:00" in resp.text
+
+
+def test_parse_legacy_assume_midnight():
+    """Test that parsing legacy sts will assume midnight."""
+
+    @iemapp(default_tz="America/Denver")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01&ets=2026-01-01")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
+
+
+def test_default_tz_not_added_to_environ():
+    """Test that default_tz stays out of environ['tz']"""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")]
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if environ.get("tz") is None else "FAIL"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_empty_tz_gets_default_tz():
     """Test that this situation errors 422."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+        tz: Annotated[str, Field(description="Timezone")] = "UTC"
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if str(environ["sts"].tzinfo) == "-05:00" else "BAD"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&tz=")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_gh1248_default_tz_invalid_tz_optional():
+    """Test that tz is not permitted to be optional in CGIModel."""
 
     class Schema(CGIModel):
         sts: Annotated[datetime, Field(description="Start Time")] = None
@@ -182,13 +423,14 @@ def test_gh1248_default_tz_invalid_tz_optional():
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
         return (
-            "OK" if environ["sts"].tzinfo.key == "America/New_York" else "FAIL"
+            "OK"
+            if str(environ["sts"].tzinfo) == "America/New_York"
+            else "FAIL"
         )
 
     c = Client(application)
-    resp = c.get("/?sts=2022-01-01T00:00")
-    assert resp.status_code == 200
-    assert resp.text == "OK"
+    with pytest.raises(NotImplementedError):
+        c.get("/?sts=2022-01-01T00:00")
 
 
 def test_iemapp_help_with_linereturns():
@@ -364,11 +606,29 @@ def test_iemapp_decorator():
     assert resp.text == "Hello!"
 
 
+def test_invalid_user_timestamp_without_tzinfo():
+    """Test that the conditioning of this string fails."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field()]
+
+    @iemapp(schema=Schema, default_tz="America/Denver")
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2002-BOGUS")
+    assert resp.status_code == 422
+    assert "invalid character in month" in resp.text
+
+
 def test_typoed_tz():
     """Test that we handle when a tz gets commonly typoed."""
 
     class Schema(CGIModel):
-        tz: Annotated[str, Field(description="tz")]
+        tz: Annotated[str, Field(description="tz")] = "UTC"
 
     @iemapp(schema=Schema)
     def application(environ, start_response):

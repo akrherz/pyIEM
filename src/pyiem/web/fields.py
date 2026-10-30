@@ -215,11 +215,6 @@ TZ_FIELD = Annotated[
     BeforeValidator(_validate_tz),
     _TZF,
 ]
-TZ_FIELD_OPTIONAL = Annotated[
-    str | None,
-    BeforeValidator(_validate_tz),
-    _TZF,
-]
 
 # --------------
 _VE = Field(
