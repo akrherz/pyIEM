@@ -7,7 +7,7 @@ from unittest import mock
 from zoneinfo import ZoneInfo
 
 import pytest
-from pydantic import AwareDatetime, Field, field_validator
+from pydantic import AwareDatetime, Field, field_validator, model_validator
 from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
@@ -81,6 +81,31 @@ def test_gh1248_default_tz():
     resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
     assert resp.status_code == 200
     assert resp.text == "OK"
+
+
+def test_default_tz():
+    """Test a strange error found in prod."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")]
+        ets: Annotated[datetime, Field(description="End Time")]
+
+        @model_validator(mode="after")
+        def parse_valid(self):
+            if self.sts > self.ets:
+                raise ValueError("sts > ets")
+            return self
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2020-01-01T00:00&ets=2021-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2020-01-01T00:00:00+00:00"
 
 
 def test_default_tz_does_not_rerun_string_validators():

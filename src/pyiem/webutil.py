@@ -404,7 +404,8 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             for k, v in _debracket(form).items()
             if k in kwargs["schema"].model_fields and v != ""
         }
-        schema = kwargs["schema"](**form)
+        raw_form = form
+        schema = kwargs["schema"](**raw_form)
         # Retain a reference to the Schema instance as it may have
         # private / computed attributes that are needed
         environ["_cgimodel_schema"] = schema
@@ -420,6 +421,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
     except (IsADirectoryError, ValueError, ZoneInfoNotFoundError) as exp:
         raise IncompleteWebRequest("Invalid tz specified") from exp
 
+    tz_updates = {}
     for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
@@ -437,10 +439,8 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 and kwargs.get("default_tz") is not None
             ):
                 form[key] = val.replace(tzinfo=ZoneInfo(form["tz"]))
-                # Set this value back into the schema reference (le sigh)
                 if schema is not None and key in type(schema).model_fields:
-                    # Send back through the frontdoor as downstream may check
-                    setattr(schema, key, form[key].isoformat())
+                    tz_updates[key] = form[key].isoformat()
             environ[key] = form[key]
         else:
             warnings.warn(
@@ -448,6 +448,11 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 UserWarning,
                 stacklevel=1,
             )
+    if tz_updates:
+        # Revalidate once with all fields tz-aware, so that model validators
+        # never see a mix of naive and aware values.
+        schema = type(schema)(**{**raw_form, **tz_updates})
+        environ["_cgimodel_schema"] = schema
     if kwargs.get("parse_times", True):
         sts = None
         ets = None
