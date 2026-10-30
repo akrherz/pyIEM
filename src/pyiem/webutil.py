@@ -451,7 +451,10 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
     if tz_updates:
         # Revalidate once with all fields tz-aware, so that model validators
         # never see a mix of naive and aware values.
-        schema = type(schema)(**{**raw_form, **tz_updates})
+        try:
+            schema = type(schema)(**{**raw_form, **tz_updates})
+        except ValidationError as exp:
+            raise IncompleteWebRequest(exp.errors()) from exp
         environ["_cgimodel_schema"] = schema
     if kwargs.get("parse_times", True):
         sts = None
