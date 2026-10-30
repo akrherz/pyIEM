@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post24+gaed0d0477</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post27+g8f5e1eb87</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=fe5c6aa9"></script>
+    <script src="../../_static/documentation_options.js?v=5d9f55d2"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post24+gaed0d0477" />
-    <meta name="docbuild:last-update" content="Oct 29, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post27+g8f5e1eb87" />
+    <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post24+gaed0d0477</p>
+    <p class="title logo__title">pyIEM 1.28.1.post27+g8f5e1eb87</p>
   
 </a></div>
     
@@ -898,7 +898,8 @@
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_debracket</span><span class="p">(</span><span class="n">form</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s2">""</span>
         <span class="p">}</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">](</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
+        <span class="n">raw_form</span> <span class="o">=</span> <span class="n">form</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">](</span><span class="o">**</span><span class="n">raw_form</span><span class="p">)</span>
         <span class="c1"># Retain a reference to the Schema instance as it may have</span>
         <span class="c1"># private / computed attributes that are needed</span>
         <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>
@@ -914,6 +915,7 @@
     <span class="k">except</span> <span class="p">(</span><span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">"Invalid tz specified"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
 
+    <span class="n">tz_updates</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">:</span>
             <span class="c1"># check for XSS and other naughty things</span>
@@ -931,10 +933,8 @@
                 <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default_tz"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">):</span>
                 <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">"tz"</span><span class="p">]))</span>
-                <span class="c1"># Set this value back into the schema reference (le sigh)</span>
                 <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
-                    <span class="c1"># Send back through the frontdoor as downstream may check</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+                    <span class="n">tz_updates</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
             <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -942,6 +942,14 @@
                 <span class="ne">UserWarning</span><span class="p">,</span>
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="p">)</span>
+    <span class="k">if</span> <span class="n">tz_updates</span><span class="p">:</span>
+        <span class="c1"># Revalidate once with all fields tz-aware, so that model validators</span>
+        <span class="c1"># never see a mix of naive and aware values.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)(</span><span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">raw_form</span><span class="p">,</span> <span class="o">**</span><span class="n">tz_updates</span><span class="p">})</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">errors</span><span class="p">())</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parse_times"</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">sts</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">ets</span> <span class="o">=</span> <span class="kc">None</span>
