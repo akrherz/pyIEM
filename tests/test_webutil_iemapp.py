@@ -614,8 +614,9 @@ def test_memcachekey_is_none():
     """Test that we can handle a None memcachekey."""
 
     @iemapp(memcachekey=lambda _e: None, memcacheexpire=lambda _e: 60)
-    def application(_environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return f"aa{random.random()}".encode("ascii")
 
     env = {
@@ -631,8 +632,9 @@ def test_iemapp_memcache_keychanged():
     """Test the memcache option."""
 
     @iemapp(memcachekey=lambda e: f"{random.random()}")
-    def application(_environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return f"aa{random.random()}".encode("ascii")
 
     env = {
@@ -655,22 +657,20 @@ def test_iemapp_memcache():
     """Test the memcache option."""
 
     @iemapp(memcachekey="iem_iemapp_memcache")
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "callback=gotData",
-    }
-    sr = mock.MagicMock()
-    res1 = list(application(env, sr))[0]
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "callback=gotData",
-    }
-    res2 = list(application(env, sr))[0]
-    assert res1.decode("ascii").startswith("gotData")
+    c = Client(application)
+    resp = c.get("/?callback=gotData")
+    assert resp.status_code == 200
+    res1 = resp.text
+    assert res1.startswith("gotData")
+
+    resp = c.get("/?callback=gotData")
+    res2 = resp.text
+    assert res2.startswith("gotData")
     assert res1 == res2
 
 
