@@ -30,6 +30,7 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
+from pydantic_core import PydanticUndefined
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
@@ -386,19 +387,27 @@ def condition_form_for_datetimes(
     # to be set
     if default_tz is None and tzfield is None:
         return
-    if tzfield and str(tzfield.annotation) == "str | None":
-        raise NotImplementedError("CGIModel tz field cannot be optional")
+    if tzfield and (
+        str(tzfield.annotation) == "str | None"
+        or tzfield.default is PydanticUndefined
+        or tzfield.default is None
+    ):
+        raise NotImplementedError(
+            "CGIModel tz field cannot be optional nor have no default"
+        )
     tzinfo = form.get("tz") or default_tz or tzfield.default
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
         if "datetime" in str(field.annotation) and field_name not in form:
+            if field.default is None and field.default_factory is None:
+                continue
             default = field.default
             if field.default_factory:
                 default = field.default_factory()
             if isinstance(default, datetime) and default.tzinfo is None:
                 default = default.replace(tzinfo=tz_to_use)
-            if default:
+            if default is not PydanticUndefined:
                 form[field_name] = default.isoformat()
             continue
         if "datetime" in str(field.annotation) and field_name in form:

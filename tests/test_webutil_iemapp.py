@@ -243,6 +243,72 @@ def test_gh1248_default_tz_invalid_tz_provided():
     assert resp.status_code == 422
 
 
+def test_missing_required_datetime_with_default_tz():
+    """Missing required datetime fields should fail schema validation."""
+
+    class Schema(CGIModel):
+        sts: datetime
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    resp = Client(application).get("/")
+    assert resp.status_code == 422
+
+
+def test_missing_optional_datetime_with_default_tz():
+    """Missing optional datetimes with a None default should remain None."""
+
+    class Schema(CGIModel):
+        sts: datetime | None = None
+        ets: Annotated[datetime | None, Field(description="None")] = None
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "None"
+            if all(environ[k] is None for k in ["ets", "sts"])
+            else "Unexpected value"
+        )
+
+    resp = Client(application).get("/")
+    assert resp.status_code == 200
+    assert resp.text == "None"
+
+
+def test_missing_required_tz():
+    """Test that special `tz` field can not have None default."""
+
+    class Schema(CGIModel):
+        tz: str
+
+    @iemapp(schema=Schema)
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    with pytest.raises(NotImplementedError):
+        Client(application).get("/")
+
+
+def test_tz_field_none_default_not_supported():
+    """Test that special `tz` fields cannot have a None default."""
+
+    class Schema(CGIModel):
+        tz: str = None
+
+    @iemapp(schema=Schema)
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    with pytest.raises(NotImplementedError):
+        Client(application).get("/")
+
+
 def test_parse_legacy_sts_without_schema():
     """Ensure that sts gets parsed even without a schema."""
 
@@ -562,7 +628,7 @@ def test_typoed_tz():
     """Test that we handle when a tz gets commonly typoed."""
 
     class Schema(CGIModel):
-        tz: Annotated[str, Field(description="tz")]
+        tz: Annotated[str, Field(description="tz")] = "UTC"
 
     @iemapp(schema=Schema)
     def application(environ, start_response):
