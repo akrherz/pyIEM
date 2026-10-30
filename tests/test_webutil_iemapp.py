@@ -243,6 +243,66 @@ def test_gh1248_default_tz_invalid_tz_provided():
     assert resp.status_code == 422
 
 
+def test_parse_legacy_sts_without_schema():
+    """Ensure that sts gets parsed even without a schema."""
+
+    @iemapp()
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-06:00 2026-01-01T00:00:00-06:00"
+
+
+def test_parse_legacy_sts_without_schema_with_default_tz():
+    """Ensure that sts gets parsed even without schema and using default_tz."""
+
+    @iemapp(default_tz="America/Denver")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
+
+
+def test_parse_legacy_assume_midnight():
+    """Test that parsing legacy sts will assume midnight."""
+
+    @iemapp(default_tz="America/Denver")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01&ets=2026-01-01")
+    assert resp.status_code == 200
+    assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
+
+
+def test_default_tz_not_added_to_environ():
+    """Test that default_tz stays out of environ['tz']"""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")]
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if environ.get("tz") is None else "FAIL"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
 def test_empty_tz_gets_default_tz():
     """Test that this situation errors 422."""
 

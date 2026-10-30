@@ -1,6 +1,6 @@
 """Tests for webutil."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from zoneinfo import ZoneInfo
 
 import mock
@@ -267,7 +267,7 @@ def test_add_to_environ_tstrings():
     environ = {}
     add_to_environ(environ, form)
     assert environ["sts"].year == 2023
-    assert environ["sts"].tzinfo == ZoneInfo("UTC")
+    assert environ["sts"].tzinfo == UTC
     assert environ["ets"].year == 2023
     assert environ["ets"].tzinfo == ZoneInfo("America/Chicago")
 

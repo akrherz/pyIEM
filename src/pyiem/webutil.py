@@ -30,6 +30,7 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
+from pydantic_core import PydanticUndefined
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
@@ -337,6 +338,17 @@ def log_request(environ: dict, multiplier: int = 1):
         conn.commit()
 
 
+def compute_ts_from_string(
+    form: dict, key: str, default_tz: str | None
+) -> datetime:
+    """Convert a string to a timestamp."""
+    tz = ZoneInfo(form.get("tz", default_tz or "America/Chicago"))
+    val = datetime.fromisoformat(form[key])
+    if val.tzinfo is None:
+        val = val.replace(tzinfo=tz)
+    return val
+
+
 def compute_ts(form: dict, suffix: str) -> datetime:
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
@@ -378,7 +390,9 @@ def condition_form_for_datetimes(
         return
     if tzfield and str(tzfield.annotation) == "str | None":
         raise NotImplementedError("CGIModel tz field cannot be optional")
-    tzinfo = form.get("tz") or default_tz or tzfield.default
+    tzinfo = form.get("tz") or default_tz or schema.model_fields["tz"].default
+    if tzinfo is PydanticUndefined:
+        return
     tz_to_use = ZoneInfo(tzinfo)
     # Iterate over the field
     for field_name, field in schema.model_fields.items():
@@ -413,6 +427,7 @@ def condition_form_for_tz(form: dict, kwargs: dict):
 
 def add_to_environ(environ: dict, form: dict, **kwargs):
     """Build out some things auto-parsed from the request."""
+    kwargs_default_tz = kwargs.get("default_tz")
     # Typically apps without schema definition, so this removes some
     # downstream boilerplate to prevent unwanted lists
     allowed = kwargs.get("allowed_as_list", [])
@@ -432,9 +447,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         # Account for misery associated with pydantic model defining a
         # datetime type that is then ambiguous about if a tzinfo should
         # be included
-        condition_form_for_datetimes(
-            kwargs["schema"], form, kwargs.get("default_tz")
-        )
+        condition_form_for_datetimes(kwargs["schema"], form, kwargs_default_tz)
         # Remove any form keys that are not contained in the
         # schema, but first we debracket keys with []
         form = {
@@ -471,6 +484,12 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         sts = None
         ets = None
         try:
+            # Le Sigh, darly used sts for stations in the past, so ensure
+            # that sts starts with something that looks like a year
+            if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
+                sts = compute_ts_from_string(form, "sts", kwargs_default_tz)
+            if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
+                ets = compute_ts_from_string(form, "ets", kwargs_default_tz)
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
             if form.get("day1") is not None and form.get("sts") is None:
