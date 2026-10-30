@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post27+g8f5e1eb87</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post29+g482ed2cc1</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5d9f55d2"></script>
+    <script src="../../_static/documentation_options.js?v=7b199c73"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post27+g8f5e1eb87" />
+  <meta name="docsearch:version" content="1.28.1.post29+g482ed2cc1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post27+g8f5e1eb87</p>
+    <p class="title logo__title">pyIEM 1.28.1.post29+g482ed2cc1</p>
   
 </a></div>
     
@@ -1244,16 +1244,38 @@
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_cache_control_header</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">cache_control</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Build a Cache-Control header, or None when caching is not wanted."""</span>
+    <span class="n">secs</span> <span class="o">=</span> <span class="n">cache_control</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">cache_control</span><span class="p">)</span> <span class="k">else</span> <span class="n">cache_control</span>
+    <span class="k">if</span> <span class="n">secs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">secs</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">"Cache-Control"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"public, max-age=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">secs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_capture_start_response</span><span class="p">(</span><span class="n">start_response</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""Wrap start_response and capture if it was called and status code."""</span>
+<span class="w">    </span><span class="sd">"""Wrap start_response and capture if it was called and status code.</span>
+
+<span class="sd">    When ``state["cache_control"]`` holds a header tuple, it is added to a</span>
+<span class="sd">    ``200`` response that does not already set Cache-Control.</span>
+<span class="sd">    """</span>
     <span class="n">state</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">"started"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s2">"status_code"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"cache_control"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_wrapped_start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">state</span><span class="p">[</span><span class="s2">"started"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">state</span><span class="p">[</span><span class="s2">"status_code"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parse_status_code</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"cache_control"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">header</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">state</span><span class="p">[</span><span class="s2">"status_code"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"cache-control"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">headers</span><span class="p">,</span> <span class="n">header</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">exc_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">)</span>
@@ -1325,6 +1347,12 @@
 <span class="sd">        - ip_throttle_secs (float or callable): Number of seconds between</span>
 <span class="sd">          requests from the same REMOTE_ADDR, 0 to disable,</span>
 <span class="sd">          which is the default.</span>
+<span class="sd">        - cache_control (int or callable): Seconds that clients and proxies</span>
+<span class="sd">          may cache a ``200`` response, sent as</span>
+<span class="sd">          ``Cache-Control: public, max-age=N``.  A callable gets the</span>
+<span class="sd">          ``environ`` after schema parsing and may return ``None`` or ``0``</span>
+<span class="sd">          to send no header for that request.  A ``Cache-Control`` header</span>
+<span class="sd">          set by the application wins.  The default ``None`` sends nothing.</span>
 
 <span class="sd">    What all this does:</span>
 <span class="sd">        1) Attempts to catch database connection errors and handle nicely</span>
@@ -1348,6 +1376,7 @@
     <span class="n">memcachekey</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"memcachekey"</span><span class="p">)</span>
     <span class="n">memcacheexpire</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"memcacheexpire"</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
     <span class="n">content_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content_type"</span><span class="p">,</span> <span class="s2">"application/json"</span><span class="p">)</span>
+    <span class="n">cache_control</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_control"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Decorate a function to catch exceptions and do nice things."""</span>
@@ -1370,6 +1399,10 @@
                 <span class="k">if</span> <span class="n">short_circuit</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">payload</span>
                     <span class="k">return</span>
+                <span class="c1"># Decided after preflight, so help and 429 replies get none</span>
+                <span class="n">response_state</span><span class="p">[</span><span class="s2">"cache_control"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_cache_control_header</span><span class="p">(</span>
+                    <span class="n">environ</span><span class="p">,</span> <span class="n">cache_control</span>
+                <span class="p">)</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">_mcall</span><span class="p">(</span>
                     <span class="n">func</span><span class="p">,</span>
                     <span class="n">environ</span><span class="p">,</span>
