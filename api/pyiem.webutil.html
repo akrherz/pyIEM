@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.webutil module &#8212; pyIEM 1.28.1.post31+g428bf01e2</title>
+    <title>pyiem.webutil module &#8212; pyIEM 1.28.1.post42+gb4afb7f71</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=81085608"></script>
+    <script src="../_static/documentation_options.js?v=9048d494"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.webutil';</script>
@@ -50,7 +50,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post31+g428bf01e2" />
+  <meta name="docsearch:version" content="1.28.1.post42+gb4afb7f71" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post31+g428bf01e2</p>
+    <p class="title logo__title">pyIEM 1.28.1.post42+gb4afb7f71</p>
   
 </a></div>
     
@@ -777,13 +777,14 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.webutil.compute_ts_from_string">
-<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">compute_ts_from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#compute_ts_from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.compute_ts_from_string" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">compute_ts_from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#compute_ts_from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.compute_ts_from_string" title="Link to this definition">#</a></dt>
 <dd><p>Convert a string to a timestamp.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p></li>
 <li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>)</p></li>
+<li><p><strong>default_tz</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -794,17 +795,47 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.webutil.compute_ts">
-<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">compute_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#compute_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.compute_ts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">compute_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#compute_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.compute_ts" title="Link to this definition">#</a></dt>
 <dd><p>Figure out the timestamp.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p></li>
 <li><p><strong>suffix</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>)</p></li>
+<li><p><strong>default_tz</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.15)"><em>datetime</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.webutil.condition_form_for_datetimes">
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">condition_form_for_datetimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#condition_form_for_datetimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.condition_form_for_datetimes" title="Link to this definition">#</a></dt>
+<dd><p>Modify the form to account for ambiguous things in the schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>schema</strong> (<em>BaseModel</em>)</p></li>
+<li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p></li>
+<li><p><strong>default_tz</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.webutil.condition_form_for_tz">
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">condition_form_for_tz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/webutil.html#condition_form_for_tz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.webutil.condition_form_for_tz" title="Link to this definition">#</a></dt>
+<dd><p>Ensure that tz is well formed and free of known typos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -854,7 +885,9 @@ is <code class="docutils literal notranslate"><span class="pre">America/Chicago<
 <li><p>enable_telemetry: Enable telemetry logging, default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p>help: Default help text, default <code class="docutils literal notranslate"><span class="pre">Help</span> <span class="pre">not</span> <span class="pre">available</span></code>.</p></li>
 <li><p>parse_times: Parse the form for timestamps, default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p>schema (BaseModel): A Pydantic model to parse the form with.</p></li>
+<li><p>schema (BaseModel): A Pydantic model to parse the form with. This has
+some requirements about how datetime fields and <cite>tz</cite> field name has
+special logic. See discussion below.</p></li>
 <li><p>memcachekey (str or callable): A memcache key to use for caching
 the response. If the callable returns <cite>None</cite>, no caching is done.</p></li>
 <li><p>memcacheexpire (int or callable): The number of seconds to cache
@@ -882,6 +915,14 @@ and made into a list for the WSGI response.</p></li>
 </ol>
 </dd>
 </dl>
+<section id="schema-datetime-handling">
+<h2>Schema DateTime Handling<a class="headerlink" href="#schema-datetime-handling" title="Link to this heading">#</a></h2>
+<p>Best practice is to use <cite>pydantic.AwareDatetime</cite> and not be ambiguous. If
+you have a <cite>tz</cite> <cite>CGIModel</cite> field, it must have a default and so not be
+optional.  If you use a <cite>datetime</cite> and either have a <cite>tz</cite> defined or
+provided a kwargs <cite>default_tz</cite>, then magic will happen to assign in this
+timezone.</p>
+</section>
 <section id="exception-raising">
 <h2>Exception Raising<a class="headerlink" href="#exception-raising" title="Link to this heading">#</a></h2>
 <p>The following Exception types raised within the mod_wsgi wrapped code will
@@ -972,6 +1013,8 @@ trigger the following HTTP status codes sent to the client.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.log_request"><code class="docutils literal notranslate"><span class="pre">log_request()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.compute_ts_from_string"><code class="docutils literal notranslate"><span class="pre">compute_ts_from_string()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.compute_ts"><code class="docutils literal notranslate"><span class="pre">compute_ts()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.condition_form_for_datetimes"><code class="docutils literal notranslate"><span class="pre">condition_form_for_datetimes()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.condition_form_for_tz"><code class="docutils literal notranslate"><span class="pre">condition_form_for_tz()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.add_to_environ"><code class="docutils literal notranslate"><span class="pre">add_to_environ()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.ip_is_throttled"><code class="docutils literal notranslate"><span class="pre">ip_is_throttled()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.webutil.iemapp"><code class="docutils literal notranslate"><span class="pre">iemapp()</span></code></a></li>
