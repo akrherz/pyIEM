@@ -55,12 +55,59 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
+def test_awaredatetime_with_default_tz_set():
+    """Test that we have pre-conditioning that accounts for this case."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")]
+        ets: Annotated[datetime, Field(description="End Time")]
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK"
+            if (
+                environ["sts"].tzinfo is not None
+                and environ["ets"].tzinfo is not None
+                and str(environ["sts"].tzinfo) == "UTC"
+                and str(environ["ets"].tzinfo) == "UTC"
+            )
+            else "BAD"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_awaredatetime_without_default_tz_set():
+    """Test that this case fails."""
+
+    class Schema(CGIModel):
+        sts: Annotated[AwareDatetime, Field(description="Start Time")]
+        ets: Annotated[AwareDatetime, Field(description="End Time")]
+
+    @iemapp(help="FINDME", schema=Schema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
+    assert resp.status_code == 422
+    assert "should have timezone info" in resp.text
+
+
 def test_gh1248_default_tz():
     """Test that default_tz is used for sts and ets generation."""
 
     class Schema(CGIModel):
-        sts: Annotated[datetime, Field(description="Start Time")] = None
-        ets: Annotated[datetime, Field(description="End Time")] = None
+        sts: Annotated[datetime | None, Field(description="Start Time")] = None
+        ets: Annotated[datetime | None, Field(description="End Time")] = None
 
     @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
     def application(environ, start_response):
@@ -71,8 +118,8 @@ def test_gh1248_default_tz():
             if (
                 environ["sts"].tzinfo is not None
                 and environ["ets"].tzinfo is not None
-                and environ["sts"].tzinfo.key == "America/New_York"
-                and environ["ets"].tzinfo.key == "America/New_York"
+                and str(environ["sts"].tzinfo) == "America/New_York"
+                and str(environ["ets"].tzinfo) == "America/New_York"
             )
             else "FAIL"
         )
@@ -157,7 +204,7 @@ def test_gh1248_default_tz_invalid_tz_provided():
 
     class Schema(CGIModel):
         sts: Annotated[datetime, Field(description="Start Time")] = None
-        tz: Annotated[str | None, Field(description="Timezone")] = None
+        tz: Annotated[str, Field(description="Timezone")]
 
     @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
     def application(_environ, start_response):
@@ -171,7 +218,7 @@ def test_gh1248_default_tz_invalid_tz_provided():
 
 
 def test_gh1248_default_tz_invalid_tz_optional():
-    """Test that this situation errors 422."""
+    """Test that tz is not permitted to be optional in CGIModel."""
 
     class Schema(CGIModel):
         sts: Annotated[datetime, Field(description="Start Time")] = None
@@ -182,13 +229,14 @@ def test_gh1248_default_tz_invalid_tz_optional():
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])
         return (
-            "OK" if environ["sts"].tzinfo.key == "America/New_York" else "FAIL"
+            "OK"
+            if str(environ["sts"].tzinfo) == "America/New_York"
+            else "FAIL"
         )
 
     c = Client(application)
-    resp = c.get("/?sts=2022-01-01T00:00")
-    assert resp.status_code == 200
-    assert resp.text == "OK"
+    with pytest.raises(NotImplementedError):
+        c.get("/?sts=2022-01-01T00:00")
 
 
 def test_iemapp_help_with_linereturns():

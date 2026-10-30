@@ -30,6 +30,7 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
+from pydantic_core import PydanticUndefined
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
@@ -383,6 +384,36 @@ def compute_ts(form: dict, suffix: str) -> datetime:
     )
 
 
+def condition_form_for_datetimes(
+    schema: BaseModel, form: dict, default_tz: str | None
+):
+    """Modify the form to account for ambiguous things in the schema."""
+    # Logic short-circuit here requiring either default_tz or schema.tz
+    # to be set
+    if default_tz is None and schema.model_fields.get("tz") is None:
+        return
+    tzinfo = default_tz or schema.model_fields["tz"].default
+    if tzinfo is PydanticUndefined:
+        return
+    tz_to_use = ZoneInfo(tzinfo)
+    # Iterate over the field
+    for field_name, field in schema.model_fields.items():
+        if field_name == "tz" and str(field.annotation) == "str | None":
+            raise NotImplementedError("CGIModel tz field cannot be optional")
+        if field.annotation is datetime and field_name in form:
+            user_value = form[field_name]
+            # This should have some timezone information in the string
+            # This exercises pydantic's value import logic ahead of time
+            try:
+                val = datetime.fromisoformat(user_value)
+                if val.tzinfo is None:
+                    val = val.replace(tzinfo=tz_to_use)
+                    form[field_name] = val.isoformat()
+            except ValueError:
+                # Do nothing and allow it to fail later...
+                pass
+
+
 def add_to_environ(environ: dict, form: dict, **kwargs):
     """Build out some things auto-parsed from the request."""
     # Typically apps without schema definition, so this removes some
@@ -397,6 +428,12 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
 
     schema = None
     if "schema" in kwargs:
+        # Account for misery associated with pydantic model defining a
+        # datetime type that is then ambiguous about if a tzinfo should
+        # be included
+        condition_form_for_datetimes(
+            kwargs["schema"], form, kwargs.get("default_tz")
+        )
         # Remove any form keys that are not contained in the
         # schema, but first we debracket keys with []
         form = {
@@ -835,7 +872,9 @@ def iemapp(**kwargs):
         - enable_telemetry: Enable telemetry logging, default ``True``.
         - help: Default help text, default ``Help not available``.
         - parse_times: Parse the form for timestamps, default ``True``.
-        - schema (BaseModel): A Pydantic model to parse the form with.
+        - schema (BaseModel): A Pydantic model to parse the form with. This has
+          some requirements about how datetime fields and `tz` field name has
+          special logic. See discussion below.
         - memcachekey (str or callable): A memcache key to use for caching
           the response. If the callable returns `None`, no caching is done.
         - memcacheexpire (int or callable): The number of seconds to cache
@@ -859,6 +898,15 @@ def iemapp(**kwargs):
         2) Updates `environ` with some auto-parsed values + form content.
         3) If the wrapped function returns a str or bytes, it will be encoded
            and made into a list for the WSGI response.
+
+    Schema DateTime Handling
+    ------------------------
+
+    Best practice is to use `pydantic.AwareDatetime` and not be ambiguous. If
+    you have a `tz` `CGIModel` field, it must have a default and so not be
+    optional.  If you use a `datetime` and either have a `tz` defined or
+    provided a kwargs `default_tz`, then magic will happen to assign in this
+    timezone.
 
     Exception Raising
     -----------------
@@ -924,6 +972,9 @@ def iemapp(**kwargs):
                             environ, start_time, status_code
                         )
                     return
+            except NotImplementedError as exp:
+                # This is a programming error that should not be handled here
+                raise exp
             except Exception as exp:
                 if response_state["started"]:
                     # Once streaming has started, we cannot safely restart
