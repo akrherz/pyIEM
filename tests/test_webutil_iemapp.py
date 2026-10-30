@@ -130,6 +130,32 @@ def test_gh1248_default_tz():
     assert resp.text == "OK"
 
 
+def test_default_tz_ordering():
+    """Test that user provided tz rules the coup."""
+
+    class Schema(CGIModel):
+        tz: Annotated[str, Field("User provided tz")] = "UTC"
+        sts: Annotated[datetime | None, Field(description="Start Time")] = None
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return (
+            "OK"
+            if (
+                environ["sts"].tzinfo is not None
+                and str(environ["sts"].tzinfo) == "-07:00"
+            )
+            else "FAIL"
+        )
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&tz=America/Denver")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
 def test_default_tz():
     """Test a strange error found in prod."""
 
@@ -215,6 +241,25 @@ def test_gh1248_default_tz_invalid_tz_provided():
     c = Client(application)
     resp = c.get("/?sts=2022-01-01T00:00&tz=America/")
     assert resp.status_code == 422
+
+
+def test_empty_tz_gets_default_tz():
+    """Test that this situation errors 422."""
+
+    class Schema(CGIModel):
+        sts: Annotated[datetime, Field(description="Start Time")] = None
+        tz: Annotated[str, Field(description="Timezone")] = "UTC"
+
+    @iemapp(help="FINDME", schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if str(environ["sts"].tzinfo) == "-05:00" else "BAD"
+
+    c = Client(application)
+    resp = c.get("/?sts=2022-01-01T00:00&tz=")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
 
 
 def test_gh1248_default_tz_invalid_tz_optional():

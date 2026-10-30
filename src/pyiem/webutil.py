@@ -395,7 +395,7 @@ def condition_form_for_datetimes(
         return
     if tzfield and str(tzfield.annotation) == "str | None":
         raise NotImplementedError("CGIModel tz field cannot be optional")
-    tzinfo = default_tz or schema.model_fields["tz"].default
+    tzinfo = form.get("tz") or default_tz or schema.model_fields["tz"].default
     if tzinfo is PydanticUndefined:
         return
     tz_to_use = ZoneInfo(tzinfo)
@@ -416,6 +416,20 @@ def condition_form_for_datetimes(
                     pass
 
 
+def condition_form_for_tz(form: dict, kwargs: dict):
+    """Ensure that tz is well formed and free of known typos."""
+    if form["tz"] == "":
+        form["tz"] = kwargs.get("default_tz", "America/Chicago")
+    # Correct any known typos in the tz value before further processing
+    form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
+
+    # Pre-flight check for a valid timezone
+    try:
+        ZoneInfo(form["tz"])
+    except (IsADirectoryError, ValueError, ZoneInfoNotFoundError) as exp:
+        raise IncompleteWebRequest("Invalid tz specified") from exp
+
+
 def add_to_environ(environ: dict, form: dict, **kwargs):
     """Build out some things auto-parsed from the request."""
     # Typically apps without schema definition, so this removes some
@@ -427,6 +441,10 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
                 continue
             if key not in allowed:
                 raise BadWebRequest(f"Key {key} is a list, but not allowed")
+
+    # tz has important implications, so we need to preflight check this
+    if "tz" in form:
+        condition_form_for_tz(form, kwargs)
 
     schema = None
     if "schema" in kwargs:
@@ -449,16 +467,6 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         # private / computed attributes that are needed
         environ["_cgimodel_schema"] = schema
         form = schema.model_dump()
-    if "tz" not in form or form["tz"] is None:
-        form["tz"] = kwargs.get("default_tz", "America/Chicago")
-    # Important this is set before calling add_to_environ
-    form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
-
-    # Pre-flight check for a valid timezone
-    try:
-        ZoneInfo(form["tz"])
-    except (IsADirectoryError, ValueError, ZoneInfoNotFoundError) as exp:
-        raise IncompleteWebRequest("Invalid tz specified") from exp
 
     tz_updates = {}
     for key, val in form.items():
