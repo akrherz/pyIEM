@@ -26,6 +26,8 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Correct some `iemapp` validation edge cases and cleanup parse_time behaviour.
+- Prevent full failures when `memcached` is not available. GHA variable
+  `MEMCACHE_AVAILABLE` {YES,NO} added to control this within testing.
 
 ## **1.28.1** (7 Oct 2026)
 
