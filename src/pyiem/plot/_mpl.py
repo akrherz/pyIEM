@@ -60,7 +60,7 @@ def get_lat_lng_tile(lat, lng, zoom):
     return (x, y)
 
 
-def get_tile_data(url):
+def get_tile_data(url: str) -> np.ndarray:
     """Fetch the tile and hope memcached has it."""
     key = url.split("//")[1]
     mc = Client("iem-memcached:11211", timeout=5)

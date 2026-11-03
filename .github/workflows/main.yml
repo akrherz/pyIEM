@@ -12,13 +12,22 @@ jobs:
       run:
         # Ensures environment gets sourced right
         shell: bash -l -e {0}
-    name: Python (${{ matrix.PYTHON_VERSION }})
+    name: Python (${{ matrix.PYTHON_VERSION }}) Memcache (${{ matrix.MEMCACHE_AVAILABLE }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        PYTHON_VERSION: ["3.11", "3.13", "3.14"]
+        include:
+          - PYTHON_VERSION: "3.11"
+            MEMCACHE_AVAILABLE: "YES"
+          - PYTHON_VERSION: "3.13"
+            MEMCACHE_AVAILABLE: "YES"
+          - PYTHON_VERSION: "3.14"
+            MEMCACHE_AVAILABLE: "YES"
+          - PYTHON_VERSION: "3.14"
+            MEMCACHE_AVAILABLE: "NO"
     env:
       PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
+      MEMCACHE_AVAILABLE: ${{ matrix.MEMCACHE_AVAILABLE }}
     steps:
 
     - uses: actions/checkout@v7
@@ -35,6 +44,7 @@ jobs:
         done
 
     - name: Run Memcached container
+      if: ${{ matrix.MEMCACHE_AVAILABLE == 'YES' }}
       run: |
         docker run -d --name iem_memcached -p 11211:11211 memcached:1.6.9
 
@@ -86,20 +96,20 @@ jobs:
         retention-days: 1
 
     - name: Code coverage
-      if: ${{ matrix.PYTHON_VERSION == '3.14' }}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' && matrix.MEMCACHE_AVAILABLE == 'YES' }}
       uses: codecov/codecov-action@v7
       with:
         files: coverage.xml
 
     - name: Build Docs
-      if: ${{ matrix.PYTHON_VERSION == '3.14' }}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' && matrix.MEMCACHE_AVAILABLE == 'YES' }}
       run: |
         cd docs
         make html
         touch build/html/.nojekyll
 
     - name: Deploy Docs
-      if: ${{ matrix.PYTHON_VERSION == '3.14' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' && matrix.MEMCACHE_AVAILABLE == 'YES' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages # The branch the action should deploy to.

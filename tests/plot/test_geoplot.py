@@ -139,7 +139,10 @@ def test_fill_rfc():
     return mp.fig
 
 
-# Will likely need to boost the tolerance here as upstream makes changes
+@pytest.mark.skipif(
+    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    reason="requires a running memcached service",
+)
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_spherical_mercator():
     """Test that a conus sector plot with a background!"""

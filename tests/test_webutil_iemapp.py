@@ -1,5 +1,6 @@
 """Test iemapp specific things from webutil."""
 
+import os
 import random
 from datetime import datetime
 from typing import Annotated, Optional, Union
@@ -746,6 +747,10 @@ def test_ip_throttled_callable(random_ipv4: str):
     assert resp.status_code == 200
 
 
+@pytest.mark.skipif(
+    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    reason="requires a running memcached service",
+)
 def test_ip_throttled(random_ipv4: str):
     """Test how our throttle behaves."""
 
@@ -870,6 +875,10 @@ def test_iemweb_int_type():
     assert resp.text == "1"
 
 
+@pytest.mark.skipif(
+    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    reason="requires a running memcached service",
+)
 def test_memcachekey_is_none():
     """Test that we can handle a None memcachekey."""
 
@@ -888,6 +897,10 @@ def test_memcachekey_is_none():
     assert res1.startswith(b"aa")
 
 
+@pytest.mark.skipif(
+    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    reason="requires a running memcached service",
+)
 def test_iemapp_memcache_keychanged():
     """Test the memcache option."""
 
@@ -913,6 +926,10 @@ def test_iemapp_memcache_keychanged():
     assert res1 != res2
 
 
+@pytest.mark.skipif(
+    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    reason="requires a running memcached service",
+)
 def test_iemapp_memcache():
     """Test the memcache option."""
 

@@ -613,16 +613,23 @@ def _mcall(
         # or we are dealing with a generator
         return func(environ, start_response)
     mc = Client("iem-memcached:11211")
-    res = mc.get(key)
+    try:
+        res = mc.get(key)
+    except Exception as exp:
+        LOG.info(exp)
+        res = None
     if not res:
         res = func(environ, start_response)
         # IEM memcache instances run with a 10MB limit `-I 10m`, so check first
         if len(res) < 10e6:
-            mc.set(
-                key,
-                res,
-                expire if isinstance(expire, int) else expire(environ),
-            )
+            try:
+                mc.set(
+                    key,
+                    res,
+                    expire if isinstance(expire, int) else expire(environ),
+                )
+            except Exception as exp:
+                LOG.info(exp)
     else:
         # since our function never got called, we need to start_response
         ct = (
