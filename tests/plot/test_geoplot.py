@@ -140,7 +140,7 @@ def test_fill_rfc():
 
 
 @pytest.mark.skipif(
-    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
 @pytest.mark.mpl_image_compare(tolerance=PAIN)

@@ -748,7 +748,7 @@ def test_ip_throttled_callable(random_ipv4: str):
 
 
 @pytest.mark.skipif(
-    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
 def test_ip_throttled(random_ipv4: str):
@@ -876,7 +876,7 @@ def test_iemweb_int_type():
 
 
 @pytest.mark.skipif(
-    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
 def test_memcachekey_is_none():
@@ -898,7 +898,7 @@ def test_memcachekey_is_none():
 
 
 @pytest.mark.skipif(
-    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
 def test_iemapp_memcache_keychanged():
@@ -927,7 +927,7 @@ def test_iemapp_memcache_keychanged():
 
 
 @pytest.mark.skipif(
-    os.getenv("MEMCACHED_AVAILABLE") != "YES",
+    os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
 def test_iemapp_memcache():
