@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post44+g25df32597</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post47+gdadb44b43</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=49cfdcc9"></script>
+    <script src="../../_static/documentation_options.js?v=c37a5836"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post44+g25df32597" />
-    <meta name="docbuild:last-update" content="Nov 01, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post47+gdadb44b43" />
+    <meta name="docbuild:last-update" content="Nov 03, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post44+g25df32597</p>
+    <p class="title logo__title">pyIEM 1.28.1.post47+gdadb44b43</p>
   
 </a></div>
     
@@ -1114,16 +1114,23 @@
         <span class="c1"># or we are dealing with a generator</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
     <span class="n">mc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">"iem-memcached:11211"</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
         <span class="c1"># IEM memcache instances run with a 10MB limit `-I 10m`, so check first</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">10e6</span><span class="p">:</span>
-            <span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-                <span class="n">key</span><span class="p">,</span>
-                <span class="n">res</span><span class="p">,</span>
-                <span class="n">expire</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expire</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">expire</span><span class="p">(</span><span class="n">environ</span><span class="p">),</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">res</span><span class="p">,</span>
+                    <span class="n">expire</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expire</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">expire</span><span class="p">(</span><span class="n">environ</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># since our function never got called, we need to start_response</span>
         <span class="n">ct</span> <span class="o">=</span> <span class="p">(</span>
