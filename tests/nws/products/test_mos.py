@@ -14,6 +14,9 @@ from pyiem.util import get_test_file, utc
     [
         ("CSBT2   NBM  NBX GUIDANCE    11/04/2026  1200 UTC", "NBX"),
         ("K08D    NBM V4.0 NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("K08D    NBM V4.0  NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("K08D    NBM 4.0  NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("KYKN   GFSX MOS GUIDANCE   7/10/2020  1200 UTC", "MOS"),
     ],
 )
 def test_mos_header_re(header: str, mos: str):

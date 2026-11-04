@@ -13,7 +13,7 @@ REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
 DATABASE_COLS = set()
 MOS_HEADER_RE = re.compile(
     r"([A-Z0-9_]{3,10})\s+([A-Z]+)\s+"
-    r"(V[0-9]\.[0-9] )?([A-Z]+)\s+GUIDANCE\s+"
+    r"(V?[0-9]\.[0-9]\s+)?([A-Z]+)\s+GUIDANCE\s+"
     r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
     r"([0-2][0-9][0-6][0-9])\s+UTC"
 )
