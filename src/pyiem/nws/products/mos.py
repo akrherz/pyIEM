@@ -11,6 +11,12 @@ from pyiem.wmo import WMOProduct
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
 DATABASE_COLS = set()
+MOS_HEADER_RE = re.compile(
+    r"([A-Z0-9_]{3,10})\s+([A-Z]+)\s+"
+    r"(V?[0-9]\.[0-9]\s+)?([A-Z]+)\s+GUIDANCE\s+"
+    r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
+    r"([0-2][0-9][0-6][0-9])\s+UTC"
+)
 
 
 def populate_database_cols(txn):
@@ -27,15 +33,8 @@ def populate_database_cols(txn):
 
 def section_parser(sect):
     """Parse this section of text"""
-    metadata = re.findall(
-        (
-            r"([A-Z0-9_]{3,10})\s+(....?) (V[0-9]\.[0-9] )?(....?) GUIDANCE\s+"
-            r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
-            r"([0-2][0-9][0-6][0-9]) UTC"
-        ),
-        sect,
-    )
-    (station, model, _bogus, mos, month, day, year, hhmm) = metadata[0]
+    metadata = MOS_HEADER_RE.findall(sect)
+    (station, model, _version, mos, month, day, year, hhmm) = metadata[0]
     if model == "NBM":
         model = mos
         if mos == "NBX":

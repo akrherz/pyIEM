@@ -4,8 +4,26 @@ import warnings
 
 import pytest
 
+from pyiem.nws.products.mos import MOS_HEADER_RE
 from pyiem.nws.products.mos import parser as mosparser
 from pyiem.util import get_test_file, utc
+
+
+@pytest.mark.parametrize(
+    ("header", "mos"),
+    [
+        ("CSBT2   NBM  NBX GUIDANCE    11/04/2026  1200 UTC", "NBX"),
+        ("K08D    NBM V4.0 NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("K08D    NBM V4.0  NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("K08D    NBM 4.0  NBX GUIDANCE    9/30/2020  1300 UTC", "NBX"),
+        ("KYKN   GFSX MOS GUIDANCE   7/10/2020  1200 UTC", "MOS"),
+    ],
+)
+def test_mos_header_re(header: str, mos: str):
+    """Test that we can parse things."""
+    metadata = MOS_HEADER_RE.findall(header)
+    assert metadata, "Failed to parse header"
+    assert metadata[0][3] == mos
 
 
 def test_bad_header():
@@ -13,6 +31,18 @@ def test_bad_header():
     utcnow = utc(2026, 4, 10, 12)
     with pytest.raises(ValueError, match="Failed to split"):
         mosparser(get_test_file("MOS/NBS_badheader.txt"), utcnow=utcnow)
+
+
+@pytest.mark.parametrize("database", ["mos"])
+def test_261104_noversion(dbcursor):
+    """Test for failure found when MOS had no version header..."""
+    utcnow = utc(2026, 11, 4, 12)
+    prod = mosparser(get_test_file("MOS/NBXUSA_noversion.txt"), utcnow=utcnow)
+    prod.sql(dbcursor)
+    assert prod.data[0]["model"] == "NBE"
+    slv = [val["SLV"] for val in prod.data[0]["data"].values()]
+    assert slv == ["99", "96", "100", "98", "101", "99"]
+    assert len(prod.data) == 1
 
 
 def test_short_line():
