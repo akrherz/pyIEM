@@ -88,6 +88,8 @@ class TELEMETRY(BaseModel):
             description="Timestamp when this telemetry record was generated"
         ),
     ]
+    xff: Annotated[str, Field(description="X_FORWARDED_FOR")] = ""
+    http_agent: Annotated[str, Field(description="User-Agent string")] = ""
 
     @field_validator("app", "request_uri", mode="before")
     @classmethod
@@ -779,6 +781,8 @@ def _iemapp_emit_telemetry(
                 request_uri=environ.get("REQUEST_URI"),
                 vhost=environ.get("HTTP_HOST"),
                 valid=end_time,
+                xff=environ.get("HTTP_X_FORWARDED_FOR", ""),
+                http_agent=environ.get("HTTP_USER_AGENT", ""),
             )
         )
     except ValidationError:
