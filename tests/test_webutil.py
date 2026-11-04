@@ -24,6 +24,23 @@ from pyiem.webutil import (
 )
 
 
+def test_telemetry_full():
+    """Test that we can provide newly added xff and http_agent fields."""
+    telem = TELEMETRY(
+        timing=1,
+        status_code=200,
+        client_addr="127.0.0.1",
+        app="test",
+        request_uri="/hi",
+        vhost="",
+        valid=datetime.now().strftime(ISO8601),
+        xff="127.0.0.1",
+        http_agent="Mozilla/5.0",
+    )
+    assert telem.xff == "127.0.0.1"
+    assert telem.http_agent == "Mozilla/5.0"
+
+
 def test_telemetry_null_byte_request_uri():
     """Ensure null bytes are not allowed in the URL."""
     with pytest.raises(ValidationError, match="request_uri"):
@@ -133,6 +150,8 @@ def test_add_telemetry():
         request_uri="",
         vhost="",
         valid=now.strftime(ISO8601),
+        xff="",
+        http_agent="",
     )
     socket_mock = mock.MagicMock()
     cm_mock = mock.MagicMock()
@@ -148,7 +167,7 @@ def test_add_telemetry():
             b'{"timing":1.0,"status_code":200,"client_addr":null,'
             b'"app":"test","request_uri":"","vhost":"","valid":"'
             + now.strftime(ISO8601).encode("utf-8")
-            + b'"}'
+            + b'","xff":"","http_agent":""}'
         ),
         RSYSLOG_SIDEDOOR_SOCKET,
     )
