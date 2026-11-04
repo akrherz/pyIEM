@@ -18,6 +18,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Account for MOS products without a version identifier in the header.
 - Added American Samoa subplot to `MapPlot(sector="nws")`.
 - Added an opt-in `cache_control` option to `iemapp`, which sends
   `Cache-Control: public, max-age=N` on `200` responses.
