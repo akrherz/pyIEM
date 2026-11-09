@@ -12,7 +12,8 @@ import sys
 import traceback
 import warnings
 from collections.abc import Callable
-from datetime import datetime, timezone
+from contextvars import ContextVar
+from datetime import datetime, timezone, tzinfo
 from http import HTTPStatus
 from typing import Any, Iterator
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -27,6 +28,7 @@ from pydantic import (
     Field,
     IPvAnyAddress,
     ValidationError,
+    ValidationInfo,
     WithJsonSchema,
     field_validator,
 )
@@ -107,6 +109,9 @@ TELEMETRY_PREFIX = "Telemetry "
 RSYSLOG_SIDEDOOR_SOCKET = "/run/rsyslog/iemweb.sock"
 XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
+_SCHEMA_TIMEZONE: ContextVar[tzinfo | None] = ContextVar(
+    "iemapp_schema_timezone", default=None
+)
 
 
 def _conv2list(mixed: str | list) -> list:
@@ -190,6 +195,21 @@ class CGIModel(BaseModel):
             return v
         # Another field_validator may have run at this point and we have
         # a non-str datatype
+        return v
+
+    @field_validator("*", mode="after")
+    @classmethod
+    def apply_schema_timezone(cls, v, info: ValidationInfo):
+        """Normalize parsed datetimes before model-level validation."""
+        tz_to_use = _SCHEMA_TIMEZONE.get()
+        if (
+            tz_to_use is not None
+            and info.field_name is not None
+            and "datetime" in str(cls.model_fields[info.field_name].annotation)
+            and isinstance(v, datetime)
+            and v.tzinfo is None
+        ):
+            return v.replace(tzinfo=tz_to_use)
         return v
 
 
@@ -381,14 +401,14 @@ def compute_ts(form: dict, suffix: str, default_tz: str | None) -> datetime:
 
 
 def condition_form_for_datetimes(
-    schema: BaseModel, form: dict, default_tz: str | None
-):
+    schema: type[BaseModel], form: dict, default_tz: str | None
+) -> ZoneInfo | None:
     """Modify the form to account for ambiguous things in the schema."""
     tzfield = schema.model_fields.get("tz")
     # Logic short-circuit here requiring either default_tz or schema.tz
     # to be set
     if default_tz is None and tzfield is None:
-        return
+        return None
     if tzfield and (
         str(tzfield.annotation) == "str | None"
         or tzfield.default is PydanticUndefined
@@ -425,6 +445,7 @@ def condition_form_for_datetimes(
                 except ValueError:
                     # Do nothing and allow it to fail later...
                     pass
+    return tz_to_use
 
 
 def condition_form_for_tz(form: dict, kwargs: dict):
@@ -463,7 +484,9 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
         # Account for misery associated with pydantic model defining a
         # datetime type that is then ambiguous about if a tzinfo should
         # be included
-        condition_form_for_datetimes(kwargs["schema"], form, kwargs_default_tz)
+        tz_to_use = condition_form_for_datetimes(
+            kwargs["schema"], form, kwargs_default_tz
+        )
         # Remove any form keys that are not contained in the
         # schema, but first we debracket keys with []
         form = {
@@ -472,7 +495,11 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if k in kwargs["schema"].model_fields and v != ""
         }
         raw_form = form
-        schema = kwargs["schema"](**raw_form)
+        token = _SCHEMA_TIMEZONE.set(tz_to_use)
+        try:
+            schema = kwargs["schema"](**raw_form)
+        finally:
+            _SCHEMA_TIMEZONE.reset(token)
         # Retain a reference to the Schema instance as it may have
         # private / computed attributes that are needed
         environ["_cgimodel_schema"] = schema
@@ -513,16 +540,25 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if form.get("day2") is not None and form.get("ets") is None:
                 ets = compute_ts(form, "2", kwargs_default_tz)
             # Assign back into environ and schema (with validation)
-            if sts:
-                environ["sts"] = sts
-                if schema is not None and "sts" in type(schema).model_fields:
-                    # Send back as str to get downstream schema validation
-                    schema.sts = sts.isoformat()
-            if ets:
-                environ["ets"] = ets
-                if schema is not None and "ets" in type(schema).model_fields:
-                    # Send back as str to get downstream schema validation
-                    schema.ets = ets.isoformat()
+            for key, timestamp in (("sts", sts), ("ets", ets)):
+                if timestamp is None:
+                    continue
+                environ[key] = timestamp
+                if schema is not None and key in type(schema).model_fields:
+                    token = _SCHEMA_TIMEZONE.set(timestamp.tzinfo)
+                    try:
+                        setattr(schema, key, timestamp.isoformat())
+                    finally:
+                        _SCHEMA_TIMEZONE.reset(token)
+            if schema is not None:
+                for key, timestamp in (("sts", sts), ("ets", ets)):
+                    if (
+                        timestamp is not None
+                        and key in type(schema).model_fields
+                    ):
+                        validated = getattr(schema, key)
+                        if isinstance(validated, datetime):
+                            environ[key] = validated
         except (TypeError, ValueError) as exp:
             msg = "" if not isinstance(exp, ValidationError) else f" {exp}"
             raise IncompleteWebRequest(
@@ -918,7 +954,9 @@ def iemapp(**kwargs):
     you have a `tz` `CGIModel` field, it must have a default and so not be
     optional.  If you use a `datetime` and either have a `tz` defined or
     provided a kwargs `default_tz`, then magic will happen to assign in this
-    timezone.
+    timezone. For `CGIModel` fields, including nested `CGIModel` fields, this
+    also applies to naive datetimes produced by before field validators,
+    before model validators run.
 
     Exception Raising
     -----------------

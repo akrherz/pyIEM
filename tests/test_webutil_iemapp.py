@@ -1,5 +1,6 @@
 """Test iemapp specific things from webutil."""
 
+import json
 import os
 import random
 from datetime import datetime
@@ -855,6 +856,205 @@ def test_iemweb_datetime_type():
     assert resp.text == "2022"
 
 
+def test_iemweb_dateform_leading_to_trouble():
+    """Test that half a date parse failure does not cause pain."""
+
+    class MyModel(CGIModel):
+        sts: Annotated[datetime | None, Field()] = utc()
+        ets: Annotated[datetime | None, Field()] = utc()
+
+        @field_validator("sts", "ets", mode="before")
+        @classmethod
+        def rectify_datestr(cls, v: str | datetime):
+            """pydantic can't seem to handle this."""
+            if isinstance(v, datetime):
+                return v
+            # pydantic/pydantic/issues/9308
+            if 8 <= len(v) < 10:
+                # zero pad
+                return "-".join(f"{int(v):02.0f}" for v in v.split("-"))
+            return v
+
+        @model_validator(mode="after")
+        def ensure_sts_less_than_ets(self):
+            """Ensure sts is less than ets."""
+            if self.sts is not None and self.ets is not None:
+                assert self.sts < self.ets
+            return self
+
+    @iemapp(schema=MyModel, default_tz="UTC")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2025-01-01&ets=2026-01-1")
+    assert resp.status_code == 200, resp.text
+
+
+@pytest.mark.parametrize(
+    ("query", "expected"),
+    [
+        ("dt=2026%2F07%2F01", "2026-07-01T00:00:00-04:00"),
+        (
+            "dt=2026%2F07%2F01&tz=America%2FDenver",
+            "2026-07-01T00:00:00-06:00",
+        ),
+        ("dt=2026-07-01T00:00:00%2B02:00", "2026-07-01T00:00:00+02:00"),
+    ],
+)
+def test_datetime_from_field_validator_timezone(query, expected):
+    """Dates repaired by field validators receive the requested timezone."""
+
+    class Schema(CGIModel):
+        tz: str = "UTC"
+        dt: datetime
+
+        @field_validator("dt", mode="before")
+        @classmethod
+        def parse_date(cls, value):
+            if "/" in value:
+                return datetime.strptime(value, "%Y/%m/%d")
+            return value
+
+        @model_validator(mode="after")
+        def require_aware(self):
+            assert self.dt.tzinfo is not None
+            return self
+
+    @iemapp(schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["dt"].isoformat()
+
+    resp = Client(application).get(f"/?{query}")
+    assert resp.status_code == 200, resp.text
+    assert resp.text == expected
+
+
+def test_datetime_validator_timezone_context_is_request_scoped():
+    """Timezone context must not leak into standalone model validation."""
+
+    class Schema(CGIModel):
+        dt: datetime
+
+        @field_validator("dt", mode="before")
+        @classmethod
+        def parse_date(cls, value):
+            return datetime.strptime(value, "%Y/%m/%d")
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    client = Client(application)
+    assert client.get("/?dt=invalid").status_code == 422
+    assert Schema(dt="2026/07/01").dt.tzinfo is None
+    assert client.get("/?dt=2026%2F07%2F01").status_code == 200
+    assert Schema(dt="2026/07/01").dt.tzinfo is None
+
+
+@pytest.mark.parametrize(
+    ("tz", "expected"),
+    [
+        (None, "2026-07-01T00:00:00-04:00"),
+        ("America/Denver", "2026-07-01T00:00:00-06:00"),
+    ],
+)
+def test_nested_cgimodel_datetime_timezone(tz, expected):
+    """Nested datetime fields use the active request timezone."""
+
+    class Nested(CGIModel):
+        naive: datetime
+        aware: datetime
+
+        @model_validator(mode="after")
+        def require_aware(self):
+            assert self.naive.tzinfo is not None
+            assert self.aware.tzinfo is not None
+            return self
+
+    class Schema(CGIModel):
+        tz: str = "UTC"
+        nested: Nested
+
+        @field_validator("nested", mode="before")
+        @classmethod
+        def parse_nested(cls, value):
+            return json.loads(value)
+
+    @iemapp(schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        nested = environ["_cgimodel_schema"].nested
+        return f"{nested.naive.isoformat()},{nested.aware.isoformat()}"
+
+    c = Client(application)
+    resp = c.get(
+        "/",
+        query_string={
+            "nested": json.dumps(
+                {
+                    "naive": "2026-07-01T00:00:00",
+                    "aware": "2026-07-01T00:00:00+02:00",
+                }
+            ),
+            **({"tz": tz} if tz else {}),
+        },
+    )
+    assert resp.status_code == 200, resp.text
+    assert resp.text == f"{expected},2026-07-01T00:00:00+02:00"
+
+
+def test_nested_cgimodel_without_timezone_context():
+    """Nested validation without an active timezone leaves datetimes naive."""
+
+    class Nested(CGIModel):
+        dt: datetime
+
+    class Schema(CGIModel):
+        nested: Nested
+
+        @field_validator("nested", mode="before")
+        @classmethod
+        def parse_nested(cls, value):
+            return json.loads(value)
+
+    @iemapp(schema=Schema)
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["_cgimodel_schema"].nested.dt.isoformat()
+
+    resp = Client(application).get(
+        "/", query_string={"nested": json.dumps({"dt": "2026-07-01T00:00:00"})}
+    )
+    assert resp.status_code == 200, resp.text
+    assert resp.text == "2026-07-01T00:00:00"
+
+
+def test_datetime_from_non_datetime_field_unchanged():
+    """Only datetime-annotated fields receive timezone normalization."""
+
+    class Schema(CGIModel):
+        value: object
+
+        @field_validator("value", mode="before")
+        @classmethod
+        def parse_value(cls, _value):
+            return datetime(2026, 7, 1)
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["value"].isoformat()
+
+    resp = Client(application).get("/?value=example")
+    assert resp.status_code == 200
+    assert resp.text == "2026-07-01T00:00:00"
+
+
 def test_iemweb_int_type():
     """Test that we don't allow a list in the parsed form."""
 
@@ -1196,6 +1396,77 @@ def test_sts_ets_are_set():
     )
     assert resp.status_code == 200
     assert resp.text.find("Hello") > -1
+
+
+@pytest.mark.parametrize(
+    ("with_tz_field", "default_tz", "request_tz", "offset"),
+    [
+        (False, "America/New_York", None, "-05:00"),
+        (True, "America/New_York", "America/Denver", "-07:00"),
+        (True, None, None, "-06:00"),
+        (False, None, None, "-06:00"),
+    ],
+)
+def test_sts_ets_assignment_validators_keep_timezone(
+    with_tz_field, default_tz, request_tz, offset
+):
+    """Legacy date components remain aware through assignment validators."""
+
+    class Schema(CGIModel):
+        sts: datetime | None = None
+        ets: datetime | None = None
+        year1: int | None = None
+        month1: int | None = None
+        day1: int | None = None
+        year2: int | None = None
+        month2: int | None = None
+        day2: int | None = None
+
+        @field_validator("sts", "ets", mode="before")
+        @classmethod
+        def parse_date(cls, value):
+            return datetime.strptime(value[:19], "%Y-%m-%dT%H:%M:%S").replace(
+                minute=15
+            )
+
+    class SchemaWithTZ(Schema):
+        tz: str = "America/Chicago"
+
+    @iemapp(
+        schema=SchemaWithTZ if with_tz_field else Schema,
+        default_tz=default_tz,
+    )
+    def application(environ, start_response):
+        schema = environ["_cgimodel_schema"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return " ".join(
+            (
+                environ["sts"].isoformat(),
+                schema.sts.isoformat(),
+                environ["ets"].isoformat(),
+                schema.ets.isoformat(),
+            )
+        )
+
+    query: dict[str, int | str] = {
+        "year1": 2022,
+        "month1": 2,
+        "day1": 3,
+        "year2": 2023,
+        "month2": 1,
+        "day2": 1,
+    }
+    if request_tz:
+        query["tz"] = request_tz
+    resp = Client(application).get("/", query_string=query)
+    assert resp.status_code == 200, resp.text
+    assert resp.text.split() == [
+        f"2022-02-03T00:15:00{offset}",
+        f"2022-02-03T00:15:00{offset}",
+        f"2023-01-01T00:15:00{offset}",
+        f"2023-01-01T00:15:00{offset}",
+    ]
+    assert Schema(sts="2022-02-03T00:00:00").sts.tzinfo is None
 
 
 def test_iemapp_year_year1():
