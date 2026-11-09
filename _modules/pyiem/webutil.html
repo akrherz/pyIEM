@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post52+g091eeb3a5</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post56+g8997fa02b</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=37e1d022"></script>
+    <script src="../../_static/documentation_options.js?v=1497a0c9"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post52+g091eeb3a5" />
-    <meta name="docbuild:last-update" content="Nov 04, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post56+g8997fa02b" />
+    <meta name="docbuild:last-update" content="Nov 09, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post52+g091eeb3a5</p>
+    <p class="title logo__title">pyIEM 1.28.1.post56+g8997fa02b</p>
   
 </a></div>
     
@@ -465,7 +465,8 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextvars</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContextVar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span><span class="p">,</span> <span class="n">tzinfo</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPStatus</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span>
@@ -480,6 +481,7 @@
     <span class="n">Field</span><span class="p">,</span>
     <span class="n">IPvAnyAddress</span><span class="p">,</span>
     <span class="n">ValidationError</span><span class="p">,</span>
+    <span class="n">ValidationInfo</span><span class="p">,</span>
     <span class="n">WithJsonSchema</span><span class="p">,</span>
     <span class="n">field_validator</span><span class="p">,</span>
 <span class="p">)</span>
@@ -566,6 +568,9 @@
 <span class="n">RSYSLOG_SIDEDOOR_SOCKET</span> <span class="o">=</span> <span class="s2">"/run/rsyslog/iemweb.sock"</span>
 <span class="n">XSS_SENTINEL</span> <span class="o">=</span> <span class="s2">"XSS"</span>
 <span class="n">MEMCACHED_HIT</span> <span class="o">=</span> <span class="s2">"_mhit"</span>
+<span class="n">_SCHEMA_TIMEZONE</span><span class="p">:</span> <span class="n">ContextVar</span><span class="p">[</span><span class="n">tzinfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">ContextVar</span><span class="p">(</span>
+    <span class="s2">"iemapp_schema_timezone"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_conv2list</span><span class="p">(</span><span class="n">mixed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
@@ -653,6 +658,24 @@
             <span class="k">return</span> <span class="n">v</span>
         <span class="c1"># Another field_validator may have run at this point and we have</span>
         <span class="c1"># a non-str datatype</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="CGIModel.apply_schema_timezone">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.CGIModel.apply_schema_timezone">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"*"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_schema_timezone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">ValidationInfo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Normalize parsed datetimes before model-level validation."""</span>
+        <span class="n">tz_to_use</span> <span class="o">=</span> <span class="n">_SCHEMA_TIMEZONE</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">tz_to_use</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">field_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="s2">"datetime"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="n">info</span><span class="o">.</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tz_to_use</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span></div>
 </div>
 
@@ -875,14 +898,14 @@
 <div class="viewcode-block" id="condition_form_for_datetimes">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.condition_form_for_datetimes">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">condition_form_for_datetimes</span><span class="p">(</span>
-    <span class="n">schema</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">default_tz</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-<span class="p">):</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span> <span class="n">form</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">default_tz</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZoneInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Modify the form to account for ambiguous things in the schema."""</span>
     <span class="n">tzfield</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tz"</span><span class="p">)</span>
     <span class="c1"># Logic short-circuit here requiring either default_tz or schema.tz</span>
     <span class="c1"># to be set</span>
     <span class="k">if</span> <span class="n">default_tz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tzfield</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">tzfield</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="nb">str</span><span class="p">(</span><span class="n">tzfield</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"str | None"</span>
         <span class="ow">or</span> <span class="n">tzfield</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="n">PydanticUndefined</span>
@@ -918,7 +941,8 @@
                         <span class="n">form</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="c1"># Do nothing and allow it to fail later...</span>
-                    <span class="k">pass</span></div>
+                    <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">tz_to_use</span></div>
 
 
 
@@ -963,7 +987,9 @@
         <span class="c1"># Account for misery associated with pydantic model defining a</span>
         <span class="c1"># datetime type that is then ambiguous about if a tzinfo should</span>
         <span class="c1"># be included</span>
-        <span class="n">condition_form_for_datetimes</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">],</span> <span class="n">form</span><span class="p">,</span> <span class="n">kwargs_default_tz</span><span class="p">)</span>
+        <span class="n">tz_to_use</span> <span class="o">=</span> <span class="n">condition_form_for_datetimes</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">],</span> <span class="n">form</span><span class="p">,</span> <span class="n">kwargs_default_tz</span>
+        <span class="p">)</span>
         <span class="c1"># Remove any form keys that are not contained in the</span>
         <span class="c1"># schema, but first we debracket keys with []</span>
         <span class="n">form</span> <span class="o">=</span> <span class="p">{</span>
@@ -972,7 +998,11 @@
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">]</span><span class="o">.</span><span class="n">model_fields</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s2">""</span>
         <span class="p">}</span>
         <span class="n">raw_form</span> <span class="o">=</span> <span class="n">form</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">](</span><span class="o">**</span><span class="n">raw_form</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">_SCHEMA_TIMEZONE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tz_to_use</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">](</span><span class="o">**</span><span class="n">raw_form</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">_SCHEMA_TIMEZONE</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
         <span class="c1"># Retain a reference to the Schema instance as it may have</span>
         <span class="c1"># private / computed attributes that are needed</span>
         <span class="n">environ</span><span class="p">[</span><span class="s2">"_cgimodel_schema"</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>
@@ -1013,16 +1043,25 @@
             <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"day2"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ets"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">ets</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">,</span> <span class="n">kwargs_default_tz</span><span class="p">)</span>
             <span class="c1"># Assign back into environ and schema (with validation)</span>
-            <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">"sts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sts</span>
-                <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"sts"</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
-                    <span class="c1"># Send back as str to get downstream schema validation</span>
-                    <span class="n">schema</span><span class="o">.</span><span class="n">sts</span> <span class="o">=</span> <span class="n">sts</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">ets</span><span class="p">:</span>
-                <span class="n">environ</span><span class="p">[</span><span class="s2">"ets"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ets</span>
-                <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"ets"</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
-                    <span class="c1"># Send back as str to get downstream schema validation</span>
-                    <span class="n">schema</span><span class="o">.</span><span class="n">ets</span> <span class="o">=</span> <span class="n">ets</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"sts"</span><span class="p">,</span> <span class="n">sts</span><span class="p">),</span> <span class="p">(</span><span class="s2">"ets"</span><span class="p">,</span> <span class="n">ets</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestamp</span>
+                <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
+                    <span class="n">token</span> <span class="o">=</span> <span class="n">_SCHEMA_TIMEZONE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">timestamp</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+                    <span class="k">finally</span><span class="p">:</span>
+                        <span class="n">_SCHEMA_TIMEZONE</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"sts"</span><span class="p">,</span> <span class="n">sts</span><span class="p">),</span> <span class="p">(</span><span class="s2">"ets"</span><span class="p">,</span> <span class="n">ets</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span>
+                    <span class="p">):</span>
+                        <span class="n">validated</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">validated</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+                            <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">validated</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span>
@@ -1424,7 +1463,9 @@
 <span class="sd">    you have a `tz` `CGIModel` field, it must have a default and so not be</span>
 <span class="sd">    optional.  If you use a `datetime` and either have a `tz` defined or</span>
 <span class="sd">    provided a kwargs `default_tz`, then magic will happen to assign in this</span>
-<span class="sd">    timezone.</span>
+<span class="sd">    timezone. For `CGIModel` fields, including nested `CGIModel` fields, this</span>
+<span class="sd">    also applies to naive datetimes produced by before field validators,</span>
+<span class="sd">    before model validators run.</span>
 
 <span class="sd">    Exception Raising</span>
 <span class="sd">    -----------------</span>
