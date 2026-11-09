@@ -855,6 +855,127 @@ def test_iemweb_datetime_type():
     assert resp.text == "2022"
 
 
+def test_iemweb_dateform_leading_to_trouble():
+    """Test that half a date parse failure does not cause pain."""
+
+    class MyModel(CGIModel):
+        sts: Annotated[datetime | None, Field()] = utc()
+        ets: Annotated[datetime | None, Field()] = utc()
+
+        @field_validator("sts", "ets", mode="before")
+        @classmethod
+        def rectify_datestr(cls, v: str | datetime):
+            """pydantic can't seem to handle this."""
+            if isinstance(v, datetime):
+                return v
+            # pydantic/pydantic/issues/9308
+            if 8 <= len(v) < 10:
+                # zero pad
+                return "-".join(f"{int(v):02.0f}" for v in v.split("-"))
+            return v
+
+        @model_validator(mode="after")
+        def ensure_sts_less_than_ets(self):
+            """Ensure sts is less than ets."""
+            if self.sts is not None and self.ets is not None:
+                assert self.sts < self.ets
+            return self
+
+    @iemapp(schema=MyModel, default_tz="UTC")
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    c = Client(application)
+    resp = c.get("/?sts=2025-01-01&ets=2026-01-1")
+    assert resp.status_code == 200, resp.text
+
+
+@pytest.mark.parametrize(
+    ("query", "expected"),
+    [
+        ("dt=2026%2F07%2F01", "2026-07-01T00:00:00-04:00"),
+        (
+            "dt=2026%2F07%2F01&tz=America%2FDenver",
+            "2026-07-01T00:00:00-06:00",
+        ),
+        ("dt=2026-07-01T00:00:00%2B02:00", "2026-07-01T00:00:00+02:00"),
+    ],
+)
+def test_datetime_from_field_validator_timezone(query, expected):
+    """Dates repaired by field validators receive the requested timezone."""
+
+    class Schema(CGIModel):
+        tz: str = "UTC"
+        dt: datetime
+
+        @field_validator("dt", mode="before")
+        @classmethod
+        def parse_date(cls, value):
+            if "/" in value:
+                return datetime.strptime(value, "%Y/%m/%d")
+            return value
+
+        @model_validator(mode="after")
+        def require_aware(self):
+            assert self.dt.tzinfo is not None
+            return self
+
+    @iemapp(schema=Schema, default_tz="America/New_York")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["dt"].isoformat()
+
+    resp = Client(application).get(f"/?{query}")
+    assert resp.status_code == 200, resp.text
+    assert resp.text == expected
+
+
+def test_datetime_validator_timezone_context_is_request_scoped():
+    """Timezone context must not leak into standalone model validation."""
+
+    class Schema(CGIModel):
+        dt: datetime
+
+        @field_validator("dt", mode="before")
+        @classmethod
+        def parse_date(cls, value):
+            return datetime.strptime(value, "%Y/%m/%d")
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(_environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK"
+
+    client = Client(application)
+    assert client.get("/?dt=invalid").status_code == 422
+    assert Schema(dt="2026/07/01").dt.tzinfo is None
+    assert client.get("/?dt=2026%2F07%2F01").status_code == 200
+    assert Schema(dt="2026/07/01").dt.tzinfo is None
+
+
+def test_datetime_from_non_datetime_field_unchanged():
+    """Only datetime-annotated fields receive timezone normalization."""
+
+    class Schema(CGIModel):
+        value: object
+
+        @field_validator("value", mode="before")
+        @classmethod
+        def parse_value(cls, _value):
+            return datetime(2026, 7, 1)
+
+    @iemapp(schema=Schema, default_tz="UTC")
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return environ["value"].isoformat()
+
+    resp = Client(application).get("/?value=example")
+    assert resp.status_code == 200
+    assert resp.text == "2026-07-01T00:00:00"
+
+
 def test_iemweb_int_type():
     """Test that we don't allow a list in the parsed form."""
 
