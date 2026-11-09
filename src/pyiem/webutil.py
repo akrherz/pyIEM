@@ -13,7 +13,7 @@ import traceback
 import warnings
 from collections.abc import Callable
 from contextvars import ContextVar
-from datetime import datetime, timezone
+from datetime import datetime, timezone, tzinfo
 from http import HTTPStatus
 from typing import Any, Iterator
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -109,7 +109,7 @@ TELEMETRY_PREFIX = "Telemetry "
 RSYSLOG_SIDEDOOR_SOCKET = "/run/rsyslog/iemweb.sock"
 XSS_SENTINEL = "XSS"
 MEMCACHED_HIT = "_mhit"
-_SCHEMA_TIMEZONE: ContextVar[tuple[type, ZoneInfo] | None] = ContextVar(
+_SCHEMA_TIMEZONE: ContextVar[tzinfo | None] = ContextVar(
     "iemapp_schema_timezone", default=None
 )
 
@@ -201,16 +201,15 @@ class CGIModel(BaseModel):
     @classmethod
     def apply_schema_timezone(cls, v, info: ValidationInfo):
         """Normalize parsed datetimes before model-level validation."""
-        context = _SCHEMA_TIMEZONE.get()
+        tz_to_use = _SCHEMA_TIMEZONE.get()
         if (
-            context is not None
-            and cls is context[0]
+            tz_to_use is not None
             and info.field_name is not None
             and "datetime" in str(cls.model_fields[info.field_name].annotation)
             and isinstance(v, datetime)
             and v.tzinfo is None
         ):
-            return v.replace(tzinfo=context[1])
+            return v.replace(tzinfo=tz_to_use)
         return v
 
 
@@ -496,9 +495,7 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if k in kwargs["schema"].model_fields and v != ""
         }
         raw_form = form
-        token = _SCHEMA_TIMEZONE.set(
-            (kwargs["schema"], tz_to_use) if tz_to_use is not None else None
-        )
+        token = _SCHEMA_TIMEZONE.set(tz_to_use)
         try:
             schema = kwargs["schema"](**raw_form)
         finally:
@@ -543,16 +540,25 @@ def add_to_environ(environ: dict, form: dict, **kwargs):
             if form.get("day2") is not None and form.get("ets") is None:
                 ets = compute_ts(form, "2", kwargs_default_tz)
             # Assign back into environ and schema (with validation)
-            if sts:
-                environ["sts"] = sts
-                if schema is not None and "sts" in type(schema).model_fields:
-                    # Send back as str to get downstream schema validation
-                    schema.sts = sts.isoformat()
-            if ets:
-                environ["ets"] = ets
-                if schema is not None and "ets" in type(schema).model_fields:
-                    # Send back as str to get downstream schema validation
-                    schema.ets = ets.isoformat()
+            for key, timestamp in (("sts", sts), ("ets", ets)):
+                if timestamp is None:
+                    continue
+                environ[key] = timestamp
+                if schema is not None and key in type(schema).model_fields:
+                    token = _SCHEMA_TIMEZONE.set(timestamp.tzinfo)
+                    try:
+                        setattr(schema, key, timestamp.isoformat())
+                    finally:
+                        _SCHEMA_TIMEZONE.reset(token)
+            if schema is not None:
+                for key, timestamp in (("sts", sts), ("ets", ets)):
+                    if (
+                        timestamp is not None
+                        and key in type(schema).model_fields
+                    ):
+                        validated = getattr(schema, key)
+                        if isinstance(validated, datetime):
+                            environ[key] = validated
         except (TypeError, ValueError) as exp:
             msg = "" if not isinstance(exp, ValidationError) else f" {exp}"
             raise IncompleteWebRequest(
@@ -948,8 +954,9 @@ def iemapp(**kwargs):
     you have a `tz` `CGIModel` field, it must have a default and so not be
     optional.  If you use a `datetime` and either have a `tz` defined or
     provided a kwargs `default_tz`, then magic will happen to assign in this
-    timezone. For `CGIModel` fields, this also applies to naive datetimes
-    produced by before field validators, before model validators run.
+    timezone. For `CGIModel` fields, including nested `CGIModel` fields, this
+    also applies to naive datetimes produced by before field validators,
+    before model validators run.
 
     Exception Raising
     -----------------
