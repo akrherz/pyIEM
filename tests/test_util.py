@@ -543,24 +543,6 @@ def test_properties_nocursor():
     assert isinstance(props, dict)
 
 
-@pytest.mark.parametrize("database", ["mesosite"])
-def test_properties(dbcursor):
-    """Try the properties function"""
-    tmpname = "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
-    )
-    tmpval = "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
-    )
-    dbcursor.execute(
-        "INSERT into properties(propname, propvalue) VALUES (%s, %s)",
-        (tmpname, tmpval),
-    )
-    prop = util.get_properties(dbcursor)
-    assert isinstance(prop, dict)
-    assert prop[tmpname] == tmpval
-
-
 def test_drct2text():
     """Test conversion of drct2text"""
     assert util.drct2text(360) == "N"

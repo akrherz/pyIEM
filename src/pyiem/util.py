@@ -475,23 +475,17 @@ def delete_property(name, cursor=None):
         pgconn.close()
 
 
-def get_properties(cursor=None):
-    """Fetch the properties set
+def get_properties() -> dict[str, str]:
+    """Fetch the properties set.
 
     Returns:
       dict: a dictionary of property names and values (both str)
     """
-    if cursor is None:
-        pgconn, _cursor = database.get_dbconnc("mesosite", rw=False)
-    else:
-        _cursor = cursor
-    _cursor.execute("SELECT propname, propvalue from properties")
-    res = {}
-    for row in _cursor:
-        res[row["propname"]] = row["propvalue"]
-    if cursor is None:
-        pgconn.close()
-    return res
+    with database.get_sqlalchemy_conn("mesosite", rw=False) as conn:
+        res = conn.execute(
+            database.sql_helper("SELECT propname, propvalue from properties")
+        )
+        return {row[0]: row[1] for row in res}
 
 
 def set_property(name, value, cursor=None):
