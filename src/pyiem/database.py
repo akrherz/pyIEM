@@ -92,7 +92,13 @@ def get_dbconnstr(name, **kwargs) -> str:
     )
 
 
-def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
+def get_dbconn(
+    database: str = "mesosite",
+    user: str | None = None,
+    host: str | None = None,
+    port: int = 5432,
+    **kwargs,
+) -> psycopg.Connection:
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -117,17 +123,14 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     """
     dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
     attempt = 0
-    conn = None
-    while attempt < 3:
+    while True:
         attempt += 1
         try:
-            conn = psycopg.connect(dsn)
             # FIXME make this opinionated to return a default row_factory
-            break
+            return psycopg.connect(dsn)
         except Exception as exp:
             if attempt == 3:
                 raise NewDatabaseConnectionFailure(str(exp)) from exp
-    return conn
 
 
 def get_dbconnc(
