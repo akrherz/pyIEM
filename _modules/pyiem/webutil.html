@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post60+g40705cc23</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post64+g41eb2c502</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=fe6e35ba"></script>
+    <script src="../../_static/documentation_options.js?v=57bb3263"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post60+g40705cc23" />
-    <meta name="docbuild:last-update" content="Nov 11, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post64+g41eb2c502" />
+    <meta name="docbuild:last-update" content="Nov 12, 2026"/>
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post60+g40705cc23</p>
+    <p class="title logo__title">pyIEM 1.28.1.post64+g41eb2c502</p>
   
 </a></div>
     
@@ -1269,7 +1269,7 @@
     <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REQUEST_METHOD"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"OPTIONS"</span><span class="p">:</span>
         <span class="n">start_response</span><span class="p">(</span>
             <span class="s2">"204 No Content"</span><span class="p">,</span>
-            <span class="p">[(</span><span class="s2">"Content-type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Allow"</span><span class="p">,</span> <span class="s2">"GET, OPTIONS"</span><span class="p">)],</span>
+            <span class="p">[(</span><span class="s2">"Allow"</span><span class="p">,</span> <span class="s2">"GET, OPTIONS"</span><span class="p">)],</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">b</span><span class="s2">""</span>
 
@@ -1294,17 +1294,15 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_iemapp_response</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Yield response chunks in a uniform iterable form."""</span>
     <span class="c1"># Need to be careful here and ensure we are returning a list of bytes.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">res</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
-        <span class="k">return</span>
+    <span class="c1"># perf handle fastest path first</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">yield</span> <span class="n">res</span>
         <span class="k">return</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">chunk</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">res</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
         <span class="k">return</span>
-    <span class="k">yield from</span> <span class="n">res</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">chunk</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_iemapp_emit_telemetry</span><span class="p">(</span>
