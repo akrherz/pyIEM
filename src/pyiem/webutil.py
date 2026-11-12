@@ -762,7 +762,7 @@ def _iemapp_preflight(
     if environ.get("REQUEST_METHOD", "") == "OPTIONS":
         start_response(
             "204 No Content",
-            [("Content-type", "text/plain"), ("Allow", "GET, OPTIONS")],
+            [("Allow", "GET, OPTIONS")],
         )
         return True, b""
 

@@ -10,7 +10,6 @@ from zoneinfo import ZoneInfo
 
 import pytest
 from pydantic import AwareDatetime, Field, field_validator, model_validator
-from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
@@ -57,7 +56,7 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
         assert not ip_is_throttled({"REMOTE_ADDR": random_ipv4}, 1)
 
 
-def test_awaredatetime_with_default_tz_set():
+def test_awaredatetime_with_default_tz_set(wsgi_client):
     """Test that we have pre-conditioning that accounts for this case."""
 
     class Schema(CGIModel):
@@ -79,13 +78,13 @@ def test_awaredatetime_with_default_tz_set():
             else "BAD"
         )
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_awaredatetime_without_default_tz_set():
+def test_awaredatetime_without_default_tz_set(wsgi_client):
     """Test that this case fails."""
 
     class Schema(CGIModel):
@@ -98,13 +97,13 @@ def test_awaredatetime_without_default_tz_set():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
     assert resp.status_code == 422
     assert "should have timezone info" in resp.text
 
 
-def test_gh1248_default_tz():
+def test_gh1248_default_tz(wsgi_client):
     """Test that default_tz is used for sts and ets generation."""
 
     class Schema(CGIModel):
@@ -126,13 +125,13 @@ def test_gh1248_default_tz():
             else "FAIL"
         )
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2022-01-02T00:00")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_default_tz_ordering():
+def test_default_tz_ordering(wsgi_client):
     """Test that user provided tz rules the coup."""
 
     class Schema(CGIModel):
@@ -152,13 +151,13 @@ def test_default_tz_ordering():
             else "FAIL"
         )
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&tz=America/Denver")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_default_tz():
+def test_default_tz(wsgi_client):
     """Test a strange error found in prod."""
 
     class Schema(CGIModel):
@@ -177,13 +176,13 @@ def test_default_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2020-01-01T00:00&ets=2021-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "2020-01-01T00:00:00+00:00"
 
 
-def test_default_tz_does_not_rerun_string_validators():
+def test_default_tz_does_not_rerun_string_validators(wsgi_client):
     """Test timezone normalization does not rerun string-only validators."""
 
     class Schema(CGIModel):
@@ -203,13 +202,13 @@ def test_default_tz_does_not_rerun_string_validators():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "2022-01-01T00:00:00-05:00"
 
 
-def test_gh1248_default_tz_not_set():
+def test_gh1248_default_tz_not_set(wsgi_client):
     """Test for naive sts when default_tz is not set.."""
 
     class Schema(CGIModel):
@@ -221,13 +220,13 @@ def test_gh1248_default_tz_not_set():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK" if environ["sts"].tzinfo is None else "FAIL"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_gh1248_default_tz_invalid_tz_provided():
+def test_gh1248_default_tz_invalid_tz_provided(wsgi_client):
     """Test that this situation errors 422."""
 
     class Schema(CGIModel):
@@ -240,12 +239,12 @@ def test_gh1248_default_tz_invalid_tz_provided():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&tz=America/")
     assert resp.status_code == 422
 
 
-def test_missing_required_datetime_with_default_tz():
+def test_missing_required_datetime_with_default_tz(wsgi_client):
     """Missing required datetime fields should fail schema validation."""
 
     class Schema(CGIModel):
@@ -256,11 +255,11 @@ def test_missing_required_datetime_with_default_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    resp = Client(application).get("/")
+    resp = wsgi_client(application).get("/")
     assert resp.status_code == 422
 
 
-def test_missing_optional_datetime_with_default_tz():
+def test_missing_optional_datetime_with_default_tz(wsgi_client):
     """Missing optional datetimes with a None default should remain None."""
 
     class Schema(CGIModel):
@@ -276,12 +275,12 @@ def test_missing_optional_datetime_with_default_tz():
             else "Unexpected value"
         )
 
-    resp = Client(application).get("/")
+    resp = wsgi_client(application).get("/")
     assert resp.status_code == 200
     assert resp.text == "None"
 
 
-def test_missing_required_tz():
+def test_missing_required_tz(wsgi_client):
     """Test that special `tz` field can not have None default."""
 
     class Schema(CGIModel):
@@ -293,10 +292,10 @@ def test_missing_required_tz():
         return "OK"
 
     with pytest.raises(NotImplementedError):
-        Client(application).get("/")
+        wsgi_client(application).get("/")
 
 
-def test_tz_field_none_default_not_supported():
+def test_tz_field_none_default_not_supported(wsgi_client):
     """Test that special `tz` fields cannot have a None default."""
 
     class Schema(CGIModel):
@@ -308,10 +307,10 @@ def test_tz_field_none_default_not_supported():
         return "OK"
 
     with pytest.raises(NotImplementedError):
-        Client(application).get("/")
+        wsgi_client(application).get("/")
 
 
-def test_parse_legacy_sts_without_schema():
+def test_parse_legacy_sts_without_schema(wsgi_client):
     """Ensure that sts gets parsed even without a schema."""
 
     @iemapp()
@@ -319,13 +318,13 @@ def test_parse_legacy_sts_without_schema():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "2022-01-01T00:00:00-06:00 2026-01-01T00:00:00-06:00"
 
 
-def test_parse_legacy_sts_without_schema_with_default_tz():
+def test_parse_legacy_sts_without_schema_with_default_tz(wsgi_client):
     """Ensure that sts gets parsed even without schema and using default_tz."""
 
     @iemapp(default_tz="America/Denver")
@@ -333,13 +332,13 @@ def test_parse_legacy_sts_without_schema_with_default_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&ets=2026-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
 
 
-def test_datetime_default_has_tzinfo_with_no_form():
+def test_datetime_default_has_tzinfo_with_no_form(wsgi_client):
     """Test edge case with schema having a default, but no value in form."""
 
     class Schema(CGIModel):
@@ -356,13 +355,13 @@ def test_datetime_default_has_tzinfo_with_no_form():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.status_code == 200
     assert "-06:00" in resp.text
 
 
-def test_parse_legacy_assume_midnight():
+def test_parse_legacy_assume_midnight(wsgi_client):
     """Test that parsing legacy sts will assume midnight."""
 
     @iemapp(default_tz="America/Denver")
@@ -370,13 +369,13 @@ def test_parse_legacy_assume_midnight():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["sts"].isoformat() + " " + environ["ets"].isoformat()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01&ets=2026-01-01")
     assert resp.status_code == 200
     assert resp.text == "2022-01-01T00:00:00-07:00 2026-01-01T00:00:00-07:00"
 
 
-def test_default_tz_not_added_to_environ():
+def test_default_tz_not_added_to_environ(wsgi_client):
     """Test that default_tz stays out of environ['tz']"""
 
     class Schema(CGIModel):
@@ -388,13 +387,13 @@ def test_default_tz_not_added_to_environ():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK" if environ.get("tz") is None else "FAIL"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_empty_tz_gets_default_tz():
+def test_empty_tz_gets_default_tz(wsgi_client):
     """Test that this situation errors 422."""
 
     class Schema(CGIModel):
@@ -407,13 +406,13 @@ def test_empty_tz_gets_default_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK" if str(environ["sts"].tzinfo) == "-05:00" else "BAD"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2022-01-01T00:00&tz=")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_gh1248_default_tz_invalid_tz_optional():
+def test_gh1248_default_tz_invalid_tz_optional(wsgi_client):
     """Test that tz is not permitted to be optional in CGIModel."""
 
     class Schema(CGIModel):
@@ -430,12 +429,12 @@ def test_gh1248_default_tz_invalid_tz_optional():
             else "FAIL"
         )
 
-    c = Client(application)
+    c = wsgi_client(application)
     with pytest.raises(NotImplementedError):
         c.get("/?sts=2022-01-01T00:00")
 
 
-def test_iemapp_help_with_linereturns():
+def test_iemapp_help_with_linereturns(wsgi_client):
     """Test that we properly convert descriptions with newlines."""
 
     class Schema(CGIModel):
@@ -457,13 +456,13 @@ def test_iemapp_help_with_linereturns():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?help")
     assert resp.status_code == 200
     assert "list-table::" not in resp.text
 
 
-def test_iemapp_help():
+def test_iemapp_help(wsgi_client):
     """Test that help works."""
 
     @iemapp(help="FINDME")
@@ -472,13 +471,13 @@ def test_iemapp_help():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?help")
     assert resp.status_code == 200
     assert "FINDME" in resp.text
 
 
-def test_iemapp_help_logs_docutils_warning():
+def test_iemapp_help_logs_docutils_warning(wsgi_client):
     """Test that malformed RST help text triggers warning logging."""
 
     @iemapp(help="Heading\n----")
@@ -487,31 +486,29 @@ def test_iemapp_help_logs_docutils_warning():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     with mock.patch("pyiem.webutil.LOG.warning") as mock_warning:
         resp = c.get("/?help")
     assert resp.status_code == 200
     assert mock_warning.called
 
 
-def test_duplicated_year_in_form():
+def test_duplicated_year_in_form(wsgi_client):
     """Test the forgiveness."""
 
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year1=2021&year1=2021&month1=2&day1=3",
-    }
-    sr = mock.MagicMock()
-    list(application(env, sr))
-    assert env["sts"].year == 2021
+    c = wsgi_client(application)
+    resp = c.get("/?year1=2021&year1=2021&month1=2&day1=3")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
-def test_forgive_duplicate_tz():
+def test_forgive_duplicate_tz(wsgi_client):
     """Test the forgiveness of this combo."""
 
     @iemapp()
@@ -520,26 +517,27 @@ def test_forgive_duplicate_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?tz=etc/utc&tz=etc/utc")
     assert resp.status_code == 200
     assert resp.text == "Hello!"
 
 
-def test_duplicated_tz_in_form():
+def test_duplicated_tz_in_form(wsgi_client):
     """Test that this is handled."""
 
     @iemapp()
-    def application(_environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?tz=etc/utc&tz=etc/UTC")
     assert "twice" in resp.text
 
 
-def test_incomplete():
+def test_incomplete(wsgi_client):
     """Test that the IncompleteWebRequest runs."""
     msg = "HELLO WORLD"
 
@@ -548,12 +546,12 @@ def test_incomplete():
         """Test."""
         raise IncompleteWebRequest(msg)
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.status_code == 422
 
 
-def test_newdatabase():
+def test_newdatabase(wsgi_client):
     """Test that the NewDatabaseConnectionError runs."""
 
     @iemapp()
@@ -561,12 +559,12 @@ def test_newdatabase():
         """Test."""
         raise NewDatabaseConnectionFailure()
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert "akrherz" in resp.text
 
 
-def test_nodatafound():
+def test_nodatafound(wsgi_client):
     """Test that the NoDataFound runs."""
     res = "Magic"
 
@@ -575,12 +573,12 @@ def test_nodatafound():
         """Test."""
         raise NoDataFound(res)
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.text == res
 
 
-def test_iemapp_generator():
+def test_iemapp_generator(wsgi_client):
     """Test that we can wrap a generator."""
 
     @iemapp()
@@ -589,12 +587,12 @@ def test_iemapp_generator():
         start_response("200 OK", [("Content-type", "text/plain")])
         yield b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.text == "Hello!"
 
 
-def test_iemapp_decorator():
+def test_iemapp_decorator(wsgi_client):
     """Try the API."""
 
     @iemapp()
@@ -603,12 +601,12 @@ def test_iemapp_decorator():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.text == "Hello!"
 
 
-def test_invalid_user_timestamp_without_tzinfo():
+def test_invalid_user_timestamp_without_tzinfo(wsgi_client):
     """Test that the conditioning of this string fails."""
 
     class Schema(CGIModel):
@@ -620,13 +618,13 @@ def test_invalid_user_timestamp_without_tzinfo():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2002-BOGUS")
     assert resp.status_code == 422
     assert "invalid character in month" in resp.text
 
 
-def test_typoed_tz():
+def test_typoed_tz(wsgi_client):
     """Test that we handle when a tz gets commonly typoed."""
 
     class Schema(CGIModel):
@@ -638,13 +636,13 @@ def test_typoed_tz():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["tz"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?tz=central")
     assert resp.status_code == 200
     assert resp.text == "America/Chicago"
 
 
-def test_iemapp_raises_newdatabaseconnectionfailure():
+def test_iemapp_raises_newdatabaseconnectionfailure(wsgi_client):
     """Test catch a raised exception."""
 
     @iemapp()
@@ -653,12 +651,12 @@ def test_iemapp_raises_newdatabaseconnectionfailure():
         get_dbconn("this will fail")
         return [b"Content-type: text/plain\n\nHello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.status_code == 503
 
 
-def test_iemapp_catches_vanilla_exception():
+def test_iemapp_catches_vanilla_exception(wsgi_client):
     """Test catch a raised exception."""
 
     @iemapp()
@@ -666,12 +664,12 @@ def test_iemapp_catches_vanilla_exception():
         """Test."""
         raise Exception("This is a test")
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert "akrherz" in resp.text
 
 
-def test_iemapp_xss_javascript():
+def test_iemapp_xss_javascript(wsgi_client):
     """Test that javascript payload triggers XSS protection."""
 
     @iemapp()
@@ -680,13 +678,13 @@ def test_iemapp_xss_javascript():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=javascript:alert()")
     assert resp.status_code == 422
     assert "akrherz" in resp.text
 
 
-def test_iemapp_xss_in_list():
+def test_iemapp_xss_in_list(wsgi_client):
     """Test that a list with javascript payload triggers XSS protection."""
 
     class MySchema(CGIModel):
@@ -700,13 +698,13 @@ def test_iemapp_xss_in_list():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1&q=<script>alert('xss')</script>")
     assert resp.status_code == 422
     assert "akrherz" in resp.text
 
 
-def test_options(random_ipv4: str):
+def test_options(wsgi_client, random_ipv4: str):
     """Test that OPTIONS requests are automagically handled."""
 
     @iemapp()
@@ -716,14 +714,14 @@ def test_options(random_ipv4: str):
         return f"{random.random()}"
 
     eo = {"REMOTE_ADDR": random_ipv4}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.options("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 204
     assert not resp.text
     assert resp.headers["Allow"] == "GET, OPTIONS"
 
 
-def test_ip_throttled_callable(random_ipv4: str):
+def test_ip_throttled_callable(wsgi_client, random_ipv4: str):
     """Test that the ip throttle is callable."""
 
     class Schema(CGIModel):
@@ -741,7 +739,7 @@ def test_ip_throttled_callable(random_ipv4: str):
         return f"{random.random()}"
 
     eo = {"REMOTE_ADDR": random_ipv4}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=-1", environ_overrides=eo)
     assert resp.status_code == 200
     resp = c.get("/?q=-1", environ_overrides=eo)
@@ -752,7 +750,7 @@ def test_ip_throttled_callable(random_ipv4: str):
     os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
-def test_ip_throttled(random_ipv4: str):
+def test_ip_throttled(wsgi_client, random_ipv4: str):
     """Test how our throttle behaves."""
 
     @iemapp(ip_throttle_secs=10)
@@ -762,14 +760,14 @@ def test_ip_throttled(random_ipv4: str):
         return f"{random.random()}"
 
     eo = {"REMOTE_ADDR": random_ipv4}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 200, resp.text
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 429, resp.text
 
 
-def test_allowed_as_list():
+def test_allowed_as_list(wsgi_client):
     """Test that we don't allow a list in the parsed form."""
 
     @iemapp(allowed_as_list=["q"])
@@ -778,14 +776,14 @@ def test_allowed_as_list():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1&q=2&f=1")
     assert resp.status_code == 200
     resp = c.get("/?q=1&f=2&f=1")
     assert resp.status_code == 422
 
 
-def test_empty_string():
+def test_empty_string(wsgi_client):
     """Test that empty strings are not passed through..."""
 
     class MyModel(CGIModel):
@@ -798,13 +796,13 @@ def test_empty_string():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ.get("unused", "OK")
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?bogus=")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_gh1174_self():
+def test_gh1174_self(wsgi_client):
     """Test what happens with CGI self= is processed."""
 
     class MyModel(CGIModel):
@@ -816,13 +814,13 @@ def test_gh1174_self():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ.get("unused", "OK")
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?self=1&unused=1")
     assert resp.status_code == 200
     assert resp.text == "OK"
 
 
-def test_iemweb_datetime_type():
+def test_iemweb_datetime_type(wsgi_client):
     """Test the handling of a datetime schema field."""
 
     class MyModel(CGIModel):
@@ -850,13 +848,13 @@ def test_iemweb_datetime_type():
         is_dt = isinstance(environ["dt"], datetime)
         return f"{environ['dt'].year if is_dt else 'bad'}"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?state=IA&dt=2022-01-01T00:00:00Z")
     assert resp.status_code == 200
     assert resp.text == "2022"
 
 
-def test_iemweb_dateform_leading_to_trouble():
+def test_iemweb_dateform_leading_to_trouble(wsgi_client):
     """Test that half a date parse failure does not cause pain."""
 
     class MyModel(CGIModel):
@@ -888,7 +886,7 @@ def test_iemweb_dateform_leading_to_trouble():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?sts=2025-01-01&ets=2026-01-1")
     assert resp.status_code == 200, resp.text
 
@@ -904,7 +902,7 @@ def test_iemweb_dateform_leading_to_trouble():
         ("dt=2026-07-01T00:00:00%2B02:00", "2026-07-01T00:00:00+02:00"),
     ],
 )
-def test_datetime_from_field_validator_timezone(query, expected):
+def test_datetime_from_field_validator_timezone(wsgi_client, query, expected):
     """Dates repaired by field validators receive the requested timezone."""
 
     class Schema(CGIModel):
@@ -928,12 +926,12 @@ def test_datetime_from_field_validator_timezone(query, expected):
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["dt"].isoformat()
 
-    resp = Client(application).get(f"/?{query}")
+    resp = wsgi_client(application).get(f"/?{query}")
     assert resp.status_code == 200, resp.text
     assert resp.text == expected
 
 
-def test_datetime_validator_timezone_context_is_request_scoped():
+def test_datetime_validator_timezone_context_is_request_scoped(wsgi_client):
     """Timezone context must not leak into standalone model validation."""
 
     class Schema(CGIModel):
@@ -949,7 +947,7 @@ def test_datetime_validator_timezone_context_is_request_scoped():
         start_response("200 OK", [("Content-type", "text/plain")])
         return "OK"
 
-    client = Client(application)
+    client = wsgi_client(application)
     assert client.get("/?dt=invalid").status_code == 422
     assert Schema(dt="2026/07/01").dt.tzinfo is None
     assert client.get("/?dt=2026%2F07%2F01").status_code == 200
@@ -963,7 +961,7 @@ def test_datetime_validator_timezone_context_is_request_scoped():
         ("America/Denver", "2026-07-01T00:00:00-06:00"),
     ],
 )
-def test_nested_cgimodel_datetime_timezone(tz, expected):
+def test_nested_cgimodel_datetime_timezone(wsgi_client, tz, expected):
     """Nested datetime fields use the active request timezone."""
 
     class Nested(CGIModel):
@@ -991,7 +989,7 @@ def test_nested_cgimodel_datetime_timezone(tz, expected):
         nested = environ["_cgimodel_schema"].nested
         return f"{nested.naive.isoformat()},{nested.aware.isoformat()}"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get(
         "/",
         query_string={
@@ -1008,7 +1006,7 @@ def test_nested_cgimodel_datetime_timezone(tz, expected):
     assert resp.text == f"{expected},2026-07-01T00:00:00+02:00"
 
 
-def test_nested_cgimodel_without_timezone_context():
+def test_nested_cgimodel_without_timezone_context(wsgi_client):
     """Nested validation without an active timezone leaves datetimes naive."""
 
     class Nested(CGIModel):
@@ -1027,14 +1025,14 @@ def test_nested_cgimodel_without_timezone_context():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["_cgimodel_schema"].nested.dt.isoformat()
 
-    resp = Client(application).get(
+    resp = wsgi_client(application).get(
         "/", query_string={"nested": json.dumps({"dt": "2026-07-01T00:00:00"})}
     )
     assert resp.status_code == 200, resp.text
     assert resp.text == "2026-07-01T00:00:00"
 
 
-def test_datetime_from_non_datetime_field_unchanged():
+def test_datetime_from_non_datetime_field_unchanged(wsgi_client):
     """Only datetime-annotated fields receive timezone normalization."""
 
     class Schema(CGIModel):
@@ -1050,12 +1048,12 @@ def test_datetime_from_non_datetime_field_unchanged():
         start_response("200 OK", [("Content-type", "text/plain")])
         return environ["value"].isoformat()
 
-    resp = Client(application).get("/?value=example")
+    resp = wsgi_client(application).get("/?value=example")
     assert resp.status_code == 200
     assert resp.text == "2026-07-01T00:00:00"
 
 
-def test_iemweb_int_type():
+def test_iemweb_int_type(wsgi_client):
     """Test that we don't allow a list in the parsed form."""
 
     class MyModel(CGIModel):
@@ -1069,7 +1067,7 @@ def test_iemweb_int_type():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{environ['f'] if isinstance(environ['f'], int) else 'bad'}"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?f=1")
     assert resp.status_code == 200
     assert resp.text == "1"
@@ -1130,7 +1128,7 @@ def test_iemapp_memcache_keychanged():
     os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
-def test_iemapp_memcache():
+def test_iemapp_memcache(wsgi_client):
     """Test the memcache option."""
 
     @iemapp(memcachekey="iem_iemapp_memcache")
@@ -1139,7 +1137,7 @@ def test_iemapp_memcache():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?callback=gotData")
     assert resp.status_code == 200
     res1 = resp.text
@@ -1151,7 +1149,7 @@ def test_iemapp_memcache():
     assert res1 == res2
 
 
-def test_iemapp_telemetry_skipped_on_memcache_hit():
+def test_iemapp_telemetry_skipped_on_memcache_hit(wsgi_client):
     """Test that telemetry is not written when response is memcache-backed."""
 
     cache = {}
@@ -1186,13 +1184,13 @@ def test_iemapp_telemetry_skipped_on_memcache_hit():
         mock.patch("pyiem.webutil.Client", DummyMemcacheClient),
         mock.patch("pyiem.webutil.write_telemetry") as write_mock,
     ):
-        c = Client(application)
+        c = wsgi_client(application)
         assert c.get("/").status_code == 200
         assert c.get("/").status_code == 200
     assert write_mock.call_count == 1
 
 
-def test_iemapp_telemetry_uses_captured_start_response_status():
+def test_iemapp_telemetry_uses_captured_start_response_status(wsgi_client):
     """Test telemetry logs status emitted by downstream start_response."""
 
     @iemapp()
@@ -1202,14 +1200,14 @@ def test_iemapp_telemetry_uses_captured_start_response_status():
         return b"missing"
 
     with mock.patch("pyiem.webutil.write_telemetry") as write_mock:
-        c = Client(application)
+        c = wsgi_client(application)
         resp = c.get("/")
     assert resp.status_code == 404
     assert write_mock.call_count == 1
     assert write_mock.call_args[0][0].status_code == 404
 
 
-def test_iemapp_cache_control():
+def test_iemapp_cache_control(wsgi_client):
     """Test that cache_control adds a header to a 200 response."""
 
     @iemapp(cache_control=86400)
@@ -1218,13 +1216,13 @@ def test_iemapp_cache_control():
         start_response("200 OK", [("Content-type", "text/plain")])
         return b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.status_code == 200
     assert resp.headers["Cache-Control"] == "public, max-age=86400"
 
 
-def test_iemapp_cache_control_default_is_off():
+def test_iemapp_cache_control_default_is_off(wsgi_client):
     """Test that no header is sent unless asked for."""
 
     @iemapp()
@@ -1233,11 +1231,11 @@ def test_iemapp_cache_control_default_is_off():
         start_response("200 OK", [("Content-type", "text/plain")])
         return b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     assert "Cache-Control" not in c.get("/").headers
 
 
-def test_iemapp_cache_control_callable():
+def test_iemapp_cache_control_callable(wsgi_client):
     """Test that a callable sees the parsed schema and can opt out."""
 
     class Schema(CGIModel):
@@ -1254,13 +1252,13 @@ def test_iemapp_cache_control_callable():
         start_response("200 OK", [("Content-type", "text/plain")])
         return b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?year=2011")
     assert resp.headers["Cache-Control"] == "public, max-age=3600"
     assert "Cache-Control" not in c.get("/?year=2026").headers
 
 
-def test_iemapp_cache_control_application_wins():
+def test_iemapp_cache_control_application_wins(wsgi_client):
     """Test that an application's own Cache-Control header is kept."""
 
     @iemapp(cache_control=86400)
@@ -1272,12 +1270,12 @@ def test_iemapp_cache_control_application_wins():
         )
         return b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/")
     assert resp.headers.getlist("Cache-Control") == ["no-cache"]
 
 
-def test_iemapp_cache_control_skips_errors_and_help():
+def test_iemapp_cache_control_skips_errors_and_help(wsgi_client):
     """Test that error and help replies get no header."""
 
     @iemapp(help="FINDME", cache_control=86400)
@@ -1288,7 +1286,7 @@ def test_iemapp_cache_control_skips_errors_and_help():
         start_response("200 OK", [("Content-type", "text/plain")])
         return b"Hello!"
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?help")
     assert resp.status_code == 200
     assert "Cache-Control" not in resp.headers
@@ -1297,7 +1295,7 @@ def test_iemapp_cache_control_skips_errors_and_help():
     assert "Cache-Control" not in resp.headers
 
 
-def test_iemapp_cache_control_on_memcache_hit():
+def test_iemapp_cache_control_on_memcache_hit(wsgi_client):
     """Test that a memcache-backed response gets the header too."""
 
     cache = {}
@@ -1329,7 +1327,7 @@ def test_iemapp_cache_control_on_memcache_hit():
         return b"Hello!"
 
     with mock.patch("pyiem.webutil.Client", DummyMemcacheClient):
-        c = Client(application)
+        c = wsgi_client(application)
         first = c.get("/")
         second = c.get("/")
     assert "iem_iemapp_cache_control" in cache
@@ -1337,37 +1335,7 @@ def test_iemapp_cache_control_on_memcache_hit():
     assert second.headers["Cache-Control"] == "public, max-age=600"
 
 
-def test_iemapp_generator_exception_after_start_response(random_ipv4: str):
-    """Test post-start generator exceptions are logged without restart."""
-
-    start_response_calls = []
-
-    @iemapp()
-    def application(_environ, start_response):
-        """Test."""
-        start_response("200 OK", [("Content-type", "text/plain")])
-        yield b"first"
-        raise RuntimeError("boom")
-
-    environ = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "",
-        "REQUEST_URI": "/",
-        "REMOTE_ADDR": random_ipv4,
-    }
-
-    def sr(status, headers):
-        start_response_calls.append((status, headers))
-
-    with mock.patch("pyiem.webutil.LOG.exception") as mock_exception:
-        res = list(application(environ, sr))
-    assert res == [b"first"]
-    assert len(start_response_calls) == 1
-    assert start_response_calls[0][0] == "200 OK"
-    assert mock_exception.call_count == 1
-
-
-def test_sts_ets_are_set():
+def test_sts_ets_are_set(wsgi_client):
     """Test that we cross set things properly."""
 
     class MyModel(CGIModel):
@@ -1390,7 +1358,7 @@ def test_sts_ets_are_set():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Content-type: text/plain\n\nHello!"]
 
-    client = Client(application)
+    client = wsgi_client(application)
     resp = client.get(
         "/?year1=2022&month1=2&day1=3&year2=2023&month2=1&day2=1"
     )
@@ -1408,7 +1376,7 @@ def test_sts_ets_are_set():
     ],
 )
 def test_sts_ets_assignment_validators_keep_timezone(
-    with_tz_field, default_tz, request_tz, offset
+    wsgi_client, with_tz_field, default_tz, request_tz, offset
 ):
     """Legacy date components remain aware through assignment validators."""
 
@@ -1458,7 +1426,7 @@ def test_sts_ets_assignment_validators_keep_timezone(
     }
     if request_tz:
         query["tz"] = request_tz
-    resp = Client(application).get("/", query_string=query)
+    resp = wsgi_client(application).get("/", query_string=query)
     assert resp.status_code == 200, resp.text
     assert resp.text.split() == [
         f"2022-02-03T00:15:00{offset}",
@@ -1469,7 +1437,7 @@ def test_sts_ets_assignment_validators_keep_timezone(
     assert Schema(sts="2022-02-03T00:00:00").sts.tzinfo is None
 
 
-def test_iemapp_year_year1():
+def test_iemapp_year_year1(wsgi_client):
     """Test that we can handle a legacy situation with DCP app."""
 
     class MyModel(CGIModel):
@@ -1486,13 +1454,13 @@ def test_iemapp_year_year1():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Content-type: text/plain\n\nHello!"]
 
-    client = Client(application)
+    client = wsgi_client(application)
     resp = client.get("/?year=2022&month1=2&day1=3")
     assert resp.status_code == 200
     assert resp.text.find("Hello") > -1
 
 
-def test_iemapp_schema_validation_from_ymd():
+def test_iemapp_schema_validation_from_ymd(wsgi_client):
     """Test that this doesn't subvert schema validation."""
 
     class MyModel(CGIModel):
@@ -1514,13 +1482,13 @@ def test_iemapp_schema_validation_from_ymd():
         start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Content-type: text/plain\n\nHello!"]
 
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?year1=1889&month1=1&day1=1")
     assert resp.status_code == 422
     assert "1900" in resp.text
 
 
-def test_iemapp_times_notime():
+def test_iemapp_times_notime(wsgi_client):
     """Test handling when no times provided."""
 
     class MyModel(CGIModel):
@@ -1532,19 +1500,19 @@ def test_iemapp_times_notime():
         day2: int = Field(None)
 
     @iemapp(schema=MyModel)
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "recent=yes",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = wsgi_client(application)
+    resp = c.get("?recent=yes")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
-def test_iemapp_bracket_variable():
+def test_iemapp_bracket_variable(wsgi_client):
     """Test that a bracked variable is handled within pydantic schema."""
 
     class MyModel(CGIModel):
@@ -1553,20 +1521,20 @@ def test_iemapp_bracket_variable():
         wfo: ListOrCSVType = Field(None)
 
     @iemapp(schema=MyModel)
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
         assert environ["wfo"] == ["DMX"]
-        return [b"Content-type: text/plain\n\nHello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "wfo[]=DMX",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = wsgi_client(application)
+    resp = c.get("?wfo[]=DMX")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
-def test_schema_with_parse_times():
+def test_schema_with_parse_times(wsgi_client):
     """Test that parse_times and schema can coexist."""
 
     class MyModel(CGIModel):
@@ -1578,22 +1546,21 @@ def test_schema_with_parse_times():
         year1: Optional[int] = Field(None)
 
     @iemapp(schema=MyModel, parse_times=True)
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
         assert environ["sts"] == datetime(
             2022, 2, 3, tzinfo=ZoneInfo("America/Chicago")
         )
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year1=2022&month1=2&day1=3",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
+    c = wsgi_client(application)
+    resp = c.get("?year1=2022&month1=2&day1=3")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
-def test_listorcsvtype():
+def test_listorcsvtype(wsgi_client):
     """Test that we can handle this."""
 
     class MyModel(CGIModel):
@@ -1607,35 +1574,25 @@ def test_listorcsvtype():
         foo5: Optional[Union[None, datetime]] = Field(None)
 
     @iemapp(help="FINDME", schema=MyModel)
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
         assert environ["foo"] == ["1", "2"]
         assert environ["foo2"] == ["1", "2"]
         assert environ["foo3"] == ["1"]
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "help",
-    }
-    assert list(application(env, sr))[0].decode("ascii").find("CGI") > -1
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&valid=Foo",
-    }
-    assert (
-        list(application(env, sr))[0].decode("ascii").find("datetime_from_d")
-        > -1
-    )
+    c = wsgi_client(application)
+    resp = c.get("?foo=1&foo=2&foo2=1,2&foo3=1")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
+    resp = c.get("?help")
+    assert resp.status_code == 200
+    assert "CGI" in resp.text
+    resp = c.get("?foo=1&foo=2&foo2=1,2&foo3=1&valid=Foo")
+    assert resp.status_code == 422
+    assert "datetime_from_d" in resp.text
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>",
-    }
-    assert "akrherz" in list(application(env, sr))[0].decode("ascii")
+    resp = c.get("?foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>")
+    assert resp.status_code == 422
+    assert "akrherz" in resp.text

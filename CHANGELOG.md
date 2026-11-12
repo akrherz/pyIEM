@@ -29,6 +29,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Apply the active `iemapp` timezone to naive nested `CGIModel` datetimes.
+- Cleanups WSGI compliance with `iemapp` and associated tests.
 - Improve typing of `database.get_dbconn`.
 - Preserve timezone normalization when assigning computed `sts` and `ets`.
 - Correct some `iemapp` validation edge cases and cleanup parse_time behaviour.

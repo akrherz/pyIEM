@@ -3,7 +3,6 @@
 import random
 
 import pytest
-from werkzeug.test import Client
 
 from pyiem import webutil
 from pyiem.web.error import application
@@ -19,7 +18,7 @@ def random_ipv4():
     )
 
 
-def test_error404_without_referer_no_errorlog(monkeypatch):
+def test_error404_without_referer_no_errorlog(monkeypatch, wsgi_client):
     """Test that this request generates no logging."""
     watcher = {}
 
@@ -29,14 +28,14 @@ def test_error404_without_referer_no_errorlog(monkeypatch):
     # Need to patch emit_to_sidedoor to capture any error log attempts
     monkeypatch.setattr(webutil, "emit_to_sidedoor", fake_emit_to_sidedoor)
     eo = {"REMOTE_ADDR": "100.1.1.1", "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
     assert "called" not in watcher
     monkeypatch.undo()
 
 
-def test_error404_with_google_referer(monkeypatch):
+def test_error404_with_google_referer(monkeypatch, wsgi_client):
     """Test that this request generates no logging."""
     watcher = {}
 
@@ -50,14 +49,14 @@ def test_error404_with_google_referer(monkeypatch):
         "HTTP_HOST": "mesonet.agron.iastate.edu",
         "HTTP_REFERER": "http://www.google.com/",
     }
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
     assert "called" not in watcher
     monkeypatch.undo()
 
 
-def test_error404_with_referer(monkeypatch):
+def test_error404_with_referer(monkeypatch, wsgi_client):
     """Test that we get an error_log entry for this request."""
     watcher = {}
 
@@ -71,87 +70,87 @@ def test_error404_with_referer(monkeypatch):
         "HTTP_HOST": "mesonet.agron.iastate.edu",
         "HTTP_REFERER": "http://example.com/",
     }
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
     assert b"http://example.com/" in watcher["called"]
 
 
-def test_error404(random_ipv4: str):
+def test_error404(random_ipv4: str, wsgi_client):
     """Test basic handling of errors coming from the IEM webfarm."""
 
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
 
 
-def test_archivere_handler(random_ipv4: str):
+def test_archivere_handler(random_ipv4: str, wsgi_client):
     """Test the archive handler."""
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get(
         "/archive/data/2020/01/01/foo_20200101_0000", environ_overrides=eo
     )
     assert resp.status_code == 404
 
 
-def test_archivere_invalid_timestamp(random_ipv4: str):
+def test_archivere_invalid_timestamp(random_ipv4: str, wsgi_client):
     """Test the archive handler."""
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get(
         "/archive/data/2020/01/01/foo_20200231_000000", environ_overrides=eo
     )
     assert resp.status_code == 404
 
 
-def test_archivere_future_timestamp(random_ipv4: str):
+def test_archivere_future_timestamp(random_ipv4: str, wsgi_client):
     """Test the archive handler."""
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get(
         "/archive/data/2020/01/01/foo_20990101_000000", environ_overrides=eo
     )
     assert resp.status_code == 422
 
 
-def test_wms_handler(random_ipv4: str):
+def test_wms_handler(random_ipv4: str, wsgi_client):
     """Test the WMS handler."""
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "mesonet.agron.iastate.edu"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1&service=WMS", environ_overrides=eo)
     assert resp.status_code == 400
     assert "/ogc" in resp.text
 
 
-def test_log_request_error(random_ipv4: str):
+def test_log_request_error(random_ipv4: str, wsgi_client):
     """Test a null byte causing log request to fail."""
     eo = {
         "REMOTE_ADDR": random_ipv4,
         "HTTP_REFERER": "http://example.com/\x00",
         "HTTP_HOST": "mesonet.agron.iastate.edu",
     }
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
 
 
-def test_405_handler(random_ipv4: str):
+def test_405_handler(random_ipv4: str, wsgi_client):
     """Test the 405 handler."""
     eo = {
         "REMOTE_ADDR": random_ipv4,
-        "REDIRECT_STATUS": 405,
+        "REDIRECT_STATUS": "405",
         "HTTP_HOST": "mesonet.agron.iastate.edu",
     }
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.post("/?q=1", environ_overrides=eo)
     assert resp.status_code == 301
 
 
-def test_404_non_iemhost(random_ipv4: str):
+def test_404_non_iemhost(random_ipv4: str, wsgi_client):
     """Test the 404 handler for non IEM hosts."""
     eo = {"REMOTE_ADDR": random_ipv4, "HTTP_HOST": "example.com"}
-    c = Client(application)
+    c = wsgi_client(application)
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 404
