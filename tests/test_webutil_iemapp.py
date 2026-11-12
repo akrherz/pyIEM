@@ -1560,6 +1560,36 @@ def test_schema_with_parse_times(wsgi_client):
     assert resp.text == "Hello!"
 
 
+def test_iemapp_yields_string(wsgi_client):
+    """Test that code accounts for this."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        yield "Hello!"
+
+    c = wsgi_client(application)
+    resp = c.get("?")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
+
+
+def test_iemapp_returns_list_of_strings(wsgi_client):
+    """Test that code accounts for this."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return ["Hello!"]
+
+    c = wsgi_client(application)
+    resp = c.get("?")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
+
+
 def test_listorcsvtype(wsgi_client):
     """Test that we can handle this."""
 

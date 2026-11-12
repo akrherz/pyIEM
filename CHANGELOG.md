@@ -28,6 +28,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Account for `iemapp` yielding `str` or list of `str`.
 - Apply the active `iemapp` timezone to naive nested `CGIModel` datetimes.
 - Cleanups WSGI compliance with `iemapp` and associated tests.
 - Improve typing of `database.get_dbconn`.
