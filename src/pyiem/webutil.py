@@ -762,7 +762,7 @@ def _iemapp_preflight(
     if environ.get("REQUEST_METHOD", "") == "OPTIONS":
         start_response(
             "204 No Content",
-            [("Content-type", "text/plain"), ("Allow", "GET, OPTIONS")],
+            [("Allow", "GET, OPTIONS")],
         )
         return True, b""
 
@@ -787,17 +787,15 @@ def _iemapp_preflight(
 def _normalize_iemapp_response(res: Any) -> Iterator[bytes]:
     """Yield response chunks in a uniform iterable form."""
     # Need to be careful here and ensure we are returning a list of bytes.
-    if isinstance(res, str):
-        yield res.encode("utf-8")
-        return
+    # perf handle fastest path first
     if isinstance(res, bytes):
         yield res
         return
-    if isinstance(res, (tuple, list)):
-        for chunk in res:
-            yield chunk
+    if isinstance(res, str):
+        yield res.encode("utf-8")
         return
-    yield from res
+    for chunk in res:
+        yield chunk if isinstance(chunk, bytes) else chunk.encode()
 
 
 def _iemapp_emit_telemetry(

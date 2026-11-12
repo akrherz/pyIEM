@@ -117,7 +117,8 @@ def application(environ: dict, start_response: callable) -> list[bytes]:
                 (
                     "Location",
                     "https://iowamesonet.github.io/sorry/?mode=blocked",
-                )
+                ),
+                ("Content-type", "text/plain"),
             ],
         )
         return [b"Moved Permanently"]
