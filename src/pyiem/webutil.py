@@ -11,11 +11,12 @@ import string
 import sys
 import traceback
 import warnings
-from collections.abc import Callable
+from collections.abc import Callable, Iterable, Mapping
 from contextvars import ContextVar
 from datetime import datetime, timezone, tzinfo
 from http import HTTPStatus
-from typing import Any, Iterator
+from types import UnionType
+from typing import Any, Iterator, Literal, Union, get_args, get_origin
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from docutils.core import publish_string
@@ -462,18 +463,53 @@ def condition_form_for_tz(form: dict, kwargs: dict):
         raise IncompleteWebRequest("Invalid tz specified") from exp
 
 
+def _is_scalar_annotation(annotation) -> bool:
+    """Identify scalar fields without limiting collection or untyped fields."""
+    origin = get_origin(annotation)
+    if origin in (Union, UnionType):
+        return all(_is_scalar_annotation(arg) for arg in get_args(annotation))
+    if origin is Annotated:
+        return _is_scalar_annotation(get_args(annotation)[0])
+    if origin is Literal:
+        return True
+    annotation = origin or annotation
+    if annotation in (Any, object):
+        return False
+    if not isinstance(annotation, type):
+        return False
+    return issubclass(annotation, (str, bytes)) or not issubclass(
+        annotation, (Iterable, Mapping, BaseModel)
+    )
+
+
 def add_to_environ(environ: dict, form: dict, **kwargs):
     """Build out some things auto-parsed from the request."""
     kwargs_default_tz = kwargs.get("default_tz")
     # Typically apps without schema definition, so this removes some
     # downstream boilerplate to prevent unwanted lists
-    allowed = kwargs.get("allowed_as_list", [])
+    allowed = kwargs.get("allowed_as_list") or []
     if allowed:
         for key in form:
             if not isinstance(form[key], list):
                 continue
             if key not in allowed:
                 raise BadWebRequest(f"Key {key} is a list, but not allowed")
+
+    if "schema" in kwargs:
+        fields = kwargs["schema"].model_fields
+        for key, value in form.items():
+            field_name = key.removesuffix("[]")
+            field = fields.get(field_name)
+            if (
+                isinstance(value, list)
+                and field is not None
+                and key not in allowed
+                and _is_scalar_annotation(field.annotation)
+            ):
+                raise IncompleteWebRequest(
+                    f"Query parameter {field_name} was specified "
+                    "multiple times"
+                )
 
     # tz has important implications, so we need to preflight check this
     if "tz" in form:
@@ -928,7 +964,8 @@ def iemapp(**kwargs):
         - content_type (str or callable): The content type to use for the
           response.
         - allowed_as_list (list): CGI parameters that are permitted to be
-          lists.
+          lists. With a schema, this also permits repeated parameters for
+          scalar fields before their validators run.
         - ip_throttle_secs (float or callable): Number of seconds between
           requests from the same REMOTE_ADDR, 0 to disable,
           which is the default.
@@ -955,6 +992,11 @@ def iemapp(**kwargs):
     timezone. For `CGIModel` fields, including nested `CGIModel` fields, this
     also applies to naive datetimes produced by before field validators,
     before model validators run.
+
+    With a schema, repeated parameters for scalar fields are rejected before
+    field validators run. Repeated parameters are still passed to collection
+    fields for validation. The historical handling of repeated ``tz`` values
+    is unchanged.
 
     Exception Raising
     -----------------

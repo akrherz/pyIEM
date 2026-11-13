@@ -24,6 +24,8 @@ All notable changes to this library are documented in this file.
 - Added an opt-in `cache_control` option to `iemapp`, which sends
   `Cache-Control: public, max-age=N` on `200` responses.
 - Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
+- Prevent `iemapp()` parsed arguments as lists from making it to validators
+  for arguments that are scalars.
 - Workaround a persistent and annoying SHEF encoding issue with RRSRAH.
 
 ### Bug Fixes

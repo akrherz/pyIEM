@@ -4,7 +4,7 @@ import json
 import os
 import random
 from datetime import datetime
-from typing import Annotated, Optional, Union
+from typing import Annotated, Any, Optional, Union
 from unittest import mock
 from zoneinfo import ZoneInfo
 
@@ -765,6 +765,89 @@ def test_ip_throttled(wsgi_client, random_ipv4: str):
     assert resp.status_code == 200, resp.text
     resp = c.get("/?q=1", environ_overrides=eo)
     assert resp.status_code == 429, resp.text
+
+
+def test_dupe_args_end_up_as_list_to_field_validator(wsgi_client):
+    """Test an edge case found in prod."""
+
+    class Schema(CGIModel):
+        thres: Annotated[int, Field(description="Start time")]
+
+        @field_validator("thres", mode="before")
+        @classmethod
+        def parse_thres(cls, value):
+            if isinstance(value, list):
+                raise ValueError("This should not happen.")
+            return value
+
+    @iemapp(schema=Schema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return "OK" if isinstance(environ["thres"], int) else "BAD"
+
+    c = wsgi_client(application)
+    resp = c.get("/?thres=1&thres=2")
+    assert resp.status_code == 422
+    assert "This should not happen." not in resp.text
+    assert "thres was specified multiple times" in resp.text
+    resp = c.get("/?thres=1")
+    assert resp.status_code == 200
+    assert resp.text == "OK"
+
+
+def test_schema_duplicate_scalar_and_collection_fields(wsgi_client):
+    """Reject repeated scalars but preserve list-capable schema fields."""
+
+    class Schema(CGIModel):
+        scalar: int | None = None
+        values: ListOrCSVType
+        either: int | list[int]
+        untyped: Any
+
+        @field_validator("scalar", mode="before")
+        @classmethod
+        def parse_scalar(cls, value):
+            return int(value.strip())
+
+    @iemapp(schema=Schema)
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "application/json")])
+        return json.dumps(
+            [environ["values"], environ["either"], environ["untyped"]]
+        )
+
+    c = wsgi_client(application)
+    query = "values=1&values=2&either=3&either=4&untyped=a&untyped=b"
+    resp = c.get(f"/?{query}")
+    assert resp.status_code == 200
+    assert resp.json == [["1", "2"], [3, 4], ["a", "b"]]
+    assert c.get(f"/?{query}&scalar=5").status_code == 200
+    for duplicate in ("scalar=1&scalar=1", "scalar[]=1&scalar[]=2"):
+        resp = c.get(f"/?{query}&{duplicate}")
+        assert resp.status_code == 422
+        assert "scalar was specified multiple times" in resp.text
+
+
+def test_schema_allowed_as_list_for_scalar_validator(wsgi_client):
+    """Applications can explicitly allow a validator to consume a list."""
+
+    class Schema(CGIModel):
+        value: int
+
+        @field_validator("value", mode="before")
+        @classmethod
+        def parse_value(cls, value):
+            return value[-1] if isinstance(value, list) else value
+
+    @iemapp(schema=Schema, allowed_as_list=["value"])
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return str(environ["value"])
+
+    resp = wsgi_client(application).get("/?value=1&value=2")
+    assert resp.status_code == 200
+    assert resp.text == "2"
 
 
 def test_allowed_as_list(wsgi_client):
