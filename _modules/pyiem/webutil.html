@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post69+gc1fc0f47e</title>
+    <title>pyiem.webutil &#8212; pyIEM 1.28.1.post73+g9e6acac7d</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b5bbc071"></script>
+    <script src="../../_static/documentation_options.js?v=c251d167"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post69+gc1fc0f47e" />
+  <meta name="docsearch:version" content="1.28.1.post73+g9e6acac7d" />
     <meta name="docbuild:last-update" content="Nov 13, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post69+gc1fc0f47e</p>
+    <p class="title logo__title">pyIEM 1.28.1.post73+g9e6acac7d</p>
   
 </a></div>
     
@@ -1302,6 +1302,13 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Run request preflight checks and return early payload when needed."""</span>
     <span class="c1"># Handle OPTIONS requests</span>
+    <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REQUEST_METHOD"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"POST"</span><span class="p">:</span>
+        <span class="n">start_response</span><span class="p">(</span>
+            <span class="s2">"405 Method Not Allowed"</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s2">"Content-type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Allow"</span><span class="p">,</span> <span class="s2">"GET, OPTIONS"</span><span class="p">)],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"POST requests are not supported."</span>
+
     <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"REQUEST_METHOD"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"OPTIONS"</span><span class="p">:</span>
         <span class="n">start_response</span><span class="p">(</span>
             <span class="s2">"204 No Content"</span><span class="p">,</span>
@@ -1456,7 +1463,7 @@
 <div class="viewcode-block" id="iemapp">
 <a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.iemapp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">iemapp</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Opinionated processing of CGI GET variables for mod_wsgi apps.</span>
+<span class="w">    </span><span class="sd">"""Opinionated middleware for WSGI apps. **POST** requests are rejected.</span>
 
 <span class="sd">    - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.</span>
 <span class="sd">    - Only query string parameters are parsed; request bodies are left unread.</span>
