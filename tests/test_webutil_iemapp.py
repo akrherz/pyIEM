@@ -4,7 +4,7 @@ import json
 import os
 import random
 from datetime import datetime
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any, Literal, NewType, Optional, Union
 from unittest import mock
 from zoneinfo import ZoneInfo
 
@@ -848,6 +848,37 @@ def test_schema_allowed_as_list_for_scalar_validator(wsgi_client):
     resp = wsgi_client(application).get("/?value=1&value=2")
     assert resp.status_code == 200
     assert resp.text == "2"
+
+
+def test_schema_duplicate_annotated_literal_and_newtype(wsgi_client):
+    """Classify nested annotations and leave unknown types to Pydantic."""
+    Identifier = NewType("Identifier", str)
+
+    class Schema(CGIModel):
+        scalar: Annotated[int, Field(gt=0)] | None = None
+        choice: Literal["a", "b"] = "a"
+        values: int | Annotated[list[int], Field(min_length=1)]
+        identifier: Identifier
+
+        @field_validator("identifier", mode="before")
+        @classmethod
+        def parse_identifier(cls, value):
+            return value[-1] if isinstance(value, list) else value
+
+    @iemapp(schema=Schema)
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "application/json")])
+        return json.dumps([environ["values"], environ["identifier"]])
+
+    client = wsgi_client(application)
+    query = "values=1&values=2&identifier=first&identifier=last"
+    resp = client.get(f"/?{query}")
+    assert resp.status_code == 200
+    assert resp.json == [[1, 2], "last"]
+    for duplicate in ("scalar=1&scalar=2", "choice=a&choice=b"):
+        resp = client.get(f"/?{query}&{duplicate}")
+        assert resp.status_code == 422
+        assert "was specified multiple times" in resp.text
 
 
 def test_allowed_as_list(wsgi_client):
