@@ -15,8 +15,8 @@ All notable changes to this library are documented in this file.
 - Drop the unuseful `cursor` argument to `util.get_properties`.
 - Expanded `webutil.TELEMETRY` to hold xff(x-forwarded-for) and http_agent.
 - Field of type `TZ_FIELD_OPTIONAL` removed as this is not supported.
-- `iemapp` parses query strings only and no longer consumes form bodies.
-  Remove the Paste dependency.
+- `iemapp` parses query strings only and rejects HTTP ``POST`` requests.
+- Remove the ``paste`` dependency.
 - Stop emitting syslog entries for web 404s that have no ``HTTP_REFERER``.
 
 ### New Features
