@@ -798,7 +798,7 @@ def _iemapp_preflight(
     if environ.get("REQUEST_METHOD", "") == "POST":
         start_response(
             "405 Method Not Allowed",
-            [("Content-type", "text/plain")],
+            [("Content-type", "text/plain"), ("Allow", "GET, OPTIONS")],
         )
         return True, b"POST requests are not supported."
 
