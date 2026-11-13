@@ -29,7 +29,6 @@ dependencies = [
   "netcdf4",
   "numpy",
   "pandas",
-  "paste",
   "pillow",
   "psycopg",
   "pyarrow",
