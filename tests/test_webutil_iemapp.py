@@ -606,6 +606,48 @@ def test_iemapp_decorator(wsgi_client):
     assert resp.text == "Hello!"
 
 
+def test_iemapp_query_string_values(wsgi_client):
+    """Keep blank, encoded, and repeated query values."""
+
+    @iemapp()
+    def application(environ, start_response):
+        start_response("200 OK", [("Content-type", "application/json")])
+        return json.dumps(
+            {key: environ[key] for key in ("single", "blank", "bare", "multi")}
+        )
+
+    resp = wsgi_client(application).get(
+        "/?single=hello+world%2Btest&blank=&bare&multi=one&multi=two"
+    )
+    assert resp.status_code == 200
+    assert resp.json == {
+        "single": "hello world+test",
+        "blank": "",
+        "bare": "",
+        "multi": ["one", "two"],
+    }
+
+
+def test_iemapp_does_not_parse_request_body(wsgi_client):
+    """Only query parameters are parsed; the application can read the body."""
+
+    @iemapp()
+    def application(environ, start_response):
+        body = environ["wsgi.input"].read(int(environ["CONTENT_LENGTH"]))
+        start_response("200 OK", [("Content-type", "application/json")])
+        return json.dumps(
+            [environ["query"], environ.get("bodyonly"), body.decode()]
+        )
+
+    resp = wsgi_client(application).post(
+        "/?query=url",
+        data="query=body&bodyonly=present",
+        content_type="application/x-www-form-urlencoded",
+    )
+    assert resp.status_code == 200
+    assert resp.json == ["url", None, "query=body&bodyonly=present"]
+
+
 def test_invalid_user_timestamp_without_tzinfo(wsgi_client):
     """Test that the conditioning of this string fails."""
 

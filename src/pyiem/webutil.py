@@ -17,10 +17,10 @@ from datetime import datetime, timezone, tzinfo
 from http import HTTPStatus
 from types import UnionType
 from typing import Any, Iterator, Literal, Union, get_args, get_origin
+from urllib.parse import parse_qs
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from docutils.core import publish_string
-from paste.request import parse_formvars
 from pydantic import (
     AfterValidator,
     BaseModel,
@@ -802,8 +802,11 @@ def _iemapp_preflight(
         )
         return True, b""
 
-    # mixed converts this to a regular dict
-    form = parse_formvars(environ).mixed()
+    parsed = parse_qs(environ.get("QUERY_STRING", ""), keep_blank_values=True)
+    form = {
+        key: values[0] if len(values) == 1 else values
+        for key, values in parsed.items()
+    }
     form = clean_form(form)
     if "help" in form:
         hostname = environ.get("HTTP_HOST", "unknown")
@@ -947,6 +950,7 @@ def iemapp(**kwargs):
     """Opinionated processing of CGI GET variables for mod_wsgi apps.
 
     - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.
+    - Only query string parameters are parsed; request bodies are left unread.
 
     kwargs:
         - default_tz: The default timezone to use for timestamps, the default
