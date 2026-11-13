@@ -795,6 +795,13 @@ def _iemapp_preflight(
 ) -> tuple[bool, bytes | None]:
     """Run request preflight checks and return early payload when needed."""
     # Handle OPTIONS requests
+    if environ.get("REQUEST_METHOD", "") == "POST":
+        start_response(
+            "405 Method Not Allowed",
+            [("Content-type", "text/plain")],
+        )
+        return True, b"POST requests are not supported."
+
     if environ.get("REQUEST_METHOD", "") == "OPTIONS":
         start_response(
             "204 No Content",
@@ -947,7 +954,7 @@ def _iemapp_handle_exception(
 
 
 def iemapp(**kwargs):
-    """Opinionated processing of CGI GET variables for mod_wsgi apps.
+    """Opinionated middleware for WSGI apps. **POST** requests are rejected.
 
     - A schema field name of `tz` is assumed to be destined to ZoneInfo usage.
     - Only query string parameters are parsed; request bodies are left unread.

@@ -606,6 +606,20 @@ def test_iemapp_decorator(wsgi_client):
     assert resp.text == "Hello!"
 
 
+def test_iemapp_no_post(wsgi_client):
+    """Test that iemapp wrapped app rejects POST requests."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = wsgi_client(application)
+    resp = c.post("/")
+    assert resp.status_code == 405
+
+
 def test_iemapp_query_string_values(wsgi_client):
     """Keep blank, encoded, and repeated query values."""
 
@@ -644,8 +658,7 @@ def test_iemapp_does_not_parse_request_body(wsgi_client):
         data="query=body&bodyonly=present",
         content_type="application/x-www-form-urlencoded",
     )
-    assert resp.status_code == 200
-    assert resp.json == ["url", None, "query=body&bodyonly=present"]
+    assert resp.status_code == 405
 
 
 def test_invalid_user_timestamp_without_tzinfo(wsgi_client):
