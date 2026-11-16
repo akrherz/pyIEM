@@ -12,6 +12,45 @@ import pyiem.datatypes as dt
 from pyiem.exceptions import InvalidArguments
 
 
+def flight_rule(data: dict[str, float | None]) -> str:
+    """Compute the flight rule for this likely database data entry.
+
+    data needs to define
+        - `skyc1`, `skyc2`, `skyc3`, `skyc4`: Sky coverage codes
+        - `skyl1`, `skyl2`, `skyl3`, `skyl4`: Sky layer heights in feet AGL
+        - `vsby`: Visibility in statute miles
+
+    The return string is as follows:
+        - `UNKNOWN`
+        - `VFR`: Ceiling >3000' AGL and visibility >5 statutes miles (green)
+        - ``MVFR`: 1000-3000' and/or 3-5 statute miles, inclusive (blue)
+        - `IFR`: 500 - <1000' and/or 1 to <3 statute miles (red)
+        - `LIFR`: < 500' AGL and/or < 1 mile (magenta)
+    """
+    val = "UNKNOWN"
+    level = 100_000  # arb high number
+    coverages = [data["skyc1"], data["skyc2"], data["skyc3"], data["skyc4"]]
+    if "OVC" in coverages:
+        idx = coverages.index("OVC")
+        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
+            idx
+        ]
+    if "BKN" in coverages and level == 100_000:
+        idx = coverages.index("BKN")
+        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
+            idx
+        ]
+    if data["vsby"] > 5 and level > 3000:
+        val = "VFR"
+    elif level < 500 or data["vsby"] < 1:
+        val = "LIFR"
+    elif level < 1000 or data["vsby"] < 3:
+        val = "IFR"
+    elif level <= 3000 or data["vsby"] <= 5:
+        val = "MVFR"
+    return val
+
+
 def temperature_humidity_index(temperature, humidity):
     """Compute the Temperature Humidity Index
 

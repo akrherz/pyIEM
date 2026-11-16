@@ -25,6 +25,8 @@ All notable changes to this library are documented in this file.
 - Added American Samoa subplot to `MapPlot(sector="nws")`.
 - Added an opt-in `cache_control` option to `iemapp`, which sends
   `Cache-Control: public, max-age=N` on `200` responses.
+- Added `meteorology.flight_rule` helper to compute Flight Rules based on a
+  standard IEM centric data dict model.
 - Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
 - Prevent `iemapp()` parsed arguments as lists from making it to validators
   for arguments that are scalars.

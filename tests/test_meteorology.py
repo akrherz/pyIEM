@@ -12,6 +12,71 @@ from pyiem.exceptions import InvalidArguments
 warnings.simplefilter("ignore", RuntimeWarning)
 
 
+@pytest.mark.parametrize(
+    "data,expected",
+    [
+        (
+            {
+                "skyc1": "CLR",
+                "skyc2": None,
+                "skyc3": None,
+                "skyc4": None,
+                "skyl1": 0,
+                "skyl2": 0,
+                "skyl3": 0,
+                "skyl4": 0,
+                "vsby": 6,
+            },
+            "VFR",
+        ),
+        (
+            {
+                "skyc1": "OVC",
+                "skyc2": None,
+                "skyc3": None,
+                "skyc4": None,
+                "skyl1": 900,
+                "skyl2": 0,
+                "skyl3": 0,
+                "skyl4": 0,
+                "vsby": 2,
+            },
+            "IFR",
+        ),
+        (
+            {
+                "skyc1": "BKN",
+                "skyc2": None,
+                "skyc3": None,
+                "skyc4": None,
+                "skyl1": 200,
+                "skyl2": 0,
+                "skyl3": 0,
+                "skyl4": 0,
+                "vsby": 0.5,
+            },
+            "LIFR",
+        ),
+        (
+            {
+                "skyc1": "BKN",
+                "skyc2": None,
+                "skyc3": None,
+                "skyc4": None,
+                "skyl1": 1500,
+                "skyl2": 0,
+                "skyl3": 0,
+                "skyl4": 0,
+                "vsby": 4,
+            },
+            "MVFR",
+        ),
+    ],
+)
+def test_flight_rule(data, expected):
+    assert meteorology.flight_rule(data) == expected
+
+
 def test_temperature_humidity_index():
     """Test the Temperature Humidity Index calculation."""
     res = meteorology.temperature_humidity_index(
