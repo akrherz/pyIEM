@@ -122,6 +122,11 @@ def _mylowercase(text):
     return " ".join(tokens)
 
 
+def _no_commas(val: str | None):
+    """Ensure we have no commas in this string."""
+    return None if val is None else val.replace(",", " ")
+
+
 class LSR:
     """Represents a single Local Storm Report within the LSRProduct"""
 
@@ -131,16 +136,16 @@ class LSR:
         self.valid = None
         self.typetext = None
         self.geometry = None
-        self.city: str = None
-        self.county: str = None
-        self.source = None
+        self.city: str | None = None
+        self.county: str | None = None
+        self.source: str | None = None
         self.remark = None
         self.magnitude_f = None
         self.magnitude_str = None
         self.magnitude_qualifier = None
         self.magnitude_units = None
         self.state = None
-        self.source = None
+        self.source: str | None = None
         self.text = None
         self.wfo = None
         self.duplicate = False
@@ -237,14 +242,14 @@ class LSR:
             self.utcvalid,
             self.get_dbtype(),
             self.magnitude_f,
-            self.city,
-            self.county,
+            _no_commas(self.city),
+            _no_commas(self.county),
             self.state,
-            self.source,
+            _no_commas(self.source),
             self.remark,
             wkt,
             self.wfo,
-            self.typetext.upper(),
+            _no_commas(self.typetext.upper()),
             prod.get_product_id(),
             prod.valid,
             self.magnitude_units,
