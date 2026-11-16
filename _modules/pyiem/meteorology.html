@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.meteorology &#8212; pyIEM 1.28.1.post79+g5836a5263</title>
+    <title>pyiem.meteorology &#8212; pyIEM 1.28.1.post82+g9fc7d33f3</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=c58c846a"></script>
+    <script src="../../_static/documentation_options.js?v=7b7d6999"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/meteorology';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post79+g5836a5263" />
+  <meta name="docsearch:version" content="1.28.1.post82+g9fc7d33f3" />
     <meta name="docbuild:last-update" content="Nov 16, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post79+g5836a5263</p>
+    <p class="title logo__title">pyIEM 1.28.1.post82+g9fc7d33f3</p>
   
 </a></div>
     
@@ -493,6 +493,10 @@
 <span class="sd">          below 1 statute mile (magenta).</span>
 <span class="sd">    """</span>
     <span class="n">val</span> <span class="o">=</span> <span class="s2">"UNKNOWN"</span>
+    <span class="n">vsby</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span>
+    <span class="c1"># First compute times when vsby is deterministic</span>
+    <span class="k">if</span> <span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"LIFR"</span>
     <span class="n">level</span> <span class="o">=</span> <span class="mi">100_000</span>  <span class="c1"># arb high number</span>
     <span class="n">coverages</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">"skyc1"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyc2"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyc3"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyc4"</span><span class="p">]]</span>
     <span class="c1"># Need to find the lowest level that is either BKN or OVC</span>
@@ -507,16 +511,17 @@
         <span class="n">level</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">"skyl1"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyl2"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyl3"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"skyl4"</span><span class="p">]][</span>
             <span class="n">idx</span>
         <span class="p">]</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">val</span>
-    <span class="n">vsby</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"vsby"</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&gt;</span> <span class="mi">3000</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&gt;</span> <span class="mi">3000</span><span class="p">:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="s2">"VFR"</span>
-    <span class="k">elif</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">500</span> <span class="ow">or</span> <span class="p">(</span><span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="s2">"LIFR"</span>
-    <span class="k">elif</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="ow">or</span> <span class="p">(</span><span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;</span> <span class="mi">3</span>
+    <span class="p">):</span>
         <span class="n">val</span> <span class="o">=</span> <span class="s2">"IFR"</span>
-    <span class="k">elif</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="mi">3000</span> <span class="ow">or</span> <span class="p">(</span><span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="mi">3000</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="n">vsby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vsby</span> <span class="o">&lt;=</span> <span class="mi">5</span>
+    <span class="p">):</span>
         <span class="n">val</span> <span class="o">=</span> <span class="s2">"MVFR"</span>
     <span class="k">return</span> <span class="n">val</span></div>
 
