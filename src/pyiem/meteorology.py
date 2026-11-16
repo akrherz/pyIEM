@@ -58,9 +58,7 @@ def flight_rule(data: dict[str, float | None]) -> str:
         ]
     if vsby is not None and vsby > 5 and level is not None and level > 3000:
         val = "VFR"
-    elif (level is not None and level < 500) or (
-        vsby is not None and vsby < 1
-    ):
+    elif level is not None and level < 500:
         val = "LIFR"
     elif (level is not None and level < 1000) or (
         vsby is not None and vsby < 3
