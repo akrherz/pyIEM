@@ -12,69 +12,30 @@ from pyiem.exceptions import InvalidArguments
 warnings.simplefilter("ignore", RuntimeWarning)
 
 
+def _flight_rule_data(layers, vsby):
+    data = {"vsby": vsby}
+    for i, (coverage, height) in enumerate(layers, start=1):
+        data[f"skyc{i}"] = coverage
+        data[f"skyl{i}"] = height
+    for i in range(len(layers) + 1, 5):
+        data[f"skyc{i}"] = data[f"skyl{i}"] = None
+    return data
+
+
 @pytest.mark.parametrize(
-    "data,expected",
+    "layers,vsby,expected",
     [
-        (
-            {
-                "skyc1": "CLR",
-                "skyc2": None,
-                "skyc3": None,
-                "skyc4": None,
-                "skyl1": 0,
-                "skyl2": 0,
-                "skyl3": 0,
-                "skyl4": 0,
-                "vsby": 6,
-            },
-            "VFR",
-        ),
-        (
-            {
-                "skyc1": "OVC",
-                "skyc2": None,
-                "skyc3": None,
-                "skyc4": None,
-                "skyl1": 900,
-                "skyl2": 0,
-                "skyl3": 0,
-                "skyl4": 0,
-                "vsby": 2,
-            },
-            "IFR",
-        ),
-        (
-            {
-                "skyc1": "BKN",
-                "skyc2": None,
-                "skyc3": None,
-                "skyc4": None,
-                "skyl1": 200,
-                "skyl2": 0,
-                "skyl3": 0,
-                "skyl4": 0,
-                "vsby": 0.5,
-            },
-            "LIFR",
-        ),
-        (
-            {
-                "skyc1": "BKN",
-                "skyc2": None,
-                "skyc3": None,
-                "skyc4": None,
-                "skyl1": 1500,
-                "skyl2": 0,
-                "skyl3": 0,
-                "skyl4": 0,
-                "vsby": 4,
-            },
-            "MVFR",
-        ),
+        ([("CLR", None)], 6, "VFR"),
+        ([("OVC", 900)], 2, "IFR"),
+        ([("BKN", 200)], 0.5, "LIFR"),
+        ([("BKN", 1500)], 4, "MVFR"),
+        ([("BKN", 200), ("OVC", 5000)], 6, "LIFR"),
+        ([("OVC", None)], 6, "UNKNOWN"),
+        ([("OVC", 300)], None, "LIFR"),
     ],
 )
-def test_flight_rule(data, expected):
-    assert meteorology.flight_rule(data) == expected
+def test_flight_rule(layers, vsby, expected):
+    assert meteorology.flight_rule(_flight_rule_data(layers, vsby)) == expected
 
 
 def test_temperature_humidity_index():

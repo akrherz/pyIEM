@@ -40,23 +40,28 @@ def flight_rule(data: dict[str, float | None]) -> str:
     val = "UNKNOWN"
     level = 100_000  # arb high number
     coverages = [data["skyc1"], data["skyc2"], data["skyc3"], data["skyc4"]]
-    if "OVC" in coverages:
-        idx = coverages.index("OVC")
-        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
-            idx
-        ]
-    if "BKN" in coverages and level == 100_000:
+    # Need to find the lowest level that is either BKN or OVC
+    # BKN should always be lower than OVC
+    if "BKN" in coverages:
         idx = coverages.index("BKN")
         level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
             idx
         ]
-    if data["vsby"] > 5 and level > 3000:
+    elif "OVC" in coverages:
+        idx = coverages.index("OVC")
+        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
+            idx
+        ]
+    if level is None:
+        return val
+    vsby = data["vsby"]
+    if vsby is not None and vsby > 5 and level > 3000:
         val = "VFR"
-    elif level < 500 or data["vsby"] < 1:
+    elif level < 500 or (vsby is not None and vsby < 1):
         val = "LIFR"
-    elif level < 1000 or data["vsby"] < 3:
+    elif level < 1000 or (vsby is not None and vsby < 3):
         val = "IFR"
-    elif level <= 3000 or data["vsby"] <= 5:
+    elif level <= 3000 or (vsby is not None and vsby <= 5):
         val = "MVFR"
     return val
 
