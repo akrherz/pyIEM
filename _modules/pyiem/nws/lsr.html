@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.lsr &#8212; pyIEM 1.28.1.post73+g9e6acac7d</title>
+    <title>pyiem.nws.lsr &#8212; pyIEM 1.28.1.post75+g878460669</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=c251d167"></script>
+    <script src="../../../_static/documentation_options.js?v=4733f797"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/lsr';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post73+g9e6acac7d" />
-    <meta name="docbuild:last-update" content="Nov 13, 2026"/>
+  <meta name="docsearch:version" content="1.28.1.post75+g878460669" />
+    <meta name="docbuild:last-update" content="Nov 16, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post73+g9e6acac7d</p>
+    <p class="title logo__title">pyIEM 1.28.1.post75+g878460669</p>
   
 </a></div>
     
@@ -575,6 +575,11 @@
     <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_no_commas</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Ensure we have no commas in this string."""</span>
+    <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="LSR">
 <a class="viewcode-back" href="../../../api/pyiem.nws.lsr.html#pyiem.nws.lsr.LSR">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LSR</span><span class="p">:</span>
@@ -586,16 +591,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">typetext</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">county</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">county</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remark</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_f</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_str</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_qualifier</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_units</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wfo</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duplicate</span> <span class="o">=</span> <span class="kc">False</span>
@@ -709,14 +714,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">utcvalid</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_dbtype</span><span class="p">(),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_f</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">county</span><span class="p">,</span>
+            <span class="n">_no_commas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">),</span>
+            <span class="n">_no_commas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">county</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+            <span class="n">_no_commas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remark</span><span class="p">,</span>
             <span class="n">wkt</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wfo</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">typetext</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="n">_no_commas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typetext</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
             <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_units</span><span class="p">,</span>
