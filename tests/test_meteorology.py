@@ -12,6 +12,32 @@ from pyiem.exceptions import InvalidArguments
 warnings.simplefilter("ignore", RuntimeWarning)
 
 
+def _flight_rule_data(layers, vsby):
+    data = {"vsby": vsby}
+    for i, (coverage, height) in enumerate(layers, start=1):
+        data[f"skyc{i}"] = coverage
+        data[f"skyl{i}"] = height
+    for i in range(len(layers) + 1, 5):
+        data[f"skyc{i}"] = data[f"skyl{i}"] = None
+    return data
+
+
+@pytest.mark.parametrize(
+    "layers,vsby,expected",
+    [
+        ([("CLR", None)], 6, "VFR"),
+        ([("OVC", 900)], 2, "IFR"),
+        ([("BKN", 200)], 0.5, "LIFR"),
+        ([("BKN", 1500)], 4, "MVFR"),
+        ([("BKN", 200), ("OVC", 5000)], 6, "LIFR"),
+        ([("OVC", None)], 6, "UNKNOWN"),
+        ([("OVC", 300)], None, "LIFR"),
+    ],
+)
+def test_flight_rule(layers, vsby, expected):
+    assert meteorology.flight_rule(_flight_rule_data(layers, vsby)) == expected
+
+
 def test_temperature_humidity_index():
     """Test the Temperature Humidity Index calculation."""
     res = meteorology.temperature_humidity_index(

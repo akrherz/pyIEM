@@ -12,6 +12,60 @@ import pyiem.datatypes as dt
 from pyiem.exceptions import InvalidArguments
 
 
+def flight_rule(data: dict[str, float | None]) -> str:
+    """Compute the flight rule for a database data entry.
+
+    Parameters
+    ----------
+    data : dict[str, float | None]
+        Sky coverage codes in ``skyc1`` through ``skyc4``, sky layer
+        heights in feet AGL in ``skyl1`` through ``skyl4``, and visibility
+        in statute miles in ``vsby``.
+
+    Returns
+    -------
+    str
+        One of the following flight rules:
+
+        - ``UNKNOWN`` when the conditions do not match a category.
+        - ``VFR`` when the ceiling is above 3,000 feet AGL and visibility is
+          above 5 statute miles (green).
+        - ``MVFR`` when the ceiling is 1,000 to 3,000 feet AGL and/or
+          visibility is 3 to 5 statute miles, inclusive (blue).
+        - ``IFR`` when the ceiling is 500 to below 1,000 feet AGL and/or
+          visibility is 1 to below 3 statute miles (red).
+        - ``LIFR`` when the ceiling is below 500 feet AGL and/or visibility is
+          below 1 statute mile (magenta).
+    """
+    val = "UNKNOWN"
+    level = 100_000  # arb high number
+    coverages = [data["skyc1"], data["skyc2"], data["skyc3"], data["skyc4"]]
+    # Need to find the lowest level that is either BKN or OVC
+    # BKN should always be lower than OVC
+    if "BKN" in coverages:
+        idx = coverages.index("BKN")
+        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
+            idx
+        ]
+    elif "OVC" in coverages:
+        idx = coverages.index("OVC")
+        level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
+            idx
+        ]
+    if level is None:
+        return val
+    vsby = data["vsby"]
+    if vsby is not None and vsby > 5 and level > 3000:
+        val = "VFR"
+    elif level < 500 or (vsby is not None and vsby < 1):
+        val = "LIFR"
+    elif level < 1000 or (vsby is not None and vsby < 3):
+        val = "IFR"
+    elif level <= 3000 or (vsby is not None and vsby <= 5):
+        val = "MVFR"
+    return val
+
+
 def temperature_humidity_index(temperature, humidity):
     """Compute the Temperature Humidity Index
 
