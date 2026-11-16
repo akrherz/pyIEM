@@ -15,17 +15,19 @@ def test_igra2icao_is_unique():
         / "reference"
         / "igra2icao.txt"
     )
-    seen = {}
-    dups = []
+    keys_seen = {}
+    values_seen = {}
     with open(fn) as fh:
         for line in fh:
+            line = line.strip()
             if line and not line.startswith("#"):
-                tokens = line.strip().split()
-                key = tokens[0]
-                if key in seen:
-                    dups.append(key)
-                seen[key] = True
-    assert not dups, f"Found duplicate keys: {dups}"
+                key, value = line.split()
+                if key in keys_seen:
+                    raise AssertionError(f"Duplicate key found: {key}")
+                if value in values_seen:
+                    raise AssertionError(f"Duplicate value found: {value}")
+                keys_seen[key] = True
+                values_seen[value] = True
 
 
 def test_ugc_state_names_in_state_names():
