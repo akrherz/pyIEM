@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.meteorology module &#8212; pyIEM 1.28.1.post75+g878460669</title>
+    <title>pyiem.meteorology module &#8212; pyIEM 1.28.1.post79+g5836a5263</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=4733f797"></script>
+    <script src="../_static/documentation_options.js?v=c58c846a"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.meteorology';</script>
@@ -50,7 +50,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post75+g878460669" />
+  <meta name="docsearch:version" content="1.28.1.post79+g5836a5263" />
     <meta name="docbuild:last-update" content="Nov 16, 2026"/>
   
     
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post75+g878460669</p>
+    <p class="title logo__title">pyIEM 1.28.1.post79+g5836a5263</p>
   
 </a></div>
     
@@ -591,6 +591,37 @@
 <span id="pyiem-meteorology-module"></span><h1>pyiem.meteorology module<a class="headerlink" href="#module-pyiem.meteorology" title="Link to this heading">#</a></h1>
 <p>We do meteorological things, when necessary</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.flight_rule">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">flight_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#flight_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.flight_rule" title="Link to this definition">#</a></dt>
+<dd><p>Compute the flight rule for a database data entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em> | </em><em>None</em><em>]</em>) – Sky coverage codes in <code class="docutils literal notranslate"><span class="pre">skyc1</span></code> through <code class="docutils literal notranslate"><span class="pre">skyc4</span></code>, sky layer
+heights in feet AGL in <code class="docutils literal notranslate"><span class="pre">skyl1</span></code> through <code class="docutils literal notranslate"><span class="pre">skyl4</span></code>, and visibility
+in statute miles in <code class="docutils literal notranslate"><span class="pre">vsby</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>One of the following flight rules:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> when the conditions do not match a category.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VFR</span></code> when the ceiling is above 3,000 feet AGL and visibility is
+above 5 statute miles (green).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MVFR</span></code> when the ceiling is 1,000 to 3,000 feet AGL and/or
+visibility is 3 to 5 statute miles, inclusive (blue).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IFR</span></code> when the ceiling is 500 to below 1,000 feet AGL and/or
+visibility is 1 to below 3 statute miles (red).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LIFR</span></code> when the ceiling is below 500 feet AGL and/or visibility is
+below 1 statute mile (magenta).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.meteorology.temperature_humidity_index">
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">temperature_humidity_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#temperature_humidity_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.temperature_humidity_index" title="Link to this definition">#</a></dt>
 <dd><p>Compute the Temperature Humidity Index</p>
@@ -826,6 +857,7 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.flight_rule"><code class="docutils literal notranslate"><span class="pre">flight_rule()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.temperature_humidity_index"><code class="docutils literal notranslate"><span class="pre">temperature_humidity_index()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.comprehensive_climate_index"><code class="docutils literal notranslate"><span class="pre">comprehensive_climate_index()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.clearsky_shortwave_irradiance_year"><code class="docutils literal notranslate"><span class="pre">clearsky_shortwave_irradiance_year()</span></code></a></li>
