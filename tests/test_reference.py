@@ -1,7 +1,33 @@
 """Is our reference hackery usable."""
 
-# Local
+from pathlib import Path
+
 from pyiem import reference
+
+
+def test_igra2icao_is_unique():
+    """Test that we have no dups in the lookup."""
+    fn = (
+        Path(__file__).parent.parent
+        / "src"
+        / "pyiem"
+        / "data"
+        / "reference"
+        / "igra2icao.txt"
+    )
+    keys_seen = {}
+    values_seen = {}
+    with open(fn) as fh:
+        for line in fh:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                key, value = line.split()
+                if key in keys_seen:
+                    raise AssertionError(f"Duplicate key found: {key}")
+                if value in values_seen:
+                    raise AssertionError(f"Duplicate value found: {value}")
+                keys_seen[key] = True
+                values_seen[value] = True
 
 
 def test_ugc_state_names_in_state_names():
