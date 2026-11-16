@@ -38,6 +38,10 @@ def flight_rule(data: dict[str, float | None]) -> str:
           below 1 statute mile (magenta).
     """
     val = "UNKNOWN"
+    vsby = data["vsby"]
+    # First compute times when vsby is deterministic
+    if vsby is not None and vsby < 1:
+        return "LIFR"
     level = 100_000  # arb high number
     coverages = [data["skyc1"], data["skyc2"], data["skyc3"], data["skyc4"]]
     # Need to find the lowest level that is either BKN or OVC
@@ -52,16 +56,19 @@ def flight_rule(data: dict[str, float | None]) -> str:
         level = [data["skyl1"], data["skyl2"], data["skyl3"], data["skyl4"]][
             idx
         ]
-    if level is None:
-        return val
-    vsby = data["vsby"]
-    if vsby is not None and vsby > 5 and level > 3000:
+    if vsby is not None and vsby > 5 and level is not None and level > 3000:
         val = "VFR"
-    elif level < 500 or (vsby is not None and vsby < 1):
+    elif (level is not None and level < 500) or (
+        vsby is not None and vsby < 1
+    ):
         val = "LIFR"
-    elif level < 1000 or (vsby is not None and vsby < 3):
+    elif (level is not None and level < 1000) or (
+        vsby is not None and vsby < 3
+    ):
         val = "IFR"
-    elif level <= 3000 or (vsby is not None and vsby <= 5):
+    elif (level is not None and level <= 3000) or (
+        vsby is not None and vsby <= 5
+    ):
         val = "MVFR"
     return val
 

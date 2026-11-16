@@ -28,6 +28,7 @@ def _flight_rule_data(layers, vsby):
         ([("CLR", None)], 6, "VFR"),
         ([("OVC", 900)], 2, "IFR"),
         ([("BKN", 200)], 0.5, "LIFR"),
+        ([("BKN", None)], 0.5, "LIFR"),
         ([("BKN", 1500)], 4, "MVFR"),
         ([("BKN", 200), ("OVC", 5000)], 6, "LIFR"),
         ([("OVC", None)], 6, "UNKNOWN"),
