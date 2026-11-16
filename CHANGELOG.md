@@ -38,6 +38,8 @@ All notable changes to this library are documented in this file.
 - Improve typing of `database.get_dbconn`.
 - Preserve timezone normalization when assigning computed `sts` and `ets`.
 - Correct some `iemapp` validation edge cases and cleanup parse_time behaviour.
+- Prevent commas within city, county, source, or typetext of LSRs from reaching
+  the database. refs akrherz/iem#1832
 - Prevent full failures when `memcached` is not available. GHA variable
   `MEMCACHE_AVAILABLE` {YES,NO} added to control this within testing.
 

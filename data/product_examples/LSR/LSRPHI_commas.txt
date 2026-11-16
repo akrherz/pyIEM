@@ -1,0 +1,17 @@
+840 
+NWUS51 KPHI 122144
+LSRPHI
+
+Preliminary Local Storm Report...Summary
+National Weather Service Mount Holly NJ
+444 PM EST Thu Nov 12 2026
+
+0100 PM     Hail             2 E Newark, DE          39.70N 75.68W
+11/12/2026  U0.25 Inch       New, Castle        DE   Trained, Spotter
+
+
+1258 PM     Hail             1 E Newark              39.68N 75.74W
+11/12/2026  M1.00 Inch       New Castle         DE   Trained Spotter
+
+
+$$

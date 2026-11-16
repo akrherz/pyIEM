@@ -69,6 +69,15 @@ def test_240508_summary_link():
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh1832_no_commas(dbcursor):
+    """Test that we handle LSRs with invalid commas."""
+    prod = parser(get_test_file("LSR/LSRPHI_commas.txt"))
+    assert len(prod.lsrs) == 2
+    for lsr in prod.lsrs:
+        lsr.sql(dbcursor)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_240120_trace_snow(dbcursor):
     """Test that Trace snowfall reports can be round tripped."""
     prod = parser(get_test_file("LSR/LSRREV_trace.txt"))
