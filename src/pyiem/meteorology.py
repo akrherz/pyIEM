@@ -13,19 +13,29 @@ from pyiem.exceptions import InvalidArguments
 
 
 def flight_rule(data: dict[str, float | None]) -> str:
-    """Compute the flight rule for this likely database data entry.
+    """Compute the flight rule for a database data entry.
 
-    data needs to define
-        - `skyc1`, `skyc2`, `skyc3`, `skyc4`: Sky coverage codes
-        - `skyl1`, `skyl2`, `skyl3`, `skyl4`: Sky layer heights in feet AGL
-        - `vsby`: Visibility in statute miles
+    Parameters
+    ----------
+    data : dict[str, float | None]
+        Sky coverage codes in ``skyc1`` through ``skyc4``, sky layer
+        heights in feet AGL in ``skyl1`` through ``skyl4``, and visibility
+        in statute miles in ``vsby``.
 
-    The return string is as follows:
-        - `UNKNOWN`
-        - `VFR`: Ceiling >3000' AGL and visibility >5 statutes miles (green)
-        - ``MVFR`: 1000-3000' and/or 3-5 statute miles, inclusive (blue)
-        - `IFR`: 500 - <1000' and/or 1 to <3 statute miles (red)
-        - `LIFR`: < 500' AGL and/or < 1 mile (magenta)
+    Returns
+    -------
+    str
+        One of the following flight rules:
+
+        - ``UNKNOWN`` when the conditions do not match a category.
+        - ``VFR`` when the ceiling is above 3,000 feet AGL and visibility is
+          above 5 statute miles (green).
+        - ``MVFR`` when the ceiling is 1,000 to 3,000 feet AGL and/or
+          visibility is 3 to 5 statute miles, inclusive (blue).
+        - ``IFR`` when the ceiling is 500 to below 1,000 feet AGL and/or
+          visibility is 1 to below 3 statute miles (red).
+        - ``LIFR`` when the ceiling is below 500 feet AGL and/or visibility is
+          below 1 statute mile (magenta).
     """
     val = "UNKNOWN"
     level = 100_000  # arb high number
