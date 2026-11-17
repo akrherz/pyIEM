@@ -42,7 +42,7 @@ def test_ip_is_throttled_with_memcache_exception(random_ipv4: str):
     class DummyMemcacheClient:
         """Simple in-memory memcache stand-in for deterministic testing."""
 
-        def __init__(self, _server):
+        def __init__(self, _server, timeout=None):
             """."""
             self.cache = {}
 
@@ -1320,7 +1320,7 @@ def test_iemapp_telemetry_skipped_on_memcache_hit(wsgi_client):
     class DummyMemcacheClient:
         """Simple in-memory memcache stand-in for deterministic testing."""
 
-        def __init__(self, _server):
+        def __init__(self, _server, timeout=None):
             """."""
 
         @staticmethod
@@ -1329,7 +1329,7 @@ def test_iemapp_telemetry_skipped_on_memcache_hit(wsgi_client):
             return cache.get(key)
 
         @staticmethod
-        def set(key, value, expire=None):
+        def set(key, value, expire=None, noreply=False):
             """."""
             cache[key] = value
 
@@ -1466,7 +1466,7 @@ def test_iemapp_cache_control_on_memcache_hit(wsgi_client):
     class DummyMemcacheClient:
         """Simple in-memory memcache stand-in for deterministic testing."""
 
-        def __init__(self, _server):
+        def __init__(self, _server, timeout=None):
             """."""
 
         @staticmethod
@@ -1475,7 +1475,7 @@ def test_iemapp_cache_control_on_memcache_hit(wsgi_client):
             return cache.get(key)
 
         @staticmethod
-        def set(key, value, expire=None):
+        def set(key, value, expire=None, noreply=False):
             """."""
             cache[key] = value
 

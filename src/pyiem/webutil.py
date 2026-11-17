@@ -686,7 +686,7 @@ def _mcall(
         # An appside short circuit when we programatically do not want cache
         # or we are dealing with a generator
         return func(environ, start_response)
-    mc = Client("iem-memcached:11211")
+    mc = Client("iem-memcached:11211", timeout=5)
     try:
         res = mc.get(key)
     except Exception as exp:
@@ -701,6 +701,7 @@ def _mcall(
                     key,
                     res,
                     expire if isinstance(expire, int) else expire(environ),
+                    noreply=False,  # Ensure that the write happens
                 )
             except Exception as exp:
                 LOG.info(exp)
@@ -732,7 +733,7 @@ def ip_is_throttled(environ: dict, throttle_secs: float | Callable) -> bool:
         throttle_secs = throttle_secs(environ)
     if throttle_secs > 0:
         # No connection happens until it is used, so this should not fail
-        mc = Client(("iem-memcached", 11211))
+        mc = Client(("iem-memcached", 11211), timeout=5)
         key = f"throttle:{client_ip}"
         expire = int(throttle_secs) + 1
         try:
