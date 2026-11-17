@@ -1329,7 +1329,7 @@ def test_iemapp_telemetry_skipped_on_memcache_hit(wsgi_client):
             return cache.get(key)
 
         @staticmethod
-        def set(key, value, expire=None):
+        def set(key, value, expire=None, noreply=False):
             """."""
             cache[key] = value
 
@@ -1475,7 +1475,7 @@ def test_iemapp_cache_control_on_memcache_hit(wsgi_client):
             return cache.get(key)
 
         @staticmethod
-        def set(key, value, expire=None):
+        def set(key, value, expire=None, noreply=False):
             """."""
             cache[key] = value
 
