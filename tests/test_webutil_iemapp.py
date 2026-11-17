@@ -1268,7 +1268,7 @@ def test_memcachekey_is_none():
     os.getenv("MEMCACHE_AVAILABLE") != "YES",
     reason="requires a running memcached service",
 )
-def test_iemapp_memcache_keychanged():
+def test_iemapp_memcache_keychanged(wsgi_client):
     """Test the memcache option."""
 
     @iemapp(memcachekey=lambda e: f"{random.random()}")
@@ -1277,20 +1277,14 @@ def test_iemapp_memcache_keychanged():
         start_response("200 OK", [("Content-type", "text/plain")])
         return f"aa{random.random()}".encode("ascii")
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "",
-    }
-    sr = mock.MagicMock()
-    res1 = list(application(env, sr))[0]
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "",
-    }
-    res2 = list(application(env, sr))[0]
-    assert res1.startswith(b"aa")
-    assert res2.startswith(b"aa")
-    assert res1 != res2
+    c = wsgi_client(application)
+    resp = c.get("?")
+    result1 = resp.text
+    resp = c.get("?")
+    result2 = resp.text
+    assert result1.startswith("aa")
+    assert result2.startswith("aa")
+    assert result1 != result2
 
 
 @pytest.mark.skipif(
