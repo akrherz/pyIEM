@@ -701,6 +701,7 @@ def _mcall(
                     key,
                     res,
                     expire if isinstance(expire, int) else expire(environ),
+                    noreply=False,  # Ensure that the write happens
                 )
             except Exception as exp:
                 LOG.info(exp)
