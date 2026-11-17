@@ -1294,7 +1294,7 @@ def test_iemapp_memcache_keychanged(wsgi_client):
 def test_iemapp_memcache(wsgi_client):
     """Test the memcache option."""
 
-    @iemapp(memcachekey="iem_iemapp_memcache")
+    @iemapp(memcachekey=f"iem_iemapp_memcache{random.random()}")
     def application(environ, start_response):
         """Test."""
         start_response("200 OK", [("Content-type", "text/plain")])

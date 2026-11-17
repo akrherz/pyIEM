@@ -47,6 +47,23 @@ jobs:
       if: ${{ matrix.MEMCACHE_AVAILABLE == 'YES' }}
       run: |
         docker run -d --name iem_memcached -p 11211:11211 memcached:1.6.9
+        # Wait for memcached to accept a set/get round trip
+        ready=0
+        for i in $(seq 1 30); do
+          resp=$(printf 'set ready 0 60 1\r\n1\r\nget ready\r\nquit\r\n' | timeout 2 nc 127.0.0.1 11211 || true)
+          if echo "$resp" | grep -q VALUE; then
+            ready=1
+            break
+          fi
+          sleep 1
+        done
+        if [ "$ready" = "1" ]; then
+          echo "memcached ready"
+        else
+          echo "memcached failed to become ready"
+          docker logs iem_memcached
+          exit 1
+        fi
 
     - name: Add /etc/hosts entries
       run: |
