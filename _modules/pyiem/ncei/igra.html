@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.ncei.igra &#8212; pyIEM 1.28.1.post104+gfb1f2041b</title>
+    <title>pyiem.ncei.igra &#8212; pyIEM 1.29.0.post3+g60fb5ecb0</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=1ff0d58a"></script>
+    <script src="../../../_static/documentation_options.js?v=c2991e4d"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/ncei/igra';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.28.1.post104+gfb1f2041b" />
+  <meta name="docsearch:version" content="1.29.0.post3+g60fb5ecb0" />
     <meta name="docbuild:last-update" content="Nov 20, 2026"/>
   
     
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.28.1.post104+gfb1f2041b</p>
+    <p class="title logo__title">pyIEM 1.29.0.post3+g60fb5ecb0</p>
   
 </a></div>
     
@@ -550,10 +550,9 @@
             <span class="k">return</span>
         <span class="n">fid</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">"fid"</span><span class="p">]</span>
         <span class="c1"># Delete any existing data</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"raob_profile_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"DELETE from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> where fid = %s"</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">fid</span><span class="p">,),</span>
+            <span class="s2">"DELETE from raob_profile where fid = </span><span class="si">%s</span><span class="s2"> and valid = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">tropo_level</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">records</span><span class="p">:</span>
@@ -569,12 +568,14 @@
             <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">lvltyp2</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># tropopause</span>
                 <span class="n">tropo_level</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">press</span>
             <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"""</span>
-<span class="s2">    INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (fid, ts, levelcode, pressure, height, tmpc, dwpc,</span>
-<span class="s2">    drct, smps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)</span>
-<span class="s2">    """</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">"""</span>
+<span class="sd">    INSERT into raob_profile (fid, valid,</span>
+<span class="sd">    ts, levelcode, pressure, height, tmpc, dwpc,</span>
+<span class="sd">    drct, smps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)</span>
+<span class="sd">    """</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="n">fid</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
                     <span class="n">levelcode</span><span class="p">,</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">press</span><span class="p">,</span>
