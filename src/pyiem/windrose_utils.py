@@ -166,7 +166,7 @@ def _get_data(station, **kwargs):
         p.smps is not null
         and p.drct is not null and f.valid >= :sts and f.valid < :ets
         {tlimit}""",
-            tlimit=tlimit,
+            tlimit=tlimit.replace(" valid", " f.valid"),
         )
         sqlargs["level"] = kwargs["level"]
     with get_sqlalchemy_conn(database) as conn:
