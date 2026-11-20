@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+- Migrate to updated RAOB storage schema (akrherz/iem-database raob schema 2).
+
+### New Features
+
+### Bug Fixes
+
 ## **1.29.0** (20 Nov 2026)
 
 ### API Changes
