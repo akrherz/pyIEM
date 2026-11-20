@@ -66,10 +66,7 @@ def _rectify_wfo(wfo: str | None) -> str | None:
 
 def _rectify_wfo_nt(wfo: str | None) -> str | None:
     """Oye, convert into a three/four char field known by NetworkTable()."""
-    # Our work is done
-    if wfo is None:
-        return wfo
-    return _rectify_wfo(wfo).removeprefix("K")
+    return None if wfo is None else _rectify_wfo(wfo).removeprefix("K")
 
 
 def _clean_strings(val: list[str], re_pattern: str) -> list[str]:
