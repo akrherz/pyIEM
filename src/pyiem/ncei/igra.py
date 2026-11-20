@@ -93,10 +93,9 @@ class Sounding:
             return
         fid = txn.fetchone()["fid"]
         # Delete any existing data
-        table = f"raob_profile_{self.model.header.valid.year}"
         txn.execute(
-            f"DELETE from {table} where fid = %s",
-            (fid,),
+            "DELETE from raob_profile where fid = %s and valid = %s",
+            (fid, self.model.header.valid),
         )
         tropo_level = None
         for record in self.model.records:
@@ -112,12 +111,14 @@ class Sounding:
             if record.lvltyp2 == 2:  # tropopause
                 tropo_level = record.press
             txn.execute(
-                f"""
-    INSERT into {table} (fid, ts, levelcode, pressure, height, tmpc, dwpc,
-    drct, smps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+    INSERT into raob_profile (fid, valid,
+    ts, levelcode, pressure, height, tmpc, dwpc,
+    drct, smps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """,
                 (
                     fid,
+                    self.model.header.valid,
                     record.valid,
                     levelcode,
                     record.press,

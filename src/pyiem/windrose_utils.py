@@ -160,12 +160,13 @@ def _get_data(station, **kwargs):
         sql = sql_helper(
             """SELECT p.smps * 1.94384 as sknt, p.drct,
         f.valid at time zone 'UTC' as valid from
-        raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
+        raob_flights f JOIN raob_profile p on
+        (f.fid = p.fid and f.valid = p.valid) WHERE
         f.station = ANY(:stations) and p.pressure = :level and
         p.smps is not null
-        and p.drct is not null and valid >= :sts and valid < :ets
+        and p.drct is not null and f.valid >= :sts and f.valid < :ets
         {tlimit}""",
-            tlimit=tlimit,
+            tlimit=tlimit.replace(" valid", " f.valid"),
         )
         sqlargs["level"] = kwargs["level"]
     with get_sqlalchemy_conn(database) as conn:
