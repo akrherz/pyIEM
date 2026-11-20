@@ -50,7 +50,7 @@ def _rectify_wfo(wfo: str | None) -> str | None:
     if (
         wfo
         in (
-            "ABE CD ACR ADQ AFA AFC AFG AJK AKN AMC ANT AOM AOT ASN AVW AWU "
+            "ABE ACD ACR ADQ AFA AFC AFG AJK AKN AMC ANT AOM AOT ASN AVW AWU "
             "AYA GUM HFO HLI HTO KMR TKK TKR TRO TTP TYA"
         ).split()
     ):
