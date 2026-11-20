@@ -24,15 +24,49 @@ from pydantic import (
 )
 
 
-def _unrectify_wfo(wfo: str | None):
+def _unrectify_wfo(wfo: str | None) -> str | None:
     """Convert four char to three char WFO."""
     if wfo is None or len(wfo) == 3:
         return wfo
-    if wfo in ["PGUM", "PHFO", "PAFG", "PAJK", "PAFC"]:
+    if len(wfo) != 4:
+        raise ValueError("WFO must be either 3 or 4 characters")
+    if wfo.startswith("P"):
         return wfo[1:]
+    # Handle San Juan variants
     if wfo in ["TJSJ", "TSJU"]:
         return "JSJ"
+    # Best Guess
     return wfo[1:]
+
+
+def _rectify_wfo(wfo: str | None) -> str | None:
+    """Convert three char to four char WFO, if needed."""
+    # Our work is done
+    if wfo is None or len(wfo) == 4:
+        return wfo
+    if len(wfo) != 3:
+        raise ValueError("WFO must be either 3 or 4 characters")
+    # Ufff, known AK, HI, Guam P sites, PABR excluded to bias toward KABR
+    if (
+        wfo
+        in (
+            "ABE ACD ACR ADQ AFA AFC AFG AJK AKN AMC ANT AOM AOT ASN AVW AWU "
+            "AYA GUM HFO HLI HTO KMR TKK TKR TRO TTP TYA"
+        ).split()
+    ):
+        return f"P{wfo}"
+    # Handle San Juan variants
+    if wfo in ["JSJ", "SJU"]:
+        return "TJSJ"
+    if wfo == "STU":
+        return "NSTU"
+    # Default case
+    return f"K{wfo}"
+
+
+def _rectify_wfo_nt(wfo: str | None) -> str | None:
+    """Oye, convert into a three/four char field known by NetworkTable()."""
+    return None if wfo is None else _rectify_wfo(wfo).removeprefix("K")
 
 
 def _clean_strings(val: list[str], re_pattern: str) -> list[str]:
@@ -266,6 +300,15 @@ WFO3_FIELD = Annotated[str, BeforeValidator(_unrectify_wfo), _WF]
 WFO3_FIELD_OPTIONAL = Annotated[
     str | None, BeforeValidator(_unrectify_wfo), _WF
 ]
+
+WFO4_FIELD = Annotated[str, BeforeValidator(_rectify_wfo), _WF]
+WFO4_FIELD_OPTIONAL = Annotated[str | None, BeforeValidator(_rectify_wfo), _WF]
+
+WFO_NT_FIELD = Annotated[str, BeforeValidator(_rectify_wfo_nt), _WF]
+WFO_NT_FIELD_OPTIONAL = Annotated[
+    str | None, BeforeValidator(_rectify_wfo_nt), _WF
+]
+
 
 # -----------------
 _YF = Field(
