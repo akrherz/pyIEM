@@ -13,10 +13,27 @@ def station_model():
     class Model(BaseModel):
         wfo: fields.WFO3_FIELD = "DMX"
         wfo4: fields.WFO4_FIELD = "KDMX"
+        wfo_nt: fields.WFO_NT_FIELD = "DMX"
         station: fields.STATION_LIST_FIELD
         tz: fields.TZ_FIELD = "UTC"
 
     return Model
+
+
+@pytest.mark.parametrize(
+    "wfo_input,wfo_expected",
+    [
+        ("DMX", "DMX"),
+        ("KDMX", "DMX"),
+        ("PGUM", "PGUM"),
+        ("PHFO", "PHFO"),
+        ("TJSJ", "TJSJ"),
+        ("NSTU", "NSTU"),
+    ],
+)
+def test_rectify_wfo_nt(station_model, wfo_input, wfo_expected):
+    """Test how WFO3_FIELD unrectifies four character WFOs."""
+    assert station_model(wfo_nt=wfo_input, station="A").wfo_nt == wfo_expected
 
 
 @pytest.mark.parametrize(

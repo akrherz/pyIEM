@@ -64,6 +64,14 @@ def _rectify_wfo(wfo: str | None) -> str | None:
     return f"K{wfo}"
 
 
+def _rectify_wfo_nt(wfo: str | None) -> str | None:
+    """Oye, convert into a three/four char field known by NetworkTable()."""
+    # Our work is done
+    if wfo is None:
+        return wfo
+    return _rectify_wfo(wfo).removeprefix("K")
+
+
 def _clean_strings(val: list[str], re_pattern: str) -> list[str]:
     """Clean up the list strings."""
     str_re = re.compile(re_pattern)
@@ -298,6 +306,12 @@ WFO3_FIELD_OPTIONAL = Annotated[
 
 WFO4_FIELD = Annotated[str, BeforeValidator(_rectify_wfo), _WF]
 WFO4_FIELD_OPTIONAL = Annotated[str | None, BeforeValidator(_rectify_wfo), _WF]
+
+WFO_NT_FIELD = Annotated[str, BeforeValidator(_rectify_wfo_nt), _WF]
+WFO_NT_FIELD_OPTIONAL = Annotated[
+    str | None, BeforeValidator(_rectify_wfo_nt), _WF
+]
+
 
 # -----------------
 _YF = Field(

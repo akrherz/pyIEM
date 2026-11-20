@@ -31,6 +31,8 @@ All notable changes to this library are documented in this file.
 - Implement a new text collision algorithm for `pyiem.plot.MapPlot`.
 - Introduce `pyiem.web.fields.WFO4_FIELD` to provide a rectified WFO identifer
   when only a three char is provided.
+- Introduce `pyiem.web.fields.WFO_NT_FIELD` to provide a rectified WFO
+  identifier used by the IEM NetworkTable metadata.
 - Prevent `iemapp()` parsed arguments as lists from making it to validators
   for arguments that are scalars.
 - Workaround a persistent and annoying SHEF encoding issue with RRSRAH.
