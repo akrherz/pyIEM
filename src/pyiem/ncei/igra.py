@@ -151,9 +151,12 @@ def parse_header(text: str) -> SoundingHeader:
     month = int(text[18:20])
     day = int(text[21:23])
     hour = int(text[24:26])
-    valid = utc(year, month, day, hour)
     rlshh = int(text[27:29])
     rlsmm = int(text[29:31])
+    # Some instances have a release time, but no stored hour :/
+    if hour == 99 and 0 <= rlshh < 24:
+        hour = rlshh
+    valid = utc(year, month, day, hour)
     release_valid = valid
     if text[27:31] != "9999":
         release_valid = valid.replace(hour=rlshh, minute=rlsmm)
@@ -268,11 +271,12 @@ def process_ytd(filename: str):
         """Protect the parser."""
         try:
             return process_sounding(text)
-        except Exception:
+        except Exception as exp:
             LOG.exception(
-                "Failed to process %s, first line: %s",
+                "Failed to process %s, first line: %s %s",
                 filename,
                 text.split("\n")[0],
+                exp,
             )
         return None
 

@@ -12,8 +12,9 @@ def helper(filename: str):
 
 
 def test_260820_kabi_99hour():
-    """Test that we can error with a bad header."""
-    assert not helper("IGRA/KABI_99header.txt")
+    """Test the handling of 99 hour with a release time."""
+    obj = helper("IGRA/KABI_99header.txt")[0]
+    assert obj.model.header.valid.hour == 22
 
 
 def test_simple():
