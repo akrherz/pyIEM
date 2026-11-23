@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.ncei.igra &#8212; pyIEM 1.29.0.post3+g60fb5ecb0</title>
+    <title>pyiem.ncei.igra &#8212; pyIEM 1.29.0.post6+gf5de19fd5</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=c2991e4d"></script>
+    <script src="../../../_static/documentation_options.js?v=18305b9b"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/ncei/igra';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.29.0.post3+g60fb5ecb0" />
-    <meta name="docbuild:last-update" content="Nov 20, 2026"/>
+  <meta name="docsearch:version" content="1.29.0.post6+gf5de19fd5" />
+    <meta name="docbuild:last-update" content="Nov 23, 2026"/>
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.29.0.post3+g60fb5ecb0</p>
+    <p class="title logo__title">pyIEM 1.29.0.post6+gf5de19fd5</p>
   
 </a></div>
     
@@ -612,9 +612,12 @@
     <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span>
     <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">21</span><span class="p">:</span><span class="mi">23</span><span class="p">])</span>
     <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">24</span><span class="p">:</span><span class="mi">26</span><span class="p">])</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="n">utc</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
     <span class="n">rlshh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">29</span><span class="p">])</span>
     <span class="n">rlsmm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">31</span><span class="p">])</span>
+    <span class="c1"># Some instances have a release time, but no stored hour :/</span>
+    <span class="k">if</span> <span class="n">hour</span> <span class="o">==</span> <span class="mi">99</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">rlshh</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">rlshh</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">utc</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
     <span class="n">release_valid</span> <span class="o">=</span> <span class="n">valid</span>
     <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">31</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"9999"</span><span class="p">:</span>
         <span class="n">release_valid</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">rlshh</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">rlsmm</span><span class="p">)</span>
@@ -753,11 +756,12 @@
 <span class="w">        </span><span class="sd">"""Protect the parser."""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">process_sounding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                <span class="s2">"Failed to process </span><span class="si">%s</span><span class="s2">, first line: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"Failed to process </span><span class="si">%s</span><span class="s2">, first line: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="n">filename</span><span class="p">,</span>
                 <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">exp</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
