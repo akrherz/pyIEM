@@ -24,6 +24,40 @@ def _parser(fn: str, utcnow=None) -> SPCPTS:
     )
 
 
+def test_gh1796_d48_dst_9z():
+    """Test this specific DST handling for Day 4-8 at 9z."""
+    prod = _parser(
+        "SPCPTS/PTSD48_dst.txt",
+        utcnow=utc(2027, 4, 6, 13),
+    )
+    assert prod.cycle == 10
+    j = prod.get_jabbers("", "")
+    ans = (
+        "The Storm Prediction Center issues Day 4 15% Any Severe Convective "
+        "Risk at Apr 6, 8:55z for portions of ARX "
+        "https://www.spc.noaa.gov/products/outlook/archive/2027/"
+        "day48otlk_20270406_0900.html"
+    )
+    assert j[0][0] == ans
+
+
+def test_gh1796_d48_not_dst_9z():
+    """Test this specific DST handling for Day 4-8 at 9z."""
+    prod = _parser(
+        "SPCPTS/PTSD48_not_dst.txt",
+        utcnow=utc(2027, 1, 6, 13),
+    )
+    assert prod.cycle == 10
+    j = prod.get_jabbers("", "")
+    ans = (
+        "The Storm Prediction Center issues Day 4 15% Any Severe Convective "
+        "Risk at Jan 6, 8:55z for portions of ARX "
+        "https://www.spc.noaa.gov/products/outlook/archive/2027/"
+        "day48otlk_20270106_1000.html"
+    )
+    assert j[0][0] == ans
+
+
 def test_260806_reversed_warning_message():
     """Test that the generated warning is helpful to me for reporting."""
     prod = _parser(

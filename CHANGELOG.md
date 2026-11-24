@@ -11,6 +11,10 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Support SCN26-95, implementation of new SPC Day 4-8 outlooks. This makes a
+  life choice to assign the morning updates both to cycle 10. For more info,
+  see akrherz/iem#1796.
+
 ### Bug Fixes
 
 - Allow for NCEI IGRA2 file with `99` as the hour value, but a release time
