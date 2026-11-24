@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.29.0.post6+gf5de19fd5</title>
+    <title>pyiem.nws.products.spcpts &#8212; pyIEM 1.29.0.post9+gca5cbdb34</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../../_static/documentation_options.js?v=18305b9b"></script>
+    <script src="../../../../_static/documentation_options.js?v=3564fce7"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/spcpts';</script>
@@ -47,8 +47,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.29.0.post6+gf5de19fd5" />
-    <meta name="docbuild:last-update" content="Nov 23, 2026"/>
+  <meta name="docsearch:version" content="1.29.0.post9+gca5cbdb34" />
+    <meta name="docbuild:last-update" content="Nov 24, 2026"/>
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.29.0.post6+gf5de19fd5</p>
+    <p class="title logo__title">pyIEM 1.29.0.post9+gca5cbdb34</p>
   
 </a></div>
     
@@ -461,8 +461,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">UTC</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">LinearRing</span><span class="p">,</span>
@@ -496,14 +496,31 @@
 
 <div class="viewcode-block" id="imgsrc_from_row">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.imgsrc_from_row">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">imgsrc_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">imgsrc_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Compute the SPC image source for a given database row."""</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">ymd</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"product_issue"</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">product_issue</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"product_issue"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">product_issue</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Assume UTC</span>
+        <span class="n">product_issue</span> <span class="o">=</span> <span class="n">product_issue</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
+    <span class="c1"># Localize to US/Central due to DST needs</span>
+    <span class="n">product_issue</span> <span class="o">=</span> <span class="n">product_issue</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"America/Chicago"</span><span class="p">))</span>
+    <span class="n">ymd</span> <span class="o">=</span> <span class="n">product_issue</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">UTC</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
     <span class="c1"># When SPC flipped to PNGs</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">"png"</span> <span class="k">if</span> <span class="n">ymd</span> <span class="o">&gt;=</span> <span class="s2">"20260306"</span> <span class="k">else</span> <span class="s2">"gif"</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"day"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ymd</span> <span class="o">&gt;=</span> <span class="s2">"20261201"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"cycle"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"2130"</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Le Sigh</span>
+                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"0900"</span> <span class="k">if</span> <span class="n">product_issue</span><span class="o">.</span><span class="n">dst</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"1000"</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'product_issue'</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day48otlk_"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'product_issue'</span><span class="p">]</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.gif"</span>
+            <span class="p">)</span>
         <span class="c1"># Le Sigh</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="s2">"https://www.spc.noaa.gov/products/exper/day4-8/archive/"</span>
@@ -670,9 +687,10 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_compute_cycle</span><span class="p">(</span><span class="n">prod</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Figure out an integer cycle that identifies this product."""</span>
-    <span class="c1"># Extended ones are easy</span>
-    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PTSD48"</span><span class="p">,</span> <span class="s2">"PFWF38"</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="mi">21</span> <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">==</span> <span class="s2">"F"</span> <span class="k">else</span> <span class="mi">10</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSD48"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="k">else</span> <span class="mi">21</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWF38"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">21</span>
     <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">day</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># has to be convective</span>
         <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span> <span class="ow">and</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">&gt;</span> <span class="n">utc</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
@@ -1050,7 +1068,7 @@
 
 <div class="viewcode-block" id="SPCPTS.get_descript_and_url">
 <a class="viewcode-back" href="../../../../api/pyiem.nws.products.spcpts.html#pyiem.nws.products.spcpts.SPCPTS.get_descript_and_url">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_descript_and_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_descript_and_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Help to convert awips id into strings."""</span>
         <span class="n">product_descript</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="si">}</span><span class="s2">))"</span>
         <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://www.spc.noaa.gov"</span>
@@ -1085,10 +1103,24 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PTSD48"</span><span class="p">:</span>
             <span class="n">day</span> <span class="o">=</span> <span class="s2">"Days 4-8"</span>
             <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Convective"</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">"https://www.spc.noaa.gov/products/exper/day4-8/archive/"</span>
-                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day4-8_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">.html"</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="mi">5</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;</span> <span class="mi">17</span><span class="p">:</span>
+                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"1000"</span>
+                <span class="c1"># Need to figure out DST, sigh</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"America/Chicago"</span><span class="p">))</span><span class="o">.</span><span class="n">dst</span><span class="p">():</span>
+                    <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"0900"</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hhmm</span> <span class="o">=</span> <span class="s2">"2130"</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s2">"20261201"</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"https://www.spc.noaa.gov/products/outlook/archive/"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day48otlk_"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">hhmm</span><span class="si">}</span><span class="s2">.html"</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"https://www.spc.noaa.gov/products/exper/day4-8/archive/"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">/day4-8_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">.html"</span>
+                <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">"PFWFD1"</span><span class="p">:</span>
             <span class="n">day</span> <span class="o">=</span> <span class="s2">"Day 1"</span>
             <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">"Fire Weather"</span>
