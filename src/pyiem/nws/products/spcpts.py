@@ -6,7 +6,6 @@ My life was not supposed to end like this, what a brutal format.
 import re
 import tempfile
 from datetime import UTC, datetime, timedelta
-from typing import Optional
 from zoneinfo import ZoneInfo
 
 from shapely.geometry import (
@@ -39,7 +38,7 @@ THRESHOLD_ORDER = (
 ).split()
 
 
-def imgsrc_from_row(row: dict) -> Optional[str]:
+def imgsrc_from_row(row: dict) -> str | None:
     """Compute the SPC image source for a given database row."""
     if row["cycle"] == -1 or row["cycle"] is None:
         return None
@@ -49,7 +48,7 @@ def imgsrc_from_row(row: dict) -> Optional[str]:
         product_issue = product_issue.replace(tzinfo=UTC)
     # Localize to US/Central due to DST needs
     product_issue = product_issue.astimezone(ZoneInfo("America/Chicago"))
-    ymd = product_issue.strftime("%Y%m%d")
+    ymd = product_issue.astimezone(UTC).strftime("%Y%m%d")
     # When SPC flipped to PNGs
     suffix = "png" if ymd >= "20260306" else "gif"
     if row["day"] > 3:
@@ -587,7 +586,7 @@ class SPCPTS(TextProduct):
         elif self.afos == "PTSD48":
             day = "Days 4-8"
             product_descript = "Convective"
-            if self.valid.hour < 14:
+            if 5 < self.valid.hour < 17:
                 hhmm = "1000"
                 # Need to figure out DST, sigh
                 if self.valid.astimezone(ZoneInfo("America/Chicago")).dst():

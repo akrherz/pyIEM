@@ -1,5 +1,7 @@
 """Unit Tests"""
 
+from datetime import datetime
+
 import pytest
 
 from pyiem.nws.products import parser
@@ -22,6 +24,23 @@ def _parser(fn: str, utcnow=None) -> SPCPTS:
         utcnow=utcnow,
         ugc_provider={},
     )
+
+
+def test_gh1796_d48_21z():
+    """Test this for 21z."""
+    prod = _parser(
+        "SPCPTS/PTSD48_21.txt",
+        utcnow=utc(2027, 4, 6, 22),
+    )
+    assert prod.cycle == 21
+    j = prod.get_jabbers("", "")
+    ans = (
+        "The Storm Prediction Center issues Day 4 15% Any Severe Convective "
+        "Risk at Apr 6, 21:57z for portions of ARX "
+        "https://www.spc.noaa.gov/products/outlook/archive/2027/"
+        "day48otlk_20270406_2130.html"
+    )
+    assert j[0][0] == ans
 
 
 def test_gh1796_d48_dst_9z():
@@ -143,6 +162,27 @@ def test_gh936_day3_20z():
     assert prod.cycle == 20
     jmsgs = prod.get_jabbers("", "")
     assert jmsgs[-1][0].find("day3otlk_20240820_1930") > -1
+
+
+def test_imgsrc_d48():
+    """Test newly added D48 options."""
+    row = {
+        "product_issue": datetime(2027, 4, 7),  # naive
+        "cycle": 10,
+        "day": 4,
+        "category": "CATEGORICAL",
+    }
+    res = imgsrc_from_row(row)
+    assert res == (
+        "https://www.spc.noaa.gov/products/outlook/archive/2027/"
+        "day48otlk_20270407_0900.gif"
+    )
+    row["cycle"] = 21
+    res = imgsrc_from_row(row)
+    assert res == (
+        "https://www.spc.noaa.gov/products/outlook/archive/2027/"
+        "day48otlk_20270407_2130.gif"
+    )
 
 
 def test_imgsrc():
