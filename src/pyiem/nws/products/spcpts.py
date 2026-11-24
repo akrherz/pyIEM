@@ -5,8 +5,8 @@ My life was not supposed to end like this, what a brutal format.
 
 import re
 import tempfile
-from datetime import timedelta
-from typing import Optional
+from datetime import UTC, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from shapely.geometry import (
     LinearRing,
@@ -38,14 +38,31 @@ THRESHOLD_ORDER = (
 ).split()
 
 
-def imgsrc_from_row(row: dict) -> Optional[str]:
+def imgsrc_from_row(row: dict) -> str | None:
     """Compute the SPC image source for a given database row."""
     if row["cycle"] == -1 or row["cycle"] is None:
         return None
-    ymd = row["product_issue"].strftime("%Y%m%d")
+    product_issue: datetime = row["product_issue"]
+    if product_issue.tzinfo is None:
+        # Assume UTC
+        product_issue = product_issue.replace(tzinfo=UTC)
+    # Localize to US/Central due to DST needs
+    product_issue = product_issue.astimezone(ZoneInfo("America/Chicago"))
+    ymd = product_issue.astimezone(UTC).strftime("%Y%m%d")
     # When SPC flipped to PNGs
     suffix = "png" if ymd >= "20260306" else "gif"
     if row["day"] > 3:
+        if ymd >= "20261201":
+            if row["cycle"] == 21:
+                hhmm = "2130"
+            else:
+                # Le Sigh
+                hhmm = "0900" if product_issue.dst() else "1000"
+            return (
+                "https://www.spc.noaa.gov/products/outlook/archive/"
+                f"{row['product_issue'].year}/day48otlk_"
+                f"{row['product_issue']:%Y%m%d}_{hhmm}.gif"
+            )
         # Le Sigh
         return (
             "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
@@ -196,9 +213,10 @@ def init_days(prod) -> dict[int, "SPCOutlookCollection"]:
 
 def _compute_cycle(prod):
     """Figure out an integer cycle that identifies this product."""
-    # Extended ones are easy
-    if prod.afos in ["PTSD48", "PFWF38"]:
-        return 21 if prod.outlook_type == "F" else 10
+    if prod.afos == "PTSD48":
+        return 10 if prod.valid.hour in range(4, 13) else 21
+    if prod.afos == "PFWF38":
+        return 21
     day = int(prod.afos[5])
     if day == 3:  # has to be convective
         if prod.valid.hour in range(18, 23) and prod.valid > utc(2024, 8, 20):
@@ -533,7 +551,7 @@ class SPCPTS(TextProduct):
         for day, collect in self.outlook_collections.items():
             sql_day_collect(self, txn, day, collect)
 
-    def get_descript_and_url(self):
+    def get_descript_and_url(self) -> tuple[str, str, str]:
         """Help to convert awips id into strings."""
         product_descript = f"(({self.afos}))"
         url = "https://www.spc.noaa.gov"
@@ -568,10 +586,24 @@ class SPCPTS(TextProduct):
         elif self.afos == "PTSD48":
             day = "Days 4-8"
             product_descript = "Convective"
-            url = (
-                "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
-                f"{self.valid.year}/day4-8_{self.valid:%Y%m%d}.html"
-            )
+            if 5 < self.valid.hour < 17:
+                hhmm = "1000"
+                # Need to figure out DST, sigh
+                if self.valid.astimezone(ZoneInfo("America/Chicago")).dst():
+                    hhmm = "0900"
+            else:
+                hhmm = "2130"
+            if self.valid.strftime("%Y%m%d") >= "20261201":
+                url = (
+                    "https://www.spc.noaa.gov/products/outlook/archive/"
+                    f"{self.valid.year}/day48otlk_"
+                    f"{self.valid:%Y%m%d}_{hhmm}.html"
+                )
+            else:
+                url = (
+                    "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
+                    f"{self.valid.year}/day4-8_{self.valid:%Y%m%d}.html"
+                )
         elif self.afos == "PFWFD1":
             day = "Day 1"
             product_descript = "Fire Weather"
