@@ -50,7 +50,7 @@ RAOB_BINS = {
 }
 
 
-def _make_timelimit_string(kwargs):
+def _make_timelimit_string(kwargs: dict) -> str:
     """Generate a string for the time limiters"""
     hours = kwargs.get("hours", range(24))
     months = kwargs.get("months", range(1, 13))
@@ -70,8 +70,9 @@ def _make_timelimit_string(kwargs):
                 f"{datetime(2000, 1, 1, hours[-1]):%-I %p}"
             )
         else:
-            for h in hours:
-                parts.append(f"{datetime(2000, 1, 1, h):%-I %p}")  # noqa
+            # Lame magic here to figure out if we are plotting soundings
+            tfmt = "%HZ" if kwargs.get("level") is not None else "%-I %p"
+            parts.extend(datetime(2000, 1, 1, h).strftime(tfmt) for h in hours)
     return f" ↳ constraints: {', '.join(parts)}"
 
 

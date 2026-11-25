@@ -19,6 +19,7 @@ All notable changes to this library are documented in this file.
 
 - Allow for NCEI IGRA2 file with `99` as the hour value, but a release time
   provided.
+- Improve windrose hour label in the case of upper air plots.
 
 ## **1.29.0** (20 Nov 2026)
 
