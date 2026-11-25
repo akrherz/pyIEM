@@ -150,6 +150,8 @@ def test_windrose_upperair():
         drct=drct,
         valid=valid,
         level=500,
+        hours=[12],
+        limit_by_doy=True,
         nogenerated=True,
         tzname="UTC",
     )
