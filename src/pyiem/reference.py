@@ -306,6 +306,7 @@ lsr_events = {
     "ICE STORM": "5",
     "ICING ON ROADS": "5",
     "SNOW/ICE DMG": "5",
+    "SNOW/ICE DAMAGE": "5",
     "EXTREME COLD": "6",
     "COLD/WIND CHILL": "6",
     "FREEZE": "6",
